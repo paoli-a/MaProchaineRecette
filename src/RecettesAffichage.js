@@ -11,7 +11,7 @@ function RecettesAffichage({recettes}) {
 
 
   return (
-      <div className="RecettesAffichage">
+      <div id="RecettesAffichage">
         <h1>{titrePage}</h1>
         {recette}
       </div>
