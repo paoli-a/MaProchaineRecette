@@ -5,8 +5,8 @@ import Recette from "./Recette"
 function RecettesAffichage({recettes}) {
 
   const titrePage = "Recettes"
-  const recette = recettes.map((ma_recette) => {
-    return <Recette recette={ma_recette} />
+  const recette = recettes.map((maRecette) => {
+    return <Recette key={maRecette.id} recette={maRecette} />
   })
 
 

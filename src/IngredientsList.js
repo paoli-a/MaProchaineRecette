@@ -5,8 +5,10 @@ import React from 'react';
 function IngredientsList({ingredients}) {
 
   const ingredientsList = []
-  for (let [key, value] of Object.entries(ingredients)) {
-    ingredientsList.push(<li>{key} : {value}</li>)
+  for (let [ingredientName, amount] of Object.entries(ingredients)) {
+    ingredientsList.push(
+      <li key={ingredientName}>{ingredientName} : {amount}</li>
+    )
   }
 
   return (
