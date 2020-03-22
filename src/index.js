@@ -26,9 +26,16 @@ const recettes = [
 
 const ingredientsFrigo = [
   {
-    nom : "épinard",
+    id : 1,
+    nom : "Epinard",
     datePeremption : new Date(2020, 4, 15),
     quantite : "60g",
+  },
+  {
+    id : 2,
+    nom : "Céleri rave",
+    datePeremption : new Date(2020, 3, 13),
+    quantite : "1kg",
   }
 ]
 

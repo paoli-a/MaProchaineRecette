@@ -19,6 +19,7 @@ beforeEach(() => {
 
   ingredientsFrigo = [
     {
+      id : 1,
       nom : "épinard",
       datePeremption : new Date(2020, 4, 15),
       quantite : "60g",
@@ -35,6 +36,6 @@ test('renders recipes', () => {
 
 test('renders fridge ingredients', () => {
   const { getByText } = render(<MaProchaineRecette recettes={recettes} ingredientsFrigo={ingredientsFrigo}/>);
-  const ingredientName = getByText("épinard");
+  const ingredientName = getByText("épinard", { exact: false });
   expect(ingredientName).toBeInTheDocument();
 });
