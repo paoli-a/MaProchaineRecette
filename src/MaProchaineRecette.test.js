@@ -2,6 +2,8 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import MaProchaineRecette from './MaProchaineRecette';
 
+require('mutationobserver-shim');
+
 let recettes
 let ingredientsFrigo
 

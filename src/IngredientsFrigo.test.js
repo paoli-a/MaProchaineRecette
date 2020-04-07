@@ -1,7 +1,9 @@
 
 import React from 'react';
-import { render, fireEvent, within } from '@testing-library/react';
+import { render, fireEvent, within, act} from '@testing-library/react';
 import IngredientsFrigo from './IngredientsFrigo';
+
+require('mutationobserver-shim');
 
 let ingredientsFrigo
 
@@ -60,9 +62,9 @@ describe("functionalities work properly", () => {
     expect(listItems).toHaveLength(1)
   });
 
-  it('adds the correct ingredient when filling the form and clicking on submit', () => {
+  it('adds the correct ingredient when filling the form and clicking on submit', async () => {
     const { getByLabelText, getByText, getAllByRole } = render(<IngredientsFrigo ingredients={ingredientsFrigo} />);
-    addIngredient(getByLabelText,getByText);
+    await addIngredient(getByLabelText,getByText);
     const ingredient = getByText("carotte", { exact: false });
     const listItems = getAllByRole('listitem');
     const expectedDate = new Date("2020-04-03");
@@ -71,16 +73,18 @@ describe("functionalities work properly", () => {
     expect(ingredient.textContent).toContain(expectedDate.toLocaleDateString())
   })
 
-  function addIngredient (getByLabelText, getByText) {
+  async function addIngredient (getByLabelText, getByText) {
     const inputNom =  getByLabelText("Nom de l'ingrédient :");
     const inputQuantite = getByLabelText("Quantité :");
     const inputDate = getByLabelText("Date de péremption :");
     const selectedUnit = getByLabelText("Unité");
     const submitButton = getByText("Confirmer");
     fireEvent.change(inputNom, { target: { value: 'carotte' } });
-    fireEvent.change(inputQuantite, { target: { value: '1' } });
+    fireEvent.change(inputQuantite, { target: { value: 1 } });
     fireEvent.change(inputDate, { target: { value: '2020-04-03' } });
     fireEvent.change(selectedUnit, { target: { value: 'kg' } });
-    fireEvent.click(submitButton);
+    await act(async () => {
+      fireEvent.click(submitButton);
+    })
   }
 })
