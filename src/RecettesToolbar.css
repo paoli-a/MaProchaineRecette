@@ -1,0 +1,11 @@
+.inline {
+  display: inline-block;
+}
+
+.hidden {
+  display: none;
+}
+
+#panneau-depliant li {
+  list-style: none;
+}

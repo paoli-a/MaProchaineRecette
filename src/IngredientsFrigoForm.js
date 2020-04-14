@@ -1,5 +1,5 @@
 import React from 'react';
-import { useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form';
 
 function IngredientsFrigoForm ({onSubmit}) {
 
@@ -11,8 +11,10 @@ function IngredientsFrigoForm ({onSubmit}) {
   }
 
   return(
+
     <form id="formFrigo" onSubmit={handleSubmit(maFonction)}>
-      Ajouter un ingredient
+    <fieldset>
+    <legend>Ajouter un ingredient</legend>
       <div>
         <label htmlFor="nomIngredient"> Nom de l'ingrédient : </label>
         <input type="text" name="nomIngredient" id="nomIngredient" defaultValue=""
@@ -41,6 +43,7 @@ function IngredientsFrigoForm ({onSubmit}) {
       <div>
       <button>Confirmer</button>
       </div>
+      </fieldset>
     </form>
   )
 }

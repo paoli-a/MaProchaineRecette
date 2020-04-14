@@ -7,7 +7,7 @@ import * as serviceWorker from './serviceWorker';
 const recettes = [
   {
     id : "001",
-    categorie : "plat",
+    categorie : ["plat"],
     titre : "Salade de pommes de terre radis",
     ingredients : {"pommes de terre" : "1 kg", "oeufs" : "3", "vinaigre non balsamique" : "1 cas", "radis": "2 bottes", "oignons bottes" : "2 cas", "yaourt grec" : "1", "mayonnaise" : "1 cas", "moutarde" : "1/2 cas", "ail" : "1 gousse"},
     temps : "35 min",
@@ -16,7 +16,7 @@ const recettes = [
 
   {
     id : "002",
-    categorie : "plat",
+    categorie : ["plat"],
     titre : "Gratin pommes de terre panais",
     ingredients : {"pommes de terre" : "1 kg", "panais" : "4", "crème fraiche épaisse": "20 cl", "crème fraiche semi-épaisse" : "10 cl", "moutarde" : "1,5 cas", "gruillère rapé" : "70 g"},
     temps : "1 h",
