@@ -7,7 +7,7 @@ let recette
 beforeEach(() => {
   recette = {
     id : "001",
-    categorie : "plat",
+    categorie : ["Plat"],
     titre : "Salade de pommes de terre radis",
     ingredients : {"pommes de terre" : "1 kg", "oeufs" : "3", "vinaigre non balsamique" : "1 cas", "radis": "2 bottes", "oignons bottes" : "2 cas", "yaourt grec" : "1", "mayonnaise" : "1 cas", "moutarde" : "1/2 cas", "ail" : "1 gousse"},
     temps : "35 min",
