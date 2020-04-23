@@ -9,3 +9,11 @@
 #panneau-depliant li {
   list-style: none;
 }
+
+#panneau-depliant ul {
+  padding: 0;
+}
+
+#recherche {
+  vertical-align: top;
+}

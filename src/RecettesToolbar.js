@@ -27,7 +27,7 @@ function RecettesToolbar({onChangeCategories, onChangeSearch}) {
       <div className="inline">
         <button className="dropdown-closed" aria-expanded="false"
         aria-controls="panneau-depliant" onClick={handlePannelClick}>
-          Catégorie
+          Catégories
         </button>
         <form id="panneau-depliant" className={isPannelOpen ? null : "hidden"}>
           <ul>
@@ -49,7 +49,8 @@ function RecettesToolbar({onChangeCategories, onChangeSearch}) {
           </ul>
         </form>
       </div>
-      <form className="inline" role="search" onSubmit={handleSubmitSearch(handleSearch)}>
+      <form className="inline" role="search"
+        onSubmit={handleSubmitSearch(handleSearch)} id="recherche">
         <input type="search" id="maRecherche" name="q"
         placeholder="Recherche..." spellCheck="true" size="30" ref={registerSearch}/>
         <button>Ok</button>
