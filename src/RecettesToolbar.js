@@ -4,24 +4,22 @@ import { useForm } from 'react-hook-form';
 
 function RecettesToolbar({onChangeCategories, onChangeSearch}) {
 
-  const { register, getValues} = useForm()
-  const [isOpen, setOpen] = useState(false);
+  const { register: registerCategories, getValues: getCategoriesValues } = useForm()
+  const {register: registerSearch, handleSubmit: handleSubmitSearch} = useForm()
+  const [isPannelOpen, setPannelOpen] = useState(false)
 
-  const handlePannelClick = () => setOpen(!isOpen)
+  const handlePannelClick = () => setPannelOpen(!isPannelOpen)
 
-  const handleCheckboxClick = () => {
-    const data = getValues()
-    delete data.q;
+  const handleCheckbox = () => {
+    const data = getCategoriesValues()
     const categoriesValues = Object.values(data)
     const filteredValues = categoriesValues.filter(Boolean)
     onChangeCategories(filteredValues)
   }
 
-  const handleSearchClick = () => {
-    const values = getValues()
-    const search = values.q
+  const handleSearch = (data) => {
+    const search = data.q
     onChangeSearch(search)
-
   }
 
   return (
@@ -31,31 +29,31 @@ function RecettesToolbar({onChangeCategories, onChangeSearch}) {
         aria-controls="panneau-depliant" onClick={handlePannelClick}>
           Catégorie
         </button>
-        <div id="panneau-depliant" className={isOpen ? null : "hidden"}>
+        <form id="panneau-depliant" className={isPannelOpen ? null : "hidden"}>
           <ul>
             <li>
               <input type="checkbox" value="Entrée" name="Entrée"
-                aria-label="Entrée" ref={register} onClick={handleCheckboxClick}/>
+                aria-label="Entrée" ref={registerCategories} onClick={handleCheckbox}/>
             Entrée
             </li>
             <li>
               <input type="checkbox" value="Plat" name="Plat"
-                aria-label="Plat" ref={register} onClick={handleCheckboxClick}/>
+                aria-label="Plat" ref={registerCategories} onClick={handleCheckbox}/>
               Plat
             </li>
             <li>
               <input type="checkbox" value="Dessert" name="Dessert"
-                aria-label="Dessert" ref={register} onClick={handleCheckboxClick}/>
+                aria-label="Dessert" ref={registerCategories} onClick={handleCheckbox}/>
               Dessert
             </li>
           </ul>
-        </div>
+        </form>
       </div>
-      <div className="inline" role="search">
+      <form className="inline" role="search" onSubmit={handleSubmitSearch(handleSearch)}>
         <input type="search" id="maRecherche" name="q"
-        placeholder="Recherche..." spellCheck="true" size="30" ref={register}/>
-        <button onClick={handleSearchClick}>Ok</button>
-      </div>
+        placeholder="Recherche..." spellCheck="true" size="30" ref={registerSearch}/>
+        <button>Ok</button>
+      </form>
     </fieldset>
   );
 }
