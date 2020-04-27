@@ -39,10 +39,22 @@ const ingredientsFrigo = [
   }
 ]
 
+const ingredientsCatalogue = [
+  {
+    id : 10,
+    nom : "Fraises",
+  },
+  {
+    id : 11,
+    nom : "Sucre",
+  }
+]
+
 ReactDOM.render(
   <MaProchaineRecette
     recettes={recettes}
     ingredientsFrigo={ingredientsFrigo}
+    ingredientsCatalogue={ingredientsCatalogue}
   />, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change

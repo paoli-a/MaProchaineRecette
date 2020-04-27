@@ -6,6 +6,7 @@ require('mutationobserver-shim');
 
 let recettes
 let ingredientsFrigo
+let ingredientsCatalogue
 
 beforeEach(() => {
   recettes = [
@@ -27,17 +28,34 @@ beforeEach(() => {
       quantite : "60g",
     }
   ]
+
+  ingredientsCatalogue = [
+    {
+      id : 10,
+      nom : "Fraises",
+    },
+    {
+      id : 11,
+      nom : "Sucre",
+    }
+  ]
 });
 
 
 test('renders recipes', () => {
-  const { getByText } = render(<MaProchaineRecette recettes={recettes} ingredientsFrigo={ingredientsFrigo}/>);
+  const { getByText } = render(<MaProchaineRecette
+    recettes={recettes}
+    ingredientsFrigo={ingredientsFrigo}
+    ingredientsCatalogue={ingredientsCatalogue}/>);
   const titreRecette = getByText("Salade de pommes de terre radis");
   expect(titreRecette).toBeInTheDocument();
 });
 
 test('renders fridge ingredients', () => {
-  const { getByText } = render(<MaProchaineRecette recettes={recettes} ingredientsFrigo={ingredientsFrigo}/>);
+  const { getByText } = render(<MaProchaineRecette
+    recettes={recettes}
+    ingredientsFrigo={ingredientsFrigo}
+    ingredientsCatalogue={ingredientsCatalogue}/>);
   const ingredientName = getByText("épinard", { exact: false });
   expect(ingredientName).toBeInTheDocument();
 });

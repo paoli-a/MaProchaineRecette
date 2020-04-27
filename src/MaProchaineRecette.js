@@ -1,17 +1,15 @@
 import React from 'react';
 import RecettesAffichage from "./RecettesAffichage"
 import IngredientsFrigo from "./IngredientsFrigo"
+import IngredientsCatalogue from "./IngredientsCatalogue"
 
-function MaProchaineRecette ({recettes, ingredientsFrigo}) {
+function MaProchaineRecette ({recettes, ingredientsFrigo, ingredientsCatalogue}) {
 
   return (
     <div>
-      <span>
-        <RecettesAffichage recettes={recettes}/>
-      </span>
-      <span>
-        <IngredientsFrigo ingredients={ingredientsFrigo}/>
-      </span>
+      <IngredientsCatalogue ingredientsPossibles={ingredientsCatalogue}/>
+      <RecettesAffichage recettes={recettes}/>
+      <IngredientsFrigo ingredients={ingredientsFrigo}/>
     </div>
   )
 }
