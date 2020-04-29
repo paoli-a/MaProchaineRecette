@@ -43,19 +43,22 @@ beforeEach(() => {
 
 
 test('renders recipes', () => {
-  const { getByText } = render(<MaProchaineRecette
+  const { queryAllByText } = render(<MaProchaineRecette
     recettes={recettes}
     ingredientsFrigo={ingredientsFrigo}
-    ingredientsCatalogue={ingredientsCatalogue}/>);
-  const titreRecette = getByText("Salade de pommes de terre radis");
-  expect(titreRecette).toBeInTheDocument();
+    ingredientsCatalogue={ingredientsCatalogue}
+    totalRecettes={recettes}/>
+  );
+  const titreRecette = queryAllByText("Salade de pommes de terre radis");
+  expect(titreRecette).not.toHaveLength(0);
 });
 
 test('renders fridge ingredients', () => {
   const { getByText } = render(<MaProchaineRecette
     recettes={recettes}
     ingredientsFrigo={ingredientsFrigo}
-    ingredientsCatalogue={ingredientsCatalogue}/>);
+    ingredientsCatalogue={ingredientsCatalogue}
+    totalRecettes={recettes}/>);
   const ingredientName = getByText("épinard", { exact: false });
   expect(ingredientName).toBeInTheDocument();
 });

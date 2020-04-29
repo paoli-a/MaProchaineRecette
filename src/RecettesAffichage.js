@@ -89,10 +89,10 @@ function RecettesAffichage({recettes}) {
 
   return (
       <div>
+        <h1>{titrePage}</h1>
         <RecettesToolbar onChangeCategories={handleChangeCategories}
           onChangeSearch={handleChangeSearch}/>
         <div id="RecettesAffichage">
-          <h1>{titrePage}</h1>
           {recettesAffichees}
         </div>
       </div>

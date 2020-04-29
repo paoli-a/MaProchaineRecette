@@ -24,7 +24,7 @@ function IngredientsFrigoForm ({onSubmit}) {
       <div>
         <label htmlFor="quantiteIngredient">Quantité : </label>
         <input type="number" name="quantiteIngredient" id="quantiteIngredient"
-        ref={register({ required: true })} defaultValue=""/>
+        min="0" ref={register({ required: true })} defaultValue=""/>
         {errors.quantiteIngredient && <span>Ce champ est obligatoire</span>}
         <select name="unite" defaultValue="" ref={register({ required: true })}
           aria-label="Unité">
@@ -36,13 +36,13 @@ function IngredientsFrigoForm ({onSubmit}) {
         </select>
         {errors.unite && <span>Ce champ est obligatoire</span>}
       </div>
-      <label htmlFor="datePeremption">Date de péremption : </label>
-      <input type="date" name="datePeremption" id="datePeremption"
-      ref={register({ required: true })} defaultValue=""/>
-      {errors.datePeremption && <span>Ce champ est obligatoire</span>}
       <div>
-      <input type="submit" value="Confirmer"/>
+        <label htmlFor="datePeremption">Date de péremption : </label>
+        <input type="date" name="datePeremption" id="datePeremption"
+        ref={register({ required: true })} defaultValue=""/>
+        {errors.datePeremption && <span>Ce champ est obligatoire</span>}
       </div>
+      <input type="submit" value="Confirmer"/>
       </fieldset>
     </form>
   )
