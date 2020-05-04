@@ -8,7 +8,7 @@ function RecettesCatalogue ({totalRecettes}) {
 
   const toutesMesRecettes = recettesList.map((maRecette) => {
     return (
-        <Recette key={maRecette.id} recette={maRecette} 
+        <Recette key={maRecette.id} recette={maRecette} activateClick={true}
         optionalButton=<button onClick={() => handleSupprClick(maRecette.id)} >
         X</button>/>
     )
