@@ -76,7 +76,7 @@ function RecettesAffichage({recettes}) {
   }, [recettes, categories, searchResults])
 
   const recettesAffichees = recettesFiltrees.map((maRecette) => {
-    return <Recette key={maRecette.id} recette={maRecette} />
+    return <Recette key={maRecette.id} recette={maRecette}/>
   })
 
   const handleChangeCategories = (updatedCategories) => {

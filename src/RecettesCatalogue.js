@@ -7,8 +7,21 @@ function RecettesCatalogue ({totalRecettes}) {
   const [recettesList, setRecettes] = useState(totalRecettes);
 
   const toutesMesRecettes = recettesList.map((maRecette) => {
-    return <Recette key={maRecette.id} recette={maRecette} />
+    return (
+        <Recette key={maRecette.id} recette={maRecette} 
+        optionalButton=<button onClick={() => handleSupprClick(maRecette.id)} >
+        X</button>/>
+    )
   })
+
+  const handleSupprClick = (id) => {
+      const recettes = recettesList.slice()
+      const index = recettes.findIndex((recette) => {
+        return recette.id === id
+      });
+      recettes.splice(index,1);
+      setRecettes(recettes)
+    }
 
   const handleSubmit = (data) => {
     const id = new Date().getTime();

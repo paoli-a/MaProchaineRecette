@@ -15,11 +15,7 @@ function IngredientsCatalogue ({ingredientsPossibles}) {
     reset()
   }
 
-  const handleSuppr = (id) => {
-    supprIngredient(id);
-  }
-
-  const supprIngredient = (id) => {
+  const handleSupprClick = (id) => {
     const ingredientsListUpdated = ingredientsCatalogue.slice()
     const index = ingredientsListUpdated.findIndex((ingredient) => {
       return ingredient.id === id
@@ -33,7 +29,7 @@ function IngredientsCatalogue ({ingredientsPossibles}) {
     return (
       <li key={unIngredient.id}>
         {unIngredient.nom}
-        <button onClick={() => handleSuppr(unIngredient.id)}>X</button>
+        <button onClick={() => handleSupprClick(unIngredient.id)}>X</button>
       </li>
     )
   })
