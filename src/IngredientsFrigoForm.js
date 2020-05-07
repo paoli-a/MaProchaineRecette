@@ -29,7 +29,7 @@ function IngredientsFrigoForm ({onSubmit}) {
         <select name="unite" defaultValue="" ref={register({ required: true })}
           aria-label="Unité">
           <option value="">...</option>
-          <option value="pièce">pièce</option>
+          <option value="pièce(s)">pièce(s)</option>
           <option value="kg">kg</option>
           <option value="g">g</option>
           <option value="cl">cl</option>

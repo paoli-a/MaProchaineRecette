@@ -26,14 +26,17 @@ function RecettesCatalogue ({totalRecettes}) {
   const handleSubmit = (data) => {
     const id = new Date().getTime();
     const recettes = recettesList.slice()
-    const quantite = data.ingredientQuantite + "";
-    const formatedQuantite = quantite + " " + data.unite;
-    const formatedIngredient = { [data.ingredient] : formatedQuantite}
+    const formatedIngredients = {}
+    for (let ingredient of data.ingredients) {
+      const quantite = ingredient.quantite + "";
+      const formatedQuantite = quantite + " " + ingredient.unite;
+      formatedIngredients[ingredient.nom] = formatedQuantite
+    }
     const categories = data.categorie.filter(Boolean)
     const nouvelleRecette = {id : id,
                             categories : categories,
                             titre : data.titreRecette,
-                            ingredients: formatedIngredient,
+                            ingredients: formatedIngredients,
                             temps : data.tempsRecette,
                             description: data.descriptionRecette}
     recettes.push(nouvelleRecette);

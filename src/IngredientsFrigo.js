@@ -6,7 +6,6 @@ function IngredientsFrigo ({ingredients}) {
 
   const [ingredientsList, setIngredient] = useState(ingredients);
 
-  
   const handleSupprClick = (id) => {
     const ingredientsListUpdated = ingredientsList.slice()
     const index = ingredientsListUpdated.findIndex((ingredient) => {

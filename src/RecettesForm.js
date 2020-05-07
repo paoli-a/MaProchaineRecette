@@ -1,15 +1,76 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 function RecettesForm ({onSubmitRecette}) {
-
-  const { register, handleSubmit, errors, reset} = useForm()
+  const { register, handleSubmit, errors, reset, watch } = useForm()
+  const [ingredients, setIngredients] = useState([]);
+  const [ingredient, setIngredient] = useState("");
+  const [ingredientQuantite, setIngredientQuantite] = useState("");
+  const [ingredientUnite, setIngredientUnite] = useState("");
+  const [ingredientError, setIngredientError] = useState("")
 
   const onSubmitForm = (data) => {
+    if (ingredients.length === 0) {
+      setIngredientError("Au moins un ingrédient doit être présent dans la recette")
+      return
+    }
+    data.ingredients = ingredients.slice()
     onSubmitRecette(data)
     reset()
+    setIngredients([])
+    resetIngredient()
   }
 
+  const resetIngredient = () => {
+    setIngredient("")
+    setIngredientQuantite("")
+    setIngredientUnite("")
+    setIngredientError("")
+  }
+
+  const handleAddIngredient = (event) => {
+    event.preventDefault()
+    if (!ingredient || !ingredientQuantite || !ingredientUnite) {
+      setIngredientError("Tous les champs concernant l'ingrédient doivent être remplis")
+      return
+    }
+    for (let ingredientExistant of ingredients) {
+      if (ingredientExistant.nom === ingredient) {
+           setIngredientError("Cet ingrédient a déjà été ajouté")
+           return
+      }
+    }
+    if (ingredientQuantite <= 0) {
+      setIngredientError("La quantité doit être supérieure à 0")
+      return
+    }
+    const newIngredients = ingredients.slice()
+    newIngredients.push({
+      nom: ingredient,
+      quantite: ingredientQuantite,
+      unite: ingredientUnite
+    })
+    setIngredients(newIngredients)
+    resetIngredient()
+  }
+
+  const handleSupprIngredient = (nom) => {
+    const ingredientsListUpdated = ingredients.slice()
+    for (let i=0; i<ingredientsListUpdated.length; i++) {
+      if (ingredientsListUpdated[i].nom === nom) {
+        ingredientsListUpdated.splice(i, 1);
+        setIngredients(ingredientsListUpdated)
+        return
+      }
+    }
+  }
+
+  const validateCategories = () => {
+    const categorie0 = watch('categorie[0]');
+    const categorie1 = watch('categorie[1]');
+    const categorie2 = watch('categorie[2]');
+    return Boolean(categorie0 || categorie1 || categorie2);
+  }
 
   return(
     <form id="formRecette" onSubmit={handleSubmit(onSubmitForm)}>
@@ -26,45 +87,59 @@ function RecettesForm ({onSubmitRecette}) {
             <ul>
               <li>
                 <input type="checkbox" value="Entrée" name="categorie[0]"
-                  aria-label="Entrée" ref={register}/>
+                  aria-label="Entrée" ref={register({ validate: validateCategories })}/>
               Entrée
               </li>
               <li>
                 <input type="checkbox" value="Plat" name="categorie[1]"
-                  aria-label="Plat" ref={register}/>
+                  aria-label="Plat" ref={register({ validate: validateCategories })}/>
                 Plat
               </li>
               <li>
                 <input type="checkbox" value="Dessert" name="categorie[2]"
-                  aria-label="Dessert" ref={register}/>
+                  aria-label="Dessert" ref={register({ validate: validateCategories })}/>
                 Dessert
               </li>
             </ul>
+            {errors.categorie &&
+              <span>Au moins une catégorie doit être sélectionnée</span>}
           </div>
           <div>
             <label htmlFor="tempsRecette"> Temps total de la recette : </label>
             <input type="time" id="tempsRecette" name="tempsRecette" min="00:01"
             ref={register({ required: true })}/>
+            {errors.tempsRecette && <span>Ce champ est obligatoire</span>}
           </div>
           <fieldset>
-            <legend>  Ingrédient : </legend>
+            <legend>  Ingrédients : </legend>
               <label htmlFor="ingredient"> Nom : </label>
               <input type="text" name="ingredient" id="ingredient"
-              ref={register({ required: true })} defaultValue=""/>
-              {errors.ingredient && <span>Ce champ est obligatoire</span>}
+                onChange={(e) => setIngredient(e.target.value)}
+                value={ingredient}/>
               <label htmlFor="ingredientQuantite"> Quantité nécessaire : </label>
-              <input type="number" name="ingredientQuantite" id="ingredientQuantite"
-              min="0" ref={register({ required: true })} defaultValue=""/>
-              {errors.ingredientQuantite && <span>Ce champ est obligatoire</span>}
-              <select name="unite" defaultValue="" ref={register({ required: true })}
-                aria-label="Unité">
+              <input type="number" name="ingredientQuantite"
+                id="ingredientQuantite" min="0"
+                onChange={(e) => setIngredientQuantite(e.target.value)}
+                value={ingredientQuantite}/>
+              <select name="unite" aria-label="Unité"
+                onChange={(e) => setIngredientUnite(e.target.value)}
+                value={ingredientUnite}>
                 <option value="">...</option>
-                <option value="pièce">pièce</option>
+                <option value="pièce(s)">pièce(s)</option>
                 <option value="kg">kg</option>
                 <option value="g">g</option>
                 <option value="cl">cl</option>
               </select>
-              {errors.unite && <span>Ce champ est obligatoire</span>}
+              <button onClick={handleAddIngredient}>Ajouter</button>
+              {ingredientError && <span>{ingredientError}</span>}
+              <ul>
+                {ingredients.map((ingredient) => {
+                  return (<li key={ingredient.nom}>
+                    {ingredient.nom} : {ingredient.quantite} {ingredient.unite}
+                    <button onClick={() => handleSupprIngredient(ingredient.nom)}>X</button>
+                  </li>)
+                })}
+              </ul>
           </fieldset>
           <div>
             <label htmlFor="descriptionRecette">Corps de la recette : </label>
