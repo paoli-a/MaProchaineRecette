@@ -28,30 +28,35 @@ function RecettesForm ({onSubmitRecette}) {
     setIngredientError("")
   }
 
-  const handleAddIngredient = (event) => {
-    event.preventDefault()
+  const validateNewIngredient = () => {
     if (!ingredient || !ingredientQuantite || !ingredientUnite) {
-      setIngredientError("Tous les champs concernant l'ingrédient doivent être remplis")
-      return
+      throw new Error("Tous les champs concernant l'ingrédient doivent être remplis")
     }
     for (let ingredientExistant of ingredients) {
       if (ingredientExistant.nom === ingredient) {
-           setIngredientError("Cet ingrédient a déjà été ajouté")
-           return
+           throw new Error("Cet ingrédient a déjà été ajouté")
       }
     }
     if (ingredientQuantite <= 0) {
-      setIngredientError("La quantité doit être supérieure à 0")
-      return
+      throw new Error("La quantité doit être supérieure à 0")
     }
-    const newIngredients = ingredients.slice()
-    newIngredients.push({
-      nom: ingredient,
-      quantite: ingredientQuantite,
-      unite: ingredientUnite
-    })
-    setIngredients(newIngredients)
-    resetIngredient()
+  }
+
+  const handleAddIngredient = (event) => {
+    event.preventDefault()
+    try {
+      validateNewIngredient()
+      const newIngredients = ingredients.slice()
+      newIngredients.push({
+        nom: ingredient,
+        quantite: ingredientQuantite,
+        unite: ingredientUnite
+      })
+      setIngredients(newIngredients)
+      resetIngredient()
+    } catch(error) {
+      setIngredientError(error.message)
+    }
   }
 
   const handleSupprIngredient = (nom) => {
