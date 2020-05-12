@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 function RecettesForm ({onSubmitRecette}) {
-  const { register, handleSubmit, errors, reset, watch } = useForm()
+  const { register, handleSubmit, errors, reset, watch, getValues } = useForm()
   const [ingredients, setIngredients] = useState([]);
   const [ingredient, setIngredient] = useState("");
   const [ingredientQuantite, setIngredientQuantite] = useState("");
@@ -77,6 +77,18 @@ function RecettesForm ({onSubmitRecette}) {
     return Boolean(categorie0 || categorie1 || categorie2);
   }
 
+  const validateTime = () => {
+    const hoursAndMinutes = (getValues().tempsRecette).split(":")
+    const hours = parseInt(hoursAndMinutes[0], 10);
+    const minutes = hoursAndMinutes[1] ? parseInt(hoursAndMinutes[1], 10) : 0;
+    const time = hours + minutes / 60;
+    if (time <= 0 ){
+      return "Le temps nécessaire pour la recette doit être supérieur à 0"
+    }
+    else
+      return undefined
+  }
+
   return(
     <form id="formRecette" onSubmit={handleSubmit(onSubmitForm)}>
       <fieldset>
@@ -111,9 +123,12 @@ function RecettesForm ({onSubmitRecette}) {
           </div>
           <div>
             <label htmlFor="tempsRecette"> Temps total de la recette : </label>
-            <input type="time" id="tempsRecette" name="tempsRecette" min="00:01"
-            ref={register({ required: true })}/>
-            {errors.tempsRecette && <span>Ce champ est obligatoire</span>}
+            <input type="time" id="tempsRecette" name="tempsRecette"
+            ref={register({
+            required: "Ce champ est obligatoire",
+            validate: validateTime
+            })} />
+            {errors.tempsRecette && errors.tempsRecette.message}
           </div>
           <fieldset>
             <legend>  Ingrédients : </legend>
