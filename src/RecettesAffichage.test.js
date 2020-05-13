@@ -14,7 +14,7 @@ beforeEach(() => {
           titre : "Salade de pommes de terre radis",
           ingredients : {"pommes de terre" : "1 kg", "oeufs" : "3", "vinaigre non balsamique" : "1 cas", "radis": "2 bottes", "oignons bottes" : "2 cas", "yaourt grec" : "1", "mayonnaise" : "1 cas", "moutarde" : "1/2 cas", "ail" : "1 gousse"},
           temps : "35 min",
-          description : "Epluchez et coupez les patates en rondelles et les cuire à l'eau. Cuire les oeufs durs. Coupez les radis en rondelles. Emincez les échalottes et les oignons. Coupez les oeufs durs. Mettre le tout dans un saladier et rajoutez le vinaigre. Mélangez. Préparez la sauce :  mélangez le yaourt, la mayonnaise, la moutarde, la gousse d'ail rapée. Assaisoner.",
+          description : "Epluchez et coupez les patates en rondelles et les cuire à l'eau. Cuire les oeufs durs. Coupez les radis en rondelles. Emincez les échalottes et les oignons. Coupez les oeufs durs. Mettre le tout dans un saladier et rajoutez le vinaigre. Mélangez. Préparez la sauce :  mélangez le yaourt, la mayonnaise, la moutarde, la gousse d'ail rapée. Assaisoner. Une recette en or ...",
         },
 
         {
@@ -107,30 +107,6 @@ describe("the search filtration functionality works properly", () => {
       expect(queryByText("Crumble aux poires")).not.toBeInTheDocument()
   })
 
-  it(`renders only the recipes containing the searched words, except for small
-  unmeaningful words`,  async () => {
-      const { getByPlaceholderText, getByText,
-        queryByText } = render(<RecettesAffichage recettes={recettes}/>);
-      makeASearch("Marinade de saumon fumé", getByPlaceholderText, getByText)
-      await waitFor(() => {
-        expect(getByText("Marinade de saumon fumé")).toBeInTheDocument()
-      })
-      expect(queryByText("Salade de pommes de terre radis")).not.toBeInTheDocument()
-  })
-
-  it('renders all the recipes containing any of the searched words',  async () => {
-      const { getByPlaceholderText, getByText,
-        queryByText } = render(<RecettesAffichage recettes={recettes}/>);
-      makeASearch("Marinade crumble", getByPlaceholderText, getByText)
-      await waitFor(() => {
-        expect(getByText("Marinade de saumon fumé")).toBeInTheDocument()
-      })
-      await waitFor(() => {
-        expect(getByText("Crumble aux poires")).toBeInTheDocument()
-      })
-      expect(queryByText("Salade de pommes de terre radis")).not.toBeInTheDocument()
-  })
-
   it('renders only the recipes containing the searched word in their descriptions',
     async () => {
       const { getByPlaceholderText, getByText,
@@ -152,6 +128,64 @@ describe("the search filtration functionality works properly", () => {
         expect(getByText("Marinade de saumon fumé")).toBeInTheDocument()
       })
       expect(queryByText("Crumble aux poires")).not.toBeInTheDocument()
+      expect(queryByText("Salade de pommes de terre radis")).not.toBeInTheDocument()
+  })
+
+  it(`renders only the recipes containing the searched words, except for words
+    smaller than 2 characters`,  async () => {
+      const { getByPlaceholderText, getByText,
+        queryByText } = render(<RecettesAffichage recettes={recettes}/>);
+      makeASearch("Marinade y", getByPlaceholderText, getByText)
+      await waitFor(() => {
+        expect(getByText("Marinade de saumon fumé")).toBeInTheDocument()
+      })
+      // there is no "y" in the first recipe, but there is y in this one
+      expect(queryByText("Salade de pommes de terre radis")).not.toBeInTheDocument()
+  })
+
+  it(`renders only the recipes containing the searched words, for words of
+    2 characters`,  async () => {
+      const { getByPlaceholderText, getByText,
+        queryByText } = render(<RecettesAffichage recettes={recettes}/>);
+      makeASearch("Marinade or", getByPlaceholderText, getByText)
+      await waitFor(() => {
+        expect(getByText("Marinade de saumon fumé")).toBeInTheDocument()
+      })
+      expect(queryByText("Salade de pommes de terre radis")).toBeInTheDocument()
+  })
+
+  it(`renders only the recipes containing the searched words, except for
+    stopwords`,  async () => {
+      const { getByPlaceholderText, getByText,
+        queryByText } = render(<RecettesAffichage recettes={recettes}/>);
+      makeASearch("Marinade les de et la l", getByPlaceholderText, getByText)
+      await waitFor(() => {
+        expect(getByText("Marinade de saumon fumé")).toBeInTheDocument()
+      })
+      expect(queryByText("Salade de pommes de terre radis")).not.toBeInTheDocument()
+  })
+
+  it(`renders only the recipes containing the searched words, except for
+    punctuation`,  async () => {
+      const { getByPlaceholderText, getByText,
+        queryByText } = render(<RecettesAffichage recettes={recettes}/>);
+      makeASearch("'Marinade. , ! ...", getByPlaceholderText, getByText)
+      await waitFor(() => {
+        expect(getByText("Marinade de saumon fumé")).toBeInTheDocument()
+      })
+      expect(queryByText("Salade de pommes de terre radis")).not.toBeInTheDocument()
+  })
+
+  it('renders all the recipes containing any of the searched words',  async () => {
+      const { getByPlaceholderText, getByText,
+        queryByText } = render(<RecettesAffichage recettes={recettes}/>);
+      makeASearch("Marinade crumble", getByPlaceholderText, getByText)
+      await waitFor(() => {
+        expect(getByText("Marinade de saumon fumé")).toBeInTheDocument()
+      })
+      await waitFor(() => {
+        expect(getByText("Crumble aux poires")).toBeInTheDocument()
+      })
       expect(queryByText("Salade de pommes de terre radis")).not.toBeInTheDocument()
   })
 })
