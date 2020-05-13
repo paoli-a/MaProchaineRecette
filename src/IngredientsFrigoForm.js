@@ -31,7 +31,6 @@ function IngredientsFrigoForm ({onSubmit}) {
   }
 
   return(
-
     <form id="formFrigo" onSubmit={handleSubmit(onSubmitWrapper)}>
     <fieldset>
     <legend>Ajouter un ingredient frigo</legend>

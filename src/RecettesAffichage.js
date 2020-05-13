@@ -42,12 +42,23 @@ function RecettesAffichage({recettes}) {
       return resultsLower
     }
 
+    const removePunctuation = (results) => {
+      const punctuationRegex = /[…~`!@#$%^&*(){}[\];:"'<,.>?/\\|_+=-]/g
+      let resultWithoutPunctuation = results.replace(punctuationRegex, "");
+      return resultWithoutPunctuation.replace(/\s{2,}/g," ");
+    }
+
+    const removeStopwords = (results) => {
+      const stopword = require('stopword')
+      return stopword.removeStopwords(results, stopword.fr)
+    }
 
     const filtreurUtilSearch = function(recette) {
-      const mots = searchResults.split(" ")
+      const resultWithoutPunctuation = removePunctuation(searchResults)
+      const mots = removeStopwords(resultWithoutPunctuation.split(" "))
       const { titreRecette, description, ingredientsList } = lowerResults(recette)
       for (let mot of mots) {
-        if (mot.length > 3) {
+        if (mot.length > 1) {
           if (titreRecette.includes(mot) || description.includes(mot)) {
             return true
           }
