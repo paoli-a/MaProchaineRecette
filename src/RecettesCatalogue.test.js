@@ -41,42 +41,34 @@ describe ("the adding recipe functionality works properly", () => {
   })
 
   it(`does not add the recipe if no ingredient was provided`, async () => {
+    await checkMissingInput("ingredients")
+  })
+
+  it(`does not add the recipe if no category was provided`, async () => {
+    await checkMissingInput("categories")
+  })
+
+  it(`does not add the recipe if no time was provided`, async () => {
+    await checkMissingInput("temps")
+  })
+
+  it(`does not add the recipe if no description was provided`, async () => {
+    await checkMissingInput("description")
+  })
+
+  async function checkMissingInput(inputName) {
     const { getByLabelText, getByText, queryByText } = render(
       <RecettesCatalogue totalRecettes={recettes}/>);
-    await addRecipe(getByLabelText, getByText, ["ingredients"]);
+    await addRecipe(getByLabelText, getByText, [inputName]);
     const recette = queryByText("Crumble aux poires", { exact: false });
     expect(recette).not.toBeInTheDocument()
-  })
+  }
 
   it(`does not add the recipe if no title was provided`, async () => {
     const { getByLabelText, getByText, queryByText } = render(
       <RecettesCatalogue totalRecettes={recettes}/>);
     await addRecipe(getByLabelText, getByText, ["titre"]);
-    const recette = queryByText("Crumble aux poires", { exact: false });
-    expect(recette).not.toBeInTheDocument()
-  })
-
-  it(`does not add the recipe if no category was provided`, async () => {
-    const { getByLabelText, getByText, queryByText } = render(
-      <RecettesCatalogue totalRecettes={recettes}/>);
-    await addRecipe(getByLabelText, getByText, ["categories"]);
-    const recette = queryByText("Crumble aux poires", { exact: false });
-    expect(recette).not.toBeInTheDocument()
-  })
-
-  it(`does not add the recipe if no time was provided`, async () => {
-    const { getByLabelText, getByText, queryByText } = render(
-      <RecettesCatalogue totalRecettes={recettes}/>);
-    await addRecipe(getByLabelText, getByText, ["temps"]);
-    const recette = queryByText("Crumble aux poires", { exact: false });
-    expect(recette).not.toBeInTheDocument()
-  })
-
-  it(`does not add the recipe if no description was provided`, async () => {
-    const { getByLabelText, getByText, queryByText } = render(
-      <RecettesCatalogue totalRecettes={recettes}/>);
-    await addRecipe(getByLabelText, getByText, ["description"]);
-    const recette = queryByText("Crumble aux poires", { exact: false });
+    const recette = queryByText("Épluchez et épépinez", { exact: false });
     expect(recette).not.toBeInTheDocument()
   })
 
@@ -88,6 +80,19 @@ describe ("the adding recipe functionality works properly", () => {
     addIngredient(getByLabelText, getByText, ["Grenade", 5, "g"])
     const ingredient = getAllByText(/Grenade/);
     expect(ingredient).toHaveLength(1)
+  })
+
+  it(`does not add the recipe if the time for the recipe is negative or null`,
+    async () => {
+    const { getByLabelText, getByText, queryByText } = render(
+        <RecettesCatalogue totalRecettes={recettes}/>);
+    await addRecipe(getByLabelText, getByText, [], {"temps": "00:00"})
+    let recette = queryByText("Crumble aux poires", { exact: false });
+    expect(recette).not.toBeInTheDocument()
+
+    await addRecipe(getByLabelText, getByText, [], {"temps": "-01:00"})
+    recette = queryByText("Crumble aux poires", { exact: false });
+    expect(recette).not.toBeInTheDocument()
   })
 
   it(`does not add the ingredient if quantity is negative or null`, () => {
@@ -128,7 +133,8 @@ describe ("the adding recipe functionality works properly", () => {
     expect(beurre).toBeInTheDocument()
   })
 
-  async function addRecipe(getByLabelText, getByText, missingFields=[]) {
+  async function addRecipe(getByLabelText, getByText, missingFields=[],
+    customFields={}) {
     const inputTitre =  getByLabelText("Titre de la recette :");
     const entree = getByLabelText("Entrée");
     const inputTemps =  getByLabelText("Temps total de la recette :");
@@ -141,7 +147,8 @@ describe ("the adding recipe functionality works properly", () => {
       fireEvent.click(entree);
     }
     if (!missingFields.includes("temps")) {
-      fireEvent.change(inputTemps, { target: { value: "00:10" } })
+      const temps = customFields["temps"] || "00:10"
+      fireEvent.change(inputTemps, { target: { value: temps } })
     }
     if (!missingFields.includes("ingredients")) {
       addIngredient(getByLabelText, getByText, ["Poires", 1, "kg"])

@@ -3,11 +3,31 @@ import { useForm } from 'react-hook-form';
 
 function IngredientsFrigoForm ({onSubmit}) {
 
-  const { register, handleSubmit, errors, reset } = useForm()
+  const { register, handleSubmit, errors, reset, getValues } = useForm()
 
   const onSubmitWrapper = (data) => {
     onSubmit(data)
     reset()
+  }
+
+  const validateQuantite = () => {
+    if (getValues().quantiteIngredient <= 0) {
+      return "La quantité doit être supérieure à 0"
+    }
+    else
+      return undefined
+  }
+
+  const validateDate = () => {
+    const currentDate = new Date()
+    currentDate.setHours(0, 0, 0, 0)
+    const inputDate = new Date (getValues().datePeremption)
+    inputDate.setHours(0, 0, 0, 0)
+    if (currentDate.getTime() > inputDate.getTime()) {
+      return "L'ingrédient est déjà perimé"
+    }
+    else
+      return undefined
   }
 
   return(
@@ -24,8 +44,11 @@ function IngredientsFrigoForm ({onSubmit}) {
       <div>
         <label htmlFor="quantiteIngredient">Quantité : </label>
         <input type="number" name="quantiteIngredient" id="quantiteIngredient"
-        min="0" ref={register({ required: true })} defaultValue=""/>
-        {errors.quantiteIngredient && <span>Ce champ est obligatoire</span>}
+          defaultValue="" ref={register({
+            required: "Ce champ est obligatoire",
+            validate: validateQuantite
+        })} />
+        {errors.quantiteIngredient && errors.quantiteIngredient.message}
         <select name="unite" defaultValue="" ref={register({ required: true })}
           aria-label="Unité">
           <option value="">...</option>
@@ -39,8 +62,11 @@ function IngredientsFrigoForm ({onSubmit}) {
       <div>
         <label htmlFor="datePeremption">Date de péremption : </label>
         <input type="date" name="datePeremption" id="datePeremption"
-        ref={register({ required: true })} defaultValue=""/>
-        {errors.datePeremption && <span>Ce champ est obligatoire</span>}
+        ref={register({
+          required: "Ce champ est obligatoire",
+          validate: validateDate
+        })} />
+        {errors.datePeremption && errors.datePeremption.message}
       </div>
       <input type="submit" value="Confirmer"/>
       </fieldset>
