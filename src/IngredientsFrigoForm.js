@@ -45,8 +45,8 @@ function IngredientsFrigoForm ({onSubmit}) {
         <label htmlFor="quantiteIngredient">Quantité : </label>
         <input type="number" name="quantiteIngredient" id="quantiteIngredient"
           defaultValue="" ref={register({
-          required: "Ce champ est obligatoire",
-          validate: validateQuantite
+            required: "Ce champ est obligatoire",
+            validate: validateQuantite
         })} />
         {errors.quantiteIngredient && errors.quantiteIngredient.message}
         <select name="unite" defaultValue="" ref={register({ required: true })}
@@ -63,8 +63,8 @@ function IngredientsFrigoForm ({onSubmit}) {
         <label htmlFor="datePeremption">Date de péremption : </label>
         <input type="date" name="datePeremption" id="datePeremption"
         ref={register({
-        required: "Ce champ est obligatoire",
-        validate: validateDate
+          required: "Ce champ est obligatoire",
+          validate: validateDate
         })} />
         {errors.datePeremption && errors.datePeremption.message}
       </div>

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 function RecettesForm ({onSubmitRecette}) {
+
   const { register, handleSubmit, errors, reset, watch, getValues } = useForm()
   const [ingredients, setIngredients] = useState([]);
   const [ingredient, setIngredient] = useState("");
