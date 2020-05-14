@@ -1,5 +1,6 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import useFilterSearch from "./useFilterSearch"
 
 function IngredientsCatalogue ({ingredientsPossibles}) {
 
@@ -26,32 +27,14 @@ function IngredientsCatalogue ({ingredientsPossibles}) {
   }
 
   const handleChangeSearch = (event) => {
-    setSearchResults(event.target.value.toLowerCase())
+    setSearchResults(event.target.value)
   }
 
-  const ingredientsFiltres = useMemo(() => {
-    const filtreurUtilSearch = function(ingredient) {
-      const ingredientCatalogueLower = ingredient.nom.toLowerCase()
-      const totalLetters = Math.min(ingredient.nom.length, searchResults.length)
-      for (let i=0; i<totalLetters; i++) {
-        if(ingredientCatalogueLower[i] !== searchResults[i]) {
-          return false
-        }
-      }
-      return true
-    }
-
-    const filtreurRecettesSearch = function() {
-      if (searchResults === "") {
-        return ingredientsCatalogue
-      }
-      else {
-        return ingredientsCatalogue.filter(filtreurUtilSearch);
-      }
-    }
-
-    return filtreurRecettesSearch()
-  }, [ingredientsCatalogue, searchResults])
+  const ingredientsFiltres = useFilterSearch({
+    elementsToFilter: ingredientsCatalogue,
+    searchResults:searchResults,
+    getSearchElement: (ingredient) => ingredient.nom
+  })
 
   const ingredient = ingredientsFiltres.map(
     (unIngredient) => {
@@ -66,7 +49,7 @@ function IngredientsCatalogue ({ingredientsPossibles}) {
     <div>
       <h1> Catalogue des ingrédients</h1>
       <form>
-        <input type="search" id="rechercheCatalogueIngredient" name="q"
+        <input type="search" id="rechercheCatalogueIngredient" name="q" value={searchResults}
         placeholder="Recherche..." spellCheck="true" size="30" onChange={handleChangeSearch} />
       </form>
       <form id="ingredientForm" onSubmit={handleSubmit(onSubmitWrapper)} >
