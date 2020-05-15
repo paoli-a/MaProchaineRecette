@@ -18,8 +18,20 @@
   padding: 0;
 }
 
-.dropdown-closed {
+.dropdown-closed, .dropdown-open {
   height: 25px;
+  background-repeat: no-repeat;
+  background-position: 95% 45%;
+  padding-right: 25px;
+  background-size: 14px 14px;
+}
+
+.dropdown-closed {
+  background-image: url(images/fleche_dropdown_bas.png);
+}
+
+.dropdown-open {
+  background-image: url(images/fleche_dropdown_haut.png);
 }
 
 #recherche {

@@ -26,8 +26,8 @@ function RecettesToolbar({onChangeCategories, onChangeSearch}) {
     <fieldset className="dropdown-container">
       <div>
         <div>
-          <button className="dropdown-closed" aria-expanded="false"
-          aria-controls="panneau-depliant" onClick={handlePannelClick}>
+          <button className={isPannelOpen ? "dropdown-open" : "dropdown-closed"}
+          aria-expanded="false" aria-controls="panneau-depliant" onClick={handlePannelClick}>
             Catégories
           </button>
           <form id="panneau-depliant" className={isPannelOpen ? null : "hidden"}>
