@@ -2,6 +2,7 @@ import React, { useState, useMemo }  from 'react';
 import './RecettesAffichage.css';
 import Recette from "./Recette"
 import RecettesToolbar from "./RecettesToolbar"
+import Highlighter from "react-highlight-words";
 
 
 function RecettesAffichage({recettes}) {
@@ -9,6 +10,23 @@ function RecettesAffichage({recettes}) {
   const [categories, setCategories] = useState([]);
   const [searchResults, setSearchResults] = useState("");
   const titrePage = "Recettes"
+
+  const searchedWords = useMemo(() => {
+    const removePunctuation = (results) => {
+      const punctuationRegex = /[…~`!@#$%^&*(){}[\];:"'<,.>?/\\|_+=-]/g
+      let resultWithoutPunctuation = results.replace(punctuationRegex, "");
+      return resultWithoutPunctuation.replace(/\s{2,}/g," ");
+    }
+
+    const removeStopwords = (results) => {
+      const stopword = require('stopword')
+      return stopword.removeStopwords(results, stopword.fr)
+    }
+
+    const resultWithoutPunctuation = removePunctuation(searchResults)
+    return removeStopwords(resultWithoutPunctuation.split(" "))
+  }, [searchResults])
+
 
   const recettesFiltrees = useMemo(() => {
     const filtreurUtilCategories = function(recette) {
@@ -20,7 +38,7 @@ function RecettesAffichage({recettes}) {
       return false
     }
 
-    const filtreurRecettesCategories = function(recettesAFiltrer) {
+    const filtreurRecettesCategories = (recettesAFiltrer) => {
       if (categories.length === 0) {
         return recettesAFiltrer
       }
@@ -42,22 +60,9 @@ function RecettesAffichage({recettes}) {
       return resultsLower
     }
 
-    const removePunctuation = (results) => {
-      const punctuationRegex = /[…~`!@#$%^&*(){}[\];:"'<,.>?/\\|_+=-]/g
-      let resultWithoutPunctuation = results.replace(punctuationRegex, "");
-      return resultWithoutPunctuation.replace(/\s{2,}/g," ");
-    }
-
-    const removeStopwords = (results) => {
-      const stopword = require('stopword')
-      return stopword.removeStopwords(results, stopword.fr)
-    }
-
     const filtreurUtilSearch = function(recette) {
-      const resultWithoutPunctuation = removePunctuation(searchResults)
-      const mots = removeStopwords(resultWithoutPunctuation.split(" "))
       const { titreRecette, description, ingredientsList } = lowerResults(recette)
-      for (let mot of mots) {
+      for (let mot of searchedWords) {
         if (mot.length > 1) {
           if (titreRecette.includes(mot) || description.includes(mot)) {
             return true
@@ -84,10 +89,23 @@ function RecettesAffichage({recettes}) {
     }
 
     return filtreurRecettesSearch(filtreurRecettesCategories(recettes))
-  }, [recettes, categories, searchResults])
+  }, [recettes, categories, searchedWords, searchResults])
+
+
+  const handleHighlight = (texte) => {
+    return (
+      <Highlighter
+        highlightClassName="searchHighlight"
+        searchWords={searchedWords}
+        textToHighlight={texte}
+      />
+    )
+  }
 
   const recettesAffichees = recettesFiltrees.map((maRecette) => {
-    return <Recette key={maRecette.id} recette={maRecette} />
+    return (
+      <Recette key={maRecette.id} recette={maRecette}
+        highlight={searchResults ? handleHighlight : undefined } />)
   })
 
   const handleChangeCategories = (updatedCategories) => {

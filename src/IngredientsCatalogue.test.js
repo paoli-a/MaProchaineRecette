@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, fireEvent, within, act, waitFor} from '@testing-library/react';
+import { render, fireEvent, within, act} from '@testing-library/react';
 import IngredientsCatalogue from './IngredientsCatalogue';
 
 require('mutationobserver-shim');
@@ -47,36 +47,27 @@ it('adds the correct ingredient when filling the form and clicking on submit', a
 })
 
 describe ("the search bar functionality works properly", () => {
-  it('displays the correct ingredients when a letter is entered in the search bar',
-    async () => {
+  it('displays the correct ingredients when a letter is entered in the search bar', () => {
     const { getByText, queryByText, getByPlaceholderText } =
       render(<IngredientsCatalogue ingredientsPossibles={ingredientsCatalogue}/>);
     const searchBar = getByPlaceholderText("Recherche...")
     fireEvent.change(searchBar, { target: { value: "M" } });
-    await waitFor(() => {
-      expect(getByText("Mascarpone")).toBeInTheDocument()
-    })
+    expect(getByText("Mascarpone")).toBeInTheDocument()
     expect(queryByText("Fraises")).not.toBeInTheDocument()
     fireEvent.change(searchBar, { target: { value: "Fra" } });
-    await waitFor(() => {
-      expect(getByText("Fraises")).toBeInTheDocument()
-    })
+    expect(getByText("Fraises")).toBeInTheDocument()
     expect(queryByText("Mascarpone")).not.toBeInTheDocument()
   })
 
-  it('redisplays all the ingredient of the catalog after a search', async () => {
+  it('redisplays all the ingredient of the catalog after a search', () => {
     const { getByText, queryByText, getByPlaceholderText } =
       render(<IngredientsCatalogue ingredientsPossibles={ingredientsCatalogue}/>);
     const searchBar = getByPlaceholderText("Recherche...")
     fireEvent.change(searchBar, { target: { value: "fr" } });
-    await waitFor(() => {
-      expect(getByText("Fraises")).toBeInTheDocument()
-    })
+    expect(getByText("Fraises")).toBeInTheDocument()
     expect(queryByText("Mascarpone")).not.toBeInTheDocument()
     fireEvent.change(searchBar, { target: { value: "" } });
-    await waitFor(() => {
-      expect(getByText("Fraises")).toBeInTheDocument()
-      expect(getByText("Mascarpone")).toBeInTheDocument()
-    })
+    expect(getByText("Fraises")).toBeInTheDocument()
+    expect(getByText("Mascarpone")).toBeInTheDocument()
   })
 })
