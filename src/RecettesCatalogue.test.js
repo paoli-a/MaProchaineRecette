@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, fireEvent, act, within, waitFor} from '@testing-library/react';
+import { render, fireEvent, act, within} from '@testing-library/react';
 import RecettesCatalogue from './RecettesCatalogue';
 
 require('mutationobserver-shim');
@@ -197,30 +197,22 @@ describe ("the search bar functionality works properly", () => {
       render(<RecettesCatalogue totalRecettes={recettes}/>);
     const searchBar = getByPlaceholderText("Recherche par titre...")
     fireEvent.change(searchBar, { target: { value: "M" } });
-    await waitFor(() => {
-      expect(getByText("Marinade de saumon fumé")).toBeInTheDocument()
-    })
+    expect(getByText("Marinade de saumon fumé")).toBeInTheDocument()
     expect(queryByText("Salade de pommes de terre radis")).not.toBeInTheDocument()
     fireEvent.change(searchBar, { target: { value: "Sal" } });
-    await waitFor(() => {
-      expect(getByText("Salade de pommes de terre radis")).toBeInTheDocument()
-    })
+    expect(getByText("Salade de pommes de terre radis")).toBeInTheDocument()
     expect(queryByText("Marinade de saumon fumé")).not.toBeInTheDocument()
   })
 
-  it('redisplays all the recipes of the catalog after a search', async () => {
+  it('redisplays all the recipes of the catalog after a search', () => {
     const { getByText, queryByText, getByPlaceholderText } =
       render(<RecettesCatalogue totalRecettes={recettes}/>);
     const searchBar = getByPlaceholderText("Recherche par titre...")
     fireEvent.change(searchBar, { target: { value: "sa" } });
-    await waitFor(() => {
-      expect(getByText("Salade de pommes de terre radis")).toBeInTheDocument()
-    })
+    expect(getByText("Salade de pommes de terre radis")).toBeInTheDocument()
     expect(queryByText("Marinade de saumon fumé")).not.toBeInTheDocument()
-    fireEvent.change(searchBar, { target: { value: "" } });
-    await waitFor(() => {
-      expect(getByText("Salade de pommes de terre radis")).toBeInTheDocument()
-      expect(getByText("Marinade de saumon fumé")).toBeInTheDocument()
-    })
+    fireEvent.change(searchBar, { target: { value: "" } })
+    expect(getByText("Salade de pommes de terre radis")).toBeInTheDocument()
+    expect(getByText("Marinade de saumon fumé")).toBeInTheDocument()
   })
 })
