@@ -98,6 +98,8 @@ describe("the search filtration functionality works properly", () => {
   }
 
   const getContent = (text) => {
+    /* This function finds only text between tags, but it does not
+    find the text when it's not cut by tags.*/
     return (content, node) => Boolean(node.textContent === text)
   }
 
