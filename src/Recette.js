@@ -2,7 +2,12 @@ import React, {useState, useEffect} from 'react';
 import IngredientsList from "./IngredientsList"
 import './Recette.css';
 
-function Recette({recette, optionalButton, activateClick}) {
+
+Recette.defaultProps = {
+  highlight: (texte) => texte
+}
+
+function Recette({recette, optionalButton, activateClick, highlight}) {
 
   const [isRecetteOpen, setRecetteOpen] = useState()
 
@@ -21,10 +26,13 @@ function Recette({recette, optionalButton, activateClick}) {
 
   const title = () => {
     if (activateClick){
-      return <h2 className="curseurMain"onClick={handleTitleClick}> {recette.titre} {optionalButton}</h2>
+      return (
+        <h2 className="curseurMain" onClick={handleTitleClick}>
+          {highlight(recette.titre)} {optionalButton}</h2>
+      )
     }
     else {
-      return <h2> {recette.titre} {optionalButton}</h2>
+      return <h2> {highlight(recette.titre)} {optionalButton}</h2>
     }
   }
 
@@ -32,8 +40,8 @@ function Recette({recette, optionalButton, activateClick}) {
     <article className="Recette">
       {title()}
       <div className={isRecetteOpen ? null : "hidden"}>
-        <IngredientsList ingredients={recette.ingredients} />
-        <p>{recette.description}</p>
+        <IngredientsList ingredients={recette.ingredients} highlight={highlight} />
+        <p>{highlight(recette.description)}</p>
       </div>
     </article>
  );
