@@ -24,37 +24,39 @@ function RecettesToolbar({onChangeCategories, onChangeSearch}) {
 
   return (
     <fieldset className="dropdown-container">
-      <div className="inline">
-        <button className="dropdown-closed" aria-expanded="false"
-        aria-controls="panneau-depliant" onClick={handlePannelClick}>
-          Catégories
-        </button>
-        <form id="panneau-depliant" className={isPannelOpen ? null : "hidden"}>
-          <ul>
-            <li>
-              <input type="checkbox" value="Entrée" name="Entrée"
-                aria-label="Entrée" ref={registerCategories} onClick={handleCheckbox}/>
-            Entrée
-            </li>
-            <li>
-              <input type="checkbox" value="Plat" name="Plat"
-                aria-label="Plat" ref={registerCategories} onClick={handleCheckbox}/>
-              Plat
-            </li>
-            <li>
-              <input type="checkbox" value="Dessert" name="Dessert"
-                aria-label="Dessert" ref={registerCategories} onClick={handleCheckbox}/>
-              Dessert
-            </li>
-          </ul>
+      <div>
+        <div>
+          <button className={isPannelOpen ? "dropdown-open" : "dropdown-closed"}
+          aria-expanded="false" aria-controls="panneau-depliant" onClick={handlePannelClick}>
+            Catégories
+          </button>
+          <form id="panneau-depliant" className={isPannelOpen ? null : "hidden"}>
+            <ul>
+              <li>
+                <input type="checkbox" value="Entrée" name="Entrée"
+                  aria-label="Entrée" ref={registerCategories} onClick={handleCheckbox}/>
+              Entrée
+              </li>
+              <li>
+                <input type="checkbox" value="Plat" name="Plat"
+                  aria-label="Plat" ref={registerCategories} onClick={handleCheckbox}/>
+                Plat
+              </li>
+              <li>
+                <input type="checkbox" value="Dessert" name="Dessert"
+                  aria-label="Dessert" ref={registerCategories} onClick={handleCheckbox}/>
+                Dessert
+              </li>
+            </ul>
+          </form>
+        </div>
+        <form role="search" onSubmit={handleSubmitSearch(handleSearch)}
+          id="recherche">
+          <input type="search" id="maRecherche" name="q"
+          placeholder="Recherche..." spellCheck="true" size="30" ref={registerSearch}/>
+          <button data-testid="search-button"></button>
         </form>
       </div>
-      <form className="inline" role="search"
-        onSubmit={handleSubmitSearch(handleSearch)} id="recherche">
-        <input type="search" id="maRecherche" name="q"
-        placeholder="Recherche..." spellCheck="true" size="30" ref={registerSearch}/>
-        <button>Ok</button>
-      </form>
     </fieldset>
   );
 }
