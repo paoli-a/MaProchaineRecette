@@ -18,7 +18,8 @@
   padding: 0;
 }
 
-.dropdown-closed, .dropdown-open {
+.dropdown-closed,
+.dropdown-open {
   height: 25px;
   background-repeat: no-repeat;
   background-position: 95% 45%;
@@ -39,7 +40,7 @@
 }
 
 #recherche input {
-  font-family: 'Roboto','Noto',sans-serif;
+  font-family: "Roboto", "Noto", sans-serif;
   font-size: 14px;
   height: 25px;
   padding-left: 4px;
