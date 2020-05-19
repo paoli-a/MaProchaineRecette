@@ -31,7 +31,8 @@ it("removes the correct ingredient when clicking on remove button", () => {
   expect(listItems).toHaveLength(1);
 });
 
-it("adds the correct ingredient when filling the form and clicking on submit", async () => {
+it(`adds the correct ingredient when filling the form and clicking
+  on submit`, async () => {
   const { getByLabelText, getByText, getAllByRole } = render(
     <IngredientsCatalogue ingredientsPossibles={ingredientsCatalogue} />
   );
@@ -48,7 +49,8 @@ it("adds the correct ingredient when filling the form and clicking on submit", a
 });
 
 describe("the search bar functionality works properly", () => {
-  it("displays the correct ingredients when a letter is entered in the search bar", () => {
+  it(`displays the correct ingredients when a letter is entered in the
+    search bar`, () => {
     const { getByText, queryByText, getByPlaceholderText } = render(
       <IngredientsCatalogue ingredientsPossibles={ingredientsCatalogue} />
     );
