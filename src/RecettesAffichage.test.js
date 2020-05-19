@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, fireEvent, act } from '@testing-library/react';
+import { render, fireEvent, act, within } from '@testing-library/react';
 import RecettesAffichage from './RecettesAffichage';
 
 require('mutationobserver-shim');
@@ -10,7 +10,7 @@ beforeEach(() => {
   recettes = [
         {
           id : "001",
-          categorie : ["Plat"],
+          categorie : ["Plat", "Entrée"],
           titre : "Salade de pommes de terre radis",
           ingredients : {"pommes de terre" : "1 kg", "oeufs" : "3", "vinaigre non balsamique" : "1 cas", "radis": "2 bottes", "oignons bottes" : "2 cas", "yaourt grec" : "1", "mayonnaise" : "1 cas", "moutarde" : "1/2 cas", "ail" : "1 gousse"},
           temps : "35 min",
@@ -48,6 +48,34 @@ it('renders title element of all the recipes', () => {
 });
 
 describe("the category filtration functionality works properly", () => {
+  it('renders only the categories present in the possible recipes', () => {
+   const {getByText, rerender } = render(<RecettesAffichage recettes={recettes}/>);
+   const plat = getByText("Plat");
+   const entrée = getByText("Entrée")
+   const dessert = getByText("Dessert")
+   expect(plat).toBeInTheDocument();
+   expect(entrée).toBeInTheDocument();
+   expect(dessert).toBeInTheDocument();
+   recettes.splice(0, 1)
+   rerender(<RecettesAffichage recettes={recettes}/>);
+   expect(plat).not.toBeInTheDocument();
+   expect(entrée).toBeInTheDocument();
+   expect(dessert).toBeInTheDocument();
+ })
+
+   it('renders the right numbers of each possible categories', () => {
+    const {getByText } = render(<RecettesAffichage recettes={recettes}/>);
+    const plat = getByText("Plat");
+    const entree = getByText("Entrée");
+    const dessert = getByText("Dessert");
+    const nombrePlat = within(plat).getByText("1");
+    const nombreEntree = within(entree).getByText("2");
+    const nombreDessert = within(dessert).getByText("1");
+    expect(nombrePlat.textContent).toEqual("1")
+    expect(nombreEntree.textContent).toEqual("2")
+    expect(nombreDessert.textContent).toEqual("1")
+  })
+
   it('renders only the recipes with the category selected', () => {
     const { getByText, getByLabelText, queryByText } = render(<RecettesAffichage recettes={recettes}/>);
     const plat = getByLabelText("Plat");
@@ -62,15 +90,15 @@ describe("the category filtration functionality works properly", () => {
 
   it('renders only the recipes with the two categories selected', () => {
     const { getByText, getByLabelText, queryByText } = render(<RecettesAffichage recettes={recettes}/>);
-    const entree = getByLabelText("Entrée");
+    const plat = getByLabelText("Plat");
     const dessert = getByLabelText("Dessert");
-    fireEvent.click(entree);
+    fireEvent.click(plat);
     fireEvent.click(dessert);
-    const titreRecette1 = queryByText("Salade de pommes de terre radis");
-    const titreRecette2 = getByText("Marinade de saumon fumé");
+    const titreRecette1 = getByText("Salade de pommes de terre radis");
+    const titreRecette2 = queryByText("Marinade de saumon fumé");
     const titreRecette3 = getByText("Crumble aux poires");
-    expect(titreRecette1).not.toBeInTheDocument();
-    expect(titreRecette2).toBeInTheDocument();
+    expect(titreRecette1).toBeInTheDocument();
+    expect(titreRecette2).not.toBeInTheDocument();
     expect(titreRecette3).toBeInTheDocument();
   })
 

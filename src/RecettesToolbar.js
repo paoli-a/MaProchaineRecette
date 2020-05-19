@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import './RecettesToolbar.css';
 import { useForm } from 'react-hook-form';
 
-function RecettesToolbar({onChangeCategories, onChangeSearch}) {
+function RecettesToolbar({onChangeCategories, onChangeSearch, categories}) {
 
   const { register: registerCategories, getValues: getCategoriesValues } = useForm()
   const {register: registerSearch, handleSubmit: handleSubmitSearch} = useForm()
@@ -22,6 +22,18 @@ function RecettesToolbar({onChangeCategories, onChangeSearch}) {
     onChangeSearch(search)
   }
 
+  const categoriesKeys = Object.keys(categories)
+  const categoriesCheckbox = categoriesKeys.map((categorie) => {
+    return (
+      <li key={categorie}>
+        <input type="checkbox" value={categorie} name={categorie}
+          aria-label={categorie} ref={registerCategories} onClick={handleCheckbox}/>
+        {categorie}
+        <span>{categories[categorie]}</span>
+    </li>
+  )
+})
+
   return (
     <fieldset className="dropdown-container">
       <div>
@@ -32,21 +44,7 @@ function RecettesToolbar({onChangeCategories, onChangeSearch}) {
           </button>
           <form id="panneau-depliant" className={isPannelOpen ? null : "hidden"}>
             <ul>
-              <li>
-                <input type="checkbox" value="Entrée" name="Entrée"
-                  aria-label="Entrée" ref={registerCategories} onClick={handleCheckbox}/>
-              Entrée
-              </li>
-              <li>
-                <input type="checkbox" value="Plat" name="Plat"
-                  aria-label="Plat" ref={registerCategories} onClick={handleCheckbox}/>
-                Plat
-              </li>
-              <li>
-                <input type="checkbox" value="Dessert" name="Dessert"
-                  aria-label="Dessert" ref={registerCategories} onClick={handleCheckbox}/>
-                Dessert
-              </li>
+            {categoriesCheckbox}
             </ul>
           </form>
         </div>

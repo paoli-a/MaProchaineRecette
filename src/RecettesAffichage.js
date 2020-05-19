@@ -11,6 +11,20 @@ function RecettesAffichage({recettes}) {
   const [searchResults, setSearchResults] = useState("");
   const titrePage = "Recettes"
 
+  const categoriesPossibles = () => {
+    const categories = {}
+    for (let recette of recettes) {
+      for (let categorie of recette.categorie)
+        if (categorie in categories) {
+          categories[categorie] += 1
+        }
+        else {
+          categories[categorie] = 1
+        }
+    }
+    return categories
+  }
+
   const searchedWords = useMemo(() => {
     const removePunctuation = (results) => {
       const punctuationRegex = /[…~`!@#$%^&*(){}[\];:"'<,.>?/\\|_+=-]/g
@@ -120,7 +134,8 @@ function RecettesAffichage({recettes}) {
       <div>
         <h1>{titrePage}</h1>
         <RecettesToolbar onChangeCategories={handleChangeCategories}
-          onChangeSearch={handleChangeSearch}/>
+          onChangeSearch={handleChangeSearch}
+          categories={categoriesPossibles()}/>
         <div id="RecettesAffichage">
           {recettesAffichees}
         </div>
