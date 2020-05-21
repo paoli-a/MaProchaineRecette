@@ -17,7 +17,10 @@ function MaProchaineRecette({
         ingredientsPossibles={ingredientsCatalogue}
       />
       <RecettesAffichage recettes={recettes} />
-      <IngredientsFrigo ingredients={ingredientsFrigo} />
+      <IngredientsFrigo
+        ingredients={ingredientsFrigo}
+        ingredientsPossibles={ingredientsCatalogue}
+      />
     </div>
   );
 }

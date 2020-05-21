@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import IngredientsFrigoForm from "./IngredientsFrigoForm";
 
-function IngredientsFrigo({ ingredients }) {
+function IngredientsFrigo({ ingredients, ingredientsPossibles }) {
   const [ingredientsList, setIngredient] = useState(ingredients);
 
   const handleSupprClick = (id) => {
@@ -47,7 +47,10 @@ function IngredientsFrigo({ ingredients }) {
   return (
     <div>
       <h1> Voici les ingrédients du frigo !</h1>
-      <IngredientsFrigoForm onSubmit={handleSubmit} />
+      <IngredientsFrigoForm
+        onSubmit={handleSubmit}
+        ingredientsPossibles={ingredientsPossibles}
+      />
       <ul>{ingredientElement}</ul>
     </div>
   );

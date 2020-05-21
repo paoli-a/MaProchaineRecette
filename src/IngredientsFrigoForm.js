@@ -1,10 +1,55 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import InputSuggestions from "./InputSuggestions";
 
-function IngredientsFrigoForm({ onSubmit }) {
-  const { register, handleSubmit, errors, reset, getValues } = useForm();
+function IngredientsFrigoForm({ onSubmit, ingredientsPossibles }) {
+  const {
+    register,
+    handleSubmit,
+    errors,
+    reset,
+    getValues,
+    watch,
+    setValue,
+    setError,
+  } = useForm({ defaultValues: { nomIngredient: "" } });
+  const { nomIngredient } = watch();
+
+  const validateNomIngredient = () => {
+    const nom = getValues().nomIngredient;
+    let authorized = false;
+    for (const ingredientPossible of ingredientsPossibles) {
+      if (ingredientPossible.nom === nom) {
+        authorized = true;
+        break;
+      }
+    }
+    if (!authorized) {
+      return (
+        <React.Fragment>
+          Cet ingrédient n'existe pas dans le catalogue d'ingrédients. Vous
+          pouvez l'y ajouter <a href="/#">ici</a>.
+        </React.Fragment>
+      );
+    } else {
+      return undefined;
+    }
+  };
+
+  useEffect(() => {
+    register({ name: "nomIngredient" });
+  }, [register]);
+
+  const handleNomIngredient = (value) => {
+    setValue("nomIngredient", value);
+  };
 
   const onSubmitWrapper = (data) => {
+    const ingredientError = validateNomIngredient();
+    if (ingredientError) {
+      setError("nomIngredient", "notMatch", ingredientError);
+      return;
+    }
     onSubmit(data);
     reset();
   };
@@ -30,15 +75,17 @@ function IngredientsFrigoForm({ onSubmit }) {
       <fieldset>
         <legend>Ajouter un ingredient frigo</legend>
         <div>
-          <label htmlFor="nomIngredient"> Nom de l'ingrédient : </label>
-          <input
-            type="text"
-            name="nomIngredient"
+          <label htmlFor="nomIngredient">Nom de l'ingrédient : </label>
+          <InputSuggestions
+            elements={ingredientsPossibles}
             id="nomIngredient"
-            defaultValue=""
-            ref={register({ required: true })}
+            getElementText={(ingredient) => ingredient.nom}
+            onChangeValue={handleNomIngredient}
+            value={nomIngredient}
+            name="ingredient"
+            type="text"
           />
-          {errors.nomIngredient && <span>Ce champ est obligatoire</span>}
+          {errors.nomIngredient && errors.nomIngredient.message}
         </div>
         <div>
           <label htmlFor="quantiteIngredient">Quantité : </label>

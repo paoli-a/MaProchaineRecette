@@ -4,9 +4,29 @@ import IngredientsFrigo from "./IngredientsFrigo";
 
 require("mutationobserver-shim");
 
+let ingredientsCatalogue;
 let ingredientsFrigo;
 
 beforeEach(() => {
+  ingredientsCatalogue = [
+    {
+      id: 10,
+      nom: "Fraises",
+    },
+    {
+      id: 11,
+      nom: "Poires",
+    },
+    {
+      id: 12,
+      nom: "Framboises",
+    },
+    {
+      id: 13,
+      nom: "Carottes",
+    },
+  ];
+
   ingredientsFrigo = [
     {
       id: 1,
@@ -26,7 +46,10 @@ beforeEach(() => {
 describe("correct display of an ingredient", () => {
   it("renders names of ingredients", () => {
     const { getByText } = render(
-      <IngredientsFrigo ingredients={ingredientsFrigo} />
+      <IngredientsFrigo
+        ingredients={ingredientsFrigo}
+        ingredientsPossibles={ingredientsCatalogue}
+      />
     );
     const ingredient1 = getByText("épinard", { exact: false });
     expect(ingredient1).toBeInTheDocument();
@@ -34,7 +57,10 @@ describe("correct display of an ingredient", () => {
 
   it("renders expiration dates of ingredients", () => {
     const { getByText } = render(
-      <IngredientsFrigo ingredients={ingredientsFrigo} />
+      <IngredientsFrigo
+        ingredients={ingredientsFrigo}
+        ingredientsPossibles={ingredientsCatalogue}
+      />
     );
     const ingredient2 = getByText("céleri rave", { exact: false });
     const expectedDate = ingredientsFrigo[1].datePeremption.toLocaleDateString();
@@ -43,7 +69,10 @@ describe("correct display of an ingredient", () => {
 
   it("renders quantities of ingredients", () => {
     const { getByText } = render(
-      <IngredientsFrigo ingredients={ingredientsFrigo} />
+      <IngredientsFrigo
+        ingredients={ingredientsFrigo}
+        ingredientsPossibles={ingredientsCatalogue}
+      />
     );
     const ingredient1 = getByText("épinard", { exact: false });
     expect(ingredient1.textContent).toContain("60g");
@@ -51,7 +80,10 @@ describe("correct display of an ingredient", () => {
 
   it("renders the right number of ingredients", () => {
     const { getAllByRole } = render(
-      <IngredientsFrigo ingredients={ingredientsFrigo} />
+      <IngredientsFrigo
+        ingredients={ingredientsFrigo}
+        ingredientsPossibles={ingredientsCatalogue}
+      />
     );
     const listItems = getAllByRole("listitem");
     expect(listItems).toHaveLength(2);
@@ -61,7 +93,10 @@ describe("correct display of an ingredient", () => {
 describe("functionalities work properly", () => {
   it("removes the correct ingredient when clicking on remove button", () => {
     const { getByText, getAllByRole } = render(
-      <IngredientsFrigo ingredients={ingredientsFrigo} />
+      <IngredientsFrigo
+        ingredients={ingredientsFrigo}
+        ingredientsPossibles={ingredientsCatalogue}
+      />
     );
     const ingredient = getByText("épinard", { exact: false });
     const button = within(ingredient).getByText("Supprimer");
@@ -73,15 +108,14 @@ describe("functionalities work properly", () => {
 
   it("adds the correct ingredient when filling the form and clicking on submit", async () => {
     const { getByLabelText, getByText, getAllByRole } = render(
-      <IngredientsFrigo ingredients={ingredientsFrigo} />
+      <IngredientsFrigo
+        ingredients={ingredientsFrigo}
+        ingredientsPossibles={ingredientsCatalogue}
+      />
     );
-    await addIngredient(getByLabelText, getByText, [
-      "carotte",
-      1,
-      "2100-04-03",
-      "kg",
-    ]);
-    const ingredient = getByText("carotte", { exact: false });
+    const values = ["Carottes", 1, "2100-04-03", "kg"];
+    await addIngredient(getByLabelText, getByText, values);
+    const ingredient = getByText("Carottes", { exact: false });
     const listItems = getAllByRole("listitem");
     const expectedDate = new Date("2100-04-03");
     expect(listItems).toHaveLength(3);
@@ -103,7 +137,10 @@ describe("functionalities work properly", () => {
 
   async function checkMissingInput(inputName) {
     const { getByLabelText, getByText, queryByText } = render(
-      <IngredientsFrigo ingredients={ingredientsFrigo} />
+      <IngredientsFrigo
+        ingredients={ingredientsFrigo}
+        ingredientsPossibles={ingredientsCatalogue}
+      />
     );
     await addIngredient(
       getByLabelText,
@@ -117,7 +154,10 @@ describe("functionalities work properly", () => {
 
   it(`does not add the ingredient if no name was provided`, async () => {
     const { getByLabelText, getByText, queryByText } = render(
-      <IngredientsFrigo ingredients={ingredientsFrigo} />
+      <IngredientsFrigo
+        ingredients={ingredientsFrigo}
+        ingredientsPossibles={ingredientsCatalogue}
+      />
     );
     await addIngredient(
       getByLabelText,
@@ -131,14 +171,13 @@ describe("functionalities work properly", () => {
 
   it(`does not add the ingredient if quantity is negative or null`, async () => {
     const { getByLabelText, getByText, queryByText } = render(
-      <IngredientsFrigo ingredients={ingredientsFrigo} />
+      <IngredientsFrigo
+        ingredients={ingredientsFrigo}
+        ingredientsPossibles={ingredientsCatalogue}
+      />
     );
-    await addIngredient(getByLabelText, getByText, [
-      "kiwi",
-      -1,
-      "2100-04-03",
-      "kg",
-    ]);
+    const values = ["kiwi", -1, "2100-04-03", "kg"];
+    await addIngredient(getByLabelText, getByText, values);
     let kiwi = queryByText(/kiwi/);
     expect(kiwi).not.toBeInTheDocument();
     addIngredient(getByLabelText, getByText, ["kiwi", 0, "2100-04-03", "g"]);
@@ -148,16 +187,44 @@ describe("functionalities work properly", () => {
 
   it(`does not add the ingredient if the given date is older than the current date`, async () => {
     const { getByLabelText, getByText, queryByText } = render(
-      <IngredientsFrigo ingredients={ingredientsFrigo} />
+      <IngredientsFrigo
+        ingredients={ingredientsFrigo}
+        ingredientsPossibles={ingredientsCatalogue}
+      />
     );
-    await addIngredient(getByLabelText, getByText, [
-      "kiwi",
-      5,
-      "2019-04-03",
-      "g",
-    ]);
+    const values = ["kiwi", 5, "2019-04-03", "g"];
+    await addIngredient(getByLabelText, getByText, values);
     let kiwi = queryByText(/kiwi/);
     expect(kiwi).not.toBeInTheDocument();
+  });
+
+  it(`does not add the ingredient if the ingredient is not in ingredientsCatalogue`, () => {
+    const { getByLabelText, getByText, queryByText } = render(
+      <IngredientsFrigo
+        ingredients={ingredientsFrigo}
+        ingredientsPossibles={ingredientsCatalogue}
+      />
+    );
+    addIngredient(getByLabelText, getByText, ["Poireaux", 50, "g"]);
+    const poireaux = queryByText(/Poireaux : /);
+    expect(poireaux).not.toBeInTheDocument();
+  });
+
+  it(`provides the right proposals when a letter is entered in the input of the ingredient name`, () => {
+    const { getByLabelText, getAllByTestId } = render(
+      <IngredientsFrigo
+        ingredients={ingredientsFrigo}
+        ingredientsPossibles={ingredientsCatalogue}
+      />
+    );
+    const inputIngredientName = getByLabelText("Nom de l'ingrédient :");
+    fireEvent.change(inputIngredientName, { target: { value: "f" } });
+    const options = getAllByTestId("suggestions");
+    let fraises = options[0];
+    let framboises = options[1];
+    expect(options).toHaveLength(2);
+    expect(fraises.value).toEqual("Fraises");
+    expect(framboises.value).toEqual("Framboises");
   });
 
   async function addIngredient(
