@@ -12,7 +12,10 @@ function MaProchaineRecette({
   return (
     <div>
       <IngredientsCatalogue ingredientsPossibles={ingredientsCatalogue} />
-      <RecettesCatalogue totalRecettes={recettes} />
+      <RecettesCatalogue
+        totalRecettes={recettes}
+        ingredientsPossibles={ingredientsCatalogue}
+      />
       <RecettesAffichage recettes={recettes} />
       <IngredientsFrigo ingredients={ingredientsFrigo} />
     </div>

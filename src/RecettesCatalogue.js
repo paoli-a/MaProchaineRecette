@@ -3,7 +3,7 @@ import RecettesForm from "./RecettesForm";
 import Recette from "./Recette";
 import useFilterSearch from "./useFilterSearch";
 
-function RecettesCatalogue({ totalRecettes }) {
+function RecettesCatalogue({ totalRecettes, ingredientsPossibles }) {
   const [recettesList, setRecettes] = useState(totalRecettes);
   const [searchResults, setSearchResults] = useState("");
 
@@ -76,7 +76,10 @@ function RecettesCatalogue({ totalRecettes }) {
           onChange={handleChangeSearch}
         />
       </form>
-      <RecettesForm onSubmitRecette={handleSubmit} />
+      <RecettesForm
+        onSubmitRecette={handleSubmit}
+        ingredientsPossibles={ingredientsPossibles}
+      />
       {toutesMesRecettes}
     </div>
   );

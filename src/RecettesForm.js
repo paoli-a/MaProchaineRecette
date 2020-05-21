@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import InputSuggestions from "./InputSuggestions";
 
-function RecettesForm({ onSubmitRecette }) {
+function RecettesForm({ onSubmitRecette, ingredientsPossibles }) {
   const { register, handleSubmit, errors, reset, watch, getValues } = useForm();
   const [ingredients, setIngredients] = useState([]);
-  const [ingredient, setIngredient] = useState("");
+  const [ingredientNom, setIngredientNom] = useState([]);
   const [ingredientQuantite, setIngredientQuantite] = useState("");
   const [ingredientUnite, setIngredientUnite] = useState("");
   const [ingredientError, setIngredientError] = useState("");
@@ -24,20 +25,34 @@ function RecettesForm({ onSubmitRecette }) {
   };
 
   const resetIngredient = () => {
-    setIngredient("");
+    setIngredientNom("");
     setIngredientQuantite("");
     setIngredientUnite("");
     setIngredientError("");
   };
 
+  class UnauthorizedIngredient extends Error {}
+
   const validateNewIngredient = () => {
-    if (!ingredient || !ingredientQuantite || !ingredientUnite) {
+    if (!ingredientNom || !ingredientQuantite || !ingredientUnite) {
       throw new Error(
         "Tous les champs concernant l'ingrédient doivent être remplis"
       );
     }
+    let authorized = false;
+    for (const ingredientPossible of ingredientsPossibles) {
+      if (ingredientPossible.nom === ingredientNom) {
+        authorized = true;
+        break;
+      }
+    }
+    if (!authorized) {
+      throw new UnauthorizedIngredient(
+        "Cet ingrédient n'existe pas dans le catalogue d'ingrédients. Vous pouvez l'y ajouter "
+      );
+    }
     for (let ingredientExistant of ingredients) {
-      if (ingredientExistant.nom === ingredient) {
+      if (ingredientExistant.nom === ingredientNom) {
         throw new Error("Cet ingrédient a déjà été ajouté");
       }
     }
@@ -52,14 +67,24 @@ function RecettesForm({ onSubmitRecette }) {
       validateNewIngredient();
       const newIngredients = ingredients.slice();
       newIngredients.push({
-        nom: ingredient,
+        nom: ingredientNom,
         quantite: ingredientQuantite,
         unite: ingredientUnite,
       });
       setIngredients(newIngredients);
       resetIngredient();
     } catch (error) {
-      setIngredientError(error.message);
+      if (error instanceof UnauthorizedIngredient) {
+        const message = (
+          <React.Fragment>
+            {error.message}
+            <a href="/#">ici</a>.
+          </React.Fragment>
+        );
+        setIngredientError(message);
+      } else {
+        setIngredientError(error.message);
+      }
     }
   };
 
@@ -160,12 +185,14 @@ function RecettesForm({ onSubmitRecette }) {
         <fieldset>
           <legend> Ingrédients : </legend>
           <label htmlFor="ingredient"> Nom : </label>
-          <input
-            type="text"
-            name="ingredient"
+          <InputSuggestions
+            elements={ingredientsPossibles}
             id="ingredient"
-            onChange={(e) => setIngredient(e.target.value)}
-            value={ingredient}
+            getElementText={(ingredient) => ingredient.nom}
+            onChangeValue={(nom) => setIngredientNom(nom)}
+            value={ingredientNom}
+            name="ingredient"
+            type="text"
           />
           <label htmlFor="ingredientQuantite"> Quantité nécessaire : </label>
           <input
