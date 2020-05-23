@@ -1,5 +1,5 @@
 import React from "react";
-import { render, fireEvent, act } from "@testing-library/react";
+import { render, fireEvent, act, within } from "@testing-library/react";
 import MaProchaineRecette from "./MaProchaineRecette";
 
 require("mutationobserver-shim");
@@ -52,28 +52,66 @@ beforeEach(() => {
   ];
 });
 
-it("renders recipes", () => {
-  const { queryAllByText } = render(
+it("renders only next recipes and fridge ingredients at start", () => {
+  const { getByText, queryByText } = render(
     <MaProchaineRecette
       recettes={recettes}
       ingredientsFrigo={ingredientsFrigo}
       ingredientsCatalogue={ingredientsCatalogue}
     />
   );
-  const titreRecette = queryAllByText("Salade de pommes de terre radis");
-  expect(titreRecette).not.toHaveLength(0);
+  const prochainesRecettes = getByText("Mes prochaines recettes");
+  const frigo = getByText("Voici les ingrédients du frigo !");
+  const toutesMesRecettes = queryByText("Catalogue de toutes mes recettes");
+  const tousMesIngredients = queryByText("Catalogue de tous mes ingrédients");
+  expect(prochainesRecettes).toBeInTheDocument();
+  expect(frigo).toBeInTheDocument();
+  expect(toutesMesRecettes).not.toBeInTheDocument();
+  expect(tousMesIngredients).not.toBeInTheDocument();
 });
 
-it("renders fridge ingredients", () => {
-  const { getByText } = render(
+const navigateTo = (linkText, getByRole) => {
+  const nav = getByRole("navigation");
+  const navElement = within(nav).getByText(linkText);
+  fireEvent.click(navElement);
+};
+
+it("renders only ingredients of the catalog when click on that nav link", () => {
+  const { getByRole, queryByText, getByText } = render(
     <MaProchaineRecette
       recettes={recettes}
       ingredientsFrigo={ingredientsFrigo}
       ingredientsCatalogue={ingredientsCatalogue}
     />
   );
-  const ingredientName = getByText("épinard", { exact: false });
-  expect(ingredientName).toBeInTheDocument();
+  navigateTo("Catalogue des ingrédients", getByRole);
+  const prochainesRecettes = queryByText("Mes prochaines recettes");
+  const frigo = queryByText("Voici les ingrédients du frigo !");
+  const toutesMesRecettes = queryByText("Catalogue de toutes mes recettes");
+  const tousMesIngredients = getByText("Catalogue de tous mes ingrédients");
+  expect(prochainesRecettes).not.toBeInTheDocument();
+  expect(frigo).not.toBeInTheDocument();
+  expect(toutesMesRecettes).not.toBeInTheDocument();
+  expect(tousMesIngredients).toBeInTheDocument();
+});
+
+it("renders only ingredients of the catalog when click on that nav link", () => {
+  const { getByRole, queryByText, getByText } = render(
+    <MaProchaineRecette
+      recettes={recettes}
+      ingredientsFrigo={ingredientsFrigo}
+      ingredientsCatalogue={ingredientsCatalogue}
+    />
+  );
+  navigateTo("Catalogue des recettes", getByRole);
+  const prochainesRecettes = queryByText("Mes prochaines recettes");
+  const frigo = queryByText("Voici les ingrédients du frigo !");
+  const toutesMesRecettes = getByText("Catalogue de toutes mes recettes");
+  const tousMesIngredients = queryByText("Catalogue de tous mes ingrédients");
+  expect(prochainesRecettes).not.toBeInTheDocument();
+  expect(frigo).not.toBeInTheDocument();
+  expect(toutesMesRecettes).toBeInTheDocument();
+  expect(tousMesIngredients).not.toBeInTheDocument();
 });
 
 it(`takes into account newly entered ingredient in ingredientsCatalogue by giving suggestions when an ingredient name is being entered in IngredientsFrigo`, async () => {
@@ -85,7 +123,8 @@ it(`takes into account newly entered ingredient in ingredientsCatalogue by givin
     />
   );
   await addIngredientCatalogue(maProchaineRecette, "Navets");
-  const { getByLabelText, getByTestId } = maProchaineRecette;
+  const { getByLabelText, getByTestId, getByRole } = maProchaineRecette;
+  navigateTo("Ma prochaine recette", getByRole);
   const inputNomFrigo = getByLabelText("Nom de l'ingrédient :");
   fireEvent.change(inputNomFrigo, { target: { value: "Nav" } });
   const navets = getByTestId("suggestions");
@@ -101,7 +140,8 @@ it(`takes into account newly entered ingredient in ingredientsCatalogue by givin
     />
   );
   await addIngredientCatalogue(maProchaineRecette, "Coriandre");
-  const { getByLabelText, getByTestId } = maProchaineRecette;
+  const { getByLabelText, getByTestId, getByRole } = maProchaineRecette;
+  navigateTo("Catalogue des recettes", getByRole);
   const inputNomRecettesCatalogue = getByLabelText("Nom :");
   fireEvent.change(inputNomRecettesCatalogue, { target: { value: "Cor" } });
   const coriandre = getByTestId("suggestions");
@@ -109,7 +149,8 @@ it(`takes into account newly entered ingredient in ingredientsCatalogue by givin
 });
 
 async function addIngredientCatalogue(maProchaineRecette, nom) {
-  const { getByLabelText, getByText } = maProchaineRecette;
+  const { getByLabelText, getByText, getByRole } = maProchaineRecette;
+  navigateTo("Catalogue des ingrédients", getByRole);
   const inputNomCatalogue = getByLabelText("Nom de l'ingrédient à ajouter :");
   const submitButtonCatalogue = getByText("Envoyer");
   fireEvent.change(inputNomCatalogue, { target: { value: nom } });

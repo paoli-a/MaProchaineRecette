@@ -7,7 +7,6 @@ import Highlighter from "react-highlight-words";
 function RecettesAffichage({ recettes }) {
   const [categories, setCategories] = useState([]);
   const [searchResults, setSearchResults] = useState("");
-  const titrePage = "Recettes";
 
   const categoriesPossibles = () => {
     const categories = {};
@@ -130,7 +129,7 @@ function RecettesAffichage({ recettes }) {
 
   return (
     <div>
-      <h1>{titrePage}</h1>
+      <h1>Mes prochaines recettes</h1>
       <RecettesToolbar
         onChangeCategories={handleChangeCategories}
         onChangeSearch={handleChangeSearch}

@@ -46,7 +46,7 @@ function IngredientsFrigo({ ingredients, ingredientsPossibles }) {
 
   return (
     <div>
-      <h1> Voici les ingrédients du frigo !</h1>
+      <h1>Voici les ingrédients du frigo !</h1>
       <IngredientsFrigoForm
         onSubmit={handleSubmit}
         ingredientsPossibles={ingredientsPossibles}

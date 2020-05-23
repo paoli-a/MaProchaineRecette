@@ -48,7 +48,7 @@ function IngredientsCatalogue({
 
   return (
     <div>
-      <h1> Catalogue des ingrédients</h1>
+      <h1>Catalogue de tous mes ingrédients</h1>
       <form>
         <input
           type="search"
