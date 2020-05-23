@@ -19,13 +19,30 @@ beforeEach(() => {
   ];
 });
 
+const handleIngredientsPossibles = (ingredients) => {
+  ingredientsCatalogue = ingredients;
+};
+
+const rerenderCatalogue = (rerender) => {
+  rerender(
+    <IngredientsCatalogue
+      ingredientsPossibles={ingredientsCatalogue}
+      updateIngredientsPossibles={handleIngredientsPossibles}
+    />
+  );
+};
+
 it("removes the correct ingredient when clicking on remove button", () => {
-  const { getByText, getAllByRole } = render(
-    <IngredientsCatalogue ingredientsPossibles={ingredientsCatalogue} />
+  const { getByText, getAllByRole, rerender } = render(
+    <IngredientsCatalogue
+      ingredientsPossibles={ingredientsCatalogue}
+      updateIngredientsPossibles={handleIngredientsPossibles}
+    />
   );
   const ingredient = getByText("Fraises", { exact: false });
   const button = within(ingredient).getByText("X");
   fireEvent.click(button);
+  rerenderCatalogue(rerender);
   const listItems = getAllByRole("listitem");
   expect(ingredient).not.toBeInTheDocument();
   expect(listItems).toHaveLength(1);
@@ -33,8 +50,11 @@ it("removes the correct ingredient when clicking on remove button", () => {
 
 it(`adds the correct ingredient when filling the form and clicking
   on submit`, async () => {
-  const { getByLabelText, getByText, getAllByRole } = render(
-    <IngredientsCatalogue ingredientsPossibles={ingredientsCatalogue} />
+  const { getByLabelText, getByText, getAllByRole, rerender } = render(
+    <IngredientsCatalogue
+      ingredientsPossibles={ingredientsCatalogue}
+      updateIngredientsPossibles={handleIngredientsPossibles}
+    />
   );
   const inputNom = getByLabelText("Nom de l'ingrédient à ajouter :");
   const submitButton = getByText("Envoyer");
@@ -42,6 +62,7 @@ it(`adds the correct ingredient when filling the form and clicking
   await act(async () => {
     fireEvent.click(submitButton);
   });
+  rerenderCatalogue(rerender);
   const ingredient = getByText("Chocolat", { exact: false });
   const listItems = getAllByRole("listitem");
   expect(listItems).toHaveLength(3);
@@ -52,7 +73,10 @@ describe("the search bar functionality works properly", () => {
   it(`displays the correct ingredients when a letter is entered in the
     search bar`, () => {
     const { getByText, queryByText, getByPlaceholderText } = render(
-      <IngredientsCatalogue ingredientsPossibles={ingredientsCatalogue} />
+      <IngredientsCatalogue
+        ingredientsPossibles={ingredientsCatalogue}
+        updateIngredientsPossibles={handleIngredientsPossibles}
+      />
     );
     const searchBar = getByPlaceholderText("Recherche...");
     fireEvent.change(searchBar, { target: { value: "M" } });
@@ -65,7 +89,10 @@ describe("the search bar functionality works properly", () => {
 
   it("redisplays all the ingredient of the catalog after a search", () => {
     const { getByText, queryByText, getByPlaceholderText } = render(
-      <IngredientsCatalogue ingredientsPossibles={ingredientsCatalogue} />
+      <IngredientsCatalogue
+        ingredientsPossibles={ingredientsCatalogue}
+        updateIngredientsPossibles={handleIngredientsPossibles}
+      />
     );
     const searchBar = getByPlaceholderText("Recherche...");
     fireEvent.change(searchBar, { target: { value: "fr" } });

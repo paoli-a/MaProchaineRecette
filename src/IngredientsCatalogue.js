@@ -2,29 +2,29 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import useFilterSearch from "./useFilterSearch";
 
-function IngredientsCatalogue({ ingredientsPossibles }) {
+function IngredientsCatalogue({
+  ingredientsPossibles,
+  updateIngredientsPossibles,
+}) {
   const { register, handleSubmit, errors, reset } = useForm();
-  const [ingredientsCatalogue, setIngredientsCatalogue] = useState(
-    ingredientsPossibles
-  );
   const [searchResults, setSearchResults] = useState("");
 
   const onSubmitWrapper = (data) => {
     const id = new Date().getTime();
     const ingredientNouveau = { id: id, nom: data.ingredientNom };
-    const ingredientsListUpdated = ingredientsCatalogue.slice();
+    const ingredientsListUpdated = ingredientsPossibles.slice();
     ingredientsListUpdated.push(ingredientNouveau);
-    setIngredientsCatalogue(ingredientsListUpdated);
+    updateIngredientsPossibles(ingredientsListUpdated);
     reset();
   };
 
   const handleSupprClick = (id) => {
-    const ingredientsListUpdated = ingredientsCatalogue.slice();
+    const ingredientsListUpdated = ingredientsPossibles.slice();
     const index = ingredientsListUpdated.findIndex((ingredient) => {
       return ingredient.id === id;
     });
     ingredientsListUpdated.splice(index, 1);
-    setIngredientsCatalogue(ingredientsListUpdated);
+    updateIngredientsPossibles(ingredientsListUpdated);
   };
 
   const handleChangeSearch = (event) => {
@@ -32,7 +32,7 @@ function IngredientsCatalogue({ ingredientsPossibles }) {
   };
 
   const ingredientsFiltres = useFilterSearch({
-    elementsToFilter: ingredientsCatalogue,
+    elementsToFilter: ingredientsPossibles,
     searchResults: searchResults,
     getSearchElement: (ingredient) => ingredient.nom,
   });

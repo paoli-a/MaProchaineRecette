@@ -1,5 +1,5 @@
 import React from "react";
-import { render } from "@testing-library/react";
+import { render, fireEvent, act } from "@testing-library/react";
 import MaProchaineRecette from "./MaProchaineRecette";
 
 require("mutationobserver-shim");
@@ -52,28 +52,68 @@ beforeEach(() => {
   ];
 });
 
-test("renders recipes", () => {
+it("renders recipes", () => {
   const { queryAllByText } = render(
     <MaProchaineRecette
       recettes={recettes}
       ingredientsFrigo={ingredientsFrigo}
       ingredientsCatalogue={ingredientsCatalogue}
-      totalRecettes={recettes}
     />
   );
   const titreRecette = queryAllByText("Salade de pommes de terre radis");
   expect(titreRecette).not.toHaveLength(0);
 });
 
-test("renders fridge ingredients", () => {
+it("renders fridge ingredients", () => {
   const { getByText } = render(
     <MaProchaineRecette
       recettes={recettes}
       ingredientsFrigo={ingredientsFrigo}
       ingredientsCatalogue={ingredientsCatalogue}
-      totalRecettes={recettes}
     />
   );
   const ingredientName = getByText("épinard", { exact: false });
   expect(ingredientName).toBeInTheDocument();
 });
+
+it(`takes into account newly entered ingredient in ingredientsCatalogue by giving suggestions when an ingredient name is being entered in IngredientsFrigo`, async () => {
+  const maProchaineRecette = render(
+    <MaProchaineRecette
+      recettes={recettes}
+      ingredientsFrigo={ingredientsFrigo}
+      ingredientsCatalogue={ingredientsCatalogue}
+    />
+  );
+  await addIngredientCatalogue(maProchaineRecette, "Navets");
+  const { getByLabelText, getByTestId } = maProchaineRecette;
+  const inputNomFrigo = getByLabelText("Nom de l'ingrédient :");
+  fireEvent.change(inputNomFrigo, { target: { value: "Nav" } });
+  const navets = getByTestId("suggestions");
+  expect(navets.value).toEqual("Navets");
+});
+
+it(`takes into account newly entered ingredient in ingredientsCatalogue by giving suggestions when an ingredient name is being entered in RecettesCatalogue`, async () => {
+  const maProchaineRecette = render(
+    <MaProchaineRecette
+      recettes={recettes}
+      ingredientsFrigo={ingredientsFrigo}
+      ingredientsCatalogue={ingredientsCatalogue}
+    />
+  );
+  await addIngredientCatalogue(maProchaineRecette, "Coriandre");
+  const { getByLabelText, getByTestId } = maProchaineRecette;
+  const inputNomRecettesCatalogue = getByLabelText("Nom :");
+  fireEvent.change(inputNomRecettesCatalogue, { target: { value: "Cor" } });
+  const coriandre = getByTestId("suggestions");
+  expect(coriandre.value).toEqual("Coriandre");
+});
+
+async function addIngredientCatalogue(maProchaineRecette, nom) {
+  const { getByLabelText, getByText } = maProchaineRecette;
+  const inputNomCatalogue = getByLabelText("Nom de l'ingrédient à ajouter :");
+  const submitButtonCatalogue = getByText("Envoyer");
+  fireEvent.change(inputNomCatalogue, { target: { value: nom } });
+  await act(async () => {
+    fireEvent.click(submitButtonCatalogue);
+  });
+}

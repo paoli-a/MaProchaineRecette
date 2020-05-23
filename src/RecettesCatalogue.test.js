@@ -5,8 +5,28 @@ import RecettesCatalogue from "./RecettesCatalogue";
 require("mutationobserver-shim");
 
 let recettes;
+let ingredientsCatalogue;
 
 beforeEach(() => {
+  ingredientsCatalogue = [
+    {
+      id: 10,
+      nom: "Fraises",
+    },
+    {
+      id: 11,
+      nom: "Poires",
+    },
+    {
+      id: 12,
+      nom: "Framboises",
+    },
+    {
+      id: 13,
+      nom: "Beurre",
+    },
+  ];
+
   recettes = [
     {
       id: "001",
@@ -50,12 +70,15 @@ beforeEach(() => {
 describe("the adding recipe functionality works properly", () => {
   it("adds the correct recipe when filling the form and clicking on submit", async () => {
     const { getByLabelText, getByText } = render(
-      <RecettesCatalogue totalRecettes={recettes} />
+      <RecettesCatalogue
+        totalRecettes={recettes}
+        ingredientsPossibles={ingredientsCatalogue}
+      />
     );
     await addRecipe(getByLabelText, getByText);
     const recette = getByText("Crumble aux poires", { exact: false });
-    const poires = getByText(/Poires/);
-    const beurre = getByText(/Beurre/);
+    const poires = getByText(/Poires :/);
+    const beurre = getByText(/Beurre :/);
     expect(recette).toBeInTheDocument();
     expect(poires).toBeInTheDocument();
     expect(beurre).toBeInTheDocument();
@@ -79,7 +102,10 @@ describe("the adding recipe functionality works properly", () => {
 
   async function checkMissingInput(inputName) {
     const { getByLabelText, getByText, queryByText } = render(
-      <RecettesCatalogue totalRecettes={recettes} />
+      <RecettesCatalogue
+        totalRecettes={recettes}
+        ingredientsPossibles={ingredientsCatalogue}
+      />
     );
     await addRecipe(getByLabelText, getByText, [inputName]);
     const recette = queryByText("Crumble aux poires", { exact: false });
@@ -88,27 +114,22 @@ describe("the adding recipe functionality works properly", () => {
 
   it(`does not add the recipe if no title was provided`, async () => {
     const { getByLabelText, getByText, queryByText } = render(
-      <RecettesCatalogue totalRecettes={recettes} />
+      <RecettesCatalogue
+        totalRecettes={recettes}
+        ingredientsPossibles={ingredientsCatalogue}
+      />
     );
     await addRecipe(getByLabelText, getByText, ["titre"]);
     const recette = queryByText("Épluchez et épépinez", { exact: false });
     expect(recette).not.toBeInTheDocument();
   });
 
-  it(`does not add the ingredient if an ingredient with the same name
-    was already provided`, () => {
-    const { getByLabelText, getByText, getAllByText } = render(
-      <RecettesCatalogue totalRecettes={recettes} />
-    );
-    addIngredient(getByLabelText, getByText, ["Grenade", 500, "g"]);
-    addIngredient(getByLabelText, getByText, ["Grenade", 5, "g"]);
-    const ingredient = getAllByText(/Grenade/);
-    expect(ingredient).toHaveLength(1);
-  });
-
   it(`does not add the recipe if the time for the recipe is negative or null`, async () => {
     const { getByLabelText, getByText, queryByText } = render(
-      <RecettesCatalogue totalRecettes={recettes} />
+      <RecettesCatalogue
+        totalRecettes={recettes}
+        ingredientsPossibles={ingredientsCatalogue}
+      />
     );
     await addRecipe(getByLabelText, getByText, [], { temps: "00:00" });
     let recette = queryByText("Crumble aux poires", { exact: false });
@@ -119,45 +140,99 @@ describe("the adding recipe functionality works properly", () => {
     expect(recette).not.toBeInTheDocument();
   });
 
-  it(`does not add the ingredient if quantity is negative or null`, () => {
-    const { getByLabelText, getByText, queryByText } = render(
-      <RecettesCatalogue totalRecettes={recettes} />
-    );
-    addIngredient(getByLabelText, getByText, ["Grenade", -1, "g"]);
-    let grenade = queryByText(/Grenade/);
-    expect(grenade).not.toBeInTheDocument();
-    addIngredient(getByLabelText, getByText, ["Grenade", 0, "g"]);
-    grenade = queryByText(/Grenade/);
-    expect(grenade).not.toBeInTheDocument();
-  });
-
-  it(`removes ingredient on the form when clicking on the
-    remove button`, async () => {
-    const { getByLabelText, getByText } = render(
-      <RecettesCatalogue totalRecettes={recettes} />
-    );
-    addIngredient(getByLabelText, getByText, ["Poires", 1, "kg"]);
-    addIngredient(getByLabelText, getByText, ["Beurre", 30, "g"]);
-    const poires = getByText(/Poires/);
-    const beurre = getByText(/Beurre/);
-    const removeButton = within(poires).getByText("X");
-    await act(async () => {
-      fireEvent.click(removeButton);
+  describe("the adding of ingredient on the recepe form works properly", () => {
+    it(`does not add the ingredient if an ingredient with the same name
+      was already provided`, () => {
+      const { getByLabelText, getByText, getAllByText } = render(
+        <RecettesCatalogue
+          totalRecettes={recettes}
+          ingredientsPossibles={ingredientsCatalogue}
+        />
+      );
+      addIngredient(getByLabelText, getByText, ["Fraises", 5, "g"]);
+      addIngredient(getByLabelText, getByText, ["Fraises", 5, "g"]);
+      const ingredient = getAllByText(/Fraises :/);
+      expect(ingredient).toHaveLength(1);
     });
-    expect(poires).not.toBeInTheDocument();
-    expect(beurre).toBeInTheDocument();
-  });
 
-  it(`adds ingredients on the form when they are validated`, () => {
-    const { getByLabelText, getByText } = render(
-      <RecettesCatalogue totalRecettes={recettes} />
-    );
-    addIngredient(getByLabelText, getByText, ["Poires", 1, "kg"]);
-    addIngredient(getByLabelText, getByText, ["Beurre", 30, "g"]);
-    const poires = getByText(/Poires/);
-    const beurre = getByText(/Beurre/);
-    expect(poires).toBeInTheDocument();
-    expect(beurre).toBeInTheDocument();
+    it(`does not add the ingredient if quantity is negative or null`, () => {
+      const { getByLabelText, getByText, queryByText } = render(
+        <RecettesCatalogue
+          totalRecettes={recettes}
+          ingredientsPossibles={ingredientsCatalogue}
+        />
+      );
+      addIngredient(getByLabelText, getByText, ["Fraises", -1, "g"]);
+      let fraises = queryByText(/Fraises :/);
+      expect(fraises).not.toBeInTheDocument();
+      addIngredient(getByLabelText, getByText, ["Fraises", 0, "g"]);
+      fraises = queryByText(/Fraises :/);
+      expect(fraises).not.toBeInTheDocument();
+    });
+
+    it(`does not add the ingredient if the ingredient is not in ingredientsCatalogue`, () => {
+      const { getByLabelText, getByText, queryByText } = render(
+        <RecettesCatalogue
+          totalRecettes={recettes}
+          ingredientsPossibles={ingredientsCatalogue}
+        />
+      );
+      addIngredient(getByLabelText, getByText, ["Poireaux", 50, "g"]);
+      const poireaux = queryByText(/Poireaux : /);
+      expect(poireaux).not.toBeInTheDocument();
+    });
+
+    it(`provides the right proposals when a letter is entered in the input of the ingredient name`, () => {
+      const { getByLabelText, getAllByTestId } = render(
+        <RecettesCatalogue
+          totalRecettes={recettes}
+          ingredientsPossibles={ingredientsCatalogue}
+        />
+      );
+      const inputIngredientName = getByLabelText("Nom :");
+      fireEvent.change(inputIngredientName, { target: { value: "f" } });
+      const options = getAllByTestId("suggestions");
+      let fraises = options[0];
+      let framboises = options[1];
+      expect(options).toHaveLength(2);
+      expect(fraises.value).toEqual("Fraises");
+      expect(framboises.value).toEqual("Framboises");
+    });
+
+    it(`removes ingredient on the form when clicking on the
+      remove button`, async () => {
+      const { getByLabelText, getByText } = render(
+        <RecettesCatalogue
+          totalRecettes={recettes}
+          ingredientsPossibles={ingredientsCatalogue}
+        />
+      );
+      addIngredient(getByLabelText, getByText, ["Poires", 1, "kg"]);
+      addIngredient(getByLabelText, getByText, ["Beurre", 30, "g"]);
+      const poires = getByText(/Poires : /);
+      const beurre = getByText(/Beurre : /);
+      const removeButton = within(poires).getByText("X");
+      await act(async () => {
+        fireEvent.click(removeButton);
+      });
+      expect(poires).not.toBeInTheDocument();
+      expect(beurre).toBeInTheDocument();
+    });
+
+    it(`adds ingredients on the form when they are validated`, () => {
+      const { getByLabelText, getByText } = render(
+        <RecettesCatalogue
+          totalRecettes={recettes}
+          ingredientsPossibles={ingredientsCatalogue}
+        />
+      );
+      addIngredient(getByLabelText, getByText, ["Poires", 1, "kg"]);
+      addIngredient(getByLabelText, getByText, ["Beurre", 30, "g"]);
+      const poires = getByText(/Poires :/);
+      const beurre = getByText(/Beurre :/);
+      expect(poires).toBeInTheDocument();
+      expect(beurre).toBeInTheDocument();
+    });
   });
 
   async function addRecipe(
@@ -212,7 +287,10 @@ describe("the adding recipe functionality works properly", () => {
 describe("the removing recipe functionality works properly", () => {
   it("removes the recipe when clicking on the button", () => {
     const { getByText } = render(
-      <RecettesCatalogue totalRecettes={recettes} />
+      <RecettesCatalogue
+        totalRecettes={recettes}
+        ingredientsPossibles={ingredientsCatalogue}
+      />
     );
     const recipeRemoved = getByText("Marinade de saumon fumé", {
       exact: false,
@@ -231,7 +309,10 @@ describe("the search bar functionality works properly", () => {
   it(`displays the correct recipes according to their title when a letter
     is entered in the search bar`, async () => {
     const { getByText, queryByText, getByPlaceholderText } = render(
-      <RecettesCatalogue totalRecettes={recettes} />
+      <RecettesCatalogue
+        totalRecettes={recettes}
+        ingredientsPossibles={ingredientsCatalogue}
+      />
     );
     const searchBar = getByPlaceholderText("Recherche par titre...");
     fireEvent.change(searchBar, { target: { value: "M" } });
@@ -246,7 +327,10 @@ describe("the search bar functionality works properly", () => {
 
   it("redisplays all the recipes of the catalog after a search", () => {
     const { getByText, queryByText, getByPlaceholderText } = render(
-      <RecettesCatalogue totalRecettes={recettes} />
+      <RecettesCatalogue
+        totalRecettes={recettes}
+        ingredientsPossibles={ingredientsCatalogue}
+      />
     );
     const searchBar = getByPlaceholderText("Recherche par titre...");
     fireEvent.change(searchBar, { target: { value: "sa" } });
