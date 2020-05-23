@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import RecettesAffichage from "./RecettesAffichage";
 import IngredientsFrigo from "./IngredientsFrigo";
 import IngredientsCatalogue from "./IngredientsCatalogue";
@@ -9,17 +9,28 @@ function MaProchaineRecette({
   ingredientsFrigo,
   ingredientsCatalogue,
 }) {
+  const [ingredientsUpdated, setIngredientsUpdated] = useState(
+    ingredientsCatalogue
+  );
+
+  const handleIngredientsPossibles = (ingredients) => {
+    setIngredientsUpdated(ingredients);
+  };
+
   return (
     <div>
-      <IngredientsCatalogue ingredientsPossibles={ingredientsCatalogue} />
+      <IngredientsCatalogue
+        ingredientsPossibles={ingredientsUpdated}
+        updateIngredientsPossibles={handleIngredientsPossibles}
+      />
       <RecettesCatalogue
         totalRecettes={recettes}
-        ingredientsPossibles={ingredientsCatalogue}
+        ingredientsPossibles={ingredientsUpdated}
       />
       <RecettesAffichage recettes={recettes} />
       <IngredientsFrigo
         ingredients={ingredientsFrigo}
-        ingredientsPossibles={ingredientsCatalogue}
+        ingredientsPossibles={ingredientsUpdated}
       />
     </div>
   );
