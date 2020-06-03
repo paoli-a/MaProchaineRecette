@@ -128,7 +128,7 @@ function RecettesAffichage({ recettes }) {
   };
 
   return (
-    <div>
+    <section id="RecettesFrigo">
       <h1>Mes prochaines recettes</h1>
       <RecettesToolbar
         onChangeCategories={handleChangeCategories}
@@ -136,7 +136,7 @@ function RecettesAffichage({ recettes }) {
         categories={categoriesPossibles()}
       />
       <div id="RecettesAffichage">{recettesAffichees}</div>
-    </div>
+    </section>
   );
 }
 

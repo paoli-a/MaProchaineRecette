@@ -73,8 +73,8 @@ function IngredientsFrigoForm({ onSubmit, ingredientsPossibles }) {
   return (
     <form id="formFrigo" onSubmit={handleSubmit(onSubmitWrapper)}>
       <fieldset>
-        <legend>Ajouter un ingredient frigo</legend>
-        <div>
+        <legend>Ajouter un ingredient frigo :</legend>
+        <p>
           <label htmlFor="nomIngredient">Nom de l'ingrédient : </label>
           <InputSuggestions
             elements={ingredientsPossibles}
@@ -86,35 +86,37 @@ function IngredientsFrigoForm({ onSubmit, ingredientsPossibles }) {
             type="text"
           />
           {errors.nomIngredient && errors.nomIngredient.message}
-        </div>
-        <div>
+        </p>
+        <p>
           <label htmlFor="quantiteIngredient">Quantité : </label>
-          <input
-            type="number"
-            name="quantiteIngredient"
-            id="quantiteIngredient"
-            defaultValue=""
-            ref={register({
-              required: "Ce champ est obligatoire",
-              validate: validateQuantite,
-            })}
-          />
-          {errors.quantiteIngredient && errors.quantiteIngredient.message}
-          <select
-            name="unite"
-            defaultValue=""
-            ref={register({ required: true })}
-            aria-label="Unité"
-          >
-            <option value="">...</option>
-            <option value="pièce(s)">pièce(s)</option>
-            <option value="kg">kg</option>
-            <option value="g">g</option>
-            <option value="cl">cl</option>
-          </select>
-          {errors.unite && <span>Ce champ est obligatoire</span>}
-        </div>
-        <div>
+          <span>
+            <input
+              type="number"
+              name="quantiteIngredient"
+              id="quantiteIngredient"
+              defaultValue=""
+              ref={register({
+                required: "Ce champ est obligatoire",
+                validate: validateQuantite,
+              })}
+            />
+            {errors.quantiteIngredient && errors.quantiteIngredient.message}
+            <select
+              name="unite"
+              defaultValue=""
+              ref={register({ required: true })}
+              aria-label="Unité"
+            >
+              <option value="">...</option>
+              <option value="pièce(s)">pièce(s)</option>
+              <option value="kg">kg</option>
+              <option value="g">g</option>
+              <option value="cl">cl</option>
+            </select>
+            {errors.unite && <span>Ce champ est obligatoire</span>}
+          </span>
+        </p>
+        <p>
           <label htmlFor="datePeremption">Date de péremption : </label>
           <input
             type="date"
@@ -126,8 +128,10 @@ function IngredientsFrigoForm({ onSubmit, ingredientsPossibles }) {
             })}
           />
           {errors.datePeremption && errors.datePeremption.message}
-        </div>
-        <input type="submit" value="Confirmer" />
+        </p>
+        <p>
+          <input type="submit" value="Confirmer" />
+        </p>
       </fieldset>
     </form>
   );

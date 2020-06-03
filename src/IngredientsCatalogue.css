@@ -1,0 +1,73 @@
+#ComponentCatalogueIngredients {
+  margin-left: 25%;
+  margin-right: 4%;
+}
+
+#ComponentCatalogueIngredients > div {
+  display: flex;
+  align-items: flex-start;
+  margin-top: 5%;
+}
+
+#ComponentCatalogueIngredients h1 {
+  margin-top: 5%;
+}
+
+#AjoutIngredientCatalogue {
+  flex-basis: 40%;
+  border: 1px solid;
+  padding:1% 0%;
+}
+
+fieldset {
+  border: 0;
+}
+
+#CatalogueIngredients {
+  flex-basis: 60%;
+  padding-left: 10%;
+}
+
+#CatalogueIngredients > form {
+  margin-bottom: 8%;
+}
+
+#CatalogueIngredients ul {
+  padding-inline-start: 23px;
+}
+
+#CatalogueIngredients li {
+  padding-bottom: 1%;
+}
+
+#CatalogueIngredients button {
+  margin-left: 2%;
+}
+
+#ingredientForm p {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+#AjoutIngredientCatalogue fieldset {
+  padding-block-end: 0%;
+}
+
+#AjoutIngredientCatalogue legend {
+  margin-bottom: 3%;
+  text-decoration: underline;
+}
+
+#ingredientForm label {
+  margin-right: 5%;
+  margin-bottom: 2%;
+}
+
+#ingredientForm p > input:not([type=submit]) {
+  flex: 1;
+}
+
+#ingredientForm input[type=submit] {
+  margin-left: auto;
+  margin-top: 3%;
+}

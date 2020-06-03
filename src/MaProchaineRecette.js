@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Route, NavLink } from "react-router-dom";
 import RecettesAffichage from "./RecettesAffichage";
 import IngredientsFrigo from "./IngredientsFrigo";
 import IngredientsCatalogue from "./IngredientsCatalogue";
 import RecettesCatalogue from "./RecettesCatalogue";
+import "./MaProchaineRecette.css";
 
 function MaProchaineRecette({
   recettes,
@@ -24,13 +25,19 @@ function MaProchaineRecette({
         <nav>
           <ul>
             <li>
-              <Link to="/">Ma prochaine recette</Link>
+              <NavLink activeClassName="currentTab" exact={true} to="/">
+                Ma prochaine recette
+              </NavLink>
             </li>
             <li>
-              <Link to="/recettes">Catalogue des recettes</Link>
+              <NavLink activeClassName="currentTab" to="/recettes">
+                Catalogue des recettes
+              </NavLink>
             </li>
             <li>
-              <Link to="/ingredients">Catalogue des ingrédients</Link>
+              <NavLink activeClassName="currentTab" to="/ingredients">
+                Catalogue des ingrédients
+              </NavLink>
             </li>
           </ul>
         </nav>
@@ -47,11 +54,13 @@ function MaProchaineRecette({
           />
         </Route>
         <Route path="/" exact>
-          <RecettesAffichage recettes={recettes} />
-          <IngredientsFrigo
-            ingredients={ingredientsFrigo}
-            ingredientsPossibles={ingredientsUpdated}
-          />
+          <main id="MesProchainesRecettes">
+            <IngredientsFrigo
+              ingredients={ingredientsFrigo}
+              ingredientsPossibles={ingredientsUpdated}
+            />
+            <RecettesAffichage recettes={recettes} />
+          </main>
         </Route>
       </div>
     </Router>

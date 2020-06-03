@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import RecettesForm from "./RecettesForm";
 import Recette from "./Recette";
 import useFilterSearch from "./useFilterSearch";
+import "./RecettesCatalogue.css";
 
 function RecettesCatalogue({ totalRecettes, ingredientsPossibles }) {
   const [recettesList, setRecettes] = useState(totalRecettes);
@@ -62,26 +63,32 @@ function RecettesCatalogue({ totalRecettes, ingredientsPossibles }) {
   });
 
   return (
-    <div>
+    <main id="ComponentCatalogueRecette">
       <h1>Catalogue de toutes mes recettes</h1>
-      <form>
-        <input
-          type="search"
-          id="rechercheCatalogueRecette"
-          name="q"
-          value={searchResults}
-          placeholder="Recherche par titre..."
-          spellCheck="true"
-          size="30"
-          onChange={handleChangeSearch}
-        />
-      </form>
-      <RecettesForm
-        onSubmitRecette={handleSubmit}
-        ingredientsPossibles={ingredientsPossibles}
-      />
-      {toutesMesRecettes}
-    </div>
+      <div>
+        <section id="AjoutRecette">
+          <RecettesForm
+            onSubmitRecette={handleSubmit}
+            ingredientsPossibles={ingredientsPossibles}
+          />
+        </section>
+        <section id="DisplayCatalogueRecette">
+          <form>
+            <input
+              type="search"
+              id="rechercheCatalogueRecette"
+              name="q"
+              value={searchResults}
+              placeholder="Recherche par titre..."
+              spellCheck="true"
+              size="30"
+              onChange={handleChangeSearch}
+            />
+          </form>
+          {toutesMesRecettes}
+        </section>
+      </div>
+    </main>
   );
 }
 

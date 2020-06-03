@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import useFilterSearch from "./useFilterSearch";
+import "./IngredientsCatalogue.css";
 
 function IngredientsCatalogue({
   ingredientsPossibles,
@@ -47,40 +48,50 @@ function IngredientsCatalogue({
   });
 
   return (
-    <div>
+    <main id="ComponentCatalogueIngredients">
       <h1>Catalogue de tous mes ingrédients</h1>
-      <form>
-        <input
-          type="search"
-          id="rechercheCatalogueIngredient"
-          name="q"
-          value={searchResults}
-          placeholder="Recherche..."
-          spellCheck="true"
-          size="30"
-          onChange={handleChangeSearch}
-        />
-      </form>
-      <form id="ingredientForm" onSubmit={handleSubmit(onSubmitWrapper)}>
-        <fieldset>
-          <legend>Ajouter un ingredient dans le catalogue</legend>
-          <label htmlFor="ingredientNom">
-            {" "}
-            Nom de l'ingrédient à ajouter :{" "}
-          </label>
-          <input
-            type="text"
-            name="ingredientNom"
-            id="ingredientNom"
-            defaultValue=""
-            ref={register({ required: true })}
-          />
-          {errors.ingredientNom && <span>Ce champ est obligatoire</span>}
-          <input type="submit" value="Envoyer" />
-        </fieldset>
-      </form>
-      <ul>{ingredient}</ul>
-    </div>
+      <div>
+        <section id="AjoutIngredientCatalogue">
+          <fieldset>
+            <legend>Ajouter un ingredient dans le catalogue :</legend>
+            <form id="ingredientForm" onSubmit={handleSubmit(onSubmitWrapper)}>
+              <p>
+                <label htmlFor="ingredientNom">
+                  {" "}
+                  Nom de l'ingrédient à ajouter :{" "}
+                </label>
+                <input
+                  type="text"
+                  name="ingredientNom"
+                  id="ingredientNom"
+                  defaultValue=""
+                  ref={register({ required: true })}
+                />
+                {errors.ingredientNom && <span>Ce champ est obligatoire</span>}
+              </p>
+              <p>
+                <input type="submit" value="Envoyer" />
+              </p>
+            </form>
+          </fieldset>
+        </section>
+        <section id="CatalogueIngredients">
+          <form>
+            <input
+              type="search"
+              id="rechercheCatalogueIngredient"
+              name="q"
+              value={searchResults}
+              placeholder="Recherche..."
+              spellCheck="true"
+              size="30"
+              onChange={handleChangeSearch}
+            />
+          </form>
+          <ul>{ingredient}</ul>
+        </section>
+      </div>
+    </main>
   );
 }
 
