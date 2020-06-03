@@ -93,7 +93,7 @@ IngredientsCatalogue.propTypes = {
     })
   ).isRequired,
   /**
-   * Fonction mettant à jour la propriété controlée ingredientsPossibles
+   * Fonction mettant à jour la propriété controlée ingredientsPossibles.
    */
   updateIngredientsPossibles: PropTypes.func.isRequired,
 };
