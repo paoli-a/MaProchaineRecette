@@ -1,0 +1,44 @@
+---
+name: IngredientsCatalogue
+menu: Components
+---
+
+# IngredientsCatalogue
+
+import IngredientsCatalogue from "./IngredientsCatalogue"
+import { Playground, Props } from 'docz'
+
+> Ce component permet d'afficher les ingrédients du catalogue, d'en ajouter
+ et d'en supprimer. Une recherche peut etre faite sur le nom des ingrédients et
+permettra d'afficher au fur et à mesure les ingrédients correspondants.
+
+## Props
+<Props of={IngredientsCatalogue} />
+
+
+## Basic usage
+
+<Playground>
+  {() => {
+    const [ingredientsCatalogue, setIngredientsCatalogue] = React.useState([
+      {
+        id: 10,
+        nom: "Fraises",
+      },
+      {
+        id: 11,
+        nom: "Sucre",
+      },
+      {
+        id: 12,
+        nom: "Framboises",
+      },
+    ])
+    return (
+      <IngredientsCatalogue
+        ingredientsPossibles={ingredientsCatalogue}
+        updateIngredientsPossibles={setIngredientsCatalogue}
+      />
+    )
+  }}
+</Playground>
