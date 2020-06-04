@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import PropTypes from "prop-types";
 
 function InputSuggestions({
   elements,
@@ -53,5 +54,28 @@ function InputSuggestions({
     </React.Fragment>
   );
 }
+
+InputSuggestions.propTypes = {
+  /**
+   * Il s'agit ici des objets contenant les textes qui seront suggérés.
+   */
+  elements: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      nom: PropTypes.string.isRequired,
+    })
+  ).isRequired,
+  id: PropTypes.string.isRequired,
+  /**
+   * Permet de récupérer le texte à suggérer à partir de l'élément
+   */
+  getElementText: PropTypes.func.isRequired,
+  /**
+   * Donne la valeur tapée par l'utilisateur au composant parent pour
+   * qu'il puisse controler la value de l'input.
+   */
+  onChangeValue: PropTypes.func.isRequired,
+  value: PropTypes.string.isRequired,
+};
 
 export default InputSuggestions;
