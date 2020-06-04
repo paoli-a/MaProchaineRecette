@@ -1,0 +1,74 @@
+---
+name: IngredientsList
+menu: Components
+---
+
+# IngredientsList
+
+import IngredientsList from "./IngredientsList"
+import { Playground, Props } from 'docz'
+import Highlighter from "react-highlight-words";
+
+> Ce composant permet d'afficher la liste des ingrédients nécessaires avec leur quantité correspondante pour une recette donnée.
+
+## Props
+<Props of={IngredientsList} />
+
+
+## Exemples d'utilisation
+
+<Playground>
+  {() => {
+    const ingredients = {
+      "pommes de terre": "1 kg",
+      oeufs: "3",
+      "vinaigre non balsamique": "1 cas",
+      radis: "2 bottes",
+      "oignons bottes": "2 cas",
+      "yaourt grec": "1",
+      mayonnaise: "1 cas",
+      moutarde: "1/2 cas",
+      ail: "1 gousse",
+    };
+    const highlight= (texte) => texte;
+    return (
+      <IngredientsList
+        ingredients={ingredients}
+        highlight={highlight}
+      />
+    )
+  }}
+</Playground>
+
+### Exemple avec le highlight
+
+<Playground>
+  {() => {
+    const ingredients = {
+      "pommes de terre": "1 kg",
+      oeufs: "3",
+      "vinaigre non balsamique": "1 cas",
+      radis: "2 bottes",
+      "oignons bottes": "2 cas",
+      "yaourt grec": "1",
+      mayonnaise: "1 cas",
+      moutarde: "1/2 cas",
+      ail: "1 gousse",
+    };
+    const highlight = (texte) => {
+      return (
+        <Highlighter
+          highlightClassName="searchHighlight"
+          searchWords={["yaourt", "mo"]}
+          textToHighlight={texte}
+        />
+      );
+    };
+    return (
+      <IngredientsList
+        ingredients={ingredients}
+        highlight={highlight}
+      />
+    )
+  }}
+</Playground>
