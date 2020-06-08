@@ -1,0 +1,42 @@
+---
+name: RecettesToolbar
+menu: Components
+---
+
+# RecettesToolbar
+
+import RecettesToolbar from "./RecettesToolbar"
+import { Playground, Props } from 'docz'
+
+> Ce composant permet d'afficher les outils de filtrage des recettes:
+* la sélection des catégories
+* la barre de recherche
+
+
+## Props
+<Props of={RecettesToolbar} />
+
+
+## Exemples d'utilisation
+
+<Playground>
+  {() => {
+    const handleChangeCategories = (updatedCategories) => {
+      // faire quelque chose avec les nouvelles catégories
+    };
+    const handleChangeSearch = (search) => {
+      // faire quelque chose avec la recherche utilisateur
+    };
+    const categoriesPossibles = {
+      entrée: 3,
+      dessert: 2
+    };
+    return (
+      <RecettesToolbar
+        onChangeCategories={handleChangeCategories}
+        onChangeSearch={handleChangeSearch}
+        categories={categoriesPossibles}
+      />
+    )
+  }}
+</Playground>
