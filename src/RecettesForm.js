@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 function RecettesForm({ onSubmitRecette, ingredientsPossibles }) {
   const { register, handleSubmit, errors, reset, watch, getValues } = useForm();
   const [ingredients, setIngredients] = useState([]);
-  const [ingredientNom, setIngredientNom] = useState([]);
+  const [ingredientNom, setIngredientNom] = useState("");
   const [ingredientQuantite, setIngredientQuantite] = useState("");
   const [ingredientUnite, setIngredientUnite] = useState("");
   const [ingredientError, setIngredientError] = useState("");
@@ -253,7 +253,7 @@ RecettesForm.propTypes = {
    * lorsque la validité de tous les éléments entrés a été vérifiée,
    * et permet de les récupérer.
    */
-  onSubmitRecette: PropTypes.func.required,
+  onSubmitRecette: PropTypes.func.isRequired,
   /**
    * Il s'agit ici des ingrédients autorisés, c'est-à-dire ceux entrés
    * dans le catalogue des ingrédients.

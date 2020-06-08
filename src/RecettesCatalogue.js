@@ -29,7 +29,7 @@ function RecettesCatalogue({ totalRecettes, ingredientsPossibles }) {
     const categories = data.categorie.filter(Boolean);
     const nouvelleRecette = {
       id: id,
-      categories: categories,
+      categorie: categories,
       titre: data.titreRecette,
       ingredients: formatedIngredients,
       temps: data.tempsRecette,

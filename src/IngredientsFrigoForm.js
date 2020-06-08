@@ -140,7 +140,7 @@ IngredientsFrigoForm.propTypes = {
    * lorsque la validité de tous les éléments entrés a été vérifiée,
    * et permet de les récupérer.
    */
-  onSubmit: PropTypes.func.required,
+  onSubmit: PropTypes.func.isRequired,
   /**
    * Il s'agit ici des ingrédients autorisés, c'est-à-dire ceux entrés
    * dans le catalogue des ingrédients.

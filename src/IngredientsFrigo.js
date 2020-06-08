@@ -64,7 +64,6 @@ IngredientsFrigo.propTypes = {
       nom: PropTypes.string.isRequired,
     })
   ).isRequired,
-
   /**
    * Il s'agit ici des ingrédients présents dans le frigo.
    */
