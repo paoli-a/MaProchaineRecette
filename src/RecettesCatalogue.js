@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import RecettesForm from "./RecettesForm";
 import Recette from "./Recette";
 import useFilterSearch from "./useFilterSearch";
+import PropTypes from "prop-types";
 
 function RecettesCatalogue({ totalRecettes, ingredientsPossibles }) {
   const [recettesList, setRecettes] = useState(totalRecettes);
@@ -84,5 +85,28 @@ function RecettesCatalogue({ totalRecettes, ingredientsPossibles }) {
     </div>
   );
 }
+
+RecettesCatalogue.propTypes = {
+  totalRecettes: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      categorie: PropTypes.arrayOf(PropTypes.string).isRequired,
+      titre: PropTypes.string.isRequired,
+      ingredients: PropTypes.objectOf(PropTypes.string).isRequired,
+      temps: PropTypes.string.isRequired,
+      description: PropTypes.string.isRequired,
+    })
+  ).isRequired,
+  /**
+   * Il s'agit ici des ingrédients autorisés, c'est-à-dire ceux entrés
+   * dans le catalogue des ingrédients.
+   */
+  ingredientsPossibles: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      nom: PropTypes.string.isRequired,
+    })
+  ).isRequired,
+};
 
 export default RecettesCatalogue;
