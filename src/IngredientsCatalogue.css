@@ -1,31 +1,5 @@
-#ComponentCatalogueIngredients {
-  margin-left: 25%;
-  margin-right: 4%;
-}
-
-#ComponentCatalogueIngredients > div {
-  display: flex;
-  align-items: flex-start;
-  margin-top: 5%;
-}
-
-#ComponentCatalogueIngredients h1 {
-  margin-top: 5%;
-}
-
-#AjoutIngredientCatalogue {
-  flex-basis: 40%;
-  border: 1px solid;
-  padding:1% 0%;
-}
-
 fieldset {
   border: 0;
-}
-
-#CatalogueIngredients {
-  flex-basis: 60%;
-  padding-left: 10%;
 }
 
 #CatalogueIngredients > form {
@@ -63,11 +37,66 @@ fieldset {
   margin-bottom: 2%;
 }
 
-#ingredientForm p > input:not([type=submit]) {
+#ingredientForm p > input:not([type="submit"]) {
   flex: 1;
 }
 
-#ingredientForm input[type=submit] {
+#ingredientForm input[type="submit"] {
   margin-left: auto;
   margin-top: 3%;
+}
+
+#ComponentCatalogueIngredients h1 {
+  margin-top: 80px;
+}
+
+#AjoutIngredientCatalogue {
+  border: 1px solid;
+  padding: 1% 0%;
+}
+
+@media (min-width: 948px) {
+  #ComponentCatalogueIngredients {
+    display: grid;
+    grid-template-columns: minmax(420px, 500px) minmax(300px, 530px);
+    grid-template-areas:
+      "title title"
+      "ajout catalogue";
+    justify-content: center;
+    row-gap: 70px;
+  }
+
+  #ComponentCatalogueIngredients h1 {
+    grid-area: title;
+    margin-left: 10px;
+  }
+
+  #AjoutIngredientCatalogue {
+    grid-area: ajout;
+    margin-left: 10px;
+  }
+
+  #CatalogueIngredients {
+    grid-area: catalogue;
+    margin-right: 10px;
+    margin-left: 30%;
+  }
+}
+
+@media (max-width: 947px) {
+  #ComponentCatalogueIngredients {
+    display: grid;
+    grid-template-columns: minmax(0px, 460px);
+    grid-template-areas:
+      "title"
+      "ajout"
+      "catalogue";
+    justify-content: center;
+    gap: 80px;
+  }
+
+  #ComponentCatalogueIngredients h1 {
+    padding: 0%;
+    margin-bottom: 0;
+  }
 }

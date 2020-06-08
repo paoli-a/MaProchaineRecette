@@ -1,32 +1,5 @@
-#ComponentCatalogueRecette {
-  margin-left: 25%;
-  margin-right: 15%;
-}
-
-#ComponentCatalogueRecette > div{
-  display: flex;
-  align-items: flex-start;
-  margin-top: 4%;
-}
-
-
-#ComponentCatalogueRecette h1 {
-  margin-top: 5%;
-}
-
 #ComponentCatalogueRecette h2 {
   margin-bottom: 0%;
-}
-
-#AjoutRecette {
-  flex-basis: 40%;
-  border: 1px solid;
-  padding:2% 1% 1% 1%;
-}
-
-#DisplayCatalogueRecette {
-  flex-basis: 60%;
-  padding-left: 10%;
 }
 
 #DisplayCatalogueRecette form {
@@ -83,11 +56,11 @@ fieldset li {
   margin-bottom: 2%;
 }
 
-#formRecette p > input:not([type=submit]) {
+#formRecette p > input:not([type="submit"]) {
   flex: 1;
 }
 
-#formRecette input[type=submit] {
+#formRecette input[type="submit"] {
   margin-left: auto;
   margin-top: 3%;
 }
@@ -100,4 +73,58 @@ fieldset li {
 
 #description textarea {
   flex: 1;
+}
+
+#ComponentCatalogueRecette h1 {
+  margin-top: 80px;
+}
+
+#AjoutRecette {
+  border: 1px solid;
+  padding: 2% 1% 1% 1%;
+}
+
+@media (min-width: 948px) {
+  #ComponentCatalogueRecette {
+    display: grid;
+    grid-template-columns: minmax(420px, 480px) minmax(440px, 570px);
+    grid-template-areas:
+      "title title"
+      "ajout catalogue";
+    justify-content: center;
+    gap: 8%;
+  }
+
+  #ComponentCatalogueRecette h1 {
+    grid-area: title;
+    margin-left: 10px;
+  }
+
+  #AjoutRecette {
+    grid-area: ajout;
+    margin-left: 10px;
+  }
+
+  #DisplayCatalogueRecette {
+    grid-area: catalogue;
+    margin-right: 10px;
+  }
+}
+
+@media (max-width: 947px) {
+  #ComponentCatalogueRecette {
+    display: grid;
+    grid-template-columns: minmax(0px, 460px);
+    grid-template-areas:
+      "title"
+      "ajout"
+      "catalogue";
+    justify-content: center;
+    gap: 80px;
+  }
+
+  #ComponentCatalogueRecette h1 {
+    padding: 0%;
+    margin-bottom: 0;
+  }
 }

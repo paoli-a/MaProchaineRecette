@@ -65,29 +65,27 @@ function RecettesCatalogue({ totalRecettes, ingredientsPossibles }) {
   return (
     <main id="ComponentCatalogueRecette">
       <h1>Catalogue de toutes mes recettes</h1>
-      <div>
-        <section id="AjoutRecette">
-          <RecettesForm
-            onSubmitRecette={handleSubmit}
-            ingredientsPossibles={ingredientsPossibles}
+      <section id="AjoutRecette">
+        <RecettesForm
+          onSubmitRecette={handleSubmit}
+          ingredientsPossibles={ingredientsPossibles}
+        />
+      </section>
+      <section id="DisplayCatalogueRecette">
+        <form>
+          <input
+            type="search"
+            id="rechercheCatalogueRecette"
+            name="q"
+            value={searchResults}
+            placeholder="Recherche par titre..."
+            spellCheck="true"
+            size="30"
+            onChange={handleChangeSearch}
           />
-        </section>
-        <section id="DisplayCatalogueRecette">
-          <form>
-            <input
-              type="search"
-              id="rechercheCatalogueRecette"
-              name="q"
-              value={searchResults}
-              placeholder="Recherche par titre..."
-              spellCheck="true"
-              size="30"
-              onChange={handleChangeSearch}
-            />
-          </form>
-          {toutesMesRecettes}
-        </section>
-      </div>
+        </form>
+        {toutesMesRecettes}
+      </section>
     </main>
   );
 }

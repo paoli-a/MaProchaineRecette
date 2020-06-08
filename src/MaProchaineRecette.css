@@ -1,7 +1,7 @@
 nav {
   background-color: RGBa(220, 220, 220, 0.7);
   margin-top: 1.5%;
-  box-shadow: 0px 2px 5px rgba(0,0,0,0.7);
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.7);
 }
 /*RGB(240, 150, 150)
 RGBa(250, 128, 114, 0.8)*/
@@ -23,16 +23,13 @@ nav li {
 }
 
 li a {
-  text-decoration: none; color: rgb(98, 101, 103);
+  text-decoration: none;
+  color: rgb(98, 101, 103);
   font-size: 18px;
   font-family: Georgia, serif;
   line-height: 45px;
   flex: auto;
 }
-/*
-nav li:nth-child(-n+2){
-  border-right: 1.5px solid black;
-}*/
 
 nav a.currentTab {
   box-sizing: border-box;
@@ -55,18 +52,6 @@ nav ul li:hover {
 
 nav a:hover {
   color: RGB(205, 97, 85);
-}
-
-#MesProchainesRecettes  {
-  display: flex;
-  align-items: flex-start;
-}
-
-#ingredientsFrigo {
-  flex-basis: 30%;
-  border: 1px solid;
-  padding:0 2%;
-  margin: 5.5% 4%;
 }
 
 #ingredientsFrigo h2 {
@@ -116,23 +101,57 @@ fieldset {
   margin-bottom: 2%;
 }
 
-#formFrigo p > input:not([type=submit]) {
+#formFrigo p > input:not([type="submit"]) {
   flex: 1;
 }
 
-#formFrigo input[type=submit] {
+#formFrigo input[type="submit"] {
   margin-left: auto;
   margin-top: 3%;
 }
 
-#RecettesFrigo {
-  margin-left: 6%;
-  margin-top: 4%;
-  margin-right: 10%;
-  margin-bottom: 4%;
-  flex-basis: 70%;
+#MesProchainesRecettes {
+  display: grid;
+  margin-top: 80px;
+}
+
+#ingredientsFrigo {
+  border: 1px solid;
+  padding: 0 2%;
+  margin: 5.5% 4%;
+  align-self: start;
+  box-sizing: border-box;
 }
 
 #RecettesFrigo h1 {
   margin-bottom: 6%;
+}
+
+@media (min-width: 948px) {
+  #MesProchainesRecettes {
+    grid-template-columns: 0.5fr minmax(420px, 540px) minmax(440px, 900px) 1fr;
+    grid-template-areas: ". ingredients recettes .";
+  }
+
+  #ingredientsFrigo {
+    grid-area: ingredients;
+    margin-left: 10px;
+    margin-right: 20%;
+  }
+
+  #RecettesFrigo {
+    grid-area: recettes;
+    margin-right: 10px;
+  }
+}
+
+@media (max-width: 947px) {
+  #MesProchainesRecettes {
+    grid-template-columns: minmax(0px, 460px);
+    grid-template-areas:
+      "ingredients"
+      "recettes";
+    justify-content: center;
+    gap: 60px;
+  }
 }
