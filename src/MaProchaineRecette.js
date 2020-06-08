@@ -4,6 +4,7 @@ import RecettesAffichage from "./RecettesAffichage";
 import IngredientsFrigo from "./IngredientsFrigo";
 import IngredientsCatalogue from "./IngredientsCatalogue";
 import RecettesCatalogue from "./RecettesCatalogue";
+import PropTypes from "prop-types";
 
 function MaProchaineRecette({
   recettes,
@@ -57,5 +58,32 @@ function MaProchaineRecette({
     </Router>
   );
 }
+
+MaProchaineRecette.propTypes = {
+  recettes: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      categorie: PropTypes.arrayOf(PropTypes.string).isRequired,
+      titre: PropTypes.string.isRequired,
+      ingredients: PropTypes.objectOf(PropTypes.string).isRequired,
+      temps: PropTypes.string.isRequired,
+      description: PropTypes.string.isRequired,
+    })
+  ).isRequired,
+  ingredientsFrigo: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      nom: PropTypes.string.isRequired,
+      datePeremption: PropTypes.instanceOf(Date),
+      quantite: PropTypes.string.isRequired,
+    })
+  ).isRequired,
+  ingredientsCatalogue: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      nom: PropTypes.string.isRequired,
+    })
+  ).isRequired,
+};
 
 export default MaProchaineRecette;
