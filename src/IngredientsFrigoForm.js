@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import InputSuggestions from "./InputSuggestions";
+import PropTypes from "prop-types";
 
 function IngredientsFrigoForm({ onSubmit, ingredientsPossibles }) {
   const {
@@ -132,5 +133,24 @@ function IngredientsFrigoForm({ onSubmit, ingredientsPossibles }) {
     </form>
   );
 }
+
+IngredientsFrigoForm.propTypes = {
+  /**
+   * Cette fonction est exécutée au moment du submit de l'ingrédient,
+   * lorsque la validité de tous les éléments entrés a été vérifiée,
+   * et permet de les récupérer.
+   */
+  onSubmit: PropTypes.func.required,
+  /**
+   * Il s'agit ici des ingrédients autorisés, c'est-à-dire ceux entrés
+   * dans le catalogue des ingrédients.
+   */
+  ingredientsPossibles: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      nom: PropTypes.string.isRequired,
+    })
+  ).isRequired,
+};
 
 export default IngredientsFrigoForm;
