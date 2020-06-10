@@ -5,6 +5,7 @@ import IngredientsFrigo from "./IngredientsFrigo";
 import IngredientsCatalogue from "./IngredientsCatalogue";
 import RecettesCatalogue from "./RecettesCatalogue";
 import "./MaProchaineRecette.css";
+import "./Nav.css";
 
 function MaProchaineRecette({
   recettes,
@@ -23,23 +24,15 @@ function MaProchaineRecette({
     <Router>
       <div>
         <nav>
-          <ul>
-            <li>
-              <NavLink activeClassName="currentTab" exact={true} to="/">
-                Ma prochaine recette
-              </NavLink>
-            </li>
-            <li>
-              <NavLink activeClassName="currentTab" to="/recettes">
-                Catalogue des recettes
-              </NavLink>
-            </li>
-            <li>
-              <NavLink activeClassName="currentTab" to="/ingredients">
-                Catalogue des ingrédients
-              </NavLink>
-            </li>
-          </ul>
+          <NavLink activeClassName="currentTab" exact={true} to="/">
+            Ma prochaine recette
+          </NavLink>
+          <NavLink activeClassName="currentTab" to="/recettes">
+            Catalogue des recettes
+          </NavLink>
+          <NavLink activeClassName="currentTab" to="/ingredients">
+            Catalogue des ingrédients
+          </NavLink>
         </nav>
         <Route path="/recettes">
           <RecettesCatalogue
