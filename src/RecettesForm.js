@@ -131,7 +131,7 @@ function RecettesForm({ onSubmitRecette, ingredientsPossibles }) {
           />
           {errors.titreRecette && <span>Ce champ est obligatoire</span>}
         </p>
-        <p>
+        <div>
           Catégories :
           <ul>
             <li>
@@ -168,7 +168,7 @@ function RecettesForm({ onSubmitRecette, ingredientsPossibles }) {
           {errors.categorie && (
             <span>Au moins une catégorie doit être sélectionnée</span>
           )}
-        </p>
+        </div>
         <p>
           <label htmlFor="tempsRecette"> Temps total de la recette : </label>
           <input
