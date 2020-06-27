@@ -3,6 +3,7 @@ import "./RecettesAffichage.css";
 import Recette from "./Recette";
 import RecettesToolbar from "./RecettesToolbar";
 import Highlighter from "react-highlight-words";
+import PropTypes from "prop-types";
 
 function RecettesAffichage({ recettes }) {
   const [categories, setCategories] = useState([]);
@@ -139,5 +140,18 @@ function RecettesAffichage({ recettes }) {
     </div>
   );
 }
+
+RecettesAffichage.propTypes = {
+  recettes: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      categorie: PropTypes.arrayOf(PropTypes.string).isRequired,
+      titre: PropTypes.string.isRequired,
+      ingredients: PropTypes.objectOf(PropTypes.string).isRequired,
+      temps: PropTypes.string.isRequired,
+      description: PropTypes.string.isRequired,
+    })
+  ).isRequired,
+};
 
 export default RecettesAffichage;

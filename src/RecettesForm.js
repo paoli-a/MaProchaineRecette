@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import InputSuggestions from "./InputSuggestions";
+import PropTypes from "prop-types";
 
 function RecettesForm({ onSubmitRecette, ingredientsPossibles }) {
   const { register, handleSubmit, errors, reset, watch, getValues } = useForm();
   const [ingredients, setIngredients] = useState([]);
-  const [ingredientNom, setIngredientNom] = useState([]);
+  const [ingredientNom, setIngredientNom] = useState("");
   const [ingredientQuantite, setIngredientQuantite] = useState("");
   const [ingredientUnite, setIngredientUnite] = useState("");
   const [ingredientError, setIngredientError] = useState("");
@@ -245,5 +246,24 @@ function RecettesForm({ onSubmitRecette, ingredientsPossibles }) {
     </form>
   );
 }
+
+RecettesForm.propTypes = {
+  /**
+   * Cette fonction est exécutée au moment du submit de de la recette,
+   * lorsque la validité de tous les éléments entrés a été vérifiée,
+   * et permet de les récupérer.
+   */
+  onSubmitRecette: PropTypes.func.isRequired,
+  /**
+   * Il s'agit ici des ingrédients autorisés, c'est-à-dire ceux entrés
+   * dans le catalogue des ingrédients.
+   */
+  ingredientsPossibles: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      nom: PropTypes.string.isRequired,
+    })
+  ).isRequired,
+};
 
 export default RecettesForm;

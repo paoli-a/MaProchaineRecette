@@ -29,7 +29,7 @@ beforeEach(() => {
 
   recettes = [
     {
-      id: "001",
+      id: 1,
       categorie: ["Plat"],
       titre: "Salade de pommes de terre radis",
       ingredients: {
@@ -49,7 +49,7 @@ beforeEach(() => {
     },
 
     {
-      id: "002",
+      id: 2,
       categorie: ["Entrée"],
       titre: "Marinade de saumon fumé",
       ingredients: {

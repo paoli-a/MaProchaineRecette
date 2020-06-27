@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./RecettesToolbar.css";
 import { useForm } from "react-hook-form";
+import PropTypes, { string } from "prop-types";
 
 function RecettesToolbar({ onChangeCategories, onChangeSearch, categories }) {
   const {
@@ -84,5 +85,23 @@ function RecettesToolbar({ onChangeCategories, onChangeSearch, categories }) {
     </fieldset>
   );
 }
+
+RecettesToolbar.propTypes = {
+  /**
+   * Cette fonction permet de récupérer les nouvelles catégories sélectionnées
+   * lorsque l'utilisateur clique sur la checkbox des catégories.
+   */
+  onChangeCategories: PropTypes.func.isRequired,
+  /**
+   * Cette fonction permet de récupérer la recherche de l'utilisateur
+   * pour filtrer les recettes.
+   */
+  onChangeSearch: PropTypes.func.isRequired,
+  /**
+   * Chaque catégorie est associée à un chiffre qui représente le nombre de
+   * recettes ayant cette catégorie.
+   */
+  categories: PropTypes.objectOf(PropTypes.number).isRequired,
+};
 
 export default RecettesToolbar;
