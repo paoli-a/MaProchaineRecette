@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import IngredientsFrigoForm from "./IngredientsFrigoForm";
+import PropTypes from "prop-types";
 
 function IngredientsFrigo({ ingredients, ingredientsPossibles }) {
   const [ingredientsList, setIngredient] = useState(ingredients);
@@ -55,5 +56,25 @@ function IngredientsFrigo({ ingredients, ingredientsPossibles }) {
     </section>
   );
 }
+
+IngredientsFrigo.propTypes = {
+  ingredientsPossibles: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      nom: PropTypes.string.isRequired,
+    })
+  ).isRequired,
+  /**
+   * Il s'agit ici des ingrédients présents dans le frigo.
+   */
+  ingredients: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      nom: PropTypes.string.isRequired,
+      datePeremption: PropTypes.instanceOf(Date),
+      quantite: PropTypes.string.isRequired,
+    })
+  ).isRequired,
+};
 
 export default IngredientsFrigo;

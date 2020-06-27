@@ -3,6 +3,7 @@ import RecettesForm from "./RecettesForm";
 import Recette from "./Recette";
 import useFilterSearch from "./useFilterSearch";
 import "./RecettesCatalogue.css";
+import PropTypes from "prop-types";
 
 function RecettesCatalogue({ totalRecettes, ingredientsPossibles }) {
   const [recettesList, setRecettes] = useState(totalRecettes);
@@ -29,7 +30,7 @@ function RecettesCatalogue({ totalRecettes, ingredientsPossibles }) {
     const categories = data.categorie.filter(Boolean);
     const nouvelleRecette = {
       id: id,
-      categories: categories,
+      categorie: categories,
       titre: data.titreRecette,
       ingredients: formatedIngredients,
       temps: data.tempsRecette,
@@ -50,14 +51,15 @@ function RecettesCatalogue({ totalRecettes, ingredientsPossibles }) {
   });
 
   const toutesMesRecettes = recettesFiltres.map((maRecette) => {
+    const button = (
+      <button onClick={() => handleSupprClick(maRecette.id)}>X</button>
+    );
     return (
       <Recette
         key={maRecette.id}
         recette={maRecette}
         activateClick={true}
-        optionalButton=<button onClick={() => handleSupprClick(maRecette.id)}>
-          X
-        </button>
+        optionalButton={button}
       />
     );
   });
@@ -89,5 +91,28 @@ function RecettesCatalogue({ totalRecettes, ingredientsPossibles }) {
     </main>
   );
 }
+
+RecettesCatalogue.propTypes = {
+  totalRecettes: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      categorie: PropTypes.arrayOf(PropTypes.string).isRequired,
+      titre: PropTypes.string.isRequired,
+      ingredients: PropTypes.objectOf(PropTypes.string).isRequired,
+      temps: PropTypes.string.isRequired,
+      description: PropTypes.string.isRequired,
+    })
+  ).isRequired,
+  /**
+   * Il s'agit ici des ingrédients autorisés, c'est-à-dire ceux entrés
+   * dans le catalogue des ingrédients.
+   */
+  ingredientsPossibles: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      nom: PropTypes.string.isRequired,
+    })
+  ).isRequired,
+};
 
 export default RecettesCatalogue;

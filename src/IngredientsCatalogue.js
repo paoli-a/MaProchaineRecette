@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import useFilterSearch from "./useFilterSearch";
 import "./IngredientsCatalogue.css";
+import PropTypes from "prop-types";
 
 function IngredientsCatalogue({
   ingredientsPossibles,
@@ -92,5 +93,18 @@ function IngredientsCatalogue({
     </main>
   );
 }
+
+IngredientsCatalogue.propTypes = {
+  ingredientsPossibles: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      nom: PropTypes.string.isRequired,
+    })
+  ).isRequired,
+  /**
+   * Fonction mettant à jour la propriété controlée ingredientsPossibles.
+   */
+  updateIngredientsPossibles: PropTypes.func.isRequired,
+};
 
 export default IngredientsCatalogue;
