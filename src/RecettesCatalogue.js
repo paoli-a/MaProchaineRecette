@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import RecettesForm from "./RecettesForm";
 import Recette from "./Recette";
 import useFilterSearch from "./useFilterSearch";
+import "./RecettesCatalogue.css";
 import PropTypes from "prop-types";
 
 function RecettesCatalogue({ totalRecettes, ingredientsPossibles }) {
@@ -50,39 +51,44 @@ function RecettesCatalogue({ totalRecettes, ingredientsPossibles }) {
   });
 
   const toutesMesRecettes = recettesFiltres.map((maRecette) => {
+    const button = (
+      <button onClick={() => handleSupprClick(maRecette.id)}>X</button>
+    );
     return (
       <Recette
         key={maRecette.id}
         recette={maRecette}
         activateClick={true}
-        optionalButton=<button onClick={() => handleSupprClick(maRecette.id)}>
-          X
-        </button>
+        optionalButton={button}
       />
     );
   });
 
   return (
-    <div>
+    <main id="ComponentCatalogueRecette">
       <h1>Catalogue de toutes mes recettes</h1>
-      <form>
-        <input
-          type="search"
-          id="rechercheCatalogueRecette"
-          name="q"
-          value={searchResults}
-          placeholder="Recherche par titre..."
-          spellCheck="true"
-          size="30"
-          onChange={handleChangeSearch}
+      <section id="AjoutRecette">
+        <RecettesForm
+          onSubmitRecette={handleSubmit}
+          ingredientsPossibles={ingredientsPossibles}
         />
-      </form>
-      <RecettesForm
-        onSubmitRecette={handleSubmit}
-        ingredientsPossibles={ingredientsPossibles}
-      />
-      {toutesMesRecettes}
-    </div>
+      </section>
+      <section id="DisplayCatalogueRecette">
+        <form>
+          <input
+            type="search"
+            id="rechercheCatalogueRecette"
+            name="q"
+            value={searchResults}
+            placeholder="Recherche par titre..."
+            spellCheck="true"
+            size="30"
+            onChange={handleChangeSearch}
+          />
+        </form>
+        {toutesMesRecettes}
+      </section>
+    </main>
   );
 }
 

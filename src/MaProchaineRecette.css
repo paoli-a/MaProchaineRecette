@@ -1,0 +1,101 @@
+#ingredientsFrigo h2 {
+  margin-bottom: 14%;
+}
+
+#ingredientsFrigo legend {
+  margin-bottom: 3%;
+  text-decoration: underline;
+}
+
+#ingredientsFrigo ul {
+  margin-top: 12%;
+  padding-inline-start: 2%;
+}
+
+#ingredientsFrigo li {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+fieldset {
+  border: 0;
+}
+
+#formFrigo p {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+#formFrigo p > span {
+  flex: 1;
+  display: flex;
+}
+
+#formFrigo p > span > input {
+  flex: 3;
+}
+
+#formFrigo p > span > select {
+  flex: 1;
+}
+
+#formFrigo label {
+  margin-right: 5%;
+  margin-bottom: 2%;
+}
+
+#formFrigo p > input:not([type="submit"]) {
+  flex: 1;
+}
+
+#formFrigo input[type="submit"] {
+  margin-left: auto;
+  margin-top: 3%;
+}
+
+#MesProchainesRecettes {
+  display: grid;
+  margin-top: 80px;
+}
+
+#ingredientsFrigo {
+  border: 1px solid;
+  padding: 0 2%;
+  margin: 5.5% 4%;
+  align-self: start;
+  box-sizing: border-box;
+}
+
+#RecettesFrigo h1 {
+  margin-bottom: 6%;
+}
+
+@media (min-width: 948px) {
+  #MesProchainesRecettes {
+    grid-template-columns: 0.5fr minmax(420px, 540px) minmax(440px, 900px) 1fr;
+    grid-template-areas: ". ingredients recettes .";
+  }
+
+  #ingredientsFrigo {
+    grid-area: ingredients;
+    margin-left: 10px;
+    margin-right: 20%;
+  }
+
+  #RecettesFrigo {
+    grid-area: recettes;
+    margin-right: 10px;
+  }
+}
+
+@media (max-width: 947px) {
+  #MesProchainesRecettes {
+    grid-template-columns: minmax(0px, 460px);
+    grid-template-areas:
+      "ingredients"
+      "recettes";
+    justify-content: center;
+    gap: 60px;
+  }
+}

@@ -1,0 +1,69 @@
+nav {
+  background-color: RGBa(220, 220, 220, 0.7);
+  margin-top: 1.5%;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.7);
+}
+
+nav a {
+  text-align: center;
+  cursor: pointer;
+  height: 40px;
+  border-bottom: 1px solid grey;
+  text-decoration: none;
+  color: rgb(98, 101, 103);
+  font-size: 18px;
+  font-family: Georgia, serif;
+  line-height: 45px;
+  display: block;
+}
+
+nav a.currentTab {
+  box-sizing: border-box;
+  color: RGB(205, 97, 85);
+  font-weight: bold;
+}
+
+nav a.currentTab:hover {
+  font-size: 19px;
+  font-weight: bold;
+  background-color: RGBa(250, 148, 119, 0.3);
+}
+
+nav a:hover {
+  color: RGB(205, 97, 85);
+}
+
+@media (min-width: 640px) {
+  nav {
+    display: flex;
+    align-items: center;
+  }
+
+  nav a {
+    flex: 1;
+    border-bottom: 0;
+  }
+
+  nav a:last-child::after {
+    content: "";
+    position: absolute;
+    border-bottom: 2px solid RGB(205, 97, 85);
+    height: 38px;
+    width: calc(100% / 3);
+    transition: left 0.3s ease-out;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  nav a:first-child.currentTab ~ ::after {
+    left: 0%;
+  }
+
+  nav a:nth-child(2).currentTab ~ ::after {
+    left: calc(100% / 3);
+  }
+
+  nav a:nth-child(3).currentTab::after {
+    left: calc(100% / 3 * 2);
+  }
+}

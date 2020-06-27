@@ -120,8 +120,8 @@ function RecettesForm({ onSubmitRecette, ingredientsPossibles }) {
   return (
     <form id="formRecette" onSubmit={handleSubmit(onSubmitForm)}>
       <fieldset>
-        <legend>Ajouter une recette dans mon catalogue</legend>
-        <div>
+        <legend>Ajouter une recette dans mon catalogue :</legend>
+        <p>
           <label htmlFor="titreRecette"> Titre de la recette : </label>
           <input
             type="text"
@@ -131,7 +131,7 @@ function RecettesForm({ onSubmitRecette, ingredientsPossibles }) {
             ref={register({ required: true })}
           />
           {errors.titreRecette && <span>Ce champ est obligatoire</span>}
-        </div>
+        </p>
         <div>
           Catégories :
           <ul>
@@ -170,7 +170,7 @@ function RecettesForm({ onSubmitRecette, ingredientsPossibles }) {
             <span>Au moins une catégorie doit être sélectionnée</span>
           )}
         </div>
-        <div>
+        <p>
           <label htmlFor="tempsRecette"> Temps total de la recette : </label>
           <input
             type="time"
@@ -182,42 +182,50 @@ function RecettesForm({ onSubmitRecette, ingredientsPossibles }) {
             })}
           />
           {errors.tempsRecette && errors.tempsRecette.message}
-        </div>
-        <fieldset>
+        </p>
+        <fieldset id="FormIngredientRecette">
           <legend> Ingrédients : </legend>
-          <label htmlFor="ingredient"> Nom : </label>
-          <InputSuggestions
-            elements={ingredientsPossibles}
-            id="ingredient"
-            getElementText={(ingredient) => ingredient.nom}
-            onChangeValue={(nom) => setIngredientNom(nom)}
-            value={ingredientNom}
-            name="ingredient"
-            type="text"
-          />
-          <label htmlFor="ingredientQuantite"> Quantité nécessaire : </label>
-          <input
-            type="number"
-            name="ingredientQuantite"
-            id="ingredientQuantite"
-            min="0"
-            onChange={(e) => setIngredientQuantite(e.target.value)}
-            value={ingredientQuantite}
-          />
-          <select
-            name="unite"
-            aria-label="Unité"
-            onChange={(e) => setIngredientUnite(e.target.value)}
-            value={ingredientUnite}
-          >
-            <option value="">...</option>
-            <option value="pièce(s)">pièce(s)</option>
-            <option value="kg">kg</option>
-            <option value="g">g</option>
-            <option value="cl">cl</option>
-          </select>
-          <button onClick={handleAddIngredient}>Ajouter</button>
-          {ingredientError && <span>{ingredientError}</span>}
+          <p>
+            <label htmlFor="ingredient"> Nom : </label>
+            <InputSuggestions
+              elements={ingredientsPossibles}
+              id="ingredient"
+              getElementText={(ingredient) => ingredient.nom}
+              onChangeValue={(nom) => setIngredientNom(nom)}
+              value={ingredientNom}
+              name="ingredient"
+              type="text"
+            />
+          </p>
+          <p>
+            <label htmlFor="ingredientQuantite"> Quantité nécessaire : </label>
+            <span>
+              <input
+                type="number"
+                name="ingredientQuantite"
+                id="ingredientQuantite"
+                min="0"
+                onChange={(e) => setIngredientQuantite(e.target.value)}
+                value={ingredientQuantite}
+              />
+              <select
+                name="unite"
+                aria-label="Unité"
+                onChange={(e) => setIngredientUnite(e.target.value)}
+                value={ingredientUnite}
+              >
+                <option value="">...</option>
+                <option value="pièce(s)">pièce(s)</option>
+                <option value="kg">kg</option>
+                <option value="g">g</option>
+                <option value="cl">cl</option>
+              </select>
+            </span>
+          </p>
+          <p>
+            <button onClick={handleAddIngredient}>Ajouter</button>
+            {ingredientError && <span>{ingredientError}</span>}
+          </p>
           <ul>
             {ingredients.map((ingredient) => {
               return (
@@ -231,7 +239,7 @@ function RecettesForm({ onSubmitRecette, ingredientsPossibles }) {
             })}
           </ul>
         </fieldset>
-        <div>
+        <div id="description">
           <label htmlFor="descriptionRecette">Corps de la recette : </label>
           <textarea
             id="descriptionRecette"
@@ -241,7 +249,9 @@ function RecettesForm({ onSubmitRecette, ingredientsPossibles }) {
           ></textarea>
           {errors.descriptionRecette && <span>Ce champ est obligatoire</span>}
         </div>
-        <input type="submit" value="Confirmer" />
+        <p>
+          <input type="submit" value="Confirmer" />
+        </p>
       </fieldset>
     </form>
   );

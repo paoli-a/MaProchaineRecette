@@ -1,5 +1,6 @@
 .dropdown-container {
   border: 0;
+  margin-bottom: 5%;
 }
 
 .dropdown-container > div {
@@ -33,6 +34,7 @@
 
 #recherche {
   display: flex;
+  margin-left: auto;
 }
 
 #recherche input {
@@ -57,4 +59,12 @@
 #recherche button:hover {
   background-color: rgb(240, 240, 240);
   background-image: url("images/loupe_dark.png");
+}
+
+.dropdown-container li {
+  display: flex;
+}
+
+.dropdown-container ul span {
+  margin-left: auto;
 }

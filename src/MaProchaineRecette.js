@@ -1,9 +1,11 @@
 import React, { useState } from "react";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Route, NavLink } from "react-router-dom";
 import RecettesAffichage from "./RecettesAffichage";
 import IngredientsFrigo from "./IngredientsFrigo";
 import IngredientsCatalogue from "./IngredientsCatalogue";
 import RecettesCatalogue from "./RecettesCatalogue";
+import "./MaProchaineRecette.css";
+import "./Nav.css";
 import PropTypes from "prop-types";
 
 function MaProchaineRecette({
@@ -23,17 +25,15 @@ function MaProchaineRecette({
     <Router>
       <div>
         <nav>
-          <ul>
-            <li>
-              <Link to="/">Ma prochaine recette</Link>
-            </li>
-            <li>
-              <Link to="/recettes">Catalogue des recettes</Link>
-            </li>
-            <li>
-              <Link to="/ingredients">Catalogue des ingrédients</Link>
-            </li>
-          </ul>
+          <NavLink activeClassName="currentTab" exact={true} to="/">
+            Ma prochaine recette
+          </NavLink>
+          <NavLink activeClassName="currentTab" to="/recettes">
+            Catalogue des recettes
+          </NavLink>
+          <NavLink activeClassName="currentTab" to="/ingredients">
+            Catalogue des ingrédients
+          </NavLink>
         </nav>
         <Route path="/recettes">
           <RecettesCatalogue
@@ -48,11 +48,13 @@ function MaProchaineRecette({
           />
         </Route>
         <Route path="/" exact>
-          <RecettesAffichage recettes={recettes} />
-          <IngredientsFrigo
-            ingredients={ingredientsFrigo}
-            ingredientsPossibles={ingredientsUpdated}
-          />
+          <main id="MesProchainesRecettes">
+            <IngredientsFrigo
+              ingredients={ingredientsFrigo}
+              ingredientsPossibles={ingredientsUpdated}
+            />
+            <RecettesAffichage recettes={recettes} />
+          </main>
         </Route>
       </div>
     </Router>

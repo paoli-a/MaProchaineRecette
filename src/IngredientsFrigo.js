@@ -36,7 +36,7 @@ function IngredientsFrigo({ ingredients, ingredientsPossibles }) {
     const formatedDate = monIngredient.datePeremption.toLocaleDateString();
     return (
       <li key={monIngredient.id}>
-        {monIngredient.nom} : {monIngredient.quantite}. Expiration :{" "}
+        - {monIngredient.nom} : {monIngredient.quantite}. Expiration :{" "}
         {formatedDate}.
         <button onClick={() => handleSupprClick(monIngredient.id)}>
           Supprimer
@@ -46,14 +46,14 @@ function IngredientsFrigo({ ingredients, ingredientsPossibles }) {
   });
 
   return (
-    <div>
-      <h1>Voici les ingrédients du frigo !</h1>
+    <section id="ingredientsFrigo">
+      <h2>Voici les ingrédients du frigo !</h2>
       <IngredientsFrigoForm
         onSubmit={handleSubmit}
         ingredientsPossibles={ingredientsPossibles}
       />
       <ul>{ingredientElement}</ul>
-    </div>
+    </section>
   );
 }
 
