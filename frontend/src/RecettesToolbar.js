@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./RecettesToolbar.css";
 import { useForm } from "react-hook-form";
-import PropTypes, { string } from "prop-types";
+import PropTypes from "prop-types";
 
 function RecettesToolbar({ onChangeCategories, onChangeSearch, categories }) {
   const {
