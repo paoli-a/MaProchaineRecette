@@ -1,12 +1,21 @@
 import React from "react";
-import { render, fireEvent, act, within } from "@testing-library/react";
+import {
+  render,
+  fireEvent,
+  act,
+  within,
+  waitFor,
+} from "@testing-library/react";
+import axios from "axios";
 import MaProchaineRecette from "./MaProchaineRecette";
 
 require("mutationobserver-shim");
 
+jest.mock("axios");
 let recettes;
 let ingredientsFrigo;
 let ingredientsCatalogue;
+let axiosResponse;
 
 beforeEach(() => {
   recettes = [
@@ -50,16 +59,22 @@ beforeEach(() => {
       nom: "Sucre",
     },
   ];
+  axiosResponse = { data: ingredientsCatalogue };
+  axios.get.mockResolvedValue(axiosResponse);
 });
 
-it("renders only next recipes and fridge ingredients at start", () => {
+afterEach(() => {
+  jest.clearAllMocks();
+});
+
+it("renders only next recipes and fridge ingredients at start", async () => {
   const { getByText, queryByText } = render(
     <MaProchaineRecette
       recettes={recettes}
       ingredientsFrigo={ingredientsFrigo}
-      ingredientsCatalogue={ingredientsCatalogue}
     />
   );
+  await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(1));
   const prochainesRecettes = getByText("Mes prochaines recettes");
   const frigo = getByText("Voici les ingrédients du frigo !");
   const toutesMesRecettes = queryByText("Catalogue de toutes mes recettes");
@@ -76,14 +91,14 @@ const navigateTo = (linkText, getByRole) => {
   fireEvent.click(navElement);
 };
 
-it("renders only ingredients of the catalog when click on that nav link", () => {
+it("renders only ingredients of the catalog when click on that nav link", async () => {
   const { getByRole, queryByText, getByText } = render(
     <MaProchaineRecette
       recettes={recettes}
       ingredientsFrigo={ingredientsFrigo}
-      ingredientsCatalogue={ingredientsCatalogue}
     />
   );
+  await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(1));
   navigateTo("Catalogue des ingrédients", getByRole);
   const prochainesRecettes = queryByText("Mes prochaines recettes");
   const frigo = queryByText("Voici les ingrédients du frigo !");
@@ -95,14 +110,40 @@ it("renders only ingredients of the catalog when click on that nav link", () => 
   expect(tousMesIngredients).toBeInTheDocument();
 });
 
-it("renders only ingredients of the catalog when click on that nav link", () => {
+it("fetches and displays ingredients of the catalog when click on that nav link", async () => {
+  const { getByRole, getByText } = render(
+    <MaProchaineRecette
+      recettes={recettes}
+      ingredientsFrigo={ingredientsFrigo}
+    />
+  );
+  await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(1));
+  navigateTo("Catalogue des ingrédients", getByRole);
+  const fraises = getByText("Fraises");
+  expect(fraises).toBeInTheDocument();
+});
+
+it("displays an error message if the ingredient fetch was not successful", async () => {
+  axios.get.mockRejectedValue({});
+  const { getByText } = render(
+    <MaProchaineRecette
+      recettes={recettes}
+      ingredientsFrigo={ingredientsFrigo}
+    />
+  );
+  await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(1));
+  const error = getByText(/Il y a eu une erreur vis-à-vis du serveur/);
+  expect(error).toBeInTheDocument();
+});
+
+it("renders only recipes of the catalog when click on that nav link", async () => {
   const { getByRole, queryByText, getByText } = render(
     <MaProchaineRecette
       recettes={recettes}
       ingredientsFrigo={ingredientsFrigo}
-      ingredientsCatalogue={ingredientsCatalogue}
     />
   );
+  await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(1));
   navigateTo("Catalogue des recettes", getByRole);
   const prochainesRecettes = queryByText("Mes prochaines recettes");
   const frigo = queryByText("Voici les ingrédients du frigo !");
@@ -119,9 +160,9 @@ it(`takes into account newly entered ingredient in ingredientsCatalogue by givin
     <MaProchaineRecette
       recettes={recettes}
       ingredientsFrigo={ingredientsFrigo}
-      ingredientsCatalogue={ingredientsCatalogue}
     />
   );
+  await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(1));
   await addIngredientCatalogue(maProchaineRecette, "Navets");
   const { getByLabelText, getByTestId, getByRole } = maProchaineRecette;
   navigateTo("Ma prochaine recette", getByRole);
@@ -136,9 +177,9 @@ it(`takes into account newly entered ingredient in ingredientsCatalogue by givin
     <MaProchaineRecette
       recettes={recettes}
       ingredientsFrigo={ingredientsFrigo}
-      ingredientsCatalogue={ingredientsCatalogue}
     />
   );
+  await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(1));
   await addIngredientCatalogue(maProchaineRecette, "Coriandre");
   const { getByLabelText, getByTestId, getByRole } = maProchaineRecette;
   navigateTo("Catalogue des recettes", getByRole);
@@ -149,12 +190,13 @@ it(`takes into account newly entered ingredient in ingredientsCatalogue by givin
 });
 
 async function addIngredientCatalogue(maProchaineRecette, nom) {
+  const axiosPostResponse = { data: { id: 3, nom: nom } };
+  axios.post.mockResolvedValue(axiosPostResponse);
   const { getByLabelText, getByText, getByRole } = maProchaineRecette;
   navigateTo("Catalogue des ingrédients", getByRole);
   const inputNomCatalogue = getByLabelText("Nom de l'ingrédient à ajouter :");
   const submitButtonCatalogue = getByText("Envoyer");
   fireEvent.change(inputNomCatalogue, { target: { value: nom } });
-  await act(async () => {
-    fireEvent.click(submitButtonCatalogue);
-  });
+  fireEvent.click(submitButtonCatalogue);
+  await waitFor(() => expect(axios.post).toHaveBeenCalledTimes(1));
 }

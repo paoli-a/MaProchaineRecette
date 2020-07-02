@@ -6,7 +6,7 @@ import * as serviceWorker from "./serviceWorker";
 
 const recettes = [
   {
-    id: "001",
+    id: 1,
     categorie: ["Plat", "Entrée"],
     titre: "Salade de pommes de terre radis",
     ingredients: {
@@ -26,7 +26,7 @@ const recettes = [
   },
 
   {
-    id: "002",
+    id: 2,
     categorie: ["Plat"],
     titre: "Gratin pommes de terre panais",
     ingredients: {
@@ -58,22 +58,10 @@ const ingredientsFrigo = [
   },
 ];
 
-const ingredientsCatalogue = [
-  {
-    id: 10,
-    nom: "Fraises",
-  },
-  {
-    id: 11,
-    nom: "Sucre",
-  },
-];
-
 ReactDOM.render(
   <MaProchaineRecette
     recettes={recettes}
     ingredientsFrigo={ingredientsFrigo}
-    ingredientsCatalogue={ingredientsCatalogue}
   />,
   document.getElementById("root")
 );

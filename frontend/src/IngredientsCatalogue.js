@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 import { useForm } from "react-hook-form";
 import useFilterSearch from "./useFilterSearch";
 import "./IngredientsCatalogue.css";
@@ -8,25 +9,49 @@ function IngredientsCatalogue({
   ingredientsPossibles,
   updateIngredientsPossibles,
 }) {
-  const { register, handleSubmit, errors, reset } = useForm();
+  const { register, handleSubmit, errors, reset, setError } = useForm();
   const [searchResults, setSearchResults] = useState("");
+  const [deleteError, setDeleteError] = useState({});
 
-  const onSubmitWrapper = (data) => {
-    const id = new Date().getTime();
-    const ingredientNouveau = { id: id, nom: data.ingredientNom };
-    const ingredientsListUpdated = ingredientsPossibles.slice();
-    ingredientsListUpdated.push(ingredientNouveau);
-    updateIngredientsPossibles(ingredientsListUpdated);
-    reset();
+  const onSubmitWrapper = (dataForm) => {
+    const ingredientToSend = {
+      nom: dataForm.ingredientNom,
+    };
+    axios
+      .post("/catalogues/ingredients/", ingredientToSend)
+      .then(({ data }) => {
+        const ingredientNouveau = { id: data.id, nom: data.nom };
+        const ingredientsListUpdated = ingredientsPossibles.slice();
+        ingredientsListUpdated.push(ingredientNouveau);
+        updateIngredientsPossibles(ingredientsListUpdated);
+        reset();
+      })
+      .catch(() => {
+        setError("ingredientNom", {
+          message: "L'ajout a échoué ",
+        });
+      });
   };
 
   const handleSupprClick = (id) => {
-    const ingredientsListUpdated = ingredientsPossibles.slice();
-    const index = ingredientsListUpdated.findIndex((ingredient) => {
-      return ingredient.id === id;
-    });
-    ingredientsListUpdated.splice(index, 1);
-    updateIngredientsPossibles(ingredientsListUpdated);
+    axios
+      .delete(`/catalogues/ingredients/${id}/`)
+      .then(() => {
+        const ingredientsListUpdated = ingredientsPossibles.slice();
+        const index = ingredientsListUpdated.findIndex((ingredient) => {
+          return ingredient.id === id;
+        });
+        ingredientsListUpdated.splice(index, 1);
+        updateIngredientsPossibles(ingredientsListUpdated);
+        setDeleteError({});
+      })
+      .catch(() => {
+        setDeleteError({
+          id: id,
+          message:
+            "La suppression a échoué. Veuillez réessayer ultérieurement.",
+        });
+      });
   };
 
   const handleChangeSearch = (event) => {
@@ -41,10 +66,15 @@ function IngredientsCatalogue({
 
   const ingredient = ingredientsFiltres.map((unIngredient) => {
     return (
-      <li key={unIngredient.id}>
-        {unIngredient.nom}
-        <button onClick={() => handleSupprClick(unIngredient.id)}>X</button>
-      </li>
+      <React.Fragment key={unIngredient.id}>
+        <li key={unIngredient.id}>
+          {unIngredient.nom}
+          <button onClick={() => handleSupprClick(unIngredient.id)}>X</button>
+        </li>
+        {deleteError.id === unIngredient.id && (
+          <span>{deleteError.message}</span>
+        )}
+      </React.Fragment>
     );
   });
 
@@ -65,9 +95,16 @@ function IngredientsCatalogue({
                 name="ingredientNom"
                 id="ingredientNom"
                 defaultValue=""
-                ref={register({ required: true })}
+                ref={register({
+                  required: "Ce champ est obligatoire",
+                })}
               />
-              {errors.ingredientNom && <span>Ce champ est obligatoire</span>}
+              {errors.ingredientNom && (
+                <span>{errors.ingredientNom.message}</span>
+              )}
+              {errors.ingredientNom && errors.ingredientNom.types && (
+                <span>{errors.ingredientNom.types.message}</span>
+              )}
             </p>
             <p>
               <input type="submit" value="Envoyer" />

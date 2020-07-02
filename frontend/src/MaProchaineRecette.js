@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, NavLink } from "react-router-dom";
+import axios from "axios";
 import RecettesAffichage from "./RecettesAffichage";
 import IngredientsFrigo from "./IngredientsFrigo";
 import IngredientsCatalogue from "./IngredientsCatalogue";
@@ -8,18 +9,26 @@ import "./MaProchaineRecette.css";
 import "./Nav.css";
 import PropTypes from "prop-types";
 
-function MaProchaineRecette({
-  recettes,
-  ingredientsFrigo,
-  ingredientsCatalogue,
-}) {
-  const [ingredientsUpdated, setIngredientsUpdated] = useState(
-    ingredientsCatalogue
-  );
+function MaProchaineRecette({ recettes, ingredientsFrigo }) {
+  const [ingredientsCatalogue, setIngredientsCatalogue] = useState([]);
+  const [fetchError, setFetchError] = useState("");
 
   const handleIngredientsPossibles = (ingredients) => {
-    setIngredientsUpdated(ingredients);
+    setIngredientsCatalogue(ingredients);
   };
+
+  useEffect(() => {
+    axios
+      .get("/catalogues/ingredients/")
+      .then(({ data }) => {
+        setIngredientsCatalogue(data);
+      })
+      .catch(() =>
+        setFetchError(
+          "Il y a eu une erreur vis-à-vis du serveur, veuillez reharger la page ou réessayer ultérieurement."
+        )
+      );
+  }, []);
 
   return (
     <Router>
@@ -35,15 +44,16 @@ function MaProchaineRecette({
             Catalogue des ingrédients
           </NavLink>
         </nav>
+        {fetchError && <span>{fetchError}</span>}
         <Route path="/recettes">
           <RecettesCatalogue
             totalRecettes={recettes}
-            ingredientsPossibles={ingredientsUpdated}
+            ingredientsPossibles={ingredientsCatalogue}
           />
         </Route>
         <Route path="/ingredients">
           <IngredientsCatalogue
-            ingredientsPossibles={ingredientsUpdated}
+            ingredientsPossibles={ingredientsCatalogue}
             updateIngredientsPossibles={handleIngredientsPossibles}
           />
         </Route>
@@ -51,7 +61,7 @@ function MaProchaineRecette({
           <main id="MesProchainesRecettes">
             <IngredientsFrigo
               ingredients={ingredientsFrigo}
-              ingredientsPossibles={ingredientsUpdated}
+              ingredientsPossibles={ingredientsCatalogue}
             />
             <RecettesAffichage recettes={recettes} />
           </main>
@@ -78,12 +88,6 @@ MaProchaineRecette.propTypes = {
       nom: PropTypes.string.isRequired,
       datePeremption: PropTypes.instanceOf(Date),
       quantite: PropTypes.string.isRequired,
-    })
-  ).isRequired,
-  ingredientsCatalogue: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      nom: PropTypes.string.isRequired,
     })
   ).isRequired,
 };
