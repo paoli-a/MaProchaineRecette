@@ -20,7 +20,7 @@ function IngredientsCatalogue({
     axios
       .post("/catalogues/ingredients/", ingredientToSend)
       .then(({ data }) => {
-        const ingredientNouveau = { id: data.id, nom: data.nom };
+        const ingredientNouveau = { nom: data.nom };
         const ingredientsListUpdated = ingredientsPossibles.slice();
         ingredientsListUpdated.push(ingredientNouveau);
         updateIngredientsPossibles(ingredientsListUpdated);
@@ -28,18 +28,18 @@ function IngredientsCatalogue({
       })
       .catch(() => {
         setError("ingredientNom", {
-          message: "L'ajout a échoué ",
+          message: "L'ajout a échoué.",
         });
       });
   };
 
-  const handleSupprClick = (id) => {
+  const handleSupprClick = (nom) => {
     axios
-      .delete(`/catalogues/ingredients/${id}/`)
+      .delete(`/catalogues/ingredients/${nom}/`)
       .then(() => {
         const ingredientsListUpdated = ingredientsPossibles.slice();
         const index = ingredientsListUpdated.findIndex((ingredient) => {
-          return ingredient.id === id;
+          return ingredient.nom === nom;
         });
         ingredientsListUpdated.splice(index, 1);
         updateIngredientsPossibles(ingredientsListUpdated);
@@ -47,7 +47,7 @@ function IngredientsCatalogue({
       })
       .catch(() => {
         setDeleteError({
-          id: id,
+          nom: nom,
           message:
             "La suppression a échoué. Veuillez réessayer ultérieurement.",
         });
@@ -66,12 +66,12 @@ function IngredientsCatalogue({
 
   const ingredient = ingredientsFiltres.map((unIngredient) => {
     return (
-      <React.Fragment key={unIngredient.id}>
-        <li key={unIngredient.id}>
+      <React.Fragment key={unIngredient.nom}>
+        <li key={unIngredient.nom}>
           {unIngredient.nom}
-          <button onClick={() => handleSupprClick(unIngredient.id)}>X</button>
+          <button onClick={() => handleSupprClick(unIngredient.nom)}>X</button>
         </li>
-        {deleteError.id === unIngredient.id && (
+        {deleteError.nom === unIngredient.nom && (
           <span>{deleteError.message}</span>
         )}
       </React.Fragment>
@@ -134,7 +134,6 @@ function IngredientsCatalogue({
 IngredientsCatalogue.propTypes = {
   ingredientsPossibles: PropTypes.arrayOf(
     PropTypes.shape({
-      id: PropTypes.number.isRequired,
       nom: PropTypes.string.isRequired,
     })
   ).isRequired,

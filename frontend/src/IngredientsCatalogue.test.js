@@ -17,11 +17,9 @@ let ingredientsCatalogue;
 beforeEach(() => {
   ingredientsCatalogue = [
     {
-      id: 10,
       nom: "Fraises",
     },
     {
-      id: 11,
       nom: "Mascarpone",
     },
   ];
@@ -93,7 +91,7 @@ it(`adds the correct ingredient when filling the form and clicking
       updateIngredientsPossibles={handleIngredientsPossibles}
     />
   );
-  const axiosPostResponse = { data: { id: 3, nom: "Chocolat" } };
+  const axiosPostResponse = { data: { nom: "Chocolat" } };
   axios.post.mockResolvedValue(axiosPostResponse);
   const inputNom = getByLabelText("Nom de l'ingrédient à ajouter :");
   const submitButton = getByText("Envoyer");

@@ -51,11 +51,9 @@ beforeEach(() => {
 
   ingredientsCatalogue = [
     {
-      id: 10,
       nom: "Fraises",
     },
     {
-      id: 11,
       nom: "Sucre",
     },
   ];
@@ -190,7 +188,7 @@ it(`takes into account newly entered ingredient in ingredientsCatalogue by givin
 });
 
 async function addIngredientCatalogue(maProchaineRecette, nom) {
-  const axiosPostResponse = { data: { id: 3, nom: nom } };
+  const axiosPostResponse = { data: { nom: nom } };
   axios.post.mockResolvedValue(axiosPostResponse);
   const { getByLabelText, getByText, getByRole } = maProchaineRecette;
   navigateTo("Catalogue des ingrédients", getByRole);

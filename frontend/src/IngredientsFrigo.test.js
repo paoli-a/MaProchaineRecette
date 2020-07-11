@@ -10,19 +10,15 @@ let ingredientsFrigo;
 beforeEach(() => {
   ingredientsCatalogue = [
     {
-      id: 10,
       nom: "Fraises",
     },
     {
-      id: 11,
       nom: "Poires",
     },
     {
-      id: 12,
       nom: "Framboises",
     },
     {
-      id: 13,
       nom: "Carottes",
     },
   ];

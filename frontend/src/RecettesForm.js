@@ -270,7 +270,6 @@ RecettesForm.propTypes = {
    */
   ingredientsPossibles: PropTypes.arrayOf(
     PropTypes.shape({
-      id: PropTypes.number.isRequired,
       nom: PropTypes.string.isRequired,
     })
   ).isRequired,
