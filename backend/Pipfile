@@ -6,6 +6,12 @@ verify_ssl = true
 [dev-packages]
 pylint = "*"
 pylint-django = "*"
+pytest = "*"
+factory-boy = "*"
+pylint-pytest = "*"
+pytest-django = "*"
+flake8 = "*"
+flake8-django = "*"
 
 [packages]
 django = "*"
