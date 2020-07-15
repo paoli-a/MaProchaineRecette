@@ -12,6 +12,7 @@ pylint-pytest = "*"
 pytest-django = "*"
 flake8 = "*"
 flake8-django = "*"
+django-extensions = "*"
 
 [packages]
 django = "*"

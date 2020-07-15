@@ -7,6 +7,9 @@ from unites.models import Unite
 class Ingredient(TimeStampedModel):
     nom = models.CharField("Nom de l'ingrédient", max_length=255, unique=True)
 
+    def __str__(self) -> str:
+        return self.nom
+
 
 class Recette(TimeStampedModel):
     titre = models.CharField("Titre de la recette", max_length=255)
@@ -15,12 +18,21 @@ class Recette(TimeStampedModel):
     ingredients = models.ManyToManyField("IngredientRecette")
     categories = models.ManyToManyField("Categorie")
 
+    def __str__(self) -> str:
+        return self.titre
+
 
 class IngredientRecette(TimeStampedModel):
     ingredient = models.ForeignKey(Ingredient, on_delete=models.PROTECT)
     quantite = models.DecimalField(max_digits=10, decimal_places=2)
     unite = models.ForeignKey(Unite, on_delete=models.PROTECT)
 
+    def __str__(self) -> str:
+        return self.ingredient.nom
+
 
 class Categorie(TimeStampedModel):
     nom = models.CharField("Nom de la catégorie", max_length=255, unique=True)
+
+    def __str__(self) -> str:
+        return self.nom
