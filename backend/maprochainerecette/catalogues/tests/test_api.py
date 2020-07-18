@@ -1,3 +1,6 @@
+import datetime
+from decimal import Decimal
+
 import pytest
 from pytest_django.asserts import (
     assertContains,
@@ -6,6 +9,7 @@ from pytest_django.asserts import (
 from rest_framework.test import APIRequestFactory
 
 from catalogues.api import IngredientViewSet, RecetteViewSet
+from catalogues.models import Recette, Ingredient
 from .factories import (
     IngredientFactory,
     ingredient,
@@ -45,29 +49,30 @@ def test_adding_ingredient():
     request_data = {'nom': "ingredient name"}
     url = _get_ingredients_list_absolute_url()
     request_post = APIRequestFactory().post(url, request_data)
+    assert Ingredient.objects.count() == 0
     response_post = IngredientViewSet.as_view({'post': 'create'})(request_post)
     assert response_post.status_code == 201
-    response_get = _list_ingredients()
-    assertContains(response_get, "ingredient name")
+    assert Ingredient.objects.count() == 1
 
 
-def _list_ingredients():
-    list_url = _get_ingredients_list_absolute_url()
-    request_get = APIRequestFactory().get(list_url)
-    response_get = IngredientViewSet.as_view({'get': 'list'})(request_get)
-    assert response_get.status_code == 200
-    return response_get
+def test_adding_ingredient_deserializes_correctly_all_fields():
+    request_data = {'nom': "ingredient name"}
+    url = _get_ingredients_list_absolute_url()
+    request_post = APIRequestFactory().post(url, request_data)
+    response_post = IngredientViewSet.as_view({'post': 'create'})(request_post)
+    assert response_post.status_code == 201
+    assert Ingredient.objects.first().nom == "ingredient name"
 
 
 def test_delete_ingredient(ingredient):
     detail_url = _get_ingredients_detail_absolute_url(ingredient.nom)
     request_delete = APIRequestFactory().delete(
         detail_url)
+    assert Ingredient.objects.count() == 1
     response_delete = IngredientViewSet.as_view(
         {'delete': 'destroy'})(request_delete, nom=ingredient.nom)
     assert response_delete.status_code == 204
-    response_get = _list_ingredients()
-    assertNotContains(response_get, ingredient.nom)
+    assert Ingredient.objects.count() == 0
 
 
 def _get_ingredients_detail_absolute_url(nom):
@@ -105,22 +110,44 @@ def test_recettes_list_has_correct_fields(recette):
     url = _get_recettes_list_absolute_url()
     request = APIRequestFactory().get(url)
     response = RecetteViewSet.as_view({'get': 'list'})(request)
-    assert response.data[0]["id"] == recette.id
+    assert len(response.data) == 1
+    recette_data = response.data[0]
+    assert recette_data["id"] == recette.id
     assertContains(response, recette.titre)
     assertContains(response, recette.description)
     assertContains(response, recette.duree)
-    assert len(response.data[0]["ingredients"]) == 10
-    assert set(response.data[0]["ingredients"][0].keys(
+    assert len(recette_data["ingredients"]) == 10
+    assert set(recette_data["ingredients"][0].keys(
     )) == {"ingredient", "quantite", "unite"}
-    assert response.data[0]["ingredients"][0]["ingredient"] == recette.ingredients.first(
+    assert recette_data["ingredients"][0]["ingredient"] == recette.ingredients.first(
     ).ingredient.nom
-    assert response.data[0]["ingredients"][0]["unite"] == recette.ingredients.first(
+    assert recette_data["ingredients"][0]["unite"] == recette.ingredients.first(
     ).unite.abbreviation
-    assert len(response.data[0]["categories"]) == 10
-    assert response.data[0]["categories"][0] == recette.categories.first().nom
+    assert len(recette_data["categories"]) == 10
+    assert recette_data["categories"][0] == recette.categories.first().nom
 
 
 def test_adding_recette():
+    assert Recette.objects.count() == 0
+    _add_recette()
+    assert Recette.objects.count() == 1
+
+
+def test_adding_recette_deserializes_correctly_all_fields():
+    _add_recette()
+    recette_added = Recette.objects.first()
+    assert recette_added.titre == "titre recette"
+    assert recette_added.description == "description recette"
+    assert recette_added.duree == datetime.timedelta(seconds=180)
+    assert recette_added.ingredients.count() == 1
+    assert recette_added.ingredients.first().ingredient.nom == "premier ingrédient"
+    assert recette_added.ingredients.first().quantite == Decimal('10.00')
+    assert recette_added.ingredients.first().unite.abbreviation == "kg"
+    assert recette_added.categories.count() == 1
+    assert recette_added.categories.first().nom == "dessert"
+
+
+def _add_recette():
     CategoryFactory(nom="dessert")
     IngredientFactory(nom="premier ingrédient")
     masse = TypeUniteFactory(nom="masse")
@@ -138,27 +165,17 @@ def test_adding_recette():
     request_post = APIRequestFactory().post(url, data=request_data, format='json')
     response_post = RecetteViewSet.as_view({'post': 'create'})(request_post)
     assert response_post.status_code == 201
-    response_get = _list_recettes()
-    assertContains(response_get, "titre recette")
-
-
-def _list_recettes():
-    list_url = _get_recettes_list_absolute_url()
-    request_get = APIRequestFactory().get(list_url)
-    response_get = RecetteViewSet.as_view({'get': 'list'})(request_get)
-    assert response_get.status_code == 200
-    return response_get
 
 
 def test_delete_recette(recette):
     detail_url = _get_recettes_detail_absolute_url(recette.id)
     request_delete = APIRequestFactory().delete(
         detail_url)
+    assert Recette.objects.count() == 1
     response_delete = RecetteViewSet.as_view(
         {'delete': 'destroy'})(request_delete, pk=recette.id)
     assert response_delete.status_code == 204
-    response_get = _list_recettes()
-    assertNotContains(response_get, recette.titre)
+    assert Recette.objects.count() == 0
 
 
 def _get_recettes_detail_absolute_url(id):
