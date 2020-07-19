@@ -52,10 +52,16 @@ function Recette({ recette, optionalButton, activateClick, highlight }) {
 Recette.propTypes = {
   recette: PropTypes.shape({
     id: PropTypes.number.isRequired,
-    categorie: PropTypes.arrayOf(PropTypes.string).isRequired,
+    categories: PropTypes.arrayOf(PropTypes.string).isRequired,
     titre: PropTypes.string.isRequired,
-    ingredients: PropTypes.objectOf(PropTypes.string).isRequired,
-    temps: PropTypes.string.isRequired,
+    ingredients: PropTypes.arrayOf(
+      PropTypes.shape({
+        ingredient: PropTypes.string.isRequired,
+        quantite: PropTypes.string.isRequired,
+        unite: PropTypes.string.isRequired,
+      }).isRequired
+    ),
+    duree: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
   }).isRequired,
   /**

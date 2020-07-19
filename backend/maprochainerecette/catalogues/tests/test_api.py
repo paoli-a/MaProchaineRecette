@@ -140,7 +140,7 @@ def test_adding_recette_deserializes_correctly_all_fields():
     assert recette_added.description == "description recette"
     assert recette_added.duree == datetime.timedelta(seconds=180)
     assert recette_added.ingredients.count() == 1
-    assert recette_added.ingredients.first().ingredient.nom == "premier ingrédient"
+    assert recette_added.ingredients.first().ingredient.nom == "deuxième ingrédient"
     assert recette_added.ingredients.first().quantite == Decimal('10.00')
     assert recette_added.ingredients.first().unite.abbreviation == "kg"
     assert recette_added.categories.count() == 1
@@ -150,13 +150,15 @@ def test_adding_recette_deserializes_correctly_all_fields():
 def _add_recette():
     CategoryFactory(nom="dessert")
     IngredientFactory(nom="premier ingrédient")
+    IngredientFactory(nom="deuxième ingrédient")
+    IngredientFactory(nom="troisième ingrédient")
     masse = TypeUniteFactory(nom="masse")
     UniteFactory(abbreviation="kg", type=masse)
     request_data = {"titre": "titre recette",
                     "description": "description recette",
                     "duree": "00:03:00",
                     "ingredients": [{
-                        "ingredient": "premier ingrédient",
+                        "ingredient": "deuxième ingrédient",
                         "quantite": "10.0",
                         "unite": "kg"
                     }],

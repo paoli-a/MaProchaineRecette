@@ -10,52 +10,52 @@ beforeEach(() => {
   recettes = [
     {
       id: 1,
-      categorie: ["Plat", "Entrée"],
+      categories: ["Plat", "Entrée"],
       titre: "Salade de pommes de terre radis",
-      ingredients: {
-        "pommes de terre": "1 kg",
-        oeufs: "3",
-        "vinaigre non balsamique": "1 cas",
-        radis: "2 bottes",
-        "oignons bottes": "2 cas",
-        "yaourt grec": "1",
-        mayonnaise: "1 cas",
-        moutarde: "1/2 cas",
-        ail: "1 gousse",
-      },
-      temps: "35 min",
+      ingredients: [
+        { ingredient: "pommes de terre", quantite: "1", unite: "kg" },
+        { ingredient: "oeufs", quantite: "3", unite: "pièce(s)" },
+        { ingredient: "vinaigre non balsamique", quantite: "1", unite: "cas" },
+        { ingredient: "radis", quantite: "2", unite: "botte(s)" },
+        { ingredient: "oignons bottes", quantite: "2", unite: "pièce(s)" },
+        { ingredient: "yaourt grec", quantite: "1", unite: "pièce(s)" },
+        { ingredient: "mayonnaise", quantite: "1", unite: "cas" },
+        { ingredient: "moutarde", quantite: "0.5", unite: "cas" },
+        { ingredient: "ail", quantite: "1", unite: "gousse(s)" },
+      ],
+      duree: "35 min",
       description:
         "Epluchez et coupez les patates en rondelles et les cuire à l'eau. Cuire les oeufs durs. Coupez les radis en rondelles. Emincez les échalottes et les oignons. Coupez les oeufs durs. Mettre le tout dans un saladier et rajoutez le vinaigre. Mélangez. Préparez la sauce :  mélangez le yaourt, la mayonnaise, la moutarde, la gousse d'ail rapée. Assaisoner. Une recette en or ...",
     },
 
     {
       id: 2,
-      categorie: ["Entrée"],
+      categories: ["Entrée"],
       titre: "Marinade de saumon fumé",
-      ingredients: {
-        "saumon fumé": "200g",
-        "citon vert": "0,5",
-        "vinaigre balsamique": "2 cas",
-        "huile d'olive": "2 cas",
-        échalotte: "1",
-        "herbes fraiches": "1 cas",
-      },
-      temps: "11 h",
+      ingredients: [
+        { ingredient: "saumon fumé", quantite: "200", unite: "g" },
+        { ingredient: "citon vert", quantite: "0,5", unite: "pièce(s)" },
+        { ingredient: "vinaigre balsamique", quantite: "2", unite: "cas" },
+        { ingredient: "huile d'olive", quantite: "2", unite: "cas" },
+        { ingredient: "échalotte", quantite: "1", unite: "pièce(s)" },
+        { ingredient: "herbes fraiches", quantite: "1", unite: "cas" },
+      ],
+      duree: "11 h",
       description:
         "Emincez le saumon, l'échalotte et le persil. Ajoutez le vinaigre, l'huile, le citron et un peu de poivre. Mélangez et laissez mariner toute la nuit.",
     },
 
     {
       id: 3,
-      categorie: ["Dessert"],
+      categories: ["Dessert"],
       titre: "Crumble aux poires",
-      ingredients: {
-        poires: "1 kg",
-        farine: "150g",
-        beurre: "130g",
-        cassonade: "120g",
-      },
-      temps: "1 h",
+      ingredients: [
+        { ingredient: "poires", quantite: "1", unite: "kg" },
+        { ingredient: "farine", quantite: "150", unite: "g" },
+        { ingredient: "beurre", quantite: "130", unite: "g" },
+        { ingredient: "cassonade", quantite: "120", unite: "g" },
+      ],
+      duree: "1 h",
       description:
         "Épluchez et épépinez les poires. Coupez-les en dés. Faites-les revenir 10 min dans 40 g de beurre et 40 g de cassonade. Préchauffez le four à 210 °C. Mélangez la farine avec le reste de cassonade, 80 g de beurre mou en dés et 1 pincée de sel afin d'obtenir une pâte sableuse. Disposez les poires dans un plat à gratin beurré. Parsemez de pâte en l'effritant du bout des doigts. Enfournez 30 min. Servez chaud ou tiède.",
     },

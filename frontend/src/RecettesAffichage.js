@@ -12,7 +12,7 @@ function RecettesAffichage({ recettes }) {
   const categoriesPossibles = () => {
     const categories = {};
     for (let recette of recettes) {
-      for (let categorie of recette.categorie)
+      for (let categorie of recette.categories)
         if (categorie in categories) {
           categories[categorie] += 1;
         } else {
@@ -41,7 +41,7 @@ function RecettesAffichage({ recettes }) {
   const recettesFiltrees = useMemo(() => {
     const filtreurUtilCategories = function (recette) {
       for (let categorie of categories) {
-        if (recette.categorie.includes(categorie)) {
+        if (recette.categories.includes(categorie)) {
           return true;
         }
       }
@@ -57,10 +57,11 @@ function RecettesAffichage({ recettes }) {
     };
 
     const lowerResults = (recette) => {
-      const ingredients = Object.keys(recette.ingredients);
-      const ingredientsListLower = ingredients.map((ingredient) => {
-        return ingredient.toLowerCase();
-      });
+      const ingredientsListLower = recette.ingredients.map(
+        (ingredientInfos) => {
+          return ingredientInfos.ingredient.toLowerCase();
+        }
+      );
       const resultsLower = {
         titreRecette: recette.titre.toLowerCase(),
         description: recette.description.toLowerCase(),
@@ -145,10 +146,16 @@ RecettesAffichage.propTypes = {
   recettes: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number.isRequired,
-      categorie: PropTypes.arrayOf(PropTypes.string).isRequired,
+      categories: PropTypes.arrayOf(PropTypes.string).isRequired,
       titre: PropTypes.string.isRequired,
-      ingredients: PropTypes.objectOf(PropTypes.string).isRequired,
-      temps: PropTypes.string.isRequired,
+      ingredients: PropTypes.arrayOf(
+        PropTypes.shape({
+          ingredient: PropTypes.string.isRequired,
+          quantite: PropTypes.string.isRequired,
+          unite: PropTypes.string.isRequired,
+        }).isRequired
+      ),
+      duree: PropTypes.string.isRequired,
       description: PropTypes.string.isRequired,
     })
   ).isRequired,

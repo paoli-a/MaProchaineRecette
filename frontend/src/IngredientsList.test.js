@@ -5,17 +5,17 @@ import IngredientsList from "./IngredientsList";
 let ingredients;
 
 beforeEach(() => {
-  ingredients = {
-    "pommes de terre": "1 kg",
-    oeufs: "3",
-    "vinaigre non balsamique": "1 cas",
-    radis: "2 bottes",
-    "oignons bottes": "2 cas",
-    "yaourt grec": "1",
-    mayonnaise: "1 cas",
-    moutarde: "1/2 cas",
-    ail: "1 gousse",
-  };
+  ingredients = [
+    { ingredient: "pommes de terre", quantite: "1", unite: "kg" },
+    { ingredient: "oeufs", quantite: "3", unite: "pièce(s)" },
+    { ingredient: "vinaigre non balsamique", quantite: "1", unite: "cas" },
+    { ingredient: "radis", quantite: "2", unite: "botte(s)" },
+    { ingredient: "oignons bottes", quantite: "2", unite: "pièce(s)" },
+    { ingredient: "yaourt grec", quantite: "1", unite: "pièce(s)" },
+    { ingredient: "mayonnaise", quantite: "1", unite: "cas" },
+    { ingredient: "moutarde", quantite: "0.5", unite: "cas" },
+    { ingredient: "ail", quantite: "1", unite: "gousse(s)" },
+  ];
 });
 
 it("renders a list of ingredients", () => {

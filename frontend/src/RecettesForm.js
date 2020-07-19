@@ -53,7 +53,7 @@ function RecettesForm({ onSubmitRecette, ingredientsPossibles }) {
       );
     }
     for (let ingredientExistant of ingredients) {
-      if (ingredientExistant.nom === ingredientNom) {
+      if (ingredientExistant.ingredient === ingredientNom) {
         throw new Error("Cet ingrédient a déjà été ajouté");
       }
     }
@@ -68,7 +68,7 @@ function RecettesForm({ onSubmitRecette, ingredientsPossibles }) {
       validateNewIngredient();
       const newIngredients = ingredients.slice();
       newIngredients.push({
-        nom: ingredientNom,
+        ingredient: ingredientNom,
         quantite: ingredientQuantite,
         unite: ingredientUnite,
       });
@@ -92,7 +92,7 @@ function RecettesForm({ onSubmitRecette, ingredientsPossibles }) {
   const handleSupprIngredient = (nom) => {
     const ingredientsListUpdated = ingredients.slice();
     for (let i = 0; i < ingredientsListUpdated.length; i++) {
-      if (ingredientsListUpdated[i].nom === nom) {
+      if (ingredientsListUpdated[i].ingredient === nom) {
         ingredientsListUpdated.splice(i, 1);
         setIngredients(ingredientsListUpdated);
         return;
@@ -101,10 +101,10 @@ function RecettesForm({ onSubmitRecette, ingredientsPossibles }) {
   };
 
   const validateCategories = () => {
-    const categorie0 = watch("categorie[0]");
-    const categorie1 = watch("categorie[1]");
-    const categorie2 = watch("categorie[2]");
-    return Boolean(categorie0 || categorie1 || categorie2);
+    const categories0 = watch("categories[0]");
+    const categories1 = watch("categories[1]");
+    const categories2 = watch("categories[2]");
+    return Boolean(categories0 || categories1 || categories2);
   };
 
   const validateTime = () => {
@@ -139,7 +139,7 @@ function RecettesForm({ onSubmitRecette, ingredientsPossibles }) {
               <input
                 type="checkbox"
                 value="Entrée"
-                name="categorie[0]"
+                name="categories[0]"
                 aria-label="Entrée"
                 ref={register({ validate: validateCategories })}
               />
@@ -149,7 +149,7 @@ function RecettesForm({ onSubmitRecette, ingredientsPossibles }) {
               <input
                 type="checkbox"
                 value="Plat"
-                name="categorie[1]"
+                name="categories[1]"
                 aria-label="Plat"
                 ref={register({ validate: validateCategories })}
               />
@@ -159,14 +159,14 @@ function RecettesForm({ onSubmitRecette, ingredientsPossibles }) {
               <input
                 type="checkbox"
                 value="Dessert"
-                name="categorie[2]"
+                name="categories[2]"
                 aria-label="Dessert"
                 ref={register({ validate: validateCategories })}
               />
               Dessert
             </li>
           </ul>
-          {errors.categorie && (
+          {errors.categories && (
             <span>Au moins une catégorie doit être sélectionnée</span>
           )}
         </div>
@@ -229,9 +229,12 @@ function RecettesForm({ onSubmitRecette, ingredientsPossibles }) {
           <ul>
             {ingredients.map((ingredient) => {
               return (
-                <li key={ingredient.nom}>
-                  {ingredient.nom} : {ingredient.quantite} {ingredient.unite}
-                  <button onClick={() => handleSupprIngredient(ingredient.nom)}>
+                <li key={ingredient.ingredient}>
+                  {ingredient.ingredient} : {ingredient.quantite}{" "}
+                  {ingredient.unite}
+                  <button
+                    onClick={() => handleSupprIngredient(ingredient.ingredient)}
+                  >
                     X
                   </button>
                 </li>

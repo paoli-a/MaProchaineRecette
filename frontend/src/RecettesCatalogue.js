@@ -1,43 +1,63 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import RecettesForm from "./RecettesForm";
 import Recette from "./Recette";
 import useFilterSearch from "./useFilterSearch";
 import "./RecettesCatalogue.css";
 import PropTypes from "prop-types";
+import axios from "axios";
 
 function RecettesCatalogue({ totalRecettes, ingredientsPossibles }) {
   const [recettesList, setRecettes] = useState(totalRecettes);
   const [searchResults, setSearchResults] = useState("");
+  const [deleteError, setDeleteError] = useState({});
+  const [postError, setPostError] = useState("");
+
+  useEffect(() => {
+    setRecettes(totalRecettes);
+  }, [totalRecettes]);
 
   const handleSupprClick = (id) => {
-    const recettes = recettesList.slice();
-    const index = recettes.findIndex((recette) => {
-      return recette.id === id;
-    });
-    recettes.splice(index, 1);
-    setRecettes(recettes);
+    axios
+      .delete(`/catalogues/recettes/${id}/`)
+      .then(() => {
+        const recettesUpdated = recettesList.slice();
+        const index = recettesUpdated.findIndex((recette) => {
+          return recette.id === id;
+        });
+        recettesUpdated.splice(index, 1);
+        setRecettes(recettesUpdated);
+      })
+      .catch((e) => {
+        console.log(e.response);
+        setDeleteError({
+          id: id,
+          message:
+            "La suppression a échoué. Veuillez réessayer ultérieurement.",
+        });
+      });
   };
 
   const handleSubmit = (data) => {
-    const id = new Date().getTime();
-    const recettes = recettesList.slice();
-    const formatedIngredients = {};
-    for (let ingredient of data.ingredients) {
-      const quantite = ingredient.quantite + "";
-      const formatedQuantite = quantite + " " + ingredient.unite;
-      formatedIngredients[ingredient.nom] = formatedQuantite;
-    }
-    const categories = data.categorie.filter(Boolean);
-    const nouvelleRecette = {
-      id: id,
-      categorie: categories,
+    const categories = data.categories.filter(Boolean);
+    const recetteAEnvoyer = {
+      categories: categories,
       titre: data.titreRecette,
-      ingredients: formatedIngredients,
-      temps: data.tempsRecette,
+      ingredients: data.ingredients,
+      duree: data.tempsRecette,
       description: data.descriptionRecette,
     };
-    recettes.push(nouvelleRecette);
-    setRecettes(recettes);
+    axios
+      .post("/catalogues/recettes/", recetteAEnvoyer)
+      .then(({ data }) => {
+        const nouvelleRecette = data;
+        const recettesUpdated = recettesList.slice();
+        recettesUpdated.push(nouvelleRecette);
+        setRecettes(recettesUpdated);
+      })
+      .catch((e) => {
+        console.log(e.response);
+        setPostError("L'ajout de recette a échoué.");
+      });
   };
 
   const handleChangeSearch = (event) => {
@@ -55,12 +75,15 @@ function RecettesCatalogue({ totalRecettes, ingredientsPossibles }) {
       <button onClick={() => handleSupprClick(maRecette.id)}>X</button>
     );
     return (
-      <Recette
-        key={maRecette.id}
-        recette={maRecette}
-        activateClick={true}
-        optionalButton={button}
-      />
+      <React.Fragment key={maRecette.id}>
+        <Recette
+          key={maRecette.id}
+          recette={maRecette}
+          activateClick={true}
+          optionalButton={button}
+        />
+        {deleteError.id === maRecette.id && <span>{deleteError.message}</span>}
+      </React.Fragment>
     );
   });
 
@@ -72,6 +95,7 @@ function RecettesCatalogue({ totalRecettes, ingredientsPossibles }) {
           onSubmitRecette={handleSubmit}
           ingredientsPossibles={ingredientsPossibles}
         />
+        {postError && <span>{postError}</span>}
       </section>
       <section id="DisplayCatalogueRecette">
         <form>
@@ -96,10 +120,16 @@ RecettesCatalogue.propTypes = {
   totalRecettes: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number.isRequired,
-      categorie: PropTypes.arrayOf(PropTypes.string).isRequired,
+      categories: PropTypes.arrayOf(PropTypes.string).isRequired,
       titre: PropTypes.string.isRequired,
-      ingredients: PropTypes.objectOf(PropTypes.string).isRequired,
-      temps: PropTypes.string.isRequired,
+      ingredients: PropTypes.arrayOf(
+        PropTypes.shape({
+          ingredient: PropTypes.string.isRequired,
+          quantite: PropTypes.string.isRequired,
+          unite: PropTypes.string.isRequired,
+        }).isRequired
+      ),
+      duree: PropTypes.string.isRequired,
       description: PropTypes.string.isRequired,
     })
   ).isRequired,

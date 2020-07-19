@@ -1,9 +1,17 @@
 import React from "react";
-import { render, fireEvent, act, within } from "@testing-library/react";
+import {
+  render,
+  fireEvent,
+  act,
+  within,
+  waitFor,
+} from "@testing-library/react";
 import RecettesCatalogue from "./RecettesCatalogue";
+import axios from "axios";
 
 require("mutationobserver-shim");
 
+jest.mock("axios");
 let recettes;
 let ingredientsCatalogue;
 
@@ -26,41 +34,105 @@ beforeEach(() => {
   recettes = [
     {
       id: 1,
-      categorie: ["Plat"],
+      categories: ["Plat"],
       titre: "Salade de pommes de terre radis",
-      ingredients: {
-        "pommes de terre": "1 kg",
-        oeufs: "3",
-        "vinaigre non balsamique": "1 cas",
-        radis: "2 bottes",
-        "oignons bottes": "2 cas",
-        "yaourt grec": "1",
-        mayonnaise: "1 cas",
-        moutarde: "1/2 cas",
-        ail: "1 gousse",
-      },
-      temps: "35 min",
+      ingredients: [
+        {
+          ingredient: "pommes de terre",
+          quantite: "1",
+          unite: "kg",
+        },
+        {
+          ingredient: "oeufs",
+          quantite: "3",
+          unite: "pièce(s)",
+        },
+        {
+          ingredient: "vinaigre non balsamique",
+          quantite: "1",
+          unite: "cas",
+        },
+        {
+          ingredient: "radis",
+          quantite: "2",
+          unite: "bottes",
+        },
+        {
+          ingredient: "oignons bottes",
+          quantite: "2",
+          unite: "pièce(s)",
+        },
+        {
+          ingredient: "yaourt grec",
+          quantite: "1",
+          unite: "pièce(s)",
+        },
+        {
+          ingredient: "mayonnaise",
+          quantite: "1",
+          unite: "cas",
+        },
+        {
+          ingredient: "moutarde",
+          quantite: "0.5",
+          unite: "cas",
+        },
+        {
+          ingredient: "ail",
+          quantite: "1",
+          unite: "gousse",
+        },
+      ],
+      duree: "00:35:00",
       description:
         "Epluchez et coupez les patates en rondelles et les cuire à l'eau. Cuire les oeufs durs. Coupez les radis en rondelles. Emincez les échalottes et les oignons. Coupez les oeufs durs. Mettre le tout dans un saladier et rajoutez le vinaigre. Mélangez. Préparez la sauce :  mélangez le yaourt, la mayonnaise, la moutarde, la gousse d'ail rapée. Assaisoner.",
     },
 
     {
       id: 2,
-      categorie: ["Entrée"],
+      categories: ["Entrée"],
       titre: "Marinade de saumon fumé",
-      ingredients: {
-        "saumon fumé": "200g",
-        "citon vert": "0,5",
-        "vinaigre balsamique": "2 cas",
-        "huile d'olive": "2 cas",
-        échalotte: "1",
-        "herbes fraiches": "1 cas",
-      },
-      temps: "11 h",
+      ingredients: [
+        {
+          ingredient: "saumon fumé",
+          quantite: "200",
+          unite: "g",
+        },
+        {
+          ingredient: "citon vert",
+          quantite: "0.5",
+          unite: "pièce(s)",
+        },
+        {
+          ingredient: "vinaigre balsamique",
+          quantite: "2",
+          unite: "cas",
+        },
+        {
+          ingredient: "huile d'olive",
+          quantite: "2",
+          unite: "cas",
+        },
+        {
+          ingredient: "échalotte",
+          quantite: "1",
+          unite: "pièce(s)",
+        },
+        {
+          ingredient: "herbes fraiches",
+          quantite: "1",
+          unite: "pièce(s)",
+        },
+      ],
+      duree: "11:00:00",
       description:
         "Emincez le saumon, l'échalotte et le persil. Ajoutez le vinaigre, l'huile, le citron et un peu de poivre. Mélangez et laissez mariner toute la nuit.",
     },
   ];
+});
+
+afterEach(() => {
+  jest.clearAllMocks();
 });
 
 describe("the adding recipe functionality works properly", () => {
@@ -89,7 +161,7 @@ describe("the adding recipe functionality works properly", () => {
   });
 
   it(`does not add the recipe if no time was provided`, async () => {
-    await checkMissingInput("temps");
+    await checkMissingInput("duree");
   });
 
   it(`does not add the recipe if no description was provided`, async () => {
@@ -127,16 +199,16 @@ describe("the adding recipe functionality works properly", () => {
         ingredientsPossibles={ingredientsCatalogue}
       />
     );
-    await addRecipe(getByLabelText, getByText, [], { temps: "00:00" });
+    await addRecipe(getByLabelText, getByText, [], { duree: "00:00" });
     let recette = queryByText("Crumble aux poires", { exact: false });
     expect(recette).not.toBeInTheDocument();
 
-    await addRecipe(getByLabelText, getByText, [], { temps: "-01:00" });
+    await addRecipe(getByLabelText, getByText, [], { duree: "-01:00" });
     recette = queryByText("Crumble aux poires", { exact: false });
     expect(recette).not.toBeInTheDocument();
   });
 
-  describe("the adding of ingredient on the recepe form works properly", () => {
+  describe("the adding of ingredient on the recipe form works properly", () => {
     it(`does not add the ingredient if an ingredient with the same name
       was already provided`, () => {
       const { getByLabelText, getByText, getAllByText } = render(
@@ -145,8 +217,8 @@ describe("the adding recipe functionality works properly", () => {
           ingredientsPossibles={ingredientsCatalogue}
         />
       );
-      addIngredient(getByLabelText, getByText, ["Fraises", 5, "g"]);
-      addIngredient(getByLabelText, getByText, ["Fraises", 5, "g"]);
+      addIngredient(getByLabelText, getByText, ["Fraises", "5", "g"]);
+      addIngredient(getByLabelText, getByText, ["Fraises", "5", "g"]);
       const ingredient = getAllByText(/Fraises :/);
       expect(ingredient).toHaveLength(1);
     });
@@ -158,10 +230,10 @@ describe("the adding recipe functionality works properly", () => {
           ingredientsPossibles={ingredientsCatalogue}
         />
       );
-      addIngredient(getByLabelText, getByText, ["Fraises", -1, "g"]);
+      addIngredient(getByLabelText, getByText, ["Fraises", "-1", "g"]);
       let fraises = queryByText(/Fraises :/);
       expect(fraises).not.toBeInTheDocument();
-      addIngredient(getByLabelText, getByText, ["Fraises", 0, "g"]);
+      addIngredient(getByLabelText, getByText, ["Fraises", "0", "g"]);
       fraises = queryByText(/Fraises :/);
       expect(fraises).not.toBeInTheDocument();
     });
@@ -173,7 +245,7 @@ describe("the adding recipe functionality works properly", () => {
           ingredientsPossibles={ingredientsCatalogue}
         />
       );
-      addIngredient(getByLabelText, getByText, ["Poireaux", 50, "g"]);
+      addIngredient(getByLabelText, getByText, ["Poireaux", "50", "g"]);
       const poireaux = queryByText(/Poireaux : /);
       expect(poireaux).not.toBeInTheDocument();
     });
@@ -203,8 +275,8 @@ describe("the adding recipe functionality works properly", () => {
           ingredientsPossibles={ingredientsCatalogue}
         />
       );
-      addIngredient(getByLabelText, getByText, ["Poires", 1, "kg"]);
-      addIngredient(getByLabelText, getByText, ["Beurre", 30, "g"]);
+      addIngredient(getByLabelText, getByText, ["Poires", "1", "kg"]);
+      addIngredient(getByLabelText, getByText, ["Beurre", "30", "g"]);
       const poires = getByText(/Poires : /);
       const beurre = getByText(/Beurre : /);
       const removeButton = within(poires).getByText("X");
@@ -222,8 +294,8 @@ describe("the adding recipe functionality works properly", () => {
           ingredientsPossibles={ingredientsCatalogue}
         />
       );
-      addIngredient(getByLabelText, getByText, ["Poires", 1, "kg"]);
-      addIngredient(getByLabelText, getByText, ["Beurre", 30, "g"]);
+      addIngredient(getByLabelText, getByText, ["Poires", "1", "kg"]);
+      addIngredient(getByLabelText, getByText, ["Beurre", "30", "g"]);
       const poires = getByText(/Poires :/);
       const beurre = getByText(/Beurre :/);
       expect(poires).toBeInTheDocument();
@@ -237,6 +309,20 @@ describe("the adding recipe functionality works properly", () => {
     missingFields = [],
     customFields = {}
   ) {
+    const axiosPostResponse = {
+      data: {
+        id: 5,
+        titre: "Crumble aux poires",
+        categories: ["Entrée"],
+        duree: customFields["duree"] || "00:10:00",
+        ingredients: [
+          { ingredient: "Poires", quantite: "1", unite: "kg" },
+          { ingredient: "Beurre", quantite: "30", unite: "g" },
+        ],
+        description: "Épluchez et épépinez les poires. Coupez-les en dés.",
+      },
+    };
+    axios.post.mockResolvedValue(axiosPostResponse);
     const inputTitre = getByLabelText("Titre de la recette :");
     const entree = getByLabelText("Entrée");
     const inputTemps = getByLabelText("Temps total de la recette :");
@@ -248,24 +334,27 @@ describe("the adding recipe functionality works properly", () => {
     if (!missingFields.includes("categories")) {
       fireEvent.click(entree);
     }
-    if (!missingFields.includes("temps")) {
-      const temps = customFields["temps"] || "00:10";
-      fireEvent.change(inputTemps, { target: { value: temps } });
+    if (!missingFields.includes("duree")) {
+      const duree = customFields["duree"] || "00:10";
+      fireEvent.change(inputTemps, { target: { value: duree } });
     }
     if (!missingFields.includes("ingredients")) {
-      addIngredient(getByLabelText, getByText, ["Poires", 1, "kg"]);
-      addIngredient(getByLabelText, getByText, ["Beurre", 30, "g"]);
+      addIngredient(getByLabelText, getByText, ["Poires", "1", "kg"]);
+      addIngredient(getByLabelText, getByText, ["Beurre", "30", "g"]);
     }
     if (!missingFields.includes("description")) {
       fireEvent.change(inputDescription, {
         target: {
-          value: '"Épluchez et épépinez les poires. Coupez-les en dés.',
+          value: "Épluchez et épépinez les poires. Coupez-les en dés.",
         },
       });
     }
     await act(async () => {
       fireEvent.click(submitButton);
     });
+    if (!missingFields) {
+      await waitFor(() => expect(axios.post).toHaveBeenCalledTimes(1));
+    }
   }
 
   function addIngredient(getByLabelText, getByText, value) {
@@ -278,16 +367,52 @@ describe("the adding recipe functionality works properly", () => {
     fireEvent.change(selectedUnit, { target: { value: value[2] } });
     fireEvent.click(addButton);
   }
+
+  it(`displays an error message and does not add the recipe if the recipe adding
+was not successful on backend side`, async () => {
+    const { getByLabelText, getByText, queryByText } = render(
+      <RecettesCatalogue
+        totalRecettes={recettes}
+        ingredientsPossibles={ingredientsCatalogue}
+      />
+    );
+    const axiosPostResponse = {};
+    axios.post.mockRejectedValue(axiosPostResponse);
+    const inputTitre = getByLabelText("Titre de la recette :");
+    const entree = getByLabelText("Entrée");
+    const inputTemps = getByLabelText("Temps total de la recette :");
+    const inputDescription = getByLabelText("Corps de la recette :");
+    const submitButton = getByText("Confirmer");
+    fireEvent.change(inputTitre, { target: { value: "Crumble aux poires" } });
+    fireEvent.click(entree);
+    fireEvent.change(inputTemps, { target: { value: "00:10" } });
+    addIngredient(getByLabelText, getByText, ["Poires", "1", "kg"]);
+    fireEvent.change(inputDescription, {
+      target: {
+        value: "Épluchez et épépinez les poires. Coupez-les en dés.",
+      },
+    });
+    await act(async () => {
+      fireEvent.click(submitButton);
+    });
+    await waitFor(() => expect(axios.post).toHaveBeenCalledTimes(1));
+    const recipeToAdd = queryByText("Crumble aux poires", { exact: false });
+    expect(recipeToAdd).not.toBeInTheDocument();
+    const error = getByText(/L'ajout de recette a échoué/);
+    expect(error).toBeInTheDocument();
+  });
 });
 
 describe("the removing recipe functionality works properly", () => {
-  it("removes the recipe when clicking on the button", () => {
+  it("removes the recipe when clicking on the button", async () => {
     const { getByText } = render(
       <RecettesCatalogue
         totalRecettes={recettes}
         ingredientsPossibles={ingredientsCatalogue}
       />
     );
+    const axiosDeleteResponse = { data: "" };
+    axios.delete.mockResolvedValue(axiosDeleteResponse);
     const recipeRemoved = getByText("Marinade de saumon fumé", {
       exact: false,
     });
@@ -296,9 +421,37 @@ describe("the removing recipe functionality works properly", () => {
     });
     const button = within(recipeRemoved).getByText("X");
     fireEvent.click(button);
+    await waitFor(() => expect(axios.delete).toHaveBeenCalledTimes(1));
     expect(recipeRemoved).not.toBeInTheDocument();
     expect(recipe).toBeInTheDocument();
   });
+});
+
+it(`displays an error message and keeps the recipe if the recipe removal
+was not successful on backend side`, async () => {
+  const { getByText } = render(
+    <RecettesCatalogue
+      totalRecettes={recettes}
+      ingredientsPossibles={ingredientsCatalogue}
+    />
+  );
+  const axiosDeleteResponse = { data: "" };
+  axios.delete.mockRejectedValue(axiosDeleteResponse);
+  const recipeToRemoved = getByText("Marinade de saumon fumé", {
+    exact: false,
+  });
+  const recipe = getByText("Salade de pommes de terre radis", {
+    exact: false,
+  });
+  const button = within(recipeToRemoved).getByText("X");
+  fireEvent.click(button);
+  await waitFor(() => expect(axios.delete).toHaveBeenCalledTimes(1));
+  expect(recipe).toBeInTheDocument();
+  expect(recipeToRemoved).toBeInTheDocument();
+  const error = getByText(
+    /La suppression a échoué. Veuillez réessayer ultérieurement./
+  );
+  expect(error).toBeInTheDocument();
 });
 
 describe("the search bar functionality works properly", () => {

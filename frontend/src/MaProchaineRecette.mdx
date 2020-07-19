@@ -23,37 +23,37 @@ import { Playground, Props } from 'docz'
   {() => {
     const recettes = [
       {
-        id: "001",
-        categorie: ["Plat", "Entrée"],
+        id: 1,
+        categories: ["Plat", "Entrée"],
         titre: "Salade de pommes de terre radis",
-        ingredients: {
-          "pommes de terre": "1 kg",
-          oeufs: "3",
-          "vinaigre non balsamique": "1 cas",
-          radis: "2 bottes",
-          "oignons bottes": "2 cas",
-          "yaourt grec": "1",
-          mayonnaise: "1 cas",
-          moutarde: "1/2 cas",
-          ail: "1 gousse",
-        },
-        temps: "35 min",
+        ingredients: [
+          { ingredient: "pommes de terre", quantite: "1", unite: "kg" },
+          { ingredient: "oeufs", quantite: "3", unite: "pièce(s)" },
+          { ingredient: "vinaigre non balsamique", quantite: "1", unite: "cas" },
+          { ingredient: "radis", quantite: "2", unite: "botte(s)" },
+          { ingredient: "oignons bottes", quantite: "2", unite: "pièce(s)" },
+          { ingredient: "yaourt grec", quantite: "1", unite: "pièce(s)" },
+          { ingredient: "mayonnaise", quantite: "1", unite: "cas" },
+          { ingredient: "moutarde", quantite: "0.5", unite: "cas" },
+          { ingredient: "ail", quantite: "1", unite: "gousse(s)" },
+        ],
+        duree: "35 min",
         description:
           "Eplucher et couper les patates en rondelles et les cuire à l'eau. Cuire les oeufs durs. Couper les radis en rondelles. Emincer les échalottes et les oignons. Couper les oeufs durs. Mettre le tout dans un saladier et rajouter le vinaigre. Mélanger. Préparer la sauce :  mélanger le yaourt, la mayonnaise, la moutarde, la gousse d'ail rapée. Assaisoner.",
       },
       {
-        id: "002",
-        categorie: ["Plat"],
+        id: 2,
+        categories: ["Plat"],
         titre: "Gratin pommes de terre panais",
-        ingredients: {
-          "pommes de terre": "1 kg",
-          panais: "4",
-          "crème fraiche épaisse": "20 cl",
-          "crème fraiche semi-épaisse": "10 cl",
-          moutarde: "1,5 cas",
-          "gruillère rapé": "70 g",
-        },
-        temps: "1 h",
+        ingredients: [
+          { ingredient: "pommes de terre", quantite: "1", "unite": "kg"},
+          { ingredient: "panais", quantite: "4", "unite": "pièce(s)"},
+          { ingredient: "crème fraiche épaisse", quantite: "20", "unite": "cl"},
+          { ingredient: "crème fraiche semi-épaisse", quantite: "10", "unite": "cl"},
+          { ingredient: "moutarde", quantite: "1.5", "unite": "cas"},
+          { ingredient: "gruillère rapé", quantite: "70", "unite": "g"},
+        ],
+        duree: "1 h",
         description:
           "Eplucher et couper les patates en rondelles et les cuire à l'eau. Eplucher et couper las panais en rondelles et les cuire à la vapeur. Préparer la sauce : dans une casserole à feu doux mélanger les deux crèmes puis ajouter la moutarde et assaisoner. Répartir les panais et les pommes de terre dans un plat, recouvrir de sauce puis de gruillère rapé. Faire gratiner au four.",
       },
@@ -74,11 +74,9 @@ import { Playground, Props } from 'docz'
     ];
     const ingredientsCatalogue = [
       {
-        id: 10,
         nom: "Fraises",
       },
       {
-        id: 11,
         nom: "Sucre",
       },
     ];

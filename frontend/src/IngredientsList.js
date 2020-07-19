@@ -3,10 +3,10 @@ import PropTypes from "prop-types";
 
 function IngredientsList({ ingredients, highlight }) {
   const ingredientsList = [];
-  for (let [ingredientName, amount] of Object.entries(ingredients)) {
+  for (let { ingredient, quantite, unite } of ingredients) {
     ingredientsList.push(
-      <li key={ingredientName}>
-        {highlight(ingredientName)} : {amount}
+      <li key={ingredient}>
+        {highlight(ingredient)} : {quantite} {unite}
       </li>
     );
   }
@@ -19,7 +19,13 @@ IngredientsList.propTypes = {
    * Il s'agit ici de la liste d'ingredients nécessaires avec leur quantité
    * recquise pour une recette donnée.
    */
-  ingredients: PropTypes.objectOf(PropTypes.string).isRequired,
+  ingredients: PropTypes.arrayOf(
+    PropTypes.shape({
+      ingredient: PropTypes.string.isRequired,
+      quantite: PropTypes.string.isRequired,
+      unite: PropTypes.string.isRequired,
+    }).isRequired
+  ),
   /**
    * La prop highlight est une fonction qui permet de modifier le nom de chaque
    * ingrédient en mettant en valeur une partie ou la totalité de ce nom, par

@@ -11,6 +11,7 @@ import PropTypes from "prop-types";
 
 function MaProchaineRecette({ recettes, ingredientsFrigo }) {
   const [ingredientsCatalogue, setIngredientsCatalogue] = useState([]);
+  const [recettesCatalogue, setRecetteCatalogue] = useState([]);
   const [fetchError, setFetchError] = useState("");
 
   const handleIngredientsPossibles = (ingredients) => {
@@ -22,6 +23,16 @@ function MaProchaineRecette({ recettes, ingredientsFrigo }) {
       .get("/catalogues/ingredients/")
       .then(({ data }) => {
         setIngredientsCatalogue(data);
+      })
+      .catch(() =>
+        setFetchError(
+          "Il y a eu une erreur vis-à-vis du serveur, veuillez reharger la page ou réessayer ultérieurement."
+        )
+      );
+    axios
+      .get("/catalogues/recettes/")
+      .then(({ data }) => {
+        setRecetteCatalogue(data);
       })
       .catch(() =>
         setFetchError(
@@ -47,7 +58,7 @@ function MaProchaineRecette({ recettes, ingredientsFrigo }) {
         {fetchError && <span>{fetchError}</span>}
         <Route path="/recettes">
           <RecettesCatalogue
-            totalRecettes={recettes}
+            totalRecettes={recettesCatalogue}
             ingredientsPossibles={ingredientsCatalogue}
           />
         </Route>
@@ -75,10 +86,16 @@ MaProchaineRecette.propTypes = {
   recettes: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number.isRequired,
-      categorie: PropTypes.arrayOf(PropTypes.string).isRequired,
+      categories: PropTypes.arrayOf(PropTypes.string).isRequired,
       titre: PropTypes.string.isRequired,
-      ingredients: PropTypes.objectOf(PropTypes.string).isRequired,
-      temps: PropTypes.string.isRequired,
+      ingredients: PropTypes.arrayOf(
+        PropTypes.shape({
+          ingredient: PropTypes.string.isRequired,
+          quantite: PropTypes.string.isRequired,
+          unite: PropTypes.string.isRequired,
+        }).isRequired
+      ),
+      duree: PropTypes.string.isRequired,
       description: PropTypes.string.isRequired,
     })
   ).isRequired,

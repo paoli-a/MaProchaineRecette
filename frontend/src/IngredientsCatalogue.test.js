@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  render,
-  fireEvent,
-  within,
-  act,
-  waitFor,
-} from "@testing-library/react";
+import { render, fireEvent, within, waitFor } from "@testing-library/react";
 import axios from "axios";
 import IngredientsCatalogue from "./IngredientsCatalogue";
 
