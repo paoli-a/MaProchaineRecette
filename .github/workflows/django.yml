@@ -9,8 +9,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      working-directory: ./backend
 
     strategy:
       matrix:
@@ -27,8 +25,8 @@ jobs:
       - name: Install dependencies
         run: |
           pipenv install --dev
-        working-directory: ${{ env.working-directory }}
+        working-directory: ./backend
       - name: Test with pytest
         run: |
           pipenv run pytest
-        working-directory: ${{ env.working-directory }}
+        working-directory: ./backend/maprochainerecette
