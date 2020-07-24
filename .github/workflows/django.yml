@@ -23,10 +23,8 @@ jobs:
       - name: Install pipenv
         run: pip install pipenv
       - name: Install dependencies
-        run: |
-          pipenv install --dev
+        run: pipenv install --dev
         working-directory: ./backend
       - name: Test with pytest
-        run: |
-          pipenv run pytest
+        run: pipenv run pytest
         working-directory: ./backend/maprochainerecette
