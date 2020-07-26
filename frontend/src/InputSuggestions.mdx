@@ -1,0 +1,51 @@
+---
+name: InputSuggestions
+menu: Components
+---
+
+# InputSuggestions
+
+import InputSuggestions from "./InputSuggestions"
+import { Playground, Props } from 'docz'
+import { useForm } from "react-hook-form";
+
+> Ce composant est un input permettant d'afficher une liste de suggestions personnalisée.
+
+## Props
+<Props of={InputSuggestions} />
+
+Toutes les props supplémentaires seront transférées à la balise interne input.
+
+
+## Exemples d'utilisation
+
+<Playground>
+  {() => {
+    const ingredientsPossibles = [
+      {
+        nom: "Fraises",
+      },
+      {
+        nom: "Sucre",
+      },
+      {
+        nom: "Framboises",
+      },
+    ]
+    const [nomIngredient, setNomIngredient] = React.useState("")
+    return (
+      <form>
+        <label htmlFor="nomIngredient">Nom de l'ingrédient : </label>
+          <InputSuggestions
+            elements={ingredientsPossibles}
+            id="nomIngredient"
+            getElementText={(ingredient) => ingredient.nom}
+            onChangeValue={(value) => setNomIngredient(value)}
+            value={nomIngredient}
+            name="ingredient"
+            type="text"
+          />
+      </form>
+    )
+  }}
+</Playground>
