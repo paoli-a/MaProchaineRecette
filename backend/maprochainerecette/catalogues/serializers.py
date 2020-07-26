@@ -62,7 +62,6 @@ class RecetteSerializer(serializers.ModelSerializer):
         for categorie_data in categories_data:
             recette.categories.add(categorie_data)
         for ingredient_data in ingredients_data:
-            print(ingredient_data)
             ingredient = IngredientRecette.objects.create(
                 **ingredient_data)
             recette.ingredients.add(ingredient)

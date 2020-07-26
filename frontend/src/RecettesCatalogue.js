@@ -55,7 +55,6 @@ function RecettesCatalogue({ totalRecettes, ingredientsPossibles }) {
         setRecettes(recettesUpdated);
       })
       .catch((e) => {
-        console.log(e.response);
         setPostError("L'ajout de recette a échoué.");
       });
   };
