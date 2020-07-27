@@ -9,6 +9,9 @@ class Unite(TimeStampedModel):
     rapport = models.DecimalField(max_digits=20, decimal_places=10)
     type = models.ForeignKey("TypeUnite", on_delete=models.CASCADE)
 
+    def __str__(self) -> str:
+        return self.abbreviation
+
 
 class TypeUnite(TimeStampedModel):
     nom = models.CharField(
