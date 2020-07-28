@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import IngredientsFrigoForm from "./IngredientsFrigoForm";
 import PropTypes from "prop-types";
+import axios from "axios";
 
 function IngredientsFrigo({ ingredients, ingredientsPossibles }) {
   const [ingredientsList, setIngredient] = useState(ingredients);
+  const [postError, setPostError] = useState("");
 
   const handleSupprClick = (id) => {
     const ingredientsListUpdated = ingredientsList.slice();
@@ -15,29 +17,36 @@ function IngredientsFrigo({ ingredients, ingredientsPossibles }) {
   };
 
   const handleSubmit = (data) => {
-    const id = new Date().getTime();
-    const quantite = data.quantiteIngredient + "";
-    const formatedQuantite = quantite + data.unite;
-    const datePeremption = new Date(data.datePeremption);
-
     const ingredientNouveau = {
-      id: id,
-      nom: data.nomIngredient,
-      datePeremption: datePeremption,
-      quantite: formatedQuantite,
+      ingredient: data.nomIngredient,
+      date_peremption: data.datePeremption,
+      quantite: data.quantiteIngredient + "",
+      unite: data.unite,
     };
-
-    const ingredientsListUpdated = ingredientsList.slice();
-    ingredientsListUpdated.push(ingredientNouveau);
-    setIngredient(ingredientsListUpdated);
+    axios
+      .post("/frigo/ingredients/", ingredientNouveau)
+      .then(({ data }) => {
+        const newData = {
+          id: data.id,
+          nom: data.ingredient,
+          datePeremption: new Date(data.date_peremption),
+          quantite: data.quantite,
+          unite: data.unite,
+        };
+        const ingredientsListUpdated = ingredientsList.slice();
+        ingredientsListUpdated.push(newData);
+        setIngredient(ingredientsListUpdated);
+      })
+      .catch((e) => {
+        //setPostError("L'ajout de recette a échoué.");
+      });
   };
-
   const ingredientElement = ingredientsList.map((monIngredient) => {
     const formatedDate = monIngredient.datePeremption.toLocaleDateString();
     return (
       <li key={monIngredient.id}>
-        - {monIngredient.nom} : {monIngredient.quantite}. Expiration :{" "}
-        {formatedDate}.
+        - {monIngredient.nom} : {monIngredient.quantite}
+        {monIngredient.unite}. Expiration : {formatedDate}.
         <button onClick={() => handleSupprClick(monIngredient.id)}>
           Supprimer
         </button>
@@ -72,6 +81,7 @@ IngredientsFrigo.propTypes = {
       nom: PropTypes.string.isRequired,
       datePeremption: PropTypes.instanceOf(Date),
       quantite: PropTypes.string.isRequired,
+      unite: PropTypes.string.isRequired,
     })
   ).isRequired,
 };

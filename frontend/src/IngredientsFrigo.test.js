@@ -1,9 +1,11 @@
 import React from "react";
 import { render, fireEvent, within, act } from "@testing-library/react";
 import IngredientsFrigo from "./IngredientsFrigo";
+import axios from "axios";
 
 require("mutationobserver-shim");
 
+jest.mock("axios");
 let ingredientsCatalogue;
 let ingredientsFrigo;
 
@@ -28,15 +30,21 @@ beforeEach(() => {
       id: 1,
       nom: "épinard",
       datePeremption: new Date(2100, 4, 15),
-      quantite: "60g",
+      quantite: "60",
+      unite: "g",
     },
     {
       id: 2,
       nom: "céleri rave",
       datePeremption: new Date(2100, 3, 13),
-      quantite: "1kg",
+      quantite: "1",
+      unite: "kg",
     },
   ];
+});
+
+afterEach(() => {
+  jest.clearAllMocks();
 });
 
 describe("correct display of an ingredient", () => {
@@ -64,6 +72,17 @@ describe("correct display of an ingredient", () => {
   });
 
   it("renders quantities of ingredients", () => {
+    const { getByText } = render(
+      <IngredientsFrigo
+        ingredients={ingredientsFrigo}
+        ingredientsPossibles={ingredientsCatalogue}
+      />
+    );
+    const ingredient1 = getByText("épinard", { exact: false });
+    expect(ingredient1.textContent).toContain("60");
+  });
+
+  it("renders units of ingredients", () => {
     const { getByText } = render(
       <IngredientsFrigo
         ingredients={ingredientsFrigo}
@@ -229,6 +248,16 @@ describe("functionalities work properly", () => {
     value,
     missingFields = []
   ) {
+    const axiosPostResponse = {
+      data: {
+        id: 3,
+        ingredient: value[0],
+        date_peremption: value[2],
+        quantite: value[1] + "",
+        unite: value[3],
+      },
+    };
+    axios.post.mockResolvedValue(axiosPostResponse);
     const inputNom = getByLabelText("Nom de l'ingrédient :");
     const inputQuantite = getByLabelText("Quantité :");
     const inputDate = getByLabelText("Date de péremption :");

@@ -9,9 +9,10 @@ import "./MaProchaineRecette.css";
 import "./Nav.css";
 import PropTypes from "prop-types";
 
-function MaProchaineRecette({ recettes, ingredientsFrigo }) {
+function MaProchaineRecette({ recettes }) {
   const [ingredientsCatalogue, setIngredientsCatalogue] = useState([]);
   const [recettesCatalogue, setRecetteCatalogue] = useState([]);
+  const [ingredientsFrigo, setIngredientsFrigo] = useState([]);
   const [fetchError, setFetchError] = useState("");
 
   const handleIngredientsPossibles = (ingredients) => {
@@ -33,6 +34,25 @@ function MaProchaineRecette({ recettes, ingredientsFrigo }) {
       .get("/catalogues/recettes/")
       .then(({ data }) => {
         setRecetteCatalogue(data);
+      })
+      .catch(() =>
+        setFetchError(
+          "Il y a eu une erreur vis-à-vis du serveur, veuillez reharger la page ou réessayer ultérieurement."
+        )
+      );
+    axios
+      .get("/frigo/ingredients/")
+      .then(({ data }) => {
+        const newData = data.map((ingredientFrigo) => {
+          return {
+            id: ingredientFrigo.id,
+            nom: ingredientFrigo.ingredient,
+            datePeremption: new Date(ingredientFrigo.date_peremption),
+            quantite: ingredientFrigo.quantite,
+            unite: ingredientFrigo.unite,
+          };
+        });
+        setIngredientsFrigo(newData);
       })
       .catch(() =>
         setFetchError(
@@ -97,14 +117,6 @@ MaProchaineRecette.propTypes = {
       ),
       duree: PropTypes.string.isRequired,
       description: PropTypes.string.isRequired,
-    })
-  ).isRequired,
-  ingredientsFrigo: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      nom: PropTypes.string.isRequired,
-      datePeremption: PropTypes.instanceOf(Date),
-      quantite: PropTypes.string.isRequired,
     })
   ).isRequired,
 };
