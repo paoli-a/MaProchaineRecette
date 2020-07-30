@@ -5,6 +5,7 @@ from frigo.serializers import IngredientFrigoSerializer
 
 
 class IngredientFrigoViewSet(viewsets.ModelViewSet):
+    """Provides a CRUD API for fridge ingredients."""
     queryset = IngredientFrigo.objects.all()
     permission_classes = [
         permissions.AllowAny
