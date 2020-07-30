@@ -42,26 +42,8 @@ const recettes = [
   },
 ];
 
-const ingredientsFrigo = [
-  {
-    id: 1,
-    nom: "Epinard",
-    datePeremption: new Date(2020, 4, 15),
-    quantite: "60g",
-  },
-  {
-    id: 2,
-    nom: "Céleri rave",
-    datePeremption: new Date(2020, 3, 13),
-    quantite: "1kg",
-  },
-];
-
 ReactDOM.render(
-  <MaProchaineRecette
-    recettes={recettes}
-    ingredientsFrigo={ingredientsFrigo}
-  />,
+  <MaProchaineRecette recettes={recettes} />,
   document.getElementById("root")
 );
 
