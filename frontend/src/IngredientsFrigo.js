@@ -6,14 +6,26 @@ import axios from "axios";
 function IngredientsFrigo({ ingredients, ingredientsPossibles }) {
   const [ingredientsList, setIngredient] = useState(ingredients);
   const [postError, setPostError] = useState("");
+  const [deleteError, setDeleteError] = useState({});
 
   const handleSupprClick = (id) => {
-    const ingredientsListUpdated = ingredientsList.slice();
-    const index = ingredientsListUpdated.findIndex((ingredient) => {
-      return ingredient.id === id;
-    });
-    ingredientsListUpdated.splice(index, 1);
-    setIngredient(ingredientsListUpdated);
+    axios
+      .delete(`/catalogues/recettes/${id}/`)
+      .then(() => {
+        const ingredientsListUpdated = ingredientsList.slice();
+        const index = ingredientsListUpdated.findIndex((ingredient) => {
+          return ingredient.id === id;
+        });
+        ingredientsListUpdated.splice(index, 1);
+        setIngredient(ingredientsListUpdated);
+      })
+      .catch(() => {
+        setDeleteError({
+          id: id,
+          message:
+            "La suppression a échoué. Veuillez réessayer ultérieurement.",
+        });
+      });
   };
 
   const handleSubmit = (data) => {
@@ -37,20 +49,26 @@ function IngredientsFrigo({ ingredients, ingredientsPossibles }) {
         ingredientsListUpdated.push(newData);
         setIngredient(ingredientsListUpdated);
       })
-      .catch((e) => {
-        //setPostError("L'ajout de recette a échoué.");
+      .catch(() => {
+        setPostError("L'ajout de l'ingrédient a échoué.");
       });
   };
+
   const ingredientElement = ingredientsList.map((monIngredient) => {
     const formatedDate = monIngredient.datePeremption.toLocaleDateString();
     return (
-      <li key={monIngredient.id}>
-        - {monIngredient.nom} : {monIngredient.quantite}
-        {monIngredient.unite}. Expiration : {formatedDate}.
-        <button onClick={() => handleSupprClick(monIngredient.id)}>
-          Supprimer
-        </button>
-      </li>
+      <React.Fragment key={monIngredient.id}>
+        <li key={monIngredient.id}>
+          - {monIngredient.nom} : {monIngredient.quantite}
+          {monIngredient.unite}. Expiration : {formatedDate}.
+          <button onClick={() => handleSupprClick(monIngredient.id)}>
+            Supprimer
+          </button>
+        </li>
+        {deleteError.id === monIngredient.id && (
+          <span>{deleteError.message}</span>
+        )}
+      </React.Fragment>
     );
   });
 
@@ -61,6 +79,7 @@ function IngredientsFrigo({ ingredients, ingredientsPossibles }) {
         onSubmit={handleSubmit}
         ingredientsPossibles={ingredientsPossibles}
       />
+      {postError && <span>{postError}</span>}
       <ul>{ingredientElement}</ul>
     </section>
   );
