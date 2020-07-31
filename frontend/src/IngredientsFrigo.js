@@ -1,47 +1,77 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import IngredientsFrigoForm from "./IngredientsFrigoForm";
 import PropTypes from "prop-types";
+import axios from "axios";
 
 function IngredientsFrigo({ ingredients, ingredientsPossibles }) {
   const [ingredientsList, setIngredient] = useState(ingredients);
+  const [postError, setPostError] = useState("");
+  const [deleteError, setDeleteError] = useState({});
+
+  useEffect(() => {
+    setIngredient(ingredients);
+  }, [ingredients]);
 
   const handleSupprClick = (id) => {
-    const ingredientsListUpdated = ingredientsList.slice();
-    const index = ingredientsListUpdated.findIndex((ingredient) => {
-      return ingredient.id === id;
-    });
-    ingredientsListUpdated.splice(index, 1);
-    setIngredient(ingredientsListUpdated);
+    axios
+      .delete(`/frigo/ingredients/${id}/`)
+      .then(() => {
+        const ingredientsListUpdated = ingredientsList.slice();
+        const index = ingredientsListUpdated.findIndex((ingredient) => {
+          return ingredient.id === id;
+        });
+        ingredientsListUpdated.splice(index, 1);
+        setIngredient(ingredientsListUpdated);
+      })
+      .catch(() => {
+        setDeleteError({
+          id: id,
+          message:
+            "La suppression a échoué. Veuillez réessayer ultérieurement.",
+        });
+      });
   };
 
   const handleSubmit = (data) => {
-    const id = new Date().getTime();
-    const quantite = data.quantiteIngredient + "";
-    const formatedQuantite = quantite + data.unite;
-    const datePeremption = new Date(data.datePeremption);
-
     const ingredientNouveau = {
-      id: id,
-      nom: data.nomIngredient,
-      datePeremption: datePeremption,
-      quantite: formatedQuantite,
+      ingredient: data.nomIngredient,
+      date_peremption: data.datePeremption,
+      quantite: data.quantiteIngredient + "",
+      unite: data.unite,
     };
-
-    const ingredientsListUpdated = ingredientsList.slice();
-    ingredientsListUpdated.push(ingredientNouveau);
-    setIngredient(ingredientsListUpdated);
+    axios
+      .post("/frigo/ingredients/", ingredientNouveau)
+      .then(({ data }) => {
+        const newData = {
+          id: data.id,
+          nom: data.ingredient,
+          datePeremption: new Date(data.date_peremption),
+          quantite: data.quantite,
+          unite: data.unite,
+        };
+        const ingredientsListUpdated = ingredientsList.slice();
+        ingredientsListUpdated.push(newData);
+        setIngredient(ingredientsListUpdated);
+      })
+      .catch(() => {
+        setPostError("L'ajout de l'ingrédient a échoué.");
+      });
   };
-
   const ingredientElement = ingredientsList.map((monIngredient) => {
     const formatedDate = monIngredient.datePeremption.toLocaleDateString();
     return (
-      <li key={monIngredient.id}>
-        - {monIngredient.nom} : {monIngredient.quantite}. Expiration :{" "}
-        {formatedDate}.
-        <button onClick={() => handleSupprClick(monIngredient.id)}>
-          Supprimer
-        </button>
-      </li>
+      <React.Fragment key={monIngredient.id}>
+        <li key={monIngredient.id}>
+          - {monIngredient.nom} : {monIngredient.quantite} {monIngredient.unite}
+          . Expiration : {formatedDate}.
+          <button onClick={() => handleSupprClick(monIngredient.id)}>
+            Supprimer
+          </button>
+        </li>
+        {deleteError.id === monIngredient.id && (
+          <span>{deleteError.message}</span>
+        )}
+      </React.Fragment>
     );
   });
 
@@ -52,6 +82,7 @@ function IngredientsFrigo({ ingredients, ingredientsPossibles }) {
         onSubmit={handleSubmit}
         ingredientsPossibles={ingredientsPossibles}
       />
+      {postError && <span>{postError}</span>}
       <ul>{ingredientElement}</ul>
     </section>
   );
@@ -72,6 +103,7 @@ IngredientsFrigo.propTypes = {
       nom: PropTypes.string.isRequired,
       datePeremption: PropTypes.instanceOf(Date),
       quantite: PropTypes.string.isRequired,
+      unite: PropTypes.string.isRequired,
     })
   ).isRequired,
 };

@@ -1,7 +1,7 @@
 import pytest
 from django.urls import resolve
 
-from .factories import IngredientFactory, ingredient, RecetteFactory, recette
+from .factories import ingredient, recette
 
 
 pytestmark = pytest.mark.django_db

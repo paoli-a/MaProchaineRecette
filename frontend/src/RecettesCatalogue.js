@@ -27,8 +27,7 @@ function RecettesCatalogue({ totalRecettes, ingredientsPossibles }) {
         recettesUpdated.splice(index, 1);
         setRecettes(recettesUpdated);
       })
-      .catch((e) => {
-        console.log(e.response);
+      .catch(() => {
         setDeleteError({
           id: id,
           message:
