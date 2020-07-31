@@ -96,7 +96,7 @@ describe("correct display of an ingredient", () => {
       />
     );
     const ingredient1 = getByText("épinard", { exact: false });
-    expect(ingredient1.textContent).toContain("60g");
+    expect(ingredient1.textContent).toContain("60 g");
   });
 
   it("renders the right number of ingredients", () => {
@@ -181,7 +181,7 @@ was not successful on backend side`, async () => {
     const listItems = getAllByRole("listitem");
     const expectedDate = new Date("2100-04-03");
     expect(listItems).toHaveLength(3);
-    expect(ingredient.textContent).toContain("1kg");
+    expect(ingredient.textContent).toContain("1 kg");
     expect(ingredient.textContent).toContain(expectedDate.toLocaleDateString());
   });
 
