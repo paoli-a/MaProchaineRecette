@@ -109,6 +109,23 @@ describe("correct display of an ingredient", () => {
     const listItems = getAllByRole("listitem");
     expect(listItems).toHaveLength(2);
   });
+
+  it("updates ingredients when ingredientsFrigo prop changes", () => {
+    const { getByText, rerender } = render(
+      <IngredientsFrigo
+        ingredients={[]}
+        ingredientsPossibles={ingredientsCatalogue}
+      />
+    );
+    rerender(
+      <IngredientsFrigo
+        ingredients={ingredientsFrigo}
+        ingredientsPossibles={ingredientsCatalogue}
+      />
+    );
+    const ingredient1 = getByText("épinard", { exact: false });
+    expect(ingredient1).toBeInTheDocument();
+  });
 });
 
 describe("functionalities work properly", () => {

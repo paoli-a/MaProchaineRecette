@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import IngredientsFrigoForm from "./IngredientsFrigoForm";
 import PropTypes from "prop-types";
 import axios from "axios";
@@ -8,9 +8,13 @@ function IngredientsFrigo({ ingredients, ingredientsPossibles }) {
   const [postError, setPostError] = useState("");
   const [deleteError, setDeleteError] = useState({});
 
+  useEffect(() => {
+    setIngredient(ingredients);
+  }, [ingredients]);
+
   const handleSupprClick = (id) => {
     axios
-      .delete(`/catalogues/recettes/${id}/`)
+      .delete(`/frigo/ingredients/${id}/`)
       .then(() => {
         const ingredientsListUpdated = ingredientsList.slice();
         const index = ingredientsListUpdated.findIndex((ingredient) => {
@@ -53,14 +57,13 @@ function IngredientsFrigo({ ingredients, ingredientsPossibles }) {
         setPostError("L'ajout de l'ingrédient a échoué.");
       });
   };
-
   const ingredientElement = ingredientsList.map((monIngredient) => {
     const formatedDate = monIngredient.datePeremption.toLocaleDateString();
     return (
       <React.Fragment key={monIngredient.id}>
         <li key={monIngredient.id}>
-          - {monIngredient.nom} : {monIngredient.quantite}
-          {monIngredient.unite}. Expiration : {formatedDate}.
+          - {monIngredient.nom} : {monIngredient.quantite} {monIngredient.unite}
+          . Expiration : {formatedDate}.
           <button onClick={() => handleSupprClick(monIngredient.id)}>
             Supprimer
           </button>
