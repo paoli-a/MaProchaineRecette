@@ -1,7 +1,6 @@
-from django.shortcuts import get_object_or_404
 from rest_framework import serializers
 from catalogues.models import Ingredient, Recette, IngredientRecette, Categorie
-from unites.serializers import UniteSerializer
+from unites.models import Unite
 
 
 class IngredientSerializer(serializers.ModelSerializer):
@@ -11,34 +10,11 @@ class IngredientSerializer(serializers.ModelSerializer):
         fields = ["nom"]
 
 
-class IngredientNestedSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Ingredient
-        fields = ["nom"]
-
-    def to_internal_value(self, data):
-        return get_object_or_404(Ingredient, nom=data)
-
-    def to_representation(self, value):
-        return value.nom
-
-
-class CategorieSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Categorie
-        fields = ["nom"]
-
-    def to_internal_value(self, data):
-        return get_object_or_404(Categorie, nom=data)
-
-    def to_representation(self, value):
-        return value.nom
-
-
 class IngredientRecetteSerializer(serializers.ModelSerializer):
-    ingredient = IngredientNestedSerializer()
-    unite = UniteSerializer()
+    unite = serializers.SlugRelatedField(
+        queryset=Unite.objects.all(), slug_field="abbreviation")
+    ingredient = serializers.SlugRelatedField(
+        queryset=Ingredient.objects.all(), slug_field="nom")
 
     class Meta:
         model = IngredientRecette
@@ -48,7 +24,8 @@ class IngredientRecetteSerializer(serializers.ModelSerializer):
 
 class RecetteSerializer(serializers.ModelSerializer):
     ingredients = IngredientRecetteSerializer(many=True)
-    categories = CategorieSerializer(many=True)
+    categories = serializers.SlugRelatedField(many=True,
+                                              queryset=Categorie.objects.all(), slug_field="nom")
 
     class Meta:
         model = Recette

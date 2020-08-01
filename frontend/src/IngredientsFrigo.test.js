@@ -1,9 +1,17 @@
 import React from "react";
-import { render, fireEvent, within, act } from "@testing-library/react";
+import {
+  render,
+  fireEvent,
+  within,
+  act,
+  waitFor,
+} from "@testing-library/react";
 import IngredientsFrigo from "./IngredientsFrigo";
+import axios from "axios";
 
 require("mutationobserver-shim");
 
+jest.mock("axios");
 let ingredientsCatalogue;
 let ingredientsFrigo;
 
@@ -28,15 +36,21 @@ beforeEach(() => {
       id: 1,
       nom: "épinard",
       datePeremption: new Date(2100, 4, 15),
-      quantite: "60g",
+      quantite: "60",
+      unite: "g",
     },
     {
       id: 2,
       nom: "céleri rave",
       datePeremption: new Date(2100, 3, 13),
-      quantite: "1kg",
+      quantite: "1",
+      unite: "kg",
     },
   ];
+});
+
+afterEach(() => {
+  jest.clearAllMocks();
 });
 
 describe("correct display of an ingredient", () => {
@@ -71,7 +85,18 @@ describe("correct display of an ingredient", () => {
       />
     );
     const ingredient1 = getByText("épinard", { exact: false });
-    expect(ingredient1.textContent).toContain("60g");
+    expect(ingredient1.textContent).toContain("60");
+  });
+
+  it("renders units of ingredients", () => {
+    const { getByText } = render(
+      <IngredientsFrigo
+        ingredients={ingredientsFrigo}
+        ingredientsPossibles={ingredientsCatalogue}
+      />
+    );
+    const ingredient1 = getByText("épinard", { exact: false });
+    expect(ingredient1.textContent).toContain("60 g");
   });
 
   it("renders the right number of ingredients", () => {
@@ -84,22 +109,63 @@ describe("correct display of an ingredient", () => {
     const listItems = getAllByRole("listitem");
     expect(listItems).toHaveLength(2);
   });
+
+  it("updates ingredients when ingredientsFrigo prop changes", () => {
+    const { getByText, rerender } = render(
+      <IngredientsFrigo
+        ingredients={[]}
+        ingredientsPossibles={ingredientsCatalogue}
+      />
+    );
+    rerender(
+      <IngredientsFrigo
+        ingredients={ingredientsFrigo}
+        ingredientsPossibles={ingredientsCatalogue}
+      />
+    );
+    const ingredient1 = getByText("épinard", { exact: false });
+    expect(ingredient1).toBeInTheDocument();
+  });
 });
 
 describe("functionalities work properly", () => {
-  it("removes the correct ingredient when clicking on remove button", () => {
+  it("removes the correct ingredient when clicking on remove button", async () => {
     const { getByText, getAllByRole } = render(
       <IngredientsFrigo
         ingredients={ingredientsFrigo}
         ingredientsPossibles={ingredientsCatalogue}
       />
     );
+    const axiosDeleteResponse = { data: "" };
+    axios.delete.mockResolvedValue(axiosDeleteResponse);
     const ingredient = getByText("épinard", { exact: false });
     const button = within(ingredient).getByText("Supprimer");
     fireEvent.click(button);
+    await waitFor(() => expect(axios.delete).toHaveBeenCalledTimes(1));
     const listItems = getAllByRole("listitem");
     expect(ingredient).not.toBeInTheDocument();
     expect(listItems).toHaveLength(1);
+  });
+
+  it(`displays an error message and keeps the ingredient if the ingredient removal
+was not successful on backend side`, async () => {
+    const { getByText } = render(
+      <IngredientsFrigo
+        ingredients={ingredientsFrigo}
+        ingredientsPossibles={ingredientsCatalogue}
+      />
+    );
+    const axiosDeleteResponse = { data: "" };
+    axios.delete.mockRejectedValue(axiosDeleteResponse);
+    const ingredientToRemoved = getByText("épinard", { exact: false });
+    const button = within(ingredientToRemoved).getByText("Supprimer");
+    fireEvent.click(button);
+    await waitFor(() => expect(axios.delete).toHaveBeenCalledTimes(1));
+    expect(ingredientToRemoved).toBeInTheDocument();
+    const error = getByText(
+      /La suppression a échoué. Veuillez réessayer ultérieurement./
+    );
+    expect(error).toBeInTheDocument();
   });
 
   it("adds the correct ingredient when filling the form and clicking on submit", async () => {
@@ -115,7 +181,7 @@ describe("functionalities work properly", () => {
     const listItems = getAllByRole("listitem");
     const expectedDate = new Date("2100-04-03");
     expect(listItems).toHaveLength(3);
-    expect(ingredient.textContent).toContain("1kg");
+    expect(ingredient.textContent).toContain("1 kg");
     expect(ingredient.textContent).toContain(expectedDate.toLocaleDateString());
   });
 
@@ -223,12 +289,51 @@ describe("functionalities work properly", () => {
     expect(framboises.value).toEqual("Framboises");
   });
 
+  it(`displays an error message and does not add the ingredient if the ingredient adding
+was not successful on backend side`, async () => {
+    const { getByLabelText, getByText, queryByText } = render(
+      <IngredientsFrigo
+        ingredients={ingredientsFrigo}
+        ingredientsPossibles={ingredientsCatalogue}
+      />
+    );
+    const axiosPostResponse = {};
+    axios.post.mockRejectedValue(axiosPostResponse);
+    const inputNom = getByLabelText("Nom de l'ingrédient :");
+    const inputQuantite = getByLabelText("Quantité :");
+    const inputDate = getByLabelText("Date de péremption :");
+    const selectedUnit = getByLabelText("Unité");
+    const submitButton = getByText("Confirmer");
+    fireEvent.change(inputNom, { target: { value: "Poires" } });
+    fireEvent.change(inputQuantite, { target: { value: 100 } });
+    fireEvent.change(inputDate, { target: { value: "2100-04-03" } });
+    fireEvent.change(selectedUnit, { target: { value: "kg" } });
+    await act(async () => {
+      fireEvent.click(submitButton);
+    });
+    await waitFor(() => expect(axios.post).toHaveBeenCalledTimes(1));
+    const ingredientToAdd = queryByText("kiwi", { exact: false });
+    expect(ingredientToAdd).not.toBeInTheDocument();
+    const error = getByText(/L'ajout de l'ingrédient a échoué/);
+    expect(error).toBeInTheDocument();
+  });
+
   async function addIngredient(
     getByLabelText,
     getByText,
     value,
     missingFields = []
   ) {
+    const axiosPostResponse = {
+      data: {
+        id: 3,
+        ingredient: value[0],
+        date_peremption: value[2],
+        quantite: value[1] + "",
+        unite: value[3],
+      },
+    };
+    axios.post.mockResolvedValue(axiosPostResponse);
     const inputNom = getByLabelText("Nom de l'ingrédient :");
     const inputQuantite = getByLabelText("Quantité :");
     const inputDate = getByLabelText("Date de péremption :");
@@ -249,5 +354,8 @@ describe("functionalities work properly", () => {
     await act(async () => {
       fireEvent.click(submitButton);
     });
+    if (!missingFields) {
+      await waitFor(() => expect(axios.post).toHaveBeenCalledTimes(1));
+    }
   }
 });
