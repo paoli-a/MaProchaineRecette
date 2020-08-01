@@ -13,6 +13,7 @@ function MaProchaineRecette({ recettes }) {
   const [ingredientsCatalogue, setIngredientsCatalogue] = useState([]);
   const [recettesCatalogue, setRecetteCatalogue] = useState([]);
   const [ingredientsFrigo, setIngredientsFrigo] = useState([]);
+  const [categoriesCatalogue, setCategoriesCatalogue] = useState([]);
   const [fetchError, setFetchError] = useState("");
 
   const handleIngredientsPossibles = (ingredients) => {
@@ -59,6 +60,16 @@ function MaProchaineRecette({ recettes }) {
           "Il y a eu une erreur vis-à-vis du serveur, veuillez reharger la page ou réessayer ultérieurement."
         )
       );
+    axios
+      .get("/catalogues/categories/")
+      .then(({ data }) => {
+        setCategoriesCatalogue(data);
+      })
+      .catch(() =>
+        setFetchError(
+          "Il y a eu une erreur vis-à-vis du serveur, veuillez reharger la page ou réessayer ultérieurement."
+        )
+      );
   }, []);
 
   return (
@@ -80,6 +91,7 @@ function MaProchaineRecette({ recettes }) {
           <RecettesCatalogue
             totalRecettes={recettesCatalogue}
             ingredientsPossibles={ingredientsCatalogue}
+            totalCategories={categoriesCatalogue}
           />
         </Route>
         <Route path="/ingredients">

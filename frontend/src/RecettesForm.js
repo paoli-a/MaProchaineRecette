@@ -3,7 +3,11 @@ import { useForm } from "react-hook-form";
 import InputSuggestions from "./InputSuggestions";
 import PropTypes from "prop-types";
 
-function RecettesForm({ onSubmitRecette, ingredientsPossibles }) {
+function RecettesForm({
+  onSubmitRecette,
+  ingredientsPossibles,
+  totalCategories,
+}) {
   const { register, handleSubmit, errors, reset, watch, getValues } = useForm();
   const [ingredients, setIngredients] = useState([]);
   const [ingredientNom, setIngredientNom] = useState("");
@@ -101,10 +105,12 @@ function RecettesForm({ onSubmitRecette, ingredientsPossibles }) {
   };
 
   const validateCategories = () => {
-    const categories0 = watch("categories[0]");
-    const categories1 = watch("categories[1]");
-    const categories2 = watch("categories[2]");
-    return Boolean(categories0 || categories1 || categories2);
+    for (let i = 0; i < totalCategories.length; i++) {
+      if (watch(`categories[${i}]`)) {
+        return true;
+      }
+    }
+    return false;
   };
 
   const validateTime = () => {
@@ -135,36 +141,20 @@ function RecettesForm({ onSubmitRecette, ingredientsPossibles }) {
         <div>
           Catégories :
           <ul>
-            <li>
-              <input
-                type="checkbox"
-                value="Entrée"
-                name="categories[0]"
-                aria-label="Entrée"
-                ref={register({ validate: validateCategories })}
-              />
-              Entrée
-            </li>
-            <li>
-              <input
-                type="checkbox"
-                value="Plat"
-                name="categories[1]"
-                aria-label="Plat"
-                ref={register({ validate: validateCategories })}
-              />
-              Plat
-            </li>
-            <li>
-              <input
-                type="checkbox"
-                value="Dessert"
-                name="categories[2]"
-                aria-label="Dessert"
-                ref={register({ validate: validateCategories })}
-              />
-              Dessert
-            </li>
+            {totalCategories.map((categorie, index) => {
+              return (
+                <li key={categorie}>
+                  <input
+                    type="checkbox"
+                    value={categorie}
+                    name={`categories[${index}]`}
+                    aria-label={categorie}
+                    ref={register({ validate: validateCategories })}
+                  />
+                  {categorie}
+                </li>
+              );
+            })}
           </ul>
           {errors.categories && (
             <span>Au moins une catégorie doit être sélectionnée</span>
@@ -276,6 +266,7 @@ RecettesForm.propTypes = {
       nom: PropTypes.string.isRequired,
     })
   ).isRequired,
+  totalCategories: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export default RecettesForm;

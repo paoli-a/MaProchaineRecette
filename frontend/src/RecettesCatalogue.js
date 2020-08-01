@@ -6,7 +6,11 @@ import "./RecettesCatalogue.css";
 import PropTypes from "prop-types";
 import axios from "axios";
 
-function RecettesCatalogue({ totalRecettes, ingredientsPossibles }) {
+function RecettesCatalogue({
+  totalRecettes,
+  ingredientsPossibles,
+  totalCategories,
+}) {
   const [recettesList, setRecettes] = useState(totalRecettes);
   const [searchResults, setSearchResults] = useState("");
   const [deleteError, setDeleteError] = useState({});
@@ -92,6 +96,7 @@ function RecettesCatalogue({ totalRecettes, ingredientsPossibles }) {
         <RecettesForm
           onSubmitRecette={handleSubmit}
           ingredientsPossibles={ingredientsPossibles}
+          totalCategories={totalCategories}
         />
         {postError && <span>{postError}</span>}
       </section>
@@ -140,6 +145,7 @@ RecettesCatalogue.propTypes = {
       nom: PropTypes.string.isRequired,
     })
   ).isRequired,
+  totalCategories: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export default RecettesCatalogue;

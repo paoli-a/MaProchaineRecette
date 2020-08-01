@@ -9,9 +9,11 @@ jest.mock("axios");
 let recettes;
 let ingredientsFrigo;
 let ingredientsCatalogue;
+let categoriesCatalogue;
 let axiosResponseIngredients;
 let axiosResponseRecettes;
 let axiosResponseIngredientsFrigo;
+let axiosResponseCategories;
 
 beforeEach(() => {
   recettes = [
@@ -35,7 +37,6 @@ beforeEach(() => {
         "Eplucher et couper les patates en rondelles et les cuire à l'eau. Cuire les oeufs durs. Couper les radis en rondelles. Emincer les échalottes et les oignons. Couper les oeufs durs. Mettre le tout dans un saladier et rajouter le vinaigre. Mélanger. Préparer la sauce :  mélanger le yaourt, la mayonnaise, la moutarde, la gousse d'ail rapée. Assaisoner.",
     },
   ];
-
   ingredientsFrigo = [
     {
       id: 1,
@@ -45,7 +46,6 @@ beforeEach(() => {
       unite: "g",
     },
   ];
-
   ingredientsCatalogue = [
     {
       nom: "Fraises",
@@ -54,21 +54,37 @@ beforeEach(() => {
       nom: "Sucre",
     },
   ];
+  categoriesCatalogue = ["Entrée", "Plat", "Dessert"];
   axiosResponseIngredients = { data: ingredientsCatalogue };
   axiosResponseRecettes = { data: recettes };
   axiosResponseIngredientsFrigo = { data: ingredientsFrigo };
+  axiosResponseCategories = { data: categoriesCatalogue };
+  mockAxiosGet();
+});
+
+function mockAxiosGet(rejectedElement) {
   axios.get.mockImplementation((url) => {
     if (url === "/catalogues/ingredients/") {
-      return Promise.resolve(axiosResponseIngredients);
+      return rejectedElement === "ingredients"
+        ? Promise.reject(new Error(""))
+        : Promise.resolve(axiosResponseIngredients);
     } else if (url === "/catalogues/recettes/") {
-      return Promise.resolve(axiosResponseRecettes);
+      return rejectedElement === "recettes"
+        ? Promise.reject(new Error(""))
+        : Promise.resolve(axiosResponseRecettes);
     } else if (url === "/frigo/ingredients/") {
-      return Promise.resolve(axiosResponseIngredientsFrigo);
+      return rejectedElement === "frigo"
+        ? Promise.reject(new Error(""))
+        : Promise.resolve(axiosResponseIngredientsFrigo);
+    } else if (url === "/catalogues/categories/") {
+      return rejectedElement === "categories"
+        ? Promise.reject(new Error(""))
+        : Promise.resolve(axiosResponseCategories);
     } else {
       return Promise.reject(new Error(`L'URL '${url}' n'est pas supportée.`));
     }
   });
-});
+}
 
 afterEach(() => {
   jest.clearAllMocks();
@@ -85,7 +101,7 @@ describe("renders correctly", () => {
     const { getByRole, getByText, queryByText } = render(
       <MaProchaineRecette recettes={recettes} />
     );
-    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(3));
+    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(4));
     navigateTo("Ma prochaine recette", getByRole);
     const prochainesRecettes = getByText("Mes prochaines recettes");
     const frigo = getByText("Voici les ingrédients du frigo !");
@@ -101,7 +117,7 @@ describe("renders correctly", () => {
     const { getByRole, queryByText, getByText } = render(
       <MaProchaineRecette recettes={recettes} />
     );
-    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(3));
+    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(4));
     navigateTo("Catalogue des ingrédients", getByRole);
     const prochainesRecettes = queryByText("Mes prochaines recettes");
     const frigo = queryByText("Voici les ingrédients du frigo !");
@@ -117,7 +133,7 @@ describe("renders correctly", () => {
     const { getByRole, queryByText, getByText } = render(
       <MaProchaineRecette recettes={recettes} />
     );
-    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(3));
+    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(4));
     navigateTo("Catalogue des recettes", getByRole);
     const prochainesRecettes = queryByText("Mes prochaines recettes");
     const frigo = queryByText("Voici les ingrédients du frigo !");
@@ -135,7 +151,7 @@ describe("fetches correctly", () => {
     const { getByText, getByRole } = render(
       <MaProchaineRecette recettes={recettes} />
     );
-    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(3));
+    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(4));
     navigateTo("Ma prochaine recette", getByRole);
     const epinard = getByText(/épinard/);
     expect(epinard).toBeInTheDocument();
@@ -145,7 +161,7 @@ describe("fetches correctly", () => {
     const { getByRole, getByText } = render(
       <MaProchaineRecette recettes={recettes} />
     );
-    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(3));
+    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(4));
     navigateTo("Catalogue des ingrédients", getByRole);
     const fraises = getByText("Fraises");
     expect(fraises).toBeInTheDocument();
@@ -155,64 +171,53 @@ describe("fetches correctly", () => {
     const { getByRole, getByText } = render(
       <MaProchaineRecette recettes={recettes} />
     );
-    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(3));
+    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(4));
     navigateTo("Catalogue des recettes", getByRole);
     const salade = getByText("Salade de pommes de terre radis");
     expect(salade).toBeInTheDocument();
+  });
+
+  it(`fetches and displays categories of the catalog when click on catalog recipes 
+  nav link`, async () => {
+    const { getByRole, getByText } = render(
+      <MaProchaineRecette recettes={recettes} />
+    );
+    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(4));
+    navigateTo("Catalogue des recettes", getByRole);
+    const entree = getByText("Entrée");
+    expect(entree).toBeInTheDocument();
   });
 });
 
 describe("displays correct error message on bad fetch", () => {
   it("displays an error message if the ingredient fetch was not successful", async () => {
-    axios.get.mockImplementation((url) => {
-      if (url === "/catalogues/ingredients/") {
-        return Promise.reject(new Error(""));
-      } else if (url === "/catalogues/recettes/") {
-        return Promise.resolve(axiosResponseRecettes);
-      } else if (url === "/frigo/ingredients/") {
-        return Promise.resolve(axiosResponseIngredientsFrigo);
-      } else {
-        return Promise.reject(new Error(`L'URL '${url}' n'est pas supportée.`));
-      }
-    });
+    mockAxiosGet("ingredients");
     const { getByText } = render(<MaProchaineRecette recettes={recettes} />);
-    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(3));
+    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(4));
     const error = getByText(/Il y a eu une erreur vis-à-vis du serveur/);
     expect(error).toBeInTheDocument();
   });
 
   it("displays an error message if the reciepe fetch was not successful", async () => {
-    axios.get.mockImplementation((url) => {
-      if (url === "/catalogues/ingredients/") {
-        return Promise.resolve(axiosResponseIngredients);
-      } else if (url === "/catalogues/recettes/") {
-        return Promise.reject(new Error(""));
-      } else if (url === "/frigo/ingredients/") {
-        return Promise.resolve(axiosResponseIngredientsFrigo);
-      } else {
-        return Promise.reject(new Error(`L'URL '${url}' n'est pas supportée.`));
-      }
-    });
+    mockAxiosGet("recettes");
     const { getByText } = render(<MaProchaineRecette recettes={recettes} />);
-    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(3));
+    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(4));
     const error = getByText(/Il y a eu une erreur vis-à-vis du serveur/);
     expect(error).toBeInTheDocument();
   });
 
   it("displays an error message if the fridge ingredient fetch was not successful", async () => {
-    axios.get.mockImplementation((url) => {
-      if (url === "/catalogues/ingredients/") {
-        return Promise.resolve(axiosResponseIngredients);
-      } else if (url === "/catalogues/recettes/") {
-        return Promise.resolve(axiosResponseRecettes);
-      } else if (url === "/frigo/ingredients/") {
-        return Promise.reject(new Error(""));
-      } else {
-        return Promise.reject(new Error(`L'URL '${url}' n'est pas supportée.`));
-      }
-    });
+    mockAxiosGet("frigo");
     const { getByText } = render(<MaProchaineRecette recettes={recettes} />);
-    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(3));
+    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(4));
+    const error = getByText(/Il y a eu une erreur vis-à-vis du serveur/);
+    expect(error).toBeInTheDocument();
+  });
+
+  it("displays an error message if the categories fetch was not successful", async () => {
+    mockAxiosGet("categories");
+    const { getByText } = render(<MaProchaineRecette recettes={recettes} />);
+    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(4));
     const error = getByText(/Il y a eu une erreur vis-à-vis du serveur/);
     expect(error).toBeInTheDocument();
   });
@@ -223,7 +228,7 @@ describe("Handle correctly new ingredientCatalogue", () => {
     const maProchaineRecette = render(
       <MaProchaineRecette recettes={recettes} />
     );
-    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(3));
+    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(4));
     await addIngredientCatalogue(maProchaineRecette, "Navets");
     const { getByLabelText, getByTestId, getByRole } = maProchaineRecette;
     navigateTo("Ma prochaine recette", getByRole);
@@ -237,7 +242,7 @@ describe("Handle correctly new ingredientCatalogue", () => {
     const maProchaineRecette = render(
       <MaProchaineRecette recettes={recettes} />
     );
-    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(3));
+    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(4));
     await addIngredientCatalogue(maProchaineRecette, "Coriandre");
     const { getByLabelText, getByTestId, getByRole } = maProchaineRecette;
     navigateTo("Catalogue des recettes", getByRole);
