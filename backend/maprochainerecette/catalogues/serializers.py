@@ -10,6 +10,15 @@ class IngredientSerializer(serializers.ModelSerializer):
         fields = ["nom"]
 
 
+class CategorieSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Categorie
+        fields = ["nom"]
+
+    def to_representation(self, value) -> str:
+        return value.nom
+
+
 class IngredientRecetteSerializer(serializers.ModelSerializer):
     unite = serializers.SlugRelatedField(
         queryset=Unite.objects.all(), slug_field="abbreviation")

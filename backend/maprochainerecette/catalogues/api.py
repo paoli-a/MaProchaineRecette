@@ -1,7 +1,7 @@
 from rest_framework import viewsets, permissions, authentication
 
 from catalogues.models import Ingredient, Recette, Categorie
-from catalogues.serializers import IngredientSerializer, RecetteSerializer
+from catalogues.serializers import IngredientSerializer, RecetteSerializer, CategorieSerializer
 
 
 class IngredientViewSet(viewsets.ModelViewSet):
@@ -25,3 +25,14 @@ class RecetteViewSet(viewsets.ModelViewSet):
         authentication.TokenAuthentication
     ]
     serializer_class = RecetteSerializer
+
+
+class CategorieViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Categorie.objects.all()
+    permission_classes = [
+        permissions.AllowAny
+    ]
+    authentication_classes = [
+        authentication.TokenAuthentication
+    ]
+    serializer_class = CategorieSerializer

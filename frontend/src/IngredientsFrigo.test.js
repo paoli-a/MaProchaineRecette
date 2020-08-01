@@ -14,6 +14,7 @@ require("mutationobserver-shim");
 jest.mock("axios");
 let ingredientsCatalogue;
 let ingredientsFrigo;
+let unites;
 
 beforeEach(() => {
   ingredientsCatalogue = [
@@ -47,6 +48,7 @@ beforeEach(() => {
       unite: "kg",
     },
   ];
+  unites = ["kg", "g", "cl", "pièce(s)"];
 });
 
 afterEach(() => {
@@ -59,6 +61,7 @@ describe("correct display of an ingredient", () => {
       <IngredientsFrigo
         ingredients={ingredientsFrigo}
         ingredientsPossibles={ingredientsCatalogue}
+        totalUnites={unites}
       />
     );
     const ingredient1 = getByText("épinard", { exact: false });
@@ -70,6 +73,7 @@ describe("correct display of an ingredient", () => {
       <IngredientsFrigo
         ingredients={ingredientsFrigo}
         ingredientsPossibles={ingredientsCatalogue}
+        totalUnites={unites}
       />
     );
     const ingredient2 = getByText("céleri rave", { exact: false });
@@ -82,6 +86,7 @@ describe("correct display of an ingredient", () => {
       <IngredientsFrigo
         ingredients={ingredientsFrigo}
         ingredientsPossibles={ingredientsCatalogue}
+        totalUnites={unites}
       />
     );
     const ingredient1 = getByText("épinard", { exact: false });
@@ -93,6 +98,7 @@ describe("correct display of an ingredient", () => {
       <IngredientsFrigo
         ingredients={ingredientsFrigo}
         ingredientsPossibles={ingredientsCatalogue}
+        totalUnites={unites}
       />
     );
     const ingredient1 = getByText("épinard", { exact: false });
@@ -104,6 +110,7 @@ describe("correct display of an ingredient", () => {
       <IngredientsFrigo
         ingredients={ingredientsFrigo}
         ingredientsPossibles={ingredientsCatalogue}
+        totalUnites={unites}
       />
     );
     const listItems = getAllByRole("listitem");
@@ -115,17 +122,34 @@ describe("correct display of an ingredient", () => {
       <IngredientsFrigo
         ingredients={[]}
         ingredientsPossibles={ingredientsCatalogue}
+        totalUnites={unites}
       />
     );
     rerender(
       <IngredientsFrigo
         ingredients={ingredientsFrigo}
         ingredientsPossibles={ingredientsCatalogue}
+        totalUnites={unites}
       />
     );
     const ingredient1 = getByText("épinard", { exact: false });
     expect(ingredient1).toBeInTheDocument();
   });
+});
+
+it("displays provided units", () => {
+  const { getByLabelText } = render(
+    <IngredientsFrigo
+      ingredients={ingredientsFrigo}
+      ingredientsPossibles={ingredientsCatalogue}
+      totalUnites={unites}
+    />
+  );
+  const unitSelect = getByLabelText("Unité");
+  const kg = within(unitSelect).getByText("kg");
+  const pieces = within(unitSelect).getByText("pièce(s)");
+  expect(kg).toBeInTheDocument();
+  expect(pieces).toBeInTheDocument();
 });
 
 describe("functionalities work properly", () => {
@@ -134,6 +158,7 @@ describe("functionalities work properly", () => {
       <IngredientsFrigo
         ingredients={ingredientsFrigo}
         ingredientsPossibles={ingredientsCatalogue}
+        totalUnites={unites}
       />
     );
     const axiosDeleteResponse = { data: "" };
@@ -153,6 +178,7 @@ was not successful on backend side`, async () => {
       <IngredientsFrigo
         ingredients={ingredientsFrigo}
         ingredientsPossibles={ingredientsCatalogue}
+        totalUnites={unites}
       />
     );
     const axiosDeleteResponse = { data: "" };
@@ -173,6 +199,7 @@ was not successful on backend side`, async () => {
       <IngredientsFrigo
         ingredients={ingredientsFrigo}
         ingredientsPossibles={ingredientsCatalogue}
+        totalUnites={unites}
       />
     );
     const values = ["Carottes", 1, "2100-04-03", "kg"];
@@ -202,6 +229,7 @@ was not successful on backend side`, async () => {
       <IngredientsFrigo
         ingredients={ingredientsFrigo}
         ingredientsPossibles={ingredientsCatalogue}
+        totalUnites={unites}
       />
     );
     await addIngredient(
@@ -219,6 +247,7 @@ was not successful on backend side`, async () => {
       <IngredientsFrigo
         ingredients={ingredientsFrigo}
         ingredientsPossibles={ingredientsCatalogue}
+        totalUnites={unites}
       />
     );
     await addIngredient(
@@ -236,6 +265,7 @@ was not successful on backend side`, async () => {
       <IngredientsFrigo
         ingredients={ingredientsFrigo}
         ingredientsPossibles={ingredientsCatalogue}
+        totalUnites={unites}
       />
     );
     const values = ["kiwi", -1, "2100-04-03", "kg"];
@@ -252,6 +282,7 @@ was not successful on backend side`, async () => {
       <IngredientsFrigo
         ingredients={ingredientsFrigo}
         ingredientsPossibles={ingredientsCatalogue}
+        totalUnites={unites}
       />
     );
     const values = ["kiwi", 5, "2019-04-03", "g"];
@@ -265,6 +296,7 @@ was not successful on backend side`, async () => {
       <IngredientsFrigo
         ingredients={ingredientsFrigo}
         ingredientsPossibles={ingredientsCatalogue}
+        totalUnites={unites}
       />
     );
     addIngredient(getByLabelText, getByText, ["Poireaux", 50, "g"]);
@@ -277,6 +309,7 @@ was not successful on backend side`, async () => {
       <IngredientsFrigo
         ingredients={ingredientsFrigo}
         ingredientsPossibles={ingredientsCatalogue}
+        totalUnites={unites}
       />
     );
     const inputIngredientName = getByLabelText("Nom de l'ingrédient :");
@@ -295,6 +328,7 @@ was not successful on backend side`, async () => {
       <IngredientsFrigo
         ingredients={ingredientsFrigo}
         ingredientsPossibles={ingredientsCatalogue}
+        totalUnites={unites}
       />
     );
     const axiosPostResponse = {};

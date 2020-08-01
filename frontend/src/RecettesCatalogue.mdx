@@ -65,10 +65,14 @@ permettra d'afficher au fur et à mesure les recettes correspondantes.
         nom: "Sucre",
       },
     ];
+    const categoriesCatalogue = ["Entrée", "Plat", "Dessert", "Gouter"];
+    const unites = ["kg", "g", "cl", "pièce(s)"];
     return (
       <RecettesCatalogue 
         totalRecettes={recettes}
         ingredientsPossibles={ingredientsCatalogue}
+        totalCategories={categoriesCatalogue}
+        totalUnites={unites}
       />
     )
   }}

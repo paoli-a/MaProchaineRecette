@@ -47,10 +47,12 @@ import { Playground, Props } from 'docz'
         unite: "g",
       },
     ];
+    const unites = ["kg", "g", "cl", "pièce(s)"];
     return (
       <IngredientsFrigo
         ingredients={ingredientsFrigo}
         ingredientsPossibles={ingredientsCatalogue}
+        totalUnites={unites}
       />
     )
   }}

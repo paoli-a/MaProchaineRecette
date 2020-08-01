@@ -8,7 +8,7 @@ from pytest_django.asserts import (
 )
 from rest_framework.test import APIRequestFactory
 
-from catalogues.api import IngredientViewSet, RecetteViewSet
+from catalogues.api import IngredientViewSet, RecetteViewSet, CategorieViewSet
 from catalogues.models import Recette, Ingredient
 from .factories import (
     IngredientFactory,
@@ -185,3 +185,27 @@ def _get_recettes_detail_absolute_url(id):
     view.basename = "recettes"
     view.request = None
     return view.reverse_action("detail", args=[id])
+
+
+def test_categories_list_contains_2_categories():
+    categorie1 = CategoryFactory()
+    categorie2 = CategoryFactory()
+    url = _get_categorie_list_absolute_url()
+    request = APIRequestFactory().get(url)
+    response = CategorieViewSet.as_view({'get': 'list'})(request)
+    assert response.status_code == 200
+    assertContains(response, categorie1.nom)
+    assertContains(response, categorie2.nom)
+
+
+def test_categories_list_has_correct_fields():
+    CategoryFactory(nom="Entrée")
+    url = _get_categorie_list_absolute_url()
+    request = APIRequestFactory().get(url)
+    response = CategorieViewSet.as_view({'get': 'list'})(request)
+    assert len(response.data) == 1
+    assert response.data[0] == "Entrée"
+
+
+def _get_categorie_list_absolute_url():
+    return _get_list_absolute_url(CategorieViewSet, "categories")

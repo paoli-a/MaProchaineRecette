@@ -5,6 +5,7 @@ import {
   act,
   within,
   waitFor,
+  getByLabelText,
 } from "@testing-library/react";
 import RecettesCatalogue from "./RecettesCatalogue";
 import axios from "axios";
@@ -14,6 +15,8 @@ require("mutationobserver-shim");
 jest.mock("axios");
 let recettes;
 let ingredientsCatalogue;
+let categoriesCatalogue;
+let unites;
 
 beforeEach(() => {
   ingredientsCatalogue = [
@@ -129,10 +132,61 @@ beforeEach(() => {
         "Emincez le saumon, l'échalotte et le persil. Ajoutez le vinaigre, l'huile, le citron et un peu de poivre. Mélangez et laissez mariner toute la nuit.",
     },
   ];
+
+  categoriesCatalogue = ["Entrée", "Plat", "Dessert", "Gouter"];
+  unites = ["kg", "g", "cl", "pièce(s)"];
 });
 
 afterEach(() => {
   jest.clearAllMocks();
+});
+
+describe("initial display is correct", () => {
+  it("displays provided categories", () => {
+    const { getByText } = render(
+      <RecettesCatalogue
+        totalRecettes={recettes}
+        ingredientsPossibles={ingredientsCatalogue}
+        totalCategories={categoriesCatalogue}
+        totalUnites={unites}
+      />
+    );
+    const entree = getByText(/Entrée/);
+    const gouter = getByText(/Gouter/);
+    expect(entree).toBeInTheDocument();
+    expect(gouter).toBeInTheDocument();
+  });
+
+  it("displays provided units", () => {
+    const { getByLabelText } = render(
+      <RecettesCatalogue
+        totalRecettes={recettes}
+        ingredientsPossibles={ingredientsCatalogue}
+        totalCategories={categoriesCatalogue}
+        totalUnites={unites}
+      />
+    );
+    const unitSelect = getByLabelText("Unité");
+    const kg = within(unitSelect).getByText("kg");
+    const pieces = within(unitSelect).getByText("pièce(s)");
+    expect(kg).toBeInTheDocument();
+    expect(pieces).toBeInTheDocument();
+  });
+
+  it("displays provided recipes", () => {
+    const { getByText } = render(
+      <RecettesCatalogue
+        totalRecettes={recettes}
+        ingredientsPossibles={ingredientsCatalogue}
+        totalCategories={categoriesCatalogue}
+        totalUnites={unites}
+      />
+    );
+    const salade = getByText(/Salade de pommes de terre radis/);
+    const marinade = getByText(/Marinade de saumon fumé/);
+    expect(salade).toBeInTheDocument();
+    expect(marinade).toBeInTheDocument();
+  });
 });
 
 describe("the adding recipe functionality works properly", () => {
@@ -141,6 +195,8 @@ describe("the adding recipe functionality works properly", () => {
       <RecettesCatalogue
         totalRecettes={recettes}
         ingredientsPossibles={ingredientsCatalogue}
+        totalCategories={categoriesCatalogue}
+        totalUnites={unites}
       />
     );
     await addRecipe(getByLabelText, getByText);
@@ -173,6 +229,8 @@ describe("the adding recipe functionality works properly", () => {
       <RecettesCatalogue
         totalRecettes={recettes}
         ingredientsPossibles={ingredientsCatalogue}
+        totalCategories={categoriesCatalogue}
+        totalUnites={unites}
       />
     );
     await addRecipe(getByLabelText, getByText, [inputName]);
@@ -185,6 +243,8 @@ describe("the adding recipe functionality works properly", () => {
       <RecettesCatalogue
         totalRecettes={recettes}
         ingredientsPossibles={ingredientsCatalogue}
+        totalCategories={categoriesCatalogue}
+        totalUnites={unites}
       />
     );
     await addRecipe(getByLabelText, getByText, ["titre"]);
@@ -197,6 +257,8 @@ describe("the adding recipe functionality works properly", () => {
       <RecettesCatalogue
         totalRecettes={recettes}
         ingredientsPossibles={ingredientsCatalogue}
+        totalCategories={categoriesCatalogue}
+        totalUnites={unites}
       />
     );
     await addRecipe(getByLabelText, getByText, [], { duree: "00:00" });
@@ -215,6 +277,8 @@ describe("the adding recipe functionality works properly", () => {
         <RecettesCatalogue
           totalRecettes={recettes}
           ingredientsPossibles={ingredientsCatalogue}
+          totalCategories={categoriesCatalogue}
+          totalUnites={unites}
         />
       );
       addIngredient(getByLabelText, getByText, ["Fraises", "5", "g"]);
@@ -228,6 +292,8 @@ describe("the adding recipe functionality works properly", () => {
         <RecettesCatalogue
           totalRecettes={recettes}
           ingredientsPossibles={ingredientsCatalogue}
+          totalCategories={categoriesCatalogue}
+          totalUnites={unites}
         />
       );
       addIngredient(getByLabelText, getByText, ["Fraises", "-1", "g"]);
@@ -243,6 +309,8 @@ describe("the adding recipe functionality works properly", () => {
         <RecettesCatalogue
           totalRecettes={recettes}
           ingredientsPossibles={ingredientsCatalogue}
+          totalCategories={categoriesCatalogue}
+          totalUnites={unites}
         />
       );
       addIngredient(getByLabelText, getByText, ["Poireaux", "50", "g"]);
@@ -255,6 +323,8 @@ describe("the adding recipe functionality works properly", () => {
         <RecettesCatalogue
           totalRecettes={recettes}
           ingredientsPossibles={ingredientsCatalogue}
+          totalCategories={categoriesCatalogue}
+          totalUnites={unites}
         />
       );
       const inputIngredientName = getByLabelText("Nom :");
@@ -273,6 +343,8 @@ describe("the adding recipe functionality works properly", () => {
         <RecettesCatalogue
           totalRecettes={recettes}
           ingredientsPossibles={ingredientsCatalogue}
+          totalCategories={categoriesCatalogue}
+          totalUnites={unites}
         />
       );
       addIngredient(getByLabelText, getByText, ["Poires", "1", "kg"]);
@@ -292,6 +364,8 @@ describe("the adding recipe functionality works properly", () => {
         <RecettesCatalogue
           totalRecettes={recettes}
           ingredientsPossibles={ingredientsCatalogue}
+          totalCategories={categoriesCatalogue}
+          totalUnites={unites}
         />
       );
       addIngredient(getByLabelText, getByText, ["Poires", "1", "kg"]);
@@ -374,6 +448,8 @@ was not successful on backend side`, async () => {
       <RecettesCatalogue
         totalRecettes={recettes}
         ingredientsPossibles={ingredientsCatalogue}
+        totalCategories={categoriesCatalogue}
+        totalUnites={unites}
       />
     );
     const axiosPostResponse = {};
@@ -409,6 +485,8 @@ describe("the removing recipe functionality works properly", () => {
       <RecettesCatalogue
         totalRecettes={recettes}
         ingredientsPossibles={ingredientsCatalogue}
+        totalCategories={categoriesCatalogue}
+        totalUnites={unites}
       />
     );
     const axiosDeleteResponse = { data: "" };
@@ -425,33 +503,35 @@ describe("the removing recipe functionality works properly", () => {
     expect(recipeRemoved).not.toBeInTheDocument();
     expect(recipe).toBeInTheDocument();
   });
-});
 
-it(`displays an error message and keeps the recipe if the recipe removal
+  it(`displays an error message and keeps the recipe if the recipe removal
 was not successful on backend side`, async () => {
-  const { getByText } = render(
-    <RecettesCatalogue
-      totalRecettes={recettes}
-      ingredientsPossibles={ingredientsCatalogue}
-    />
-  );
-  const axiosDeleteResponse = { data: "" };
-  axios.delete.mockRejectedValue(axiosDeleteResponse);
-  const recipeToRemoved = getByText("Marinade de saumon fumé", {
-    exact: false,
+    const { getByText } = render(
+      <RecettesCatalogue
+        totalRecettes={recettes}
+        ingredientsPossibles={ingredientsCatalogue}
+        totalCategories={categoriesCatalogue}
+        totalUnites={unites}
+      />
+    );
+    const axiosDeleteResponse = { data: "" };
+    axios.delete.mockRejectedValue(axiosDeleteResponse);
+    const recipeToRemoved = getByText("Marinade de saumon fumé", {
+      exact: false,
+    });
+    const recipe = getByText("Salade de pommes de terre radis", {
+      exact: false,
+    });
+    const button = within(recipeToRemoved).getByText("X");
+    fireEvent.click(button);
+    await waitFor(() => expect(axios.delete).toHaveBeenCalledTimes(1));
+    expect(recipe).toBeInTheDocument();
+    expect(recipeToRemoved).toBeInTheDocument();
+    const error = getByText(
+      /La suppression a échoué. Veuillez réessayer ultérieurement./
+    );
+    expect(error).toBeInTheDocument();
   });
-  const recipe = getByText("Salade de pommes de terre radis", {
-    exact: false,
-  });
-  const button = within(recipeToRemoved).getByText("X");
-  fireEvent.click(button);
-  await waitFor(() => expect(axios.delete).toHaveBeenCalledTimes(1));
-  expect(recipe).toBeInTheDocument();
-  expect(recipeToRemoved).toBeInTheDocument();
-  const error = getByText(
-    /La suppression a échoué. Veuillez réessayer ultérieurement./
-  );
-  expect(error).toBeInTheDocument();
 });
 
 describe("the search bar functionality works properly", () => {
@@ -461,6 +541,8 @@ describe("the search bar functionality works properly", () => {
       <RecettesCatalogue
         totalRecettes={recettes}
         ingredientsPossibles={ingredientsCatalogue}
+        totalCategories={categoriesCatalogue}
+        totalUnites={unites}
       />
     );
     const searchBar = getByPlaceholderText("Recherche par titre...");
@@ -479,6 +561,8 @@ describe("the search bar functionality works properly", () => {
       <RecettesCatalogue
         totalRecettes={recettes}
         ingredientsPossibles={ingredientsCatalogue}
+        totalCategories={categoriesCatalogue}
+        totalUnites={unites}
       />
     );
     const searchBar = getByPlaceholderText("Recherche par titre...");
