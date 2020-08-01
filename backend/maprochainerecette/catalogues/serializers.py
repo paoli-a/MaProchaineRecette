@@ -15,7 +15,7 @@ class CategorieSerializer(serializers.ModelSerializer):
         model = Categorie
         fields = ["nom"]
 
-    def to_representation(self, value):
+    def to_representation(self, value) -> str:
         return value.nom
 
 

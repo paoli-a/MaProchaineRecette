@@ -13,3 +13,6 @@ class UniteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Unite
         fields = ["abbreviation"]
+
+    def to_representation(self, value) -> str:
+        return value.abbreviation

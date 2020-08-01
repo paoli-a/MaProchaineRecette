@@ -23,6 +23,15 @@ def test_unite_list_contains_2_unites():
     assertContains(response, unite2.abbreviation)
 
 
+def test_unite_list_has_correct_fields():
+    UniteFactory(abbreviation="kg")
+    url = _get_unite_list_absolute_url()
+    request = APIRequestFactory().get(url)
+    response = UniteViewSet.as_view({'get': 'list'})(request)
+    assert len(response.data) == 1
+    assert response.data[0] == "kg"
+
+
 def _get_unite_list_absolute_url():
     view = UniteViewSet()
     view.basename = "unites"
