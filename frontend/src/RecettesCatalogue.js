@@ -10,6 +10,7 @@ function RecettesCatalogue({
   totalRecettes,
   ingredientsPossibles,
   totalCategories,
+  totalUnites,
 }) {
   const [recettesList, setRecettes] = useState(totalRecettes);
   const [searchResults, setSearchResults] = useState("");
@@ -97,6 +98,7 @@ function RecettesCatalogue({
           onSubmitRecette={handleSubmit}
           ingredientsPossibles={ingredientsPossibles}
           totalCategories={totalCategories}
+          totalUnites={totalUnites}
         />
         {postError && <span>{postError}</span>}
       </section>
@@ -146,6 +148,7 @@ RecettesCatalogue.propTypes = {
     })
   ).isRequired,
   totalCategories: PropTypes.arrayOf(PropTypes.string).isRequired,
+  totalUnites: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export default RecettesCatalogue;

@@ -5,6 +5,7 @@ import {
   act,
   within,
   waitFor,
+  getByLabelText,
 } from "@testing-library/react";
 import RecettesCatalogue from "./RecettesCatalogue";
 import axios from "axios";
@@ -15,6 +16,7 @@ jest.mock("axios");
 let recettes;
 let ingredientsCatalogue;
 let categoriesCatalogue;
+let unites;
 
 beforeEach(() => {
   ingredientsCatalogue = [
@@ -132,6 +134,7 @@ beforeEach(() => {
   ];
 
   categoriesCatalogue = ["Entrée", "Plat", "Dessert", "Gouter"];
+  unites = ["kg", "g", "cl", "pièce(s)"];
 });
 
 afterEach(() => {
@@ -145,6 +148,7 @@ describe("initial display is correct", () => {
         totalRecettes={recettes}
         ingredientsPossibles={ingredientsCatalogue}
         totalCategories={categoriesCatalogue}
+        totalUnites={unites}
       />
     );
     const entree = getByText(/Entrée/);
@@ -153,12 +157,29 @@ describe("initial display is correct", () => {
     expect(gouter).toBeInTheDocument();
   });
 
+  it("displays provided units", () => {
+    const { getByLabelText } = render(
+      <RecettesCatalogue
+        totalRecettes={recettes}
+        ingredientsPossibles={ingredientsCatalogue}
+        totalCategories={categoriesCatalogue}
+        totalUnites={unites}
+      />
+    );
+    const unitSelect = getByLabelText("Unité");
+    const kg = within(unitSelect).getByText("kg");
+    const pieces = within(unitSelect).getByText("pièce(s)");
+    expect(kg).toBeInTheDocument();
+    expect(pieces).toBeInTheDocument();
+  });
+
   it("displays provided recipes", () => {
     const { getByText } = render(
       <RecettesCatalogue
         totalRecettes={recettes}
         ingredientsPossibles={ingredientsCatalogue}
         totalCategories={categoriesCatalogue}
+        totalUnites={unites}
       />
     );
     const salade = getByText(/Salade de pommes de terre radis/);
@@ -175,6 +196,7 @@ describe("the adding recipe functionality works properly", () => {
         totalRecettes={recettes}
         ingredientsPossibles={ingredientsCatalogue}
         totalCategories={categoriesCatalogue}
+        totalUnites={unites}
       />
     );
     await addRecipe(getByLabelText, getByText);
@@ -208,6 +230,7 @@ describe("the adding recipe functionality works properly", () => {
         totalRecettes={recettes}
         ingredientsPossibles={ingredientsCatalogue}
         totalCategories={categoriesCatalogue}
+        totalUnites={unites}
       />
     );
     await addRecipe(getByLabelText, getByText, [inputName]);
@@ -221,6 +244,7 @@ describe("the adding recipe functionality works properly", () => {
         totalRecettes={recettes}
         ingredientsPossibles={ingredientsCatalogue}
         totalCategories={categoriesCatalogue}
+        totalUnites={unites}
       />
     );
     await addRecipe(getByLabelText, getByText, ["titre"]);
@@ -234,6 +258,7 @@ describe("the adding recipe functionality works properly", () => {
         totalRecettes={recettes}
         ingredientsPossibles={ingredientsCatalogue}
         totalCategories={categoriesCatalogue}
+        totalUnites={unites}
       />
     );
     await addRecipe(getByLabelText, getByText, [], { duree: "00:00" });
@@ -253,6 +278,7 @@ describe("the adding recipe functionality works properly", () => {
           totalRecettes={recettes}
           ingredientsPossibles={ingredientsCatalogue}
           totalCategories={categoriesCatalogue}
+          totalUnites={unites}
         />
       );
       addIngredient(getByLabelText, getByText, ["Fraises", "5", "g"]);
@@ -267,6 +293,7 @@ describe("the adding recipe functionality works properly", () => {
           totalRecettes={recettes}
           ingredientsPossibles={ingredientsCatalogue}
           totalCategories={categoriesCatalogue}
+          totalUnites={unites}
         />
       );
       addIngredient(getByLabelText, getByText, ["Fraises", "-1", "g"]);
@@ -283,6 +310,7 @@ describe("the adding recipe functionality works properly", () => {
           totalRecettes={recettes}
           ingredientsPossibles={ingredientsCatalogue}
           totalCategories={categoriesCatalogue}
+          totalUnites={unites}
         />
       );
       addIngredient(getByLabelText, getByText, ["Poireaux", "50", "g"]);
@@ -296,6 +324,7 @@ describe("the adding recipe functionality works properly", () => {
           totalRecettes={recettes}
           ingredientsPossibles={ingredientsCatalogue}
           totalCategories={categoriesCatalogue}
+          totalUnites={unites}
         />
       );
       const inputIngredientName = getByLabelText("Nom :");
@@ -315,6 +344,7 @@ describe("the adding recipe functionality works properly", () => {
           totalRecettes={recettes}
           ingredientsPossibles={ingredientsCatalogue}
           totalCategories={categoriesCatalogue}
+          totalUnites={unites}
         />
       );
       addIngredient(getByLabelText, getByText, ["Poires", "1", "kg"]);
@@ -335,6 +365,7 @@ describe("the adding recipe functionality works properly", () => {
           totalRecettes={recettes}
           ingredientsPossibles={ingredientsCatalogue}
           totalCategories={categoriesCatalogue}
+          totalUnites={unites}
         />
       );
       addIngredient(getByLabelText, getByText, ["Poires", "1", "kg"]);
@@ -418,6 +449,7 @@ was not successful on backend side`, async () => {
         totalRecettes={recettes}
         ingredientsPossibles={ingredientsCatalogue}
         totalCategories={categoriesCatalogue}
+        totalUnites={unites}
       />
     );
     const axiosPostResponse = {};
@@ -454,6 +486,7 @@ describe("the removing recipe functionality works properly", () => {
         totalRecettes={recettes}
         ingredientsPossibles={ingredientsCatalogue}
         totalCategories={categoriesCatalogue}
+        totalUnites={unites}
       />
     );
     const axiosDeleteResponse = { data: "" };
@@ -478,6 +511,7 @@ was not successful on backend side`, async () => {
         totalRecettes={recettes}
         ingredientsPossibles={ingredientsCatalogue}
         totalCategories={categoriesCatalogue}
+        totalUnites={unites}
       />
     );
     const axiosDeleteResponse = { data: "" };
@@ -508,6 +542,7 @@ describe("the search bar functionality works properly", () => {
         totalRecettes={recettes}
         ingredientsPossibles={ingredientsCatalogue}
         totalCategories={categoriesCatalogue}
+        totalUnites={unites}
       />
     );
     const searchBar = getByPlaceholderText("Recherche par titre...");
@@ -527,6 +562,7 @@ describe("the search bar functionality works properly", () => {
         totalRecettes={recettes}
         ingredientsPossibles={ingredientsCatalogue}
         totalCategories={categoriesCatalogue}
+        totalUnites={unites}
       />
     );
     const searchBar = getByPlaceholderText("Recherche par titre...");

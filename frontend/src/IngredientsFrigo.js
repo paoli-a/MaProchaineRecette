@@ -3,7 +3,7 @@ import IngredientsFrigoForm from "./IngredientsFrigoForm";
 import PropTypes from "prop-types";
 import axios from "axios";
 
-function IngredientsFrigo({ ingredients, ingredientsPossibles }) {
+function IngredientsFrigo({ ingredients, ingredientsPossibles, totalUnites }) {
   const [ingredientsList, setIngredient] = useState(ingredients);
   const [postError, setPostError] = useState("");
   const [deleteError, setDeleteError] = useState({});
@@ -81,6 +81,7 @@ function IngredientsFrigo({ ingredients, ingredientsPossibles }) {
       <IngredientsFrigoForm
         onSubmit={handleSubmit}
         ingredientsPossibles={ingredientsPossibles}
+        totalUnites={totalUnites}
       />
       {postError && <span>{postError}</span>}
       <ul>{ingredientElement}</ul>
@@ -106,6 +107,7 @@ IngredientsFrigo.propTypes = {
       unite: PropTypes.string.isRequired,
     })
   ).isRequired,
+  totalUnites: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export default IngredientsFrigo;

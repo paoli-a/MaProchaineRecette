@@ -4,6 +4,6 @@ from unites.api import UniteViewSet
 
 
 router = routers.DefaultRouter()
-router.register("unites", UniteViewSet, "unites")
+router.register("", UniteViewSet, "unites")
 
 urlpatterns = router.urls

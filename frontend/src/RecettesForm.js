@@ -7,6 +7,7 @@ function RecettesForm({
   onSubmitRecette,
   ingredientsPossibles,
   totalCategories,
+  totalUnites,
 }) {
   const { register, handleSubmit, errors, reset, watch, getValues } = useForm();
   const [ingredients, setIngredients] = useState([]);
@@ -205,10 +206,13 @@ function RecettesForm({
                 value={ingredientUnite}
               >
                 <option value="">...</option>
-                <option value="pièce(s)">pièce(s)</option>
-                <option value="kg">kg</option>
-                <option value="g">g</option>
-                <option value="cl">cl</option>
+                {totalUnites.map((unite) => {
+                  return (
+                    <option value={unite} key={unite}>
+                      {unite}
+                    </option>
+                  );
+                })}
               </select>
             </span>
           </p>
@@ -267,6 +271,7 @@ RecettesForm.propTypes = {
     })
   ).isRequired,
   totalCategories: PropTypes.arrayOf(PropTypes.string).isRequired,
+  totalUnites: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export default RecettesForm;

@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import InputSuggestions from "./InputSuggestions";
 import PropTypes from "prop-types";
 
-function IngredientsFrigoForm({ onSubmit, ingredientsPossibles }) {
+function IngredientsFrigoForm({ onSubmit, ingredientsPossibles, totalUnites }) {
   const {
     register,
     handleSubmit,
@@ -109,10 +109,13 @@ function IngredientsFrigoForm({ onSubmit, ingredientsPossibles }) {
               aria-label="Unité"
             >
               <option value="">...</option>
-              <option value="pièce(s)">pièce(s)</option>
-              <option value="kg">kg</option>
-              <option value="g">g</option>
-              <option value="cl">cl</option>
+              {totalUnites.map((unite) => {
+                return (
+                  <option value={unite} key={unite}>
+                    {unite}
+                  </option>
+                );
+              })}
             </select>
             {errors.unite && <span>Ce champ est obligatoire</span>}
           </span>
@@ -154,6 +157,7 @@ IngredientsFrigoForm.propTypes = {
       nom: PropTypes.string.isRequired,
     })
   ).isRequired,
+  totalUnites: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export default IngredientsFrigoForm;
