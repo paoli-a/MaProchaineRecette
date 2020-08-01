@@ -255,6 +255,14 @@ describe("displays correct error message on bad fetch", () => {
     const error = getByText(/Il y a eu une erreur vis-à-vis du serveur/);
     expect(error).toBeInTheDocument();
   });
+
+  it("displays an error message if the units fetch was not successful", async () => {
+    mockAxiosGet("unites");
+    const { getByText } = render(<MaProchaineRecette recettes={recettes} />);
+    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(5));
+    const error = getByText(/Il y a eu une erreur vis-à-vis du serveur/);
+    expect(error).toBeInTheDocument();
+  });
 });
 
 describe("Handle correctly new ingredientCatalogue", () => {
