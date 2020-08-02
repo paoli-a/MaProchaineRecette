@@ -5,6 +5,7 @@ import {
   within,
   act,
   waitFor,
+  queryByText,
 } from "@testing-library/react";
 import IngredientsFrigo from "./IngredientsFrigo";
 import axios from "axios";
@@ -302,6 +303,53 @@ was not successful on backend side`, async () => {
     addIngredient(getByLabelText, getByText, ["Poireaux", 50, "g"]);
     const poireaux = queryByText(/Poireaux : /);
     expect(poireaux).not.toBeInTheDocument();
+  });
+
+  it(`adds the ingredient returned by the backend and removes the ingredient that
+   have the same id if there is one`, async () => {
+    const { getByLabelText, getByText, queryByText } = render(
+      <IngredientsFrigo
+        ingredients={ingredientsFrigo}
+        ingredientsPossibles={ingredientsCatalogue}
+        totalUnites={unites}
+      />
+    );
+    await addIngredient(getByLabelText, getByText, [
+      "Carottes",
+      1153,
+      "2100-04-03",
+      "g",
+    ]);
+    let carottes = getByText(/Carottes : /);
+    expect(carottes).toBeInTheDocument();
+    const axiosPostResponse = {
+      data: {
+        id: 3,
+        ingredient: "Carottes",
+        date_peremption: "2100-04-03",
+        quantite: 28.15,
+        unite: "kg",
+      },
+    };
+    axios.post.mockResolvedValue(axiosPostResponse);
+    const inputNom = getByLabelText("Nom de l'ingrédient :");
+    const inputQuantite = getByLabelText("Quantité :");
+    const inputDate = getByLabelText("Date de péremption :");
+    const selectedUnit = getByLabelText("Unité");
+    const submitButton = getByText("Confirmer");
+    fireEvent.change(inputNom, { target: { value: "Carottes" } });
+    fireEvent.change(inputQuantite, { target: { value: 27 } });
+    fireEvent.change(inputDate, { target: { value: "2100-04-03" } });
+    fireEvent.change(selectedUnit, { target: { value: "kg" } });
+    await act(async () => {
+      fireEvent.click(submitButton);
+    });
+    await waitFor(() => expect(axios.post).toHaveBeenCalledTimes(2));
+    carottes = getByText(/Carottes : /);
+    expect(carottes).toBeInTheDocument();
+    expect(queryByText(/53/)).not.toBeInTheDocument();
+    expect(queryByText(/27/)).not.toBeInTheDocument();
+    expect(getByText(/28.15/)).toBeInTheDocument();
   });
 
   it(`provides the right proposals when a letter is entered in the input of the ingredient name`, () => {
