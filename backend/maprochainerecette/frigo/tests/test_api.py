@@ -78,7 +78,7 @@ def test_adding_ingredientFrigo_deserializes_correctly_all_fields():
                     'date_peremption': datetime.date(2020, 7, 20),
                     'unite': "g"
                     }
-    url = _get_ingredientsFrigo_list_absolute_url
+    url = _get_ingredientsFrigo_list_absolute_url()
     request_post = APIRequestFactory().post(url, request_data)
     response_post = IngredientFrigoViewSet.as_view(
         {'post': 'create'})(request_post)
@@ -101,7 +101,7 @@ def test_adding_mergeable_ingredientFrigo_returns_correct_data():
                     'date_peremption': "2020-07-20",
                     'unite': "g"
                     }
-    url = _get_ingredientsFrigo_list_absolute_url
+    url = _get_ingredientsFrigo_list_absolute_url()
     request_post = APIRequestFactory().post(url, request_data)
     response_post = IngredientFrigoViewSet.as_view(
         {'post': 'create'})(request_post)
@@ -114,7 +114,7 @@ def test_adding_mergeable_ingredientFrigo_returns_correct_data():
                               'date_peremption': "2020-07-20",
                               'unite': "kg"
                               }
-    url = _get_ingredientsFrigo_list_absolute_url
+    url = _get_ingredientsFrigo_list_absolute_url()
     request_post = APIRequestFactory().post(url, request_data_mergeable)
     response_post = IngredientFrigoViewSet.as_view(
         {'post': 'create'})(request_post)
