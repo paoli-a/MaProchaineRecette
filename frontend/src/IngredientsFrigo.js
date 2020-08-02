@@ -17,10 +17,7 @@ function IngredientsFrigo({ ingredients, ingredientsPossibles, totalUnites }) {
       .delete(`/frigo/ingredients/${id}/`)
       .then(() => {
         const ingredientsListUpdated = ingredientsList.slice();
-        const index = ingredientsListUpdated.findIndex((ingredient) => {
-          return ingredient.id === id;
-        });
-        ingredientsListUpdated.splice(index, 1);
+        eliminateIngredientWithId(ingredientsListUpdated, id);
         setIngredient(ingredientsListUpdated);
       })
       .catch(() => {
@@ -50,6 +47,7 @@ function IngredientsFrigo({ ingredients, ingredientsPossibles, totalUnites }) {
           unite: data.unite,
         };
         const ingredientsListUpdated = ingredientsList.slice();
+        eliminateIngredientWithId(ingredientsListUpdated, data.id);
         ingredientsListUpdated.push(newData);
         setIngredient(ingredientsListUpdated);
       })
@@ -57,6 +55,16 @@ function IngredientsFrigo({ ingredients, ingredientsPossibles, totalUnites }) {
         setPostError("L'ajout de l'ingrédient a échoué.");
       });
   };
+
+  function eliminateIngredientWithId(ingredientsToClean, id) {
+    const index = ingredientsToClean.findIndex((ingredient) => {
+      return ingredient.id === id;
+    });
+    if (index > -1) {
+      ingredientsToClean.splice(index, 1);
+    }
+  }
+
   const ingredientElement = ingredientsList.map((monIngredient) => {
     const formatedDate = monIngredient.datePeremption.toLocaleDateString();
     return (
