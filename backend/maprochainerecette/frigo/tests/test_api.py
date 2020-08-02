@@ -15,7 +15,7 @@ from frigo.tests.factories import (
     ingredientFrigo,
 )
 from catalogues.tests.factories import IngredientFactory
-from unites.tests.factories import UniteFactory
+from unites.tests.factories import UniteFactory, TypeUniteFactory
 
 
 pytestmark = pytest.mark.django_db
@@ -83,10 +83,45 @@ def test_adding_ingredientFrigo_deserializes_correctly_all_fields():
     response_post = IngredientFrigoViewSet.as_view(
         {'post': 'create'})(request_post)
     assert response_post.status_code == 201
-    assert IngredientFrigo.objects.first().quantite == Decimal('10.00')
-    assert IngredientFrigo.objects.first().date_peremption == datetime.date(2020, 7, 20)
-    assert IngredientFrigo.objects.first().ingredient.nom == "deuxieme ingrédient"
-    assert IngredientFrigo.objects.first().unite.abbreviation == "g"
+    ingredient = IngredientFrigo.objects.first()
+    assert isinstance(ingredient.id, int)
+    assert ingredient.quantite == Decimal('10.00')
+    assert ingredient.date_peremption == datetime.date(2020, 7, 20)
+    assert ingredient.ingredient.nom == "deuxieme ingrédient"
+    assert ingredient.unite.abbreviation == "g"
+
+
+def test_adding_mergeable_ingredientFrigo_returns_correct_data():
+    IngredientFactory(nom="deuxieme ingrédient")
+    unit_type = TypeUniteFactory(nom="masse")
+    UniteFactory(abbreviation="g", rapport=1, type=unit_type)
+    UniteFactory(abbreviation="kg", rapport=1000, type=unit_type)
+    request_data = {'ingredient': "deuxieme ingrédient",
+                    'quantite': '10.00',
+                    'date_peremption': "2020-07-20",
+                    'unite': "g"
+                    }
+    url = _get_ingredientsFrigo_list_absolute_url
+    request_post = APIRequestFactory().post(url, request_data)
+    response_post = IngredientFrigoViewSet.as_view(
+        {'post': 'create'})(request_post)
+    assert response_post.status_code == 201
+    expected_response = {'id': 1, 'ingredient': 'deuxieme ingrédient',
+                         'date_peremption': '2020-07-20', 'quantite': '10.00', 'unite': 'g'}
+    assert response_post.data == expected_response
+    request_data_mergeable = {'ingredient': "deuxieme ingrédient",
+                              'quantite': '0.10',
+                              'date_peremption': "2020-07-20",
+                              'unite': "kg"
+                              }
+    url = _get_ingredientsFrigo_list_absolute_url
+    request_post = APIRequestFactory().post(url, request_data_mergeable)
+    response_post = IngredientFrigoViewSet.as_view(
+        {'post': 'create'})(request_post)
+    assert response_post.status_code == 201
+    expected_response = {'id': 1, 'ingredient': 'deuxieme ingrédient',
+                         'date_peremption': '2020-07-20', 'quantite': '0.11', 'unite': 'kg'}
+    assert response_post.data == expected_response
 
 
 def test_delete_ingredientFrigo(ingredientFrigo):

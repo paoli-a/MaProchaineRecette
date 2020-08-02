@@ -29,7 +29,7 @@ def test_adding_ingredients_that_can_be_merged_merges_them_into_one():
     assert IngredientFrigo.objects.count() == 1
 
 
-def test_adding_ingredients_that_cannot_be_merged_does_not_merges_them():
+def test_adding_ingredients_that_cannot_be_merged_does_not_merge_them():
     type_mass = TypeUniteFactory(nom="masse")
     type_volume = TypeUniteFactory(nom="volume")
     unite_kg = UniteFactory(type=type_mass, abbreviation="kg", rapport=1000)
