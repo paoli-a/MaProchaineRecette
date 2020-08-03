@@ -169,5 +169,53 @@ def test_get_fridge_recipes_returns_feasible_recipes():
     assertContains(response, "Recette 2")
 
 
+def test_get_fridge_recipes_does_not_return_recipes_for_which_an_ingredient_is_missing():
+    carottes, tomates, oignons, gramme = _dataset_for_fridge_recipes_tests()
+    poivrons = IngredientFactory(nom="Poivrons")
+    ingredients_recettes1 = [IngredientRecetteFactory(ingredient=carottes, quantite=500, unite=gramme),
+                             IngredientRecetteFactory(
+                                 ingredient=tomates, quantite=50, unite=gramme),
+                             IngredientRecetteFactory(
+                                 ingredient=oignons, quantite=60, unite=gramme),
+                             IngredientRecetteFactory(ingredient=poivrons, quantite=200, unite=gramme)]
+    RecetteFactory(ingredients=ingredients_recettes1, titre="Recette 1")
+    ingredients_recettes2 = [IngredientRecetteFactory(ingredient=carottes, quantite=350, unite=gramme),
+                             IngredientRecetteFactory(
+                                 ingredient=tomates, quantite=40, unite=gramme),
+                             IngredientRecetteFactory(ingredient=oignons, quantite=12, unite=gramme)]
+    RecetteFactory(ingredients=ingredients_recettes2, titre="Recette 2")
+    url = reverse("recettes_frigo_list")
+    request = APIRequestFactory().get(url)
+    response = RecettesFrigo.as_view()(request)
+    assertNotContains(response, "Recette 1")
+    assertContains(response, "Recette 2")
+
+
+def test_get_fridge_recipes_does_not_return_recipes_for_which_an_ingredient_has_not_enough_quantity():
+    carottes, tomates, oignons, gramme = _dataset_for_fridge_recipes_tests()
+    ingredients_recettes1 = [IngredientRecetteFactory(ingredient=carottes, quantite=600, unite=gramme),
+                             IngredientRecetteFactory(
+                                 ingredient=tomates, quantite=50, unite=gramme),
+                             IngredientRecetteFactory(ingredient=oignons, quantite=60, unite=gramme)]
+    RecetteFactory(ingredients=ingredients_recettes1, titre="Recette 1")
+    ingredients_recettes2 = [IngredientRecetteFactory(ingredient=carottes, quantite=350, unite=gramme),
+                             IngredientRecetteFactory(
+                                 ingredient=tomates, quantite=40, unite=gramme),
+                             IngredientRecetteFactory(ingredient=oignons, quantite=12, unite=gramme)]
+    RecetteFactory(ingredients=ingredients_recettes2, titre="Recette 2")
+    url = reverse("recettes_frigo_list")
+    request = APIRequestFactory().get(url)
+    response = RecettesFrigo.as_view()(request)
+    assertNotContains(response, "Recette 1")
+    assertContains(response, "Recette 2")
+
+
 def _dataset_for_fridge_recipes_tests():
-    pass
+    gramme = UniteFactory(abbreviation="g")
+    carottes = IngredientFactory(nom="Carottes")
+    tomates = IngredientFactory(nom="Tomates")
+    oignons = IngredientFactory(nom="Oignons")
+    IngredientFrigoFactory(ingredient=carottes, quantite=500, unite=gramme)
+    IngredientFrigoFactory(ingredient=tomates, quantite=50, unite=gramme)
+    IngredientFrigoFactory(ingredient=oignons, quantite=60, unite=gramme)
+    return carottes, tomates, oignons, gramme

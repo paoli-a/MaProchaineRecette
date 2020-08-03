@@ -26,10 +26,20 @@ class RecettesFrigo(APIView):
     permission_classes = [permissions.AllowAny]
 
     def get(self, request, format="json"):
-        # fridge_ingredient = IngredientFrigo.objects.all()
+        fridge_ingredients = IngredientFrigo.objects.all()
         recipes = Recette.objects.all()
         feasible_recipes = []
         for recipe in recipes:
-            feasible_recipes.append(recipe)
+            ingredients_available = True
+            for recipe_ingredient in recipe.ingredients.all():
+                ingredient_available = False
+                for fridge_ingredient in fridge_ingredients:
+                    if fridge_ingredient.ingredient == recipe_ingredient.ingredient:
+                        if fridge_ingredient.quantite >= recipe_ingredient.quantite:
+                            ingredient_available = True
+                if not ingredient_available:
+                    ingredients_available = False
+            if ingredients_available:
+                feasible_recipes.append(recipe)
         serializer = RecetteSerializer(feasible_recipes, many=True)
         return Response(serializer.data)
