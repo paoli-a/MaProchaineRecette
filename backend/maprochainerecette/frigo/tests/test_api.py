@@ -7,14 +7,15 @@ from pytest_django.asserts import (
     assertNotContains
 )
 from rest_framework.test import APIRequestFactory
+from django.urls import reverse
 
-from frigo.api import IngredientFrigoViewSet
+from frigo.api import IngredientFrigoViewSet, RecettesFrigo
 from frigo.models import IngredientFrigo
 from frigo.tests.factories import (
     IngredientFrigoFactory,
     ingredientFrigo,
 )
-from catalogues.tests.factories import IngredientFactory
+from catalogues.tests.factories import IngredientFactory, RecetteFactory, IngredientRecetteFactory
 from unites.tests.factories import UniteFactory, TypeUniteFactory
 
 
@@ -141,3 +142,32 @@ def _get_ingredientsFrigo_detail_absolute_url(id):
     view.basename = "ingredients_frigo"
     view.request = None
     return view.reverse_action("detail", args=[id])
+
+
+def test_get_fridge_recipes_returns_feasible_recipes():
+    gramme = UniteFactory(abbreviation="g")
+    carottes = IngredientFactory(nom="Carottes")
+    tomates = IngredientFactory(nom="Tomates")
+    oignons = IngredientFactory(nom="Oignons")
+    IngredientFrigoFactory(ingredient=carottes, quantite=500, unite=gramme)
+    IngredientFrigoFactory(ingredient=tomates, quantite=50, unite=gramme)
+    IngredientFrigoFactory(ingredient=oignons, quantite=60, unite=gramme)
+    ingredients_recettes1 = [IngredientRecetteFactory(ingredient=carottes, quantite=500, unite=gramme),
+                             IngredientRecetteFactory(
+                                 ingredient=tomates, quantite=50, unite=gramme),
+                             IngredientRecetteFactory(ingredient=oignons, quantite=60, unite=gramme)]
+    RecetteFactory(ingredients=ingredients_recettes1, titre="Recette 1")
+    ingredients_recettes2 = [IngredientRecetteFactory(ingredient=carottes, quantite=350, unite=gramme),
+                             IngredientRecetteFactory(
+                                 ingredient=tomates, quantite=40, unite=gramme),
+                             IngredientRecetteFactory(ingredient=oignons, quantite=12, unite=gramme)]
+    RecetteFactory(ingredients=ingredients_recettes2, titre="Recette 2")
+    url = reverse("recettes_frigo_list")
+    request = APIRequestFactory().get(url)
+    response = RecettesFrigo.as_view()(request)
+    assertContains(response, "Recette 1")
+    assertContains(response, "Recette 2")
+
+
+def _dataset_for_fridge_recipes_tests():
+    pass
