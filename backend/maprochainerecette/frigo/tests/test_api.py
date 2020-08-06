@@ -210,8 +210,36 @@ def test_get_fridge_recipes_does_not_return_recipes_for_which_an_ingredient_has_
     assertContains(response, "Recette 2")
 
 
+def test_get_fridge_recipes_returns_recipes_for_which_ingredients_are_splitted():
+    """When a recipe has one of its ingredients in the fridge with different 
+    expiration dates, the recipe should still be returned if the summed 
+    quantities are enough.
+    """
+    carottes, tomates, _, gramme = _dataset_for_fridge_recipes_tests()
+    navet = IngredientFactory(nom="Navet")
+    IngredientFrigoFactory(ingredient=navet, quantite=60,
+                           unite=gramme, date_peremption=datetime.date(2030, 1, 1))
+    IngredientFrigoFactory(ingredient=navet, quantite=40,
+                           unite=gramme, date_peremption=datetime.date(2030, 2, 2))
+    ingredients_recettes1 = [IngredientRecetteFactory(ingredient=carottes, quantite=500, unite=gramme),
+                             IngredientRecetteFactory(
+                                 ingredient=tomates, quantite=50, unite=gramme),
+                             IngredientRecetteFactory(ingredient=navet, quantite=100, unite=gramme)]
+    RecetteFactory(ingredients=ingredients_recettes1, titre="Recette 1")
+    ingredients_recettes2 = [IngredientRecetteFactory(ingredient=carottes, quantite=350, unite=gramme),
+                             IngredientRecetteFactory(
+                                 ingredient=tomates, quantite=40, unite=gramme),
+                             IngredientRecetteFactory(ingredient=navet, quantite=80, unite=gramme)]
+    RecetteFactory(ingredients=ingredients_recettes2, titre="Recette 2")
+    url = reverse("recettes_frigo_list")
+    request = APIRequestFactory().get(url)
+    response = RecettesFrigo.as_view()(request)
+    assertContains(response, "Recette 1")
+    assertContains(response, "Recette 2")
+
+
 def _dataset_for_fridge_recipes_tests():
-    gramme = UniteFactory(abbreviation="g")
+    gramme = UniteFactory(abbreviation="g", rapport=1)
     carottes = IngredientFactory(nom="Carottes")
     tomates = IngredientFactory(nom="Tomates")
     oignons = IngredientFactory(nom="Oignons")
