@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from frigo.models import IngredientFrigo
-from catalogues.models import Ingredient, Unite
+from catalogues.models import Ingredient, Unite, Recette, Categorie
+from catalogues.serializers import IngredientRecetteSerializer
 
 
 class IngredientFrigoSerializer(serializers.ModelSerializer):
@@ -28,3 +29,27 @@ class IngredientFrigoSerializer(serializers.ModelSerializer):
                 date_peremption=ingredient.date_peremption,
                 unite__type=ingredient.unite.type).first()
         return ingredient
+
+
+class RecetteFrigoSerializer(serializers.ModelSerializer):
+    ingredients = IngredientRecetteSerializer(many=True)
+    categories = serializers.SlugRelatedField(many=True,
+                                              queryset=Categorie.objects.all(), slug_field="nom")
+    unsure_ingredients = serializers.SerializerMethodField()
+    priority_ingredients = serializers.SerializerMethodField()
+
+    def get_unsure_ingredients(self, obj):
+        if "unsure_ingredients" in self.context:
+            return self.context["unsure_ingredients"][obj.id]
+        return None
+
+    def get_priority_ingredients(self, obj):
+        if "priority_ingredients" in self.context:
+            return self.context["priority_ingredients"][obj.id]
+        return None
+
+    class Meta:
+        model = Recette
+        fields = ["id", "titre", "description",
+                  "duree", "ingredients", "categories",
+                  "priority_ingredients", "unsure_ingredients"]
