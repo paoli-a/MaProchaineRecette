@@ -171,6 +171,28 @@ def test_get_fridge_recipes_returns_correct_fields():
     url = reverse("recettes_frigo_list")
     request = APIRequestFactory().get(url)
     response = RecettesFrigo.as_view()(request)
+    _check_recipe_fields(response, recette)
+    assert len(response.data[0]["unsure_ingredients"]) == 0
+
+
+def test_get_fridge_recipes_returns_correct_fields_with_unsure_ingredients():
+    carottes, tomates, oignons, gramme, _ = _dataset_for_fridge_recipes_tests()
+    pieces_type = TypeUniteFactory(nom="pièce(s)")
+    pieces = UniteFactory(abbreviation="pièce(s)", rapport=1, type=pieces_type)
+    ingredients_recettes1 = [IngredientRecetteFactory(ingredient=carottes, quantite=3, unite=pieces),
+                             IngredientRecetteFactory(
+                                 ingredient=tomates, quantite=50, unite=gramme),
+                             IngredientRecetteFactory(ingredient=oignons, quantite=2, unite=pieces)]
+    recette = RecetteFactory(
+        ingredients=ingredients_recettes1, titre="Recette 1")
+    url = reverse("recettes_frigo_list")
+    request = APIRequestFactory().get(url)
+    response = RecettesFrigo.as_view()(request)
+    _check_recipe_fields(response, recette)
+    assert response.data[0]["unsure_ingredients"] == ["Carottes", "Oignons"]
+
+
+def _check_recipe_fields(response, recette):
     assert len(response.data) == 1
     recette_data = response.data[0]
     assert recette_data["id"] == recette.id
@@ -180,10 +202,10 @@ def test_get_fridge_recipes_returns_correct_fields():
     assert len(recette_data["ingredients"]) == 3
     assert set(recette_data["ingredients"][0].keys(
     )) == {"ingredient", "quantite", "unite"}
-    assert recette_data["ingredients"][0]["ingredient"] == "Carottes"
-    assert recette_data["ingredients"][0]["unite"] == "g"
+    assert recette_data["ingredients"][1]["ingredient"] == "Tomates"
+    assert recette_data["ingredients"][1]["unite"] == "g"
+    assert recette_data["ingredients"][1]["quantite"] == "50.00"
     assert len(recette_data["categories"]) == 0
-    assert len(recette_data["unsure_ingredients"]) == 0
     assert len(recette_data["priority_ingredients"]) == 1
     assert recette_data["priority_ingredients"][0] == "Carottes"
 

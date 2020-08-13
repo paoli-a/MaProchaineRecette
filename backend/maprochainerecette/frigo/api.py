@@ -26,7 +26,7 @@ class RecettesFrigo(APIView):
     authentication_classes = [authentication.TokenAuthentication]
     permission_classes = [permissions.AllowAny]
 
-    def get(self, request, format="json"):
+    def get(self, request):
         """View to list feasible recipes according to fridge ingredients."""
         fridge_ingredients = self._build_fridge_ingredients_data()
         recipes = Recette.objects.all()
@@ -36,30 +36,21 @@ class RecettesFrigo(APIView):
         for recipe in recipes:
             ingredients_available = True
             priority_ingredient_date = None
-            priority_ingredient = None
             for recipe_ingredient in recipe.ingredients.all():
                 name = recipe_ingredient.ingredient.nom
                 (ingredient_available,
                  ingredient_unsure,
-                 ingredient_date) = self._check_ingredient_available(
+                 ingredient_date) = self._check_recipe_ingredient_against_fridge(
                     recipe_ingredient, fridge_ingredients)
                 if not ingredient_available:
                     ingredients_available = False
                 else:
-                    if not priority_ingredient_date or ingredient_date < priority_ingredient_date:
-                        priority_ingredient_date = ingredient_date
-                        priority_ingredient = name
-                    if ingredient_unsure:
-                        if recipe.id not in unsure_ingredients:
-                            unsure_ingredients[recipe.id] = [name]
-                        else:
-                            unsure_ingredients[recipe.id] += [name]
-                    else:
-                        unsure_ingredients[recipe.id] = []
+                    priority_ingredients, priority_ingredient_date = self._build_priority_ingredients_field(
+                        recipe.id, name, ingredient_date, priority_ingredient_date, priority_ingredients)
+                    unsure_ingredients = self._build_unsure_ingredients_field(
+                        recipe.id, name, ingredient_unsure, unsure_ingredients)
             if ingredients_available:
                 feasible_recipes.append(recipe)
-                if priority_ingredient:
-                    priority_ingredients[recipe.id] = [priority_ingredient]
         serializer = RecetteFrigoSerializer(feasible_recipes, many=True, context={
                                             "unsure_ingredients": unsure_ingredients,
                                             "priority_ingredients": priority_ingredients})
@@ -90,7 +81,7 @@ class RecettesFrigo(APIView):
         return data
 
     @staticmethod
-    def _check_ingredient_available(recipe_ingredient, fridge_ingredients):
+    def _check_recipe_ingredient_against_fridge(recipe_ingredient, fridge_ingredients):
         name = recipe_ingredient.ingredient.nom
         unit_type = recipe_ingredient.unite.type.nom
         converted_quantity = recipe_ingredient.quantite * recipe_ingredient.unite.rapport
@@ -98,9 +89,13 @@ class RecettesFrigo(APIView):
         ingredient_unsure = False
         ingredient_date = None
         if name in fridge_ingredients:
-            if unit_type in fridge_ingredients[name] and fridge_ingredients[name][unit_type]["quantity"] >= converted_quantity:
+            enough_quantity_of_same_unit_type = (unit_type in fridge_ingredients[name] and
+                                                 fridge_ingredients[name][unit_type]["quantity"] >= converted_quantity)
+            other_unit_type = set(
+                fridge_ingredients[name].keys()).difference({unit_type})
+            if enough_quantity_of_same_unit_type:
                 ingredient_date = fridge_ingredients[name][unit_type]["date"]
-            elif set(fridge_ingredients[name].keys()).difference({unit_type}):
+            elif other_unit_type:
                 ingredient_unsure = True
                 ingredient_date = min(
                     quantity_date["date"] for quantity_date in fridge_ingredients[name].values())
@@ -109,3 +104,21 @@ class RecettesFrigo(APIView):
         else:
             ingredient_available = False
         return ingredient_available, ingredient_unsure, ingredient_date
+
+    @staticmethod
+    def _build_priority_ingredients_field(recipe_id, ingredient_name, ingredient_date, priority_ingredient_date, priority_ingredients):
+        if not priority_ingredient_date or ingredient_date < priority_ingredient_date:
+            priority_ingredient_date = ingredient_date
+            priority_ingredients[recipe_id] = [ingredient_name]
+        return priority_ingredients, priority_ingredient_date
+
+    @staticmethod
+    def _build_unsure_ingredients_field(recipe_id, ingredient_name, ingredient_unsure, unsure_ingredients):
+        if ingredient_unsure:
+            if recipe_id not in unsure_ingredients:
+                unsure_ingredients[recipe_id] = [ingredient_name]
+            else:
+                unsure_ingredients[recipe_id] += [ingredient_name]
+        elif recipe_id not in unsure_ingredients:
+            unsure_ingredients[recipe_id] = []
+        return unsure_ingredients
