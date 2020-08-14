@@ -9,12 +9,13 @@ import "./MaProchaineRecette.css";
 import "./Nav.css";
 import PropTypes from "prop-types";
 
-function MaProchaineRecette({ recettes }) {
+function MaProchaineRecette() {
   const [ingredientsCatalogue, setIngredientsCatalogue] = useState([]);
-  const [recettesCatalogue, setRecetteCatalogue] = useState([]);
+  const [recettesCatalogue, setRecettesCatalogue] = useState([]);
   const [ingredientsFrigo, setIngredientsFrigo] = useState([]);
   const [categoriesCatalogue, setCategoriesCatalogue] = useState([]);
   const [unites, setUnites] = useState([]);
+  const [feasibleRecipes, setRecettesFrigo] = useState([]);
   const [fetchError, setFetchError] = useState("");
 
   const handleIngredientsPossibles = (ingredients) => {
@@ -35,7 +36,7 @@ function MaProchaineRecette({ recettes }) {
     axios
       .get("/catalogues/recettes/")
       .then(({ data }) => {
-        setRecetteCatalogue(data);
+        setRecettesCatalogue(data);
       })
       .catch(() =>
         setFetchError(
@@ -81,6 +82,16 @@ function MaProchaineRecette({ recettes }) {
           "Il y a eu une erreur vis-à-vis du serveur, veuillez reharger la page ou réessayer ultérieurement."
         )
       );
+    axios
+      .get("/frigo/recettes/")
+      .then(({ data }) => {
+        setRecettesFrigo(data);
+      })
+      .catch(() =>
+        setFetchError(
+          "Il y a eu une erreur vis-à-vis du serveur, veuillez reharger la page ou réessayer ultérieurement."
+        )
+      );
   }, []);
 
   return (
@@ -119,7 +130,7 @@ function MaProchaineRecette({ recettes }) {
               ingredientsPossibles={ingredientsCatalogue}
               totalUnites={unites}
             />
-            <RecettesAffichage recettes={recettes} />
+            <RecettesAffichage recettes={feasibleRecipes} />
           </main>
         </Route>
       </div>
@@ -127,23 +138,6 @@ function MaProchaineRecette({ recettes }) {
   );
 }
 
-MaProchaineRecette.propTypes = {
-  recettes: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      categories: PropTypes.arrayOf(PropTypes.string).isRequired,
-      titre: PropTypes.string.isRequired,
-      ingredients: PropTypes.arrayOf(
-        PropTypes.shape({
-          ingredient: PropTypes.string.isRequired,
-          quantite: PropTypes.string.isRequired,
-          unite: PropTypes.string.isRequired,
-        }).isRequired
-      ),
-      duree: PropTypes.string.isRequired,
-      description: PropTypes.string.isRequired,
-    })
-  ).isRequired,
-};
+MaProchaineRecette.propTypes = {};
 
 export default MaProchaineRecette;

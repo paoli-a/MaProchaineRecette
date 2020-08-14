@@ -23,6 +23,8 @@ beforeEach(() => {
     duree: "35 min",
     description:
       "Eplucher et couper les patates en rondelles et les cuire à l'eau. Cuire les oeufs durs. Couper les radis en rondelles. Emincer les échalottes et les oignons. Couper les oeufs durs. Mettre le tout dans un saladier et rajouter le vinaigre. Mélanger. Préparer la sauce :  mélanger le yaourt, la mayonnaise, la moutarde, la gousse d'ail rapée. Assaisoner.",
+    priority_ingredients: ["oeufs"],
+    unsure_ingredients: ["ail"],
   };
 });
 

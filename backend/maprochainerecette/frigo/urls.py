@@ -11,7 +11,7 @@ urlpatterns = router.urls
 
 urlpatterns += [
     path(
-        route="recettes",
+        route="recettes/",
         view=RecettesFrigo.as_view(),
         name="recettes_frigo_list"
     ),

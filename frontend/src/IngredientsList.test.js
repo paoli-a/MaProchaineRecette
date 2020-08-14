@@ -3,6 +3,8 @@ import { render } from "@testing-library/react";
 import IngredientsList from "./IngredientsList";
 
 let ingredients;
+let priorityIngredients;
+let unsureIngredients;
 
 beforeEach(() => {
   ingredients = [
@@ -16,10 +18,18 @@ beforeEach(() => {
     { ingredient: "moutarde", quantite: "0.5", unite: "cas" },
     { ingredient: "ail", quantite: "1", unite: "gousse(s)" },
   ];
+  priorityIngredients = ["mayonnaise"];
+  unsureIngredients = ["radis", "ail"];
 });
 
 it("renders a list of ingredients", () => {
-  const { getByText } = render(<IngredientsList ingredients={ingredients} />);
+  const { getByText } = render(
+    <IngredientsList
+      ingredients={ingredients}
+      priorityIngredients={priorityIngredients}
+      unsureIngredients={unsureIngredients}
+    />
+  );
   const ingredient1 = getByText("pommes de terre", { exact: false });
   const ingredient2 = getByText("radis", { exact: false });
   expect(ingredient1).toBeInTheDocument();
@@ -28,8 +38,25 @@ it("renders a list of ingredients", () => {
 
 it("renders a list wich contains the right number of ingredients", () => {
   const { getAllByRole } = render(
-    <IngredientsList ingredients={ingredients} />
+    <IngredientsList
+      ingredients={ingredients}
+      priorityIngredients={priorityIngredients}
+      unsureIngredients={unsureIngredients}
+    />
   );
   const listItems = getAllByRole("listitem");
   expect(listItems).toHaveLength(9);
+});
+
+it("surrounds priority ingredients with strong tags", () => {
+  const { getAllByTestId } = render(
+    <IngredientsList
+      ingredients={ingredients}
+      priorityIngredients={priorityIngredients}
+      unsureIngredients={unsureIngredients}
+    />
+  );
+  const strongTags = getAllByTestId("strong-tag");
+  expect(strongTags).toHaveLength(1);
+  expect(strongTags.textContent).toContain("mayonnaise");
 });

@@ -41,6 +41,8 @@ function Recette({ recette, optionalButton, activateClick, highlight }) {
       <div className={isRecetteOpen ? null : "hidden"}>
         <IngredientsList
           ingredients={recette.ingredients}
+          priorityIngredients={recette.priority_ingredients}
+          unsureIngredients={recette.unsure_ingredients}
           highlight={highlight}
         />
         <p>{highlight(recette.description)}</p>

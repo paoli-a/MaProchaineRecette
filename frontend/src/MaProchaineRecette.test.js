@@ -6,7 +6,8 @@ import MaProchaineRecette from "./MaProchaineRecette";
 require("mutationobserver-shim");
 
 jest.mock("axios");
-let recettes;
+let recettesCatalogue;
+let feasibleRecipes;
 let ingredientsFrigo;
 let ingredientsCatalogue;
 let categoriesCatalogue;
@@ -16,9 +17,11 @@ let axiosResponseRecettes;
 let axiosResponseIngredientsFrigo;
 let axiosResponseCategories;
 let axiosResponseUnites;
+let axiosResponseRecettesFrigo;
+const FETCH_CALLS = 6;
 
 beforeEach(() => {
-  recettes = [
+  recettesCatalogue = [
     {
       id: 1,
       categories: ["Plat"],
@@ -37,6 +40,29 @@ beforeEach(() => {
       duree: "35 min",
       description:
         "Eplucher et couper les patates en rondelles et les cuire à l'eau. Cuire les oeufs durs. Couper les radis en rondelles. Emincer les échalottes et les oignons. Couper les oeufs durs. Mettre le tout dans un saladier et rajouter le vinaigre. Mélanger. Préparer la sauce :  mélanger le yaourt, la mayonnaise, la moutarde, la gousse d'ail rapée. Assaisoner.",
+    },
+  ];
+  feasibleRecipes = [
+    {
+      id: 1,
+      categories: ["Plat"],
+      titre: "Salade de pommes de terre radis",
+      ingredients: [
+        { ingredient: "pommes de terre", quantite: "1", unite: "kg" },
+        { ingredient: "oeufs", quantite: "3", unite: "pièce(s)" },
+        { ingredient: "vinaigre non balsamique", quantite: "1", unite: "cas" },
+        { ingredient: "radis", quantite: "2", unite: "botte(s)" },
+        { ingredient: "oignons bottes", quantite: "2", unite: "pièce(s)" },
+        { ingredient: "yaourt grec", quantite: "1", unite: "pièce(s)" },
+        { ingredient: "mayonnaise", quantite: "1", unite: "cas" },
+        { ingredient: "moutarde", quantite: "0.5", unite: "cas" },
+        { ingredient: "ail", quantite: "1", unite: "gousse(s)" },
+      ],
+      duree: "35 min",
+      description:
+        "Eplucher et couper les patates en rondelles et les cuire à l'eau. Cuire les oeufs durs. Couper les radis en rondelles. Emincer les échalottes et les oignons. Couper les oeufs durs. Mettre le tout dans un saladier et rajouter le vinaigre. Mélanger. Préparer la sauce :  mélanger le yaourt, la mayonnaise, la moutarde, la gousse d'ail rapée. Assaisoner.",
+      priority_ingredients: ["oeufs"],
+      unsure_ingredients: ["ail"],
     },
   ];
   ingredientsFrigo = [
@@ -59,7 +85,8 @@ beforeEach(() => {
   categoriesCatalogue = ["Entrée", "Plat", "Dessert"];
   unites = ["kg", "g", "cl", "pièce(s)"];
   axiosResponseIngredients = { data: ingredientsCatalogue };
-  axiosResponseRecettes = { data: recettes };
+  axiosResponseRecettes = { data: recettesCatalogue };
+  axiosResponseRecettesFrigo = { data: feasibleRecipes };
   axiosResponseIngredientsFrigo = { data: ingredientsFrigo };
   axiosResponseCategories = { data: categoriesCatalogue };
   axiosResponseUnites = { data: unites };
@@ -80,6 +107,10 @@ function mockAxiosGet(rejectedElement) {
       return rejectedElement === "frigo"
         ? Promise.reject(new Error(""))
         : Promise.resolve(axiosResponseIngredientsFrigo);
+    } else if (url === "/frigo/recettes/") {
+      return rejectedElement === "feasibleRecipes"
+        ? Promise.reject(new Error(""))
+        : Promise.resolve(axiosResponseRecettesFrigo);
     } else if (url === "/catalogues/categories/") {
       return rejectedElement === "categories"
         ? Promise.reject(new Error(""))
@@ -105,11 +136,11 @@ const navigateTo = (linkText, getByRole) => {
 };
 
 describe("renders correctly", () => {
-  it("renders only feasible recipes and fridge ingredients when click on that nav link", async () => {
+  it("renders only feasible recipes and fridge ingredients when clicking on that nav link", async () => {
     const { getByRole, getByText, queryByText } = render(
-      <MaProchaineRecette recettes={recettes} />
+      <MaProchaineRecette />
     );
-    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(5));
+    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(FETCH_CALLS));
     navigateTo("Ma prochaine recette", getByRole);
     const prochainesRecettes = getByText("Mes prochaines recettes");
     const frigo = getByText("Voici les ingrédients du frigo !");
@@ -121,11 +152,11 @@ describe("renders correctly", () => {
     expect(tousMesIngredients).not.toBeInTheDocument();
   });
 
-  it("renders only ingredients of the catalog when click on that nav link", async () => {
+  it("renders only ingredients of the catalog when clicking on that nav link", async () => {
     const { getByRole, queryByText, getByText } = render(
-      <MaProchaineRecette recettes={recettes} />
+      <MaProchaineRecette />
     );
-    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(5));
+    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(FETCH_CALLS));
     navigateTo("Catalogue des ingrédients", getByRole);
     const prochainesRecettes = queryByText("Mes prochaines recettes");
     const frigo = queryByText("Voici les ingrédients du frigo !");
@@ -137,11 +168,11 @@ describe("renders correctly", () => {
     expect(tousMesIngredients).toBeInTheDocument();
   });
 
-  it("renders only recipes of the catalog when click on that nav link", async () => {
+  it("renders only recipes of the catalog when clicking on that nav link", async () => {
     const { getByRole, queryByText, getByText } = render(
-      <MaProchaineRecette recettes={recettes} />
+      <MaProchaineRecette />
     );
-    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(5));
+    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(FETCH_CALLS));
     navigateTo("Catalogue des recettes", getByRole);
     const prochainesRecettes = queryByText("Mes prochaines recettes");
     const frigo = queryByText("Voici les ingrédients du frigo !");
@@ -155,53 +186,43 @@ describe("renders correctly", () => {
 });
 
 describe("fetches correctly", () => {
-  it("fetches and displays ingredients of the fridge when click on that nav link", async () => {
-    const { getByText, getByRole } = render(
-      <MaProchaineRecette recettes={recettes} />
-    );
-    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(5));
+  it("fetches and displays ingredients of the fridge when clicking on that nav link", async () => {
+    const { getByText, getByRole } = render(<MaProchaineRecette />);
+    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(FETCH_CALLS));
     navigateTo("Ma prochaine recette", getByRole);
     const epinard = getByText(/épinard/);
     expect(epinard).toBeInTheDocument();
   });
 
-  it("fetches and displays ingredients of the catalog when click on that nav link", async () => {
-    const { getByRole, getByText } = render(
-      <MaProchaineRecette recettes={recettes} />
-    );
-    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(5));
+  it("fetches and displays ingredients of the catalog when clicking on that nav link", async () => {
+    const { getByRole, getByText } = render(<MaProchaineRecette />);
+    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(FETCH_CALLS));
     navigateTo("Catalogue des ingrédients", getByRole);
     const fraises = getByText("Fraises");
     expect(fraises).toBeInTheDocument();
   });
 
-  it("fetches and displays recipes of the catalog when click on that nav link", async () => {
-    const { getByRole, getByText } = render(
-      <MaProchaineRecette recettes={recettes} />
-    );
-    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(5));
+  it("fetches and displays recipes of the catalog when clicking on that nav link", async () => {
+    const { getByRole, getByText } = render(<MaProchaineRecette />);
+    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(FETCH_CALLS));
     navigateTo("Catalogue des recettes", getByRole);
     const salade = getByText("Salade de pommes de terre radis");
     expect(salade).toBeInTheDocument();
   });
 
-  it(`fetches and displays categories of the catalog when click on catalog recipes 
+  it(`fetches and displays categories of the catalog when clicking on catalog recipes 
   nav link`, async () => {
-    const { getByRole, getByText } = render(
-      <MaProchaineRecette recettes={recettes} />
-    );
-    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(5));
+    const { getByRole, getByText } = render(<MaProchaineRecette />);
+    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(FETCH_CALLS));
     navigateTo("Catalogue des recettes", getByRole);
     const entree = getByText("Entrée");
     expect(entree).toBeInTheDocument();
   });
 
-  it(`fetches and displays units when click on catalog recipes 
+  it(`fetches and displays units when clicking on catalog recipes 
   nav link`, async () => {
-    const { getByRole, getByText } = render(
-      <MaProchaineRecette recettes={recettes} />
-    );
-    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(5));
+    const { getByRole, getByText } = render(<MaProchaineRecette />);
+    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(FETCH_CALLS));
     navigateTo("Catalogue des recettes", getByRole);
     const kg = getByText("kg");
     const pieces = getByText("pièce(s)");
@@ -209,57 +230,72 @@ describe("fetches correctly", () => {
     expect(pieces).toBeInTheDocument();
   });
 
-  it(`fetches and displays units when click on my next recipes
+  it(`fetches and displays units when clicking on my next recipes
   nav link`, async () => {
-    const { getByRole, getByText } = render(
-      <MaProchaineRecette recettes={recettes} />
-    );
-    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(5));
+    const { getByRole, getByText } = render(<MaProchaineRecette />);
+    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(FETCH_CALLS));
     navigateTo("Ma prochaine recette", getByRole);
     const kg = getByText("kg");
     const pieces = getByText("pièce(s)");
     expect(kg).toBeInTheDocument();
     expect(pieces).toBeInTheDocument();
+  });
+
+  it(`fetches and displays feasible recipes when clicking on my next recipes
+  nav link`, async () => {
+    const { getByRole, getByText } = render(<MaProchaineRecette />);
+    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(FETCH_CALLS));
+    navigateTo("Ma prochaine recette", getByRole);
+    const titre = getByText("Salade de pommes de terre radis");
+    expect(titre).toBeInTheDocument();
   });
 });
 
 describe("displays correct error message on bad fetch", () => {
   it("displays an error message if the ingredient fetch was not successful", async () => {
     mockAxiosGet("ingredients");
-    const { getByText } = render(<MaProchaineRecette recettes={recettes} />);
-    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(5));
+    const { getByText } = render(<MaProchaineRecette />);
+    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(FETCH_CALLS));
     const error = getByText(/Il y a eu une erreur vis-à-vis du serveur/);
     expect(error).toBeInTheDocument();
   });
 
   it("displays an error message if the reciepe fetch was not successful", async () => {
     mockAxiosGet("recettes");
-    const { getByText } = render(<MaProchaineRecette recettes={recettes} />);
-    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(5));
+    const { getByText } = render(<MaProchaineRecette />);
+    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(FETCH_CALLS));
     const error = getByText(/Il y a eu une erreur vis-à-vis du serveur/);
     expect(error).toBeInTheDocument();
   });
 
   it("displays an error message if the fridge ingredient fetch was not successful", async () => {
     mockAxiosGet("frigo");
-    const { getByText } = render(<MaProchaineRecette recettes={recettes} />);
-    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(5));
+    const { getByText } = render(<MaProchaineRecette />);
+    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(FETCH_CALLS));
     const error = getByText(/Il y a eu une erreur vis-à-vis du serveur/);
     expect(error).toBeInTheDocument();
   });
 
   it("displays an error message if the categories fetch was not successful", async () => {
     mockAxiosGet("categories");
-    const { getByText } = render(<MaProchaineRecette recettes={recettes} />);
-    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(5));
+    const { getByText } = render(<MaProchaineRecette />);
+    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(FETCH_CALLS));
     const error = getByText(/Il y a eu une erreur vis-à-vis du serveur/);
     expect(error).toBeInTheDocument();
   });
 
   it("displays an error message if the units fetch was not successful", async () => {
     mockAxiosGet("unites");
-    const { getByText } = render(<MaProchaineRecette recettes={recettes} />);
-    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(5));
+    const { getByText } = render(<MaProchaineRecette />);
+    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(FETCH_CALLS));
+    const error = getByText(/Il y a eu une erreur vis-à-vis du serveur/);
+    expect(error).toBeInTheDocument();
+  });
+
+  it("displays an error message if the feasible recipes fetch was not successful", async () => {
+    mockAxiosGet("feasibleRecipes");
+    const { getByText } = render(<MaProchaineRecette />);
+    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(FETCH_CALLS));
     const error = getByText(/Il y a eu une erreur vis-à-vis du serveur/);
     expect(error).toBeInTheDocument();
   });
@@ -267,10 +303,8 @@ describe("displays correct error message on bad fetch", () => {
 
 describe("Handle correctly new ingredientCatalogue", () => {
   it(`takes into account newly entered ingredient in ingredientsCatalogue by giving suggestions when an ingredient name is being entered in IngredientsFrigo`, async () => {
-    const maProchaineRecette = render(
-      <MaProchaineRecette recettes={recettes} />
-    );
-    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(5));
+    const maProchaineRecette = render(<MaProchaineRecette />);
+    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(FETCH_CALLS));
     await addIngredientCatalogue(maProchaineRecette, "Navets");
     const { getByLabelText, getByTestId, getByRole } = maProchaineRecette;
     navigateTo("Ma prochaine recette", getByRole);
@@ -281,10 +315,8 @@ describe("Handle correctly new ingredientCatalogue", () => {
   });
 
   it(`takes into account newly entered ingredient in ingredientsCatalogue by giving suggestions when an ingredient name is being entered in RecettesCatalogue`, async () => {
-    const maProchaineRecette = render(
-      <MaProchaineRecette recettes={recettes} />
-    );
-    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(5));
+    const maProchaineRecette = render(<MaProchaineRecette />);
+    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(FETCH_CALLS));
     await addIngredientCatalogue(maProchaineRecette, "Coriandre");
     const { getByLabelText, getByTestId, getByRole } = maProchaineRecette;
     navigateTo("Catalogue des recettes", getByRole);
