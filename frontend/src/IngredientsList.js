@@ -7,11 +7,19 @@ function IngredientsList({
   unsureIngredients,
   highlight,
 }) {
+  const renderName = (ingredient) => {
+    if (priorityIngredients.includes(ingredient)) {
+      return <strong data-testid="strong-tag">{highlight(ingredient)}</strong>;
+    } else {
+      return highlight(ingredient);
+    }
+  };
+
   const ingredientsList = [];
   for (let { ingredient, quantite, unite } of ingredients) {
     ingredientsList.push(
       <li key={ingredient}>
-        {highlight(ingredient)} : {quantite} {unite}
+        {renderName(ingredient)} : {quantite} {unite}
       </li>
     );
   }
@@ -52,6 +60,8 @@ IngredientsList.propTypes = {
 
 IngredientsList.defaultProps = {
   highlight: (texte) => texte,
+  priorityIngredients: [],
+  unsureIngredients: [],
 };
 
 export default IngredientsList;

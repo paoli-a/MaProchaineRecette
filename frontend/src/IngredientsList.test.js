@@ -58,5 +58,5 @@ it("surrounds priority ingredients with strong tags", () => {
   );
   const strongTags = getAllByTestId("strong-tag");
   expect(strongTags).toHaveLength(1);
-  expect(strongTags.textContent).toContain("mayonnaise");
+  expect(strongTags[0].textContent).toContain("mayonnaise");
 });
