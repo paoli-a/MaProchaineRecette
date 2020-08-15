@@ -7,7 +7,6 @@ import IngredientsCatalogue from "./IngredientsCatalogue";
 import RecettesCatalogue from "./RecettesCatalogue";
 import "./MaProchaineRecette.css";
 import "./Nav.css";
-import PropTypes from "prop-types";
 
 function MaProchaineRecette() {
   const [ingredientsCatalogue, setIngredientsCatalogue] = useState([]);
@@ -137,7 +136,5 @@ function MaProchaineRecette() {
     </Router>
   );
 }
-
-MaProchaineRecette.propTypes = {};
 
 export default MaProchaineRecette;

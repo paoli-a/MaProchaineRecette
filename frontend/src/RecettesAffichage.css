@@ -5,3 +5,12 @@
 h1 {
   padding-bottom: 30px;
 }
+
+#RecettesAffichage .Recette {
+  border: 3px RGBa(235, 117, 105, 0.6) ridge;
+  margin: 15px 0;
+}
+
+#RecettesAffichage .Recette.unsure {
+  border: 3px #ddd ridge;
+}

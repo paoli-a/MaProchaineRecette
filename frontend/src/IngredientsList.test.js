@@ -60,3 +60,19 @@ it("surrounds priority ingredients with strong tags", () => {
   expect(strongTags).toHaveLength(1);
   expect(strongTags[0].textContent).toContain("mayonnaise");
 });
+
+it("surrounds unsure ingredients with em tags", () => {
+  const { getAllByTitle } = render(
+    <IngredientsList
+      ingredients={ingredients}
+      priorityIngredients={priorityIngredients}
+      unsureIngredients={unsureIngredients}
+    />
+  );
+  const emTags = getAllByTitle(
+    "Il n'y a peut-être pas la bonne quantité de cet ingredient"
+  );
+  expect(emTags).toHaveLength(2);
+  expect(emTags[0].textContent).toContain("radis");
+  expect(emTags[1].textContent).toContain("ail");
+});

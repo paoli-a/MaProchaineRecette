@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import "./IngredientsList.css";
 
 function IngredientsList({
   ingredients,
@@ -8,19 +9,38 @@ function IngredientsList({
   highlight,
 }) {
   const renderName = (ingredient) => {
-    if (priorityIngredients.includes(ingredient)) {
+    const isIngredientPriority = priorityIngredients.includes(ingredient);
+    if (isIngredientPriority) {
       return <strong data-testid="strong-tag">{highlight(ingredient)}</strong>;
     } else {
       return highlight(ingredient);
     }
   };
 
+  const renderIngredient = (ingredient, quantite, unite) => {
+    const isIngredientUnsure = unsureIngredients.includes(ingredient);
+    if (isIngredientUnsure) {
+      return (
+        <em
+          title="Il n'y a peut-être pas la bonne quantité de cet ingredient"
+          class="unsure-ingredient"
+        >
+          {renderName(ingredient)} : {quantite} {unite}
+        </em>
+      );
+    } else {
+      return (
+        <React.Fragment>
+          {renderName(ingredient)} : {quantite} {unite}
+        </React.Fragment>
+      );
+    }
+  };
+
   const ingredientsList = [];
   for (let { ingredient, quantite, unite } of ingredients) {
     ingredientsList.push(
-      <li key={ingredient}>
-        {renderName(ingredient)} : {quantite} {unite}
-      </li>
+      <li key={ingredient}>{renderIngredient(ingredient, quantite, unite)}</li>
     );
   }
 
