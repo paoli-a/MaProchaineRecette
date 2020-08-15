@@ -32,10 +32,9 @@ class RecettesFrigo(APIView):
         recipes = Recette.objects.all()
         feasible_recipes = []
         unsure_ingredients: Dict[int, list] = {}
-        priority_ingredients: Dict[int, list] = {}
+        priority_ingredients: Dict[int, Dict[str, Any]] = {}
         for recipe in recipes:
             ingredients_available = True
-            priority_ingredient_date = None
             for recipe_ingredient in recipe.ingredients.all():
                 name = recipe_ingredient.ingredient.nom
                 (ingredient_available,
@@ -45,12 +44,14 @@ class RecettesFrigo(APIView):
                 if not ingredient_available:
                     ingredients_available = False
                 else:
-                    priority_ingredients, priority_ingredient_date = self._build_priority_ingredients_field(
-                        recipe.id, name, ingredient_date, priority_ingredient_date, priority_ingredients)
+                    priority_ingredients = self._build_priority_ingredients_field(
+                        recipe.id, name, ingredient_date, priority_ingredients)
                     unsure_ingredients = self._build_unsure_ingredients_field(
                         recipe.id, name, ingredient_unsure, unsure_ingredients)
             if ingredients_available:
                 feasible_recipes.append(recipe)
+        feasible_recipes = self._sort_recipes(
+            feasible_recipes, priority_ingredients)
         serializer = RecetteFrigoSerializer(feasible_recipes, many=True, context={
                                             "unsure_ingredients": unsure_ingredients,
                                             "priority_ingredients": priority_ingredients})
@@ -106,11 +107,16 @@ class RecettesFrigo(APIView):
         return ingredient_available, ingredient_unsure, ingredient_date
 
     @staticmethod
-    def _build_priority_ingredients_field(recipe_id, ingredient_name, ingredient_date, priority_ingredient_date, priority_ingredients):
-        if not priority_ingredient_date or ingredient_date < priority_ingredient_date:
-            priority_ingredient_date = ingredient_date
-            priority_ingredients[recipe_id] = [ingredient_name]
-        return priority_ingredients, priority_ingredient_date
+    def _build_priority_ingredients_field(recipe_id, ingredient_name, ingredient_date,
+                                          priority_ingredients):
+        if not recipe_id in priority_ingredients:
+            priority_ingredients[recipe_id] = {}
+            priority_ingredients[recipe_id]["date"] = ingredient_date
+            priority_ingredients[recipe_id]["name"] = [ingredient_name]
+        if ingredient_date < priority_ingredients[recipe_id]["date"]:
+            priority_ingredients[recipe_id]["date"] = ingredient_date
+            priority_ingredients[recipe_id]["name"] = [ingredient_name]
+        return priority_ingredients
 
     @staticmethod
     def _build_unsure_ingredients_field(recipe_id, ingredient_name, ingredient_unsure, unsure_ingredients):
@@ -122,3 +128,7 @@ class RecettesFrigo(APIView):
         elif recipe_id not in unsure_ingredients:
             unsure_ingredients[recipe_id] = []
         return unsure_ingredients
+
+    @staticmethod
+    def _sort_recipes(feasible_recipes, priority_ingredients):
+        return sorted(feasible_recipes, key=lambda recipe: priority_ingredients[recipe.id]["date"])

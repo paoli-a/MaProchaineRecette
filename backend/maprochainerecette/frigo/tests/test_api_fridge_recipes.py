@@ -80,8 +80,8 @@ def test_get_fridge_recipes_does_not_return_recipes_for_which_an_ingredient_has_
 
 
 def test_get_fridge_recipes_returns_recipes_for_which_ingredients_are_splitted():
-    """When a recipe has one of its ingredients in the fridge with different 
-    expiration dates, the recipe should still be returned if the summed 
+    """When a recipe has one of its ingredients in the fridge with different
+    expiration dates, the recipe should still be returned if the summed
     quantities are enough.
     """
     carottes, tomates, _, gramme, _ = _dataset_for_fridge_recipes_tests()
@@ -133,7 +133,7 @@ def test_get_fridge_recipes_returns_recipes_for_which_an_ingredient_has_differen
 
 
 def test_get_fridge_recipes_returns_recipes_that_have_unsure_ingredients():
-    """Unsure ingredients are ingredients that have a unit type different from 
+    """Unsure ingredients are ingredients that have a unit type different from
     the recipe's ingredient unit type. The conversion between two different unit
     types has not been implemented yet, so the feasibility of the recipe is not sure.
     """
@@ -158,6 +158,31 @@ def test_get_fridge_recipes_returns_recipes_that_have_unsure_ingredients():
     response = RecettesFrigo.as_view()(request)
     assertContains(response, "Recette 1")
     assertContains(response, "Recette 2")
+
+
+def test_get_fridge_recipes_returns_correctly_ordered_recipes():
+    """Recipes must be ordered according to the expiration date of the most prioritary ingredient.
+    """
+    carottes, tomates, oignons, gramme, _ = _dataset_for_fridge_recipes_tests()
+    navet = IngredientFactory(nom="Navet")
+    IngredientFrigoFactory(ingredient=navet, quantite=100,
+                           unite=gramme, date_peremption=datetime.date(2132, 1, 1))
+    ingredients_recettes1 = [IngredientRecetteFactory(ingredient=oignons, quantite=50, unite=gramme),
+                             IngredientRecetteFactory(ingredient=navet, quantite=50, unite=gramme)]
+    RecetteFactory(ingredients=ingredients_recettes1, titre="Recette 1")
+    ingredients_recettes2 = [IngredientRecetteFactory(ingredient=carottes, quantite=350, unite=gramme),
+                             IngredientRecetteFactory(ingredient=navet, quantite=40, unite=gramme)]
+    RecetteFactory(ingredients=ingredients_recettes2, titre="Recette 2")
+    ingredients_recettes3 = [IngredientRecetteFactory(ingredient=oignons, quantite=50, unite=gramme),
+                             IngredientRecetteFactory(ingredient=tomates, quantite=40, unite=gramme)]
+    RecetteFactory(ingredients=ingredients_recettes3, titre="Recette 3")
+    url = reverse("recettes_frigo_list")
+    request = APIRequestFactory().get(url)
+    response = RecettesFrigo.as_view()(request)
+    # carottes > tomates > oignons > navet
+    assert response.data[0]["titre"] == "Recette 2"
+    assert response.data[1]["titre"] == "Recette 3"
+    assert response.data[2]["titre"] == "Recette 1"
 
 
 def test_get_fridge_recipes_returns_correct_fields():
