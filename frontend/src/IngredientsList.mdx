@@ -72,3 +72,31 @@ import Highlighter from "react-highlight-words";
     )
   }}
 </Playground>
+
+
+### Exemple avec un ingrédient prioritaire et des ingrédients non surs.
+
+<Playground>
+  {() => {
+    const ingredients = [
+      { ingredient: "pommes de terre", quantite: "1", unite: "kg" },
+      { ingredient: "oeufs", quantite: "3", unite: "pièce(s)" },
+      { ingredient: "vinaigre non balsamique", quantite: "1", unite: "cas" },
+      { ingredient: "radis", quantite: "2", unite: "botte(s)" },
+      { ingredient: "oignons bottes", quantite: "2", unite: "pièce(s)" },
+      { ingredient: "yaourt grec", quantite: "1", unite: "pièce(s)" },
+      { ingredient: "mayonnaise", quantite: "1", unite: "cas" },
+      { ingredient: "moutarde", quantite: "0.5", unite: "cas" },
+      { ingredient: "ail", quantite: "1", unite: "gousse(s)" },
+    ];
+    priorityIngredients = ["mayonnaise"];
+    unsureIngredients = ["radis", "ail"];
+    return (
+      <IngredientsList
+        ingredients={ingredients}
+        priorityIngredients={priorityIngredients}
+        unsureIngredients={unsureIngredients}
+      />
+    )
+  }}
+</Playground>

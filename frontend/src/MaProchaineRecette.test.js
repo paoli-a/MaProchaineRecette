@@ -136,7 +136,8 @@ const navigateTo = (linkText, getByRole) => {
 };
 
 describe("renders correctly", () => {
-  it("renders only feasible recipes and fridge ingredients when clicking on that nav link", async () => {
+  it(`renders only feasible recipes and fridge ingredients when clicking on that 
+  nav link`, async () => {
     const { getByRole, getByText, queryByText } = render(
       <MaProchaineRecette />
     );

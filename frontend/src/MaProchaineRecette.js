@@ -14,7 +14,7 @@ function MaProchaineRecette() {
   const [ingredientsFrigo, setIngredientsFrigo] = useState([]);
   const [categoriesCatalogue, setCategoriesCatalogue] = useState([]);
   const [unites, setUnites] = useState([]);
-  const [feasibleRecipes, setRecettesFrigo] = useState([]);
+  const [feasibleRecipes, setFeasibleRecipes] = useState([]);
   const [fetchError, setFetchError] = useState("");
 
   const handleIngredientsPossibles = (ingredients) => {
@@ -84,7 +84,7 @@ function MaProchaineRecette() {
     axios
       .get("/frigo/recettes/")
       .then(({ data }) => {
-        setRecettesFrigo(data);
+        setFeasibleRecipes(data);
       })
       .catch(() =>
         setFetchError(

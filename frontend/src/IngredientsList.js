@@ -23,7 +23,7 @@ function IngredientsList({
       return (
         <em
           title="Il n'y a peut-être pas la bonne quantité de cet ingredient"
-          class="unsure-ingredient"
+          className="unsure-ingredient"
         >
           {renderName(ingredient)} : {quantite} {unite}
         </em>

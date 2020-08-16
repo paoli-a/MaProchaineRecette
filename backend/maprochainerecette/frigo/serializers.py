@@ -45,7 +45,7 @@ class RecetteFrigoSerializer(serializers.ModelSerializer):
 
     def get_priority_ingredients(self, obj):
         if "priority_ingredients" in self.context:
-            return self.context["priority_ingredients"][obj.id]["name"]
+            return [self.context["priority_ingredients"][obj.id]["name"]]
         return None
 
     class Meta:

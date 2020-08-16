@@ -27,7 +27,21 @@ class RecettesFrigo(APIView):
     permission_classes = [permissions.AllowAny]
 
     def get(self, request):
-        """View to list feasible recipes according to fridge ingredients."""
+        """View to list feasible recipes according to fridge ingredients.
+
+        Recipes are sorted according to the expiration date of the most 
+        priority ingredient of each recipe.
+
+        If an ingredient needed by a recipe is present in the fridge but
+        with a unit that is not convertible in the unit of the recipe's 
+        ingredient, the recipe is returned with a field called unsure_ingredient
+        that contains the name of these ingredients.
+
+        An additional field called priority_ingredients contains the name 
+        of the most priority ingredient (ie: the ingredient that will expire 
+        the sooner.) of the recipe.
+
+        """
         fridge_ingredients = self._build_fridge_ingredients_data()
         recipes = Recette.objects.all()
         feasible_recipes = []
@@ -60,7 +74,7 @@ class RecettesFrigo(APIView):
     @staticmethod
     def _build_fridge_ingredients_data():
         # Quantites are converted into the unit that has the ratio equal to 1
-        # For each iingredient and unit type, we keep only the erliest date
+        # For each ingredient and unit type, we keep only the erliest date
         data: Dict[str, Dict[str, Dict[str, Any]]] = {}
         # {name : {unit_type: {quantity or date: ingredient quantity or date}}}
         for fridge_ingredient in IngredientFrigo.objects.all():
@@ -110,12 +124,11 @@ class RecettesFrigo(APIView):
     def _build_priority_ingredients_field(recipe_id, ingredient_name, ingredient_date,
                                           priority_ingredients):
         if not recipe_id in priority_ingredients:
-            priority_ingredients[recipe_id] = {}
-            priority_ingredients[recipe_id]["date"] = ingredient_date
-            priority_ingredients[recipe_id]["name"] = [ingredient_name]
+            priority_ingredients[recipe_id] = {
+                "date": ingredient_date, "name": ingredient_name}
         if ingredient_date < priority_ingredients[recipe_id]["date"]:
             priority_ingredients[recipe_id]["date"] = ingredient_date
-            priority_ingredients[recipe_id]["name"] = [ingredient_name]
+            priority_ingredients[recipe_id]["name"] = ingredient_name
         return priority_ingredients
 
     @staticmethod
