@@ -8,5 +8,5 @@ pytestmark = pytest.mark.django_db
 
 
 def test_recette_detail_resolve_does_not_raise_404(ingredientFrigo):
-    url = f"/catalogues/recettes/{ingredientFrigo.id}/"
+    url = f"/frigo/ingredients/{ingredientFrigo.id}/"
     assert resolve(url)

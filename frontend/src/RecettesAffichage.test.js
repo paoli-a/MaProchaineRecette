@@ -26,8 +26,9 @@ beforeEach(() => {
       duree: "35 min",
       description:
         "Epluchez et coupez les patates en rondelles et les cuire à l'eau. Cuire les oeufs durs. Coupez les radis en rondelles. Emincez les échalottes et les oignons. Coupez les oeufs durs. Mettre le tout dans un saladier et rajoutez le vinaigre. Mélangez. Préparez la sauce :  mélangez le yaourt, la mayonnaise, la moutarde, la gousse d'ail rapée. Assaisoner. Une recette en or ...",
+      priority_ingredients: ["oeufs"],
+      unsure_ingredients: ["ail"],
     },
-
     {
       id: 2,
       categories: ["Entrée"],
@@ -43,8 +44,9 @@ beforeEach(() => {
       duree: "11 h",
       description:
         "Emincez le saumon, l'échalotte et le persil. Ajoutez le vinaigre, l'huile, le citron et un peu de poivre. Mélangez et laissez mariner toute la nuit.",
+      priority_ingredients: ["herbes raiches"],
+      unsure_ingredients: [],
     },
-
     {
       id: 3,
       categories: ["Dessert"],
@@ -58,18 +60,22 @@ beforeEach(() => {
       duree: "1 h",
       description:
         "Épluchez et épépinez les poires. Coupez-les en dés. Faites-les revenir 10 min dans 40 g de beurre et 40 g de cassonade. Préchauffez le four à 210 °C. Mélangez la farine avec le reste de cassonade, 80 g de beurre mou en dés et 1 pincée de sel afin d'obtenir une pâte sableuse. Disposez les poires dans un plat à gratin beurré. Parsemez de pâte en l'effritant du bout des doigts. Enfournez 30 min. Servez chaud ou tiède.",
+      priority_ingredients: ["poires"],
+      unsure_ingredients: [],
     },
   ];
 });
 
-it("renders title element of all the recipes", () => {
-  const { getByText } = render(<RecettesAffichage recettes={recettes} />);
-  const titreRecette1 = getByText("Salade de pommes de terre radis");
-  const titreRecette2 = getByText("Marinade de saumon fumé");
-  const titreRecette3 = getByText("Crumble aux poires");
-  expect(titreRecette1).toBeInTheDocument();
-  expect(titreRecette2).toBeInTheDocument();
-  expect(titreRecette3).toBeInTheDocument();
+describe("Renders correctly each recipe", () => {
+  it("renders title element of all the recipes", () => {
+    const { getByText } = render(<RecettesAffichage recettes={recettes} />);
+    const titreRecette1 = getByText("Salade de pommes de terre radis");
+    const titreRecette2 = getByText("Marinade de saumon fumé");
+    const titreRecette3 = getByText("Crumble aux poires");
+    expect(titreRecette1).toBeInTheDocument();
+    expect(titreRecette2).toBeInTheDocument();
+    expect(titreRecette3).toBeInTheDocument();
+  });
 });
 
 describe("the category filtration functionality works properly", () => {

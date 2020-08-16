@@ -34,13 +34,18 @@ function Recette({ recette, optionalButton, activateClick, highlight }) {
       );
     }
   };
+  const isRecipeUnsure = Boolean(
+    recette.unsure_ingredients && recette.unsure_ingredients.length !== 0
+  );
 
   return (
-    <article className="Recette">
+    <article className={isRecipeUnsure ? "Recette unsure" : "Recette"}>
       {title()}
       <div className={isRecetteOpen ? null : "hidden"}>
         <IngredientsList
           ingredients={recette.ingredients}
+          priorityIngredients={recette.priority_ingredients}
+          unsureIngredients={recette.unsure_ingredients}
           highlight={highlight}
         />
         <p>{highlight(recette.description)}</p>
