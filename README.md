@@ -1,68 +1,89 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Ma prochaine recette
 
-## Available Scripts
+Ma prochaine recette est une application web permettant d'afficher les recettes faisables en fonction d'un catalogue de recettes et de la liste des ingrédients présents dans le frigo.
 
-In the project directory, you can run:
+## Installation
 
-### `yarn start`
+Actuellement la seule forme d'installation est l'installation locale à partir des sources.
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### Prérequis
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+Pour pouvoir lancer l'application, il vous faut installer une version de :
 
-### `yarn test`
+- [Python 3](https://www.python.org/) (de préférence 3.8+)
+- [Node.js](https://nodejs.org/) (de préférence 12+)
+- [Yarn](https://yarnpkg.com/)
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Procédure
 
-### `yarn build`
+Il faut d'abord cloner localement le répertoire :
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```bash
+git clone https://github.com/paoli-a/MaProchaineRecette.git
+```
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+L'application est composée de deux parties : le backend et le frontend, qu'il faut installer et lancer séparément.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+#### Backend
 
-### `yarn eject`
+Il faut d'abord installer le backend :
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+```bash
+pip install pipenv
+cd ma-prochaine-recette/backend/
+pipenv install
+```
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Une fois installé, vous pouvez le lancer avec la commande suivante :
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+```bash
+cd maprochainerecette
+pipenv run python manage.py runserver
+```
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+Le backend est alors en fonctionnement. Vous pouvez le vérifier en accédant à l'adresse `http://127.0.0.1:8000/` qui vous permettra de naviguer dans l'interface web de l'API REST.
 
-## Learn More
+#### Frontend
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Il faut ensuite, dans un autre terminal, installer le frontend :
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```bash
+cd ma-prochaine-recette/frontend/
+yarn install
+```
 
-### Code Splitting
+Une fois installé, vous pouvez le lancer avec la commande suivante :
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+```bash
+yarn start
+```
 
-### Analyzing the Bundle Size
+L'application devrait alors se lancer toute seule. Elle sera disponible depuis votre navigateur à l'adresse `http://127.0.0.1:3000/`.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+## Fonctionnalités
 
-### Making a Progressive Web App
+L'application est composée de trois pages principales :
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
+### La page des recettes faisables et des ingrédients du frigo
 
-### Advanced Configuration
+- Les recettes faisables sont affichées dans un ordre permettant de prendre en compte les ingrédients qui vont se périmer le plus vite.
+- Pour chaque recette affichée, l'ingrédient du frigo qui périme le plus vite est mis en gras.
+- Pour chaque recette affichée, les ingrédients qui sont présents dans celle-ci mais dont le type d'unité ne permet pas de comparer leur quantité avec ceux du frigo correspondants sont mis en grisé italique. La recette est alors entourée d'un cadre gris pour indiquer qu'elle n'est peut être pas faisable.
+- Il est possible de filtrer les recettes par catégories (par exemple entrée, plat, dessert) ou de filtrer par mot-clé grace à la barre de recherche.
+- Lorsqu'un ingrédient est ajouté dans le frigo, dans le cas où le même ingredient est déjà présent avec la même date de péremption, les deux ingrédients seront fusionnés et leur leur quantité sommée à condition que leur unités soient du même type (par exemple `gramme` et `kilogramme`, alors que `gramme` et `pièce` ne le pourront pas).
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
+### La page du catalogue de recettes
 
-### Deployment
+Le catalogue des recettes contient l'ensemble de vos recettes, qui seront prises en compte pour établir la liste des recettes faisables.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
+### La page du catalogue d'ingrédients
 
-### `yarn build` fails to minify
+Pour ajouter un ingrédient dans une recette ou dans le frigo, il faut d'abord que le nom exact de cet ingrédient soit entré dans le catalogue des ingrédients.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+## Licence
+
+Cette application est disponible sous licence AGPL V3. Pour plus de détails n'hésitez pas à consulter le [texte de la licence](LICENSE).
+
+## Détails techniques
+
+Si vous souhaitez plus de détails sur l'aspect technique, les outils de développement et la documentation, n'hésitez pas à consulter le [README du backend](backend/README.md) et le [README du frontent](frontend/README.md).
