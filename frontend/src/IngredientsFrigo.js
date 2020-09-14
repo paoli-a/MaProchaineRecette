@@ -3,7 +3,7 @@ import IngredientsFrigoForm from "./IngredientsFrigoForm";
 import PropTypes from "prop-types";
 import axios from "axios";
 
-function IngredientsFrigo({ ingredients, ingredientsPossibles, totalUnites }) {
+function IngredientsFrigo({ ingredients, possibleIngredients, totalUnites }) {
   const [ingredientsList, setIngredient] = useState(ingredients);
   const [postError, setPostError] = useState("");
   const [deleteError, setDeleteError] = useState({});
@@ -30,14 +30,14 @@ function IngredientsFrigo({ ingredients, ingredientsPossibles, totalUnites }) {
   };
 
   const handleSubmit = (data) => {
-    const ingredientNouveau = {
+    const newIngredient = {
       ingredient: data.nomIngredient,
       date_peremption: data.datePeremption,
       quantite: data.quantiteIngredient + "",
       unite: data.unite,
     };
     axios
-      .post("/frigo/ingredients/", ingredientNouveau)
+      .post("/frigo/ingredients/", newIngredient)
       .then(({ data }) => {
         const newData = {
           id: data.id,
@@ -88,7 +88,7 @@ function IngredientsFrigo({ ingredients, ingredientsPossibles, totalUnites }) {
       <h2>Voici les ingrédients du frigo !</h2>
       <IngredientsFrigoForm
         onSubmit={handleSubmit}
-        ingredientsPossibles={ingredientsPossibles}
+        possibleIngredients={possibleIngredients}
         totalUnites={totalUnites}
       />
       {postError && <span>{postError}</span>}
@@ -98,7 +98,7 @@ function IngredientsFrigo({ ingredients, ingredientsPossibles, totalUnites }) {
 }
 
 IngredientsFrigo.propTypes = {
-  ingredientsPossibles: PropTypes.arrayOf(
+  possibleIngredients: PropTypes.arrayOf(
     PropTypes.shape({
       nom: PropTypes.string.isRequired,
     })

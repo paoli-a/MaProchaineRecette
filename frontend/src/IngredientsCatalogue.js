@@ -6,8 +6,8 @@ import "./IngredientsCatalogue.css";
 import PropTypes from "prop-types";
 
 function IngredientsCatalogue({
-  ingredientsPossibles,
-  updateIngredientsPossibles,
+  possibleIngredients,
+  updatePossibleIngredients,
 }) {
   const { register, handleSubmit, errors, reset, setError } = useForm();
   const [searchResults, setSearchResults] = useState("");
@@ -20,10 +20,10 @@ function IngredientsCatalogue({
     axios
       .post("/catalogues/ingredients/", ingredientToSend)
       .then(({ data }) => {
-        const ingredientNouveau = { nom: data.nom };
-        const ingredientsListUpdated = ingredientsPossibles.slice();
-        ingredientsListUpdated.push(ingredientNouveau);
-        updateIngredientsPossibles(ingredientsListUpdated);
+        const newIngredient = { nom: data.nom };
+        const ingredientsListUpdated = possibleIngredients.slice();
+        ingredientsListUpdated.push(newIngredient);
+        updatePossibleIngredients(ingredientsListUpdated);
         reset();
       })
       .catch(() => {
@@ -37,12 +37,12 @@ function IngredientsCatalogue({
     axios
       .delete(`/catalogues/ingredients/${nom}/`)
       .then(() => {
-        const ingredientsListUpdated = ingredientsPossibles.slice();
+        const ingredientsListUpdated = possibleIngredients.slice();
         const index = ingredientsListUpdated.findIndex((ingredient) => {
           return ingredient.nom === nom;
         });
         ingredientsListUpdated.splice(index, 1);
-        updateIngredientsPossibles(ingredientsListUpdated);
+        updatePossibleIngredients(ingredientsListUpdated);
         setDeleteError({});
       })
       .catch(() => {
@@ -59,7 +59,7 @@ function IngredientsCatalogue({
   };
 
   const ingredientsFiltres = useFilterSearch({
-    elementsToFilter: ingredientsPossibles,
+    elementsToFilter: possibleIngredients,
     searchResults: searchResults,
     getSearchElement: (ingredient) => ingredient.nom,
   });
@@ -132,15 +132,15 @@ function IngredientsCatalogue({
 }
 
 IngredientsCatalogue.propTypes = {
-  ingredientsPossibles: PropTypes.arrayOf(
+  possibleIngredients: PropTypes.arrayOf(
     PropTypes.shape({
       nom: PropTypes.string.isRequired,
     })
   ).isRequired,
   /**
-   * Fonction mettant à jour la propriété controlée ingredientsPossibles.
+   * Fonction mettant à jour la propriété controlée possibleIngredients.
    */
-  updateIngredientsPossibles: PropTypes.func.isRequired,
+  updatePossibleIngredients: PropTypes.func.isRequired,
 };
 
 export default IngredientsCatalogue;

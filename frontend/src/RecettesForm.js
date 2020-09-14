@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 
 function RecettesForm({
   onSubmitRecette,
-  ingredientsPossibles,
+  possibleIngredients,
   totalCategories,
   totalUnites,
 }) {
@@ -46,7 +46,7 @@ function RecettesForm({
       );
     }
     let authorized = false;
-    for (const ingredientPossible of ingredientsPossibles) {
+    for (const ingredientPossible of possibleIngredients) {
       if (ingredientPossible.nom === ingredientNom) {
         authorized = true;
         break;
@@ -179,7 +179,7 @@ function RecettesForm({
           <p>
             <label htmlFor="ingredient"> Nom : </label>
             <InputSuggestions
-              elements={ingredientsPossibles}
+              elements={possibleIngredients}
               id="ingredient"
               getElementText={(ingredient) => ingredient.nom}
               onChangeValue={(nom) => setIngredientNom(nom)}
@@ -265,7 +265,7 @@ RecettesForm.propTypes = {
    * Il s'agit ici des ingrédients autorisés, c'est-à-dire ceux entrés
    * dans le catalogue des ingrédients.
    */
-  ingredientsPossibles: PropTypes.arrayOf(
+  possibleIngredients: PropTypes.arrayOf(
     PropTypes.shape({
       nom: PropTypes.string.isRequired,
     })

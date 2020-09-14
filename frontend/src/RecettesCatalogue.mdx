@@ -5,16 +5,16 @@ menu: Components
 
 # RecettesCatalogue
 
-import RecettesCatalogue from "./RecettesCatalogue"
-import { Playground, Props } from 'docz'
+import RecettesCatalogue from "./RecettesCatalogue";
+import { Playground, Props } from "docz";
 
 Ce composant permet d'afficher les recettes du catalogue, d'en ajouter
- et d'en supprimer. Une recherche peut etre faite sur le nom des recettes et
+et d'en supprimer. Une recherche peut etre faite sur le nom des recettes et
 permettra d'afficher au fur et à mesure les recettes correspondantes.
 
 ## Props
-<Props of={RecettesCatalogue} />
 
+<Props of={RecettesCatalogue} />
 
 ## Exemples d'utilisation
 
@@ -28,7 +28,11 @@ permettra d'afficher au fur et à mesure les recettes correspondantes.
         ingredients: [
           { ingredient: "pommes de terre", quantite: "1", unite: "kg" },
           { ingredient: "oeufs", quantite: "3", unite: "pièce(s)" },
-          { ingredient: "vinaigre non balsamique", quantite: "1", unite: "cas" },
+          {
+            ingredient: "vinaigre non balsamique",
+            quantite: "1",
+            unite: "cas",
+          },
           { ingredient: "radis", quantite: "2", unite: "botte(s)" },
           { ingredient: "oignons bottes", quantite: "2", unite: "pièce(s)" },
           { ingredient: "yaourt grec", quantite: "1", unite: "pièce(s)" },
@@ -45,12 +49,16 @@ permettra d'afficher au fur et à mesure les recettes correspondantes.
         categories: ["Plat"],
         titre: "Gratin pommes de terre panais",
         ingredients: [
-          { ingredient: "pommes de terre", quantite: "1", "unite": "kg"},
-          { ingredient: "panais", quantite: "4", "unite": "pièce(s)"},
-          { ingredient: "crème fraiche épaisse", quantite: "20", "unite": "cl"},
-          { ingredient: "crème fraiche semi-épaisse", quantite: "10", "unite": "cl"},
-          { ingredient: "moutarde", quantite: "1.5", "unite": "cas"},
-          { ingredient: "gruillère rapé", quantite: "70", "unite": "g"},
+          { ingredient: "pommes de terre", quantite: "1", unite: "kg" },
+          { ingredient: "panais", quantite: "4", unite: "pièce(s)" },
+          { ingredient: "crème fraiche épaisse", quantite: "20", unite: "cl" },
+          {
+            ingredient: "crème fraiche semi-épaisse",
+            quantite: "10",
+            unite: "cl",
+          },
+          { ingredient: "moutarde", quantite: "1.5", unite: "cas" },
+          { ingredient: "gruillère rapé", quantite: "70", unite: "g" },
         ],
         duree: "1 h",
         description:
@@ -68,12 +76,12 @@ permettra d'afficher au fur et à mesure les recettes correspondantes.
     const categoriesCatalogue = ["Entrée", "Plat", "Dessert", "Gouter"];
     const unites = ["kg", "g", "cl", "pièce(s)"];
     return (
-      <RecettesCatalogue 
+      <RecettesCatalogue
         totalRecettes={recettes}
-        ingredientsPossibles={ingredientsCatalogue}
+        possibleIngredients={ingredientsCatalogue}
         totalCategories={categoriesCatalogue}
         totalUnites={unites}
       />
-    )
+    );
   }}
 </Playground>

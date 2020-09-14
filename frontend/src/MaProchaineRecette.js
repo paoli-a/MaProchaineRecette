@@ -17,7 +17,7 @@ function MaProchaineRecette() {
   const [feasibleRecipes, setFeasibleRecipes] = useState([]);
   const [fetchError, setFetchError] = useState("");
 
-  const handleIngredientsPossibles = (ingredients) => {
+  const handlePossibleIngredients = (ingredients) => {
     setIngredientsCatalogue(ingredients);
   };
 
@@ -111,22 +111,22 @@ function MaProchaineRecette() {
         <Route path="/recettes">
           <RecettesCatalogue
             totalRecettes={recettesCatalogue}
-            ingredientsPossibles={ingredientsCatalogue}
+            possibleIngredients={ingredientsCatalogue}
             totalCategories={categoriesCatalogue}
             totalUnites={unites}
           />
         </Route>
         <Route path="/ingredients">
           <IngredientsCatalogue
-            ingredientsPossibles={ingredientsCatalogue}
-            updateIngredientsPossibles={handleIngredientsPossibles}
+            possibleIngredients={ingredientsCatalogue}
+            updatePossibleIngredients={handlePossibleIngredients}
           />
         </Route>
         <Route path="/" exact>
           <main id="MesProchainesRecettes">
             <IngredientsFrigo
               ingredients={ingredientsFrigo}
-              ingredientsPossibles={ingredientsCatalogue}
+              possibleIngredients={ingredientsCatalogue}
               totalUnites={unites}
             />
             <RecettesAffichage recettes={feasibleRecipes} />

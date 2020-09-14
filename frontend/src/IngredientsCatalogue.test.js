@@ -23,15 +23,15 @@ afterEach(() => {
   jest.clearAllMocks();
 });
 
-const handleIngredientsPossibles = (ingredients) => {
+const handlePossibleIngredients = (ingredients) => {
   ingredientsCatalogue = ingredients;
 };
 
 const rerenderCatalogue = (rerender) => {
   rerender(
     <IngredientsCatalogue
-      ingredientsPossibles={ingredientsCatalogue}
-      updateIngredientsPossibles={handleIngredientsPossibles}
+      possibleIngredients={ingredientsCatalogue}
+      updatePossibleIngredients={handlePossibleIngredients}
     />
   );
 };
@@ -39,8 +39,8 @@ const rerenderCatalogue = (rerender) => {
 it("removes the correct ingredient when clicking on remove button", async () => {
   const { getByText, getAllByRole, rerender } = render(
     <IngredientsCatalogue
-      ingredientsPossibles={ingredientsCatalogue}
-      updateIngredientsPossibles={handleIngredientsPossibles}
+      possibleIngredients={ingredientsCatalogue}
+      updatePossibleIngredients={handlePossibleIngredients}
     />
   );
   const axiosDeleteResponse = { data: "" };
@@ -59,8 +59,8 @@ it(`displays an error message and keeps the ingredient if the ingredient removal
 was not successful on backend side`, async () => {
   const { getByText, getAllByRole, rerender } = render(
     <IngredientsCatalogue
-      ingredientsPossibles={ingredientsCatalogue}
-      updateIngredientsPossibles={handleIngredientsPossibles}
+      possibleIngredients={ingredientsCatalogue}
+      updatePossibleIngredients={handlePossibleIngredients}
     />
   );
   const axiosDeleteResponse = { data: "" };
@@ -81,8 +81,8 @@ it(`adds the correct ingredient when filling the form and clicking
   on submit`, async () => {
   const { getByLabelText, getByText, getAllByRole, rerender } = render(
     <IngredientsCatalogue
-      ingredientsPossibles={ingredientsCatalogue}
-      updateIngredientsPossibles={handleIngredientsPossibles}
+      possibleIngredients={ingredientsCatalogue}
+      updatePossibleIngredients={handlePossibleIngredients}
     />
   );
   const axiosPostResponse = { data: { nom: "Chocolat" } };
@@ -109,8 +109,8 @@ was not successful on backend side`, async () => {
     rerender,
   } = render(
     <IngredientsCatalogue
-      ingredientsPossibles={ingredientsCatalogue}
-      updateIngredientsPossibles={handleIngredientsPossibles}
+      possibleIngredients={ingredientsCatalogue}
+      updatePossibleIngredients={handlePossibleIngredients}
     />
   );
   const axiosPostResponse = {};
@@ -134,8 +134,8 @@ describe("the search bar functionality works properly", () => {
     search bar`, () => {
     const { getByText, queryByText, getByPlaceholderText } = render(
       <IngredientsCatalogue
-        ingredientsPossibles={ingredientsCatalogue}
-        updateIngredientsPossibles={handleIngredientsPossibles}
+        possibleIngredients={ingredientsCatalogue}
+        updatePossibleIngredients={handlePossibleIngredients}
       />
     );
     const searchBar = getByPlaceholderText("Recherche...");
@@ -150,8 +150,8 @@ describe("the search bar functionality works properly", () => {
   it("redisplays all the ingredient of the catalog after a search", () => {
     const { getByText, queryByText, getByPlaceholderText } = render(
       <IngredientsCatalogue
-        ingredientsPossibles={ingredientsCatalogue}
-        updateIngredientsPossibles={handleIngredientsPossibles}
+        possibleIngredients={ingredientsCatalogue}
+        updatePossibleIngredients={handlePossibleIngredients}
       />
     );
     const searchBar = getByPlaceholderText("Recherche...");

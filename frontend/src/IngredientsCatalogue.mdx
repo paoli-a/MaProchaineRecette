@@ -5,16 +5,16 @@ menu: Components
 
 # IngredientsCatalogue
 
-import IngredientsCatalogue from "./IngredientsCatalogue"
-import { Playground, Props } from 'docz'
+import IngredientsCatalogue from "./IngredientsCatalogue";
+import { Playground, Props } from "docz";
 
 > Ce composant permet d'afficher les ingrédients du catalogue, d'en ajouter
- et d'en supprimer. Une recherche peut etre faite sur le nom des ingrédients et
-permettra d'afficher au fur et à mesure les ingrédients correspondants.
+> et d'en supprimer. Une recherche peut etre faite sur le nom des ingrédients et
+> permettra d'afficher au fur et à mesure les ingrédients correspondants.
 
 ## Props
-<Props of={IngredientsCatalogue} />
 
+<Props of={IngredientsCatalogue} />
 
 ## Exemples d'utilisation
 
@@ -30,12 +30,12 @@ permettra d'afficher au fur et à mesure les ingrédients correspondants.
       {
         nom: "Framboises",
       },
-    ])
+    ]);
     return (
       <IngredientsCatalogue
-        ingredientsPossibles={ingredientsCatalogue}
-        updateIngredientsPossibles={setIngredientsCatalogue}
+        possibleIngredients={ingredientsCatalogue}
+        updatePossibleIngredients={setIngredientsCatalogue}
       />
-    )
+    );
   }}
 </Playground>

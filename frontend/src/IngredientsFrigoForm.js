@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import InputSuggestions from "./InputSuggestions";
 import PropTypes from "prop-types";
 
-function IngredientsFrigoForm({ onSubmit, ingredientsPossibles, totalUnites }) {
+function IngredientsFrigoForm({ onSubmit, possibleIngredients, totalUnites }) {
   const {
     register,
     handleSubmit,
@@ -19,7 +19,7 @@ function IngredientsFrigoForm({ onSubmit, ingredientsPossibles, totalUnites }) {
   const validateNomIngredient = () => {
     const nom = getValues().nomIngredient;
     let authorized = false;
-    for (const ingredientPossible of ingredientsPossibles) {
+    for (const ingredientPossible of possibleIngredients) {
       if (ingredientPossible.nom === nom) {
         authorized = true;
         break;
@@ -78,7 +78,7 @@ function IngredientsFrigoForm({ onSubmit, ingredientsPossibles, totalUnites }) {
         <p>
           <label htmlFor="nomIngredient">Nom de l'ingrédient : </label>
           <InputSuggestions
-            elements={ingredientsPossibles}
+            elements={possibleIngredients}
             id="nomIngredient"
             getElementText={(ingredient) => ingredient.nom}
             onChangeValue={handleNomIngredient}
@@ -152,7 +152,7 @@ IngredientsFrigoForm.propTypes = {
    * Il s'agit ici des ingrédients autorisés, c'est-à-dire ceux entrés
    * dans le catalogue des ingrédients.
    */
-  ingredientsPossibles: PropTypes.arrayOf(
+  possibleIngredients: PropTypes.arrayOf(
     PropTypes.shape({
       nom: PropTypes.string.isRequired,
     })

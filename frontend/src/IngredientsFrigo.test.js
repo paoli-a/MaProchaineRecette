@@ -61,7 +61,7 @@ describe("correct display of an ingredient", () => {
     const { getByText } = render(
       <IngredientsFrigo
         ingredients={ingredientsFrigo}
-        ingredientsPossibles={ingredientsCatalogue}
+        possibleIngredients={ingredientsCatalogue}
         totalUnites={unites}
       />
     );
@@ -73,7 +73,7 @@ describe("correct display of an ingredient", () => {
     const { getByText } = render(
       <IngredientsFrigo
         ingredients={ingredientsFrigo}
-        ingredientsPossibles={ingredientsCatalogue}
+        possibleIngredients={ingredientsCatalogue}
         totalUnites={unites}
       />
     );
@@ -86,7 +86,7 @@ describe("correct display of an ingredient", () => {
     const { getByText } = render(
       <IngredientsFrigo
         ingredients={ingredientsFrigo}
-        ingredientsPossibles={ingredientsCatalogue}
+        possibleIngredients={ingredientsCatalogue}
         totalUnites={unites}
       />
     );
@@ -98,7 +98,7 @@ describe("correct display of an ingredient", () => {
     const { getByText } = render(
       <IngredientsFrigo
         ingredients={ingredientsFrigo}
-        ingredientsPossibles={ingredientsCatalogue}
+        possibleIngredients={ingredientsCatalogue}
         totalUnites={unites}
       />
     );
@@ -110,7 +110,7 @@ describe("correct display of an ingredient", () => {
     const { getAllByRole } = render(
       <IngredientsFrigo
         ingredients={ingredientsFrigo}
-        ingredientsPossibles={ingredientsCatalogue}
+        possibleIngredients={ingredientsCatalogue}
         totalUnites={unites}
       />
     );
@@ -122,14 +122,14 @@ describe("correct display of an ingredient", () => {
     const { getByText, rerender } = render(
       <IngredientsFrigo
         ingredients={[]}
-        ingredientsPossibles={ingredientsCatalogue}
+        possibleIngredients={ingredientsCatalogue}
         totalUnites={unites}
       />
     );
     rerender(
       <IngredientsFrigo
         ingredients={ingredientsFrigo}
-        ingredientsPossibles={ingredientsCatalogue}
+        possibleIngredients={ingredientsCatalogue}
         totalUnites={unites}
       />
     );
@@ -142,7 +142,7 @@ it("displays provided units", () => {
   const { getByLabelText } = render(
     <IngredientsFrigo
       ingredients={ingredientsFrigo}
-      ingredientsPossibles={ingredientsCatalogue}
+      possibleIngredients={ingredientsCatalogue}
       totalUnites={unites}
     />
   );
@@ -158,7 +158,7 @@ describe("functionalities work properly", () => {
     const { getByText, getAllByRole } = render(
       <IngredientsFrigo
         ingredients={ingredientsFrigo}
-        ingredientsPossibles={ingredientsCatalogue}
+        possibleIngredients={ingredientsCatalogue}
         totalUnites={unites}
       />
     );
@@ -178,7 +178,7 @@ was not successful on backend side`, async () => {
     const { getByText } = render(
       <IngredientsFrigo
         ingredients={ingredientsFrigo}
-        ingredientsPossibles={ingredientsCatalogue}
+        possibleIngredients={ingredientsCatalogue}
         totalUnites={unites}
       />
     );
@@ -199,7 +199,7 @@ was not successful on backend side`, async () => {
     const { getByLabelText, getByText, getAllByRole } = render(
       <IngredientsFrigo
         ingredients={ingredientsFrigo}
-        ingredientsPossibles={ingredientsCatalogue}
+        possibleIngredients={ingredientsCatalogue}
         totalUnites={unites}
       />
     );
@@ -229,7 +229,7 @@ was not successful on backend side`, async () => {
     const { getByLabelText, getByText, queryByText } = render(
       <IngredientsFrigo
         ingredients={ingredientsFrigo}
-        ingredientsPossibles={ingredientsCatalogue}
+        possibleIngredients={ingredientsCatalogue}
         totalUnites={unites}
       />
     );
@@ -247,7 +247,7 @@ was not successful on backend side`, async () => {
     const { getByLabelText, getByText, queryByText } = render(
       <IngredientsFrigo
         ingredients={ingredientsFrigo}
-        ingredientsPossibles={ingredientsCatalogue}
+        possibleIngredients={ingredientsCatalogue}
         totalUnites={unites}
       />
     );
@@ -265,7 +265,7 @@ was not successful on backend side`, async () => {
     const { getByLabelText, getByText, queryByText } = render(
       <IngredientsFrigo
         ingredients={ingredientsFrigo}
-        ingredientsPossibles={ingredientsCatalogue}
+        possibleIngredients={ingredientsCatalogue}
         totalUnites={unites}
       />
     );
@@ -282,7 +282,7 @@ was not successful on backend side`, async () => {
     const { getByLabelText, getByText, queryByText } = render(
       <IngredientsFrigo
         ingredients={ingredientsFrigo}
-        ingredientsPossibles={ingredientsCatalogue}
+        possibleIngredients={ingredientsCatalogue}
         totalUnites={unites}
       />
     );
@@ -296,7 +296,7 @@ was not successful on backend side`, async () => {
     const { getByLabelText, getByText, queryByText } = render(
       <IngredientsFrigo
         ingredients={ingredientsFrigo}
-        ingredientsPossibles={ingredientsCatalogue}
+        possibleIngredients={ingredientsCatalogue}
         totalUnites={unites}
       />
     );
@@ -310,7 +310,7 @@ was not successful on backend side`, async () => {
     const { getByLabelText, getByText, queryByText } = render(
       <IngredientsFrigo
         ingredients={ingredientsFrigo}
-        ingredientsPossibles={ingredientsCatalogue}
+        possibleIngredients={ingredientsCatalogue}
         totalUnites={unites}
       />
     );
@@ -356,7 +356,7 @@ was not successful on backend side`, async () => {
     const { getByLabelText, getAllByTestId } = render(
       <IngredientsFrigo
         ingredients={ingredientsFrigo}
-        ingredientsPossibles={ingredientsCatalogue}
+        possibleIngredients={ingredientsCatalogue}
         totalUnites={unites}
       />
     );
@@ -375,7 +375,7 @@ was not successful on backend side`, async () => {
     const { getByLabelText, getByText, queryByText } = render(
       <IngredientsFrigo
         ingredients={ingredientsFrigo}
-        ingredientsPossibles={ingredientsCatalogue}
+        possibleIngredients={ingredientsCatalogue}
         totalUnites={unites}
       />
     );

@@ -8,7 +8,7 @@ import axios from "axios";
 
 function RecettesCatalogue({
   totalRecettes,
-  ingredientsPossibles,
+  possibleIngredients,
   totalCategories,
   totalUnites,
 }) {
@@ -96,7 +96,7 @@ function RecettesCatalogue({
       <section id="AjoutRecette">
         <RecettesForm
           onSubmitRecette={handleSubmit}
-          ingredientsPossibles={ingredientsPossibles}
+          possibleIngredients={possibleIngredients}
           totalCategories={totalCategories}
           totalUnites={totalUnites}
         />
@@ -142,7 +142,7 @@ RecettesCatalogue.propTypes = {
    * Il s'agit ici des ingrédients autorisés, c'est-à-dire ceux entrés
    * dans le catalogue des ingrédients.
    */
-  ingredientsPossibles: PropTypes.arrayOf(
+  possibleIngredients: PropTypes.arrayOf(
     PropTypes.shape({
       nom: PropTypes.string.isRequired,
     })
