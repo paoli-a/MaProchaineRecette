@@ -1,5 +1,7 @@
 # Frontend
 
+[english version](README_en.md)
+
 Le frontend utilise React et est basé sur Create React App.
 
 ## Tests unitaires

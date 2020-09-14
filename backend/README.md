@@ -1,5 +1,7 @@
 # Backend
 
+[english version](README_en.md)
+
 Le backend utilise Django et Django Rest Framework, et fournit une API REST pour le frontend.
 
 ## Base de données
