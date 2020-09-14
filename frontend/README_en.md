@@ -1,6 +1,8 @@
 # Frontend
 
-Le frontend uses React and was built with Create React App.
+[version en français](README.md)
+
+The frontend uses React and was built with Create React App.
 
 ## Unit tests
 

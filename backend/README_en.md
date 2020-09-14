@@ -1,6 +1,6 @@
 # Backend
 
-[version en français](README_en.md)
+[version en français](README.md)
 
 The backend uses Django and Django Rest Framework, and provides a REST API for the frontend.
 
