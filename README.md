@@ -1,5 +1,7 @@
 # Ma prochaine recette
 
+[english version](README_en.md)
+
 Ma prochaine recette est une application web permettant d'afficher les recettes faisables en fonction d'un catalogue de recettes et de la liste des ingrédients présents dans le frigo.
 
 ## Installation
