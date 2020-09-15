@@ -40,7 +40,7 @@ def test_get_fridge_recipes_returns_feasible_recipes():
 
 def test_get_fridge_recipes_does_not_return_recipes_for_which_an_ingredient_is_missing():
     carottes, tomates, oignons, gramme, _ = _dataset_for_fridge_recipes_tests()
-    poivrons = IngredientFactory(nom="Poivrons")
+    poivrons = IngredientFactory(name="Poivrons")
     ingredients_recettes1 = [IngredientRecetteFactory(ingredient=carottes, quantite=500, unite=gramme),
                              IngredientRecetteFactory(
                                  ingredient=tomates, quantite=50, unite=gramme),
@@ -85,7 +85,7 @@ def test_get_fridge_recipes_returns_recipes_for_which_ingredients_are_splitted()
     quantities are enough.
     """
     carottes, tomates, _, gramme, _ = _dataset_for_fridge_recipes_tests()
-    navet = IngredientFactory(nom="Navet")
+    navet = IngredientFactory(name="Navet")
     IngredientFrigoFactory(ingredient=navet, quantite=60,
                            unite=gramme, date_peremption=datetime.date(2030, 1, 1))
     IngredientFrigoFactory(ingredient=navet, quantite=40,
@@ -110,7 +110,7 @@ def test_get_fridge_recipes_returns_recipes_for_which_ingredients_are_splitted()
 def test_get_fridge_recipes_returns_recipes_for_which_an_ingredient_has_different_units():
     carottes, tomates, _, gramme, masse = _dataset_for_fridge_recipes_tests()
     kg = UniteFactory(abbreviation="kg", rapport=1000, type=masse)
-    navet = IngredientFactory(nom="Navet")
+    navet = IngredientFactory(name="Navet")
     IngredientFrigoFactory(ingredient=navet, quantite=2,
                            unite=kg, date_peremption=datetime.date(2030, 1, 1))
     IngredientFrigoFactory(ingredient=navet, quantite=400,
@@ -138,9 +138,9 @@ def test_get_fridge_recipes_returns_recipes_that_have_unsure_ingredients():
     types has not been implemented yet, so the feasibility of the recipe is not sure.
     """
     carottes, tomates, _, gramme, _ = _dataset_for_fridge_recipes_tests()
-    pieces_type = TypeUniteFactory(nom="pièce(s)")
+    pieces_type = TypeUniteFactory(name="pièce(s)")
     pieces = UniteFactory(abbreviation="pièce(s)", rapport=1, type=pieces_type)
-    navet = IngredientFactory(nom="Navet")
+    navet = IngredientFactory(name="Navet")
     IngredientFrigoFactory(ingredient=navet, quantite=1, unite=pieces)
     ingredients_recettes1 = [IngredientRecetteFactory(ingredient=carottes, quantite=500, unite=gramme),
                              IngredientRecetteFactory(
@@ -164,7 +164,7 @@ def test_get_fridge_recipes_returns_correctly_ordered_recipes():
     """Recipes must be ordered according to the expiration date of the most prioritary ingredient.
     """
     carottes, tomates, oignons, gramme, _ = _dataset_for_fridge_recipes_tests()
-    navet = IngredientFactory(nom="Navet")
+    navet = IngredientFactory(name="Navet")
     IngredientFrigoFactory(ingredient=navet, quantite=100,
                            unite=gramme, date_peremption=datetime.date(2132, 1, 1))
     ingredients_recettes1 = [IngredientRecetteFactory(ingredient=oignons, quantite=50, unite=gramme),
@@ -202,7 +202,7 @@ def test_get_fridge_recipes_returns_correct_fields():
 
 def test_get_fridge_recipes_returns_correct_fields_with_unsure_ingredients():
     carottes, tomates, oignons, gramme, _ = _dataset_for_fridge_recipes_tests()
-    pieces_type = TypeUniteFactory(nom="pièce(s)")
+    pieces_type = TypeUniteFactory(name="pièce(s)")
     pieces = UniteFactory(abbreviation="pièce(s)", rapport=1, type=pieces_type)
     ingredients_recettes1 = [IngredientRecetteFactory(ingredient=carottes, quantite=3, unite=pieces),
                              IngredientRecetteFactory(
@@ -236,11 +236,11 @@ def _check_recipe_fields(response, recette):
 
 
 def _dataset_for_fridge_recipes_tests():
-    masse = TypeUniteFactory(nom="masse")
+    masse = TypeUniteFactory(name="masse")
     gramme = UniteFactory(abbreviation="g", rapport=1, type=masse)
-    carottes = IngredientFactory(nom="Carottes")
-    tomates = IngredientFactory(nom="Tomates")
-    oignons = IngredientFactory(nom="Oignons")
+    carottes = IngredientFactory(name="Carottes")
+    tomates = IngredientFactory(name="Tomates")
+    oignons = IngredientFactory(name="Oignons")
     IngredientFrigoFactory(ingredient=carottes, quantite=500,
                            unite=gramme, date_peremption=datetime.date(2130, 1, 1))
     IngredientFrigoFactory(ingredient=tomates, quantite=50,

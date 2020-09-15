@@ -5,10 +5,10 @@ from unites.models import Unite
 
 
 class Ingredient(TimeStampedModel):
-    nom = models.CharField("Nom de l'ingrédient", max_length=255, unique=True)
+    name = models.CharField("Nom de l'ingrédient", max_length=255, unique=True)
 
     def __str__(self) -> str:
-        return self.nom
+        return self.name
 
 
 class Recette(TimeStampedModel):
@@ -28,11 +28,11 @@ class IngredientRecette(TimeStampedModel):
     unite = models.ForeignKey(Unite, on_delete=models.PROTECT)
 
     def __str__(self) -> str:
-        return self.ingredient.nom
+        return self.ingredient.name
 
 
 class Categorie(TimeStampedModel):
-    nom = models.CharField("Nom de la catégorie", max_length=255, unique=True)
+    name = models.CharField("Nom de la catégorie", max_length=255, unique=True)
 
     def __str__(self) -> str:
-        return self.nom
+        return self.name

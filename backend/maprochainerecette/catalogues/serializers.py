@@ -7,23 +7,23 @@ class IngredientSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Ingredient
-        fields = ["nom"]
+        fields = ["name"]
 
 
 class CategorieSerializer(serializers.ModelSerializer):
     class Meta:
         model = Categorie
-        fields = ["nom"]
+        fields = ["name"]
 
     def to_representation(self, value) -> str:
-        return value.nom
+        return value.name
 
 
 class IngredientRecetteSerializer(serializers.ModelSerializer):
     unite = serializers.SlugRelatedField(
         queryset=Unite.objects.all(), slug_field="abbreviation")
     ingredient = serializers.SlugRelatedField(
-        queryset=Ingredient.objects.all(), slug_field="nom")
+        queryset=Ingredient.objects.all(), slug_field="name")
 
     class Meta:
         model = IngredientRecette
@@ -34,7 +34,7 @@ class IngredientRecetteSerializer(serializers.ModelSerializer):
 class RecetteSerializer(serializers.ModelSerializer):
     ingredients = IngredientRecetteSerializer(many=True)
     categories = serializers.SlugRelatedField(many=True,
-                                              queryset=Categorie.objects.all(), slug_field="nom")
+                                              queryset=Categorie.objects.all(), slug_field="name")
 
     class Meta:
         model = Recette

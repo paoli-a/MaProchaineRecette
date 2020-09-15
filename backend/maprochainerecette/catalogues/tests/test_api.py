@@ -30,8 +30,8 @@ def test_ingredient_list_contains_2_ingredients():
     request = APIRequestFactory().get(url)
     response = IngredientViewSet.as_view({'get': 'list'})(request)
     assert response.status_code == 200
-    assertContains(response, ingredient1.nom)
-    assertContains(response, ingredient2.nom)
+    assertContains(response, ingredient1.name)
+    assertContains(response, ingredient2.name)
 
 
 def _get_ingredients_list_absolute_url():
@@ -46,7 +46,7 @@ def _get_list_absolute_url(viewset_class, viewset_basename):
 
 
 def test_adding_ingredient():
-    request_data = {'nom': "ingredient name"}
+    request_data = {'name': "ingredient name"}
     url = _get_ingredients_list_absolute_url()
     request_post = APIRequestFactory().post(url, request_data)
     assert Ingredient.objects.count() == 0
@@ -56,30 +56,30 @@ def test_adding_ingredient():
 
 
 def test_adding_ingredient_deserializes_correctly_all_fields():
-    request_data = {'nom': "ingredient name"}
+    request_data = {'name': "ingredient name"}
     url = _get_ingredients_list_absolute_url()
     request_post = APIRequestFactory().post(url, request_data)
     response_post = IngredientViewSet.as_view({'post': 'create'})(request_post)
     assert response_post.status_code == 201
-    assert Ingredient.objects.first().nom == "ingredient name"
+    assert Ingredient.objects.first().name == "ingredient name"
 
 
 def test_delete_ingredient(ingredient):
-    detail_url = _get_ingredients_detail_absolute_url(ingredient.nom)
+    detail_url = _get_ingredients_detail_absolute_url(ingredient.name)
     request_delete = APIRequestFactory().delete(
         detail_url)
     assert Ingredient.objects.count() == 1
     response_delete = IngredientViewSet.as_view(
-        {'delete': 'destroy'})(request_delete, nom=ingredient.nom)
+        {'delete': 'destroy'})(request_delete, name=ingredient.name)
     assert response_delete.status_code == 204
     assert Ingredient.objects.count() == 0
 
 
-def _get_ingredients_detail_absolute_url(nom):
+def _get_ingredients_detail_absolute_url(name):
     view = IngredientViewSet()
     view.basename = "ingredients"
     view.request = None
-    return view.reverse_action("detail", args=[nom])
+    return view.reverse_action("detail", args=[name])
 
 
 def test_recettes_list_contains_2_recettes():
@@ -120,11 +120,11 @@ def test_recettes_list_has_correct_fields(recette):
     assert set(recette_data["ingredients"][0].keys(
     )) == {"ingredient", "quantite", "unite"}
     assert recette_data["ingredients"][0]["ingredient"] == recette.ingredients.first(
-    ).ingredient.nom
+    ).ingredient.name
     assert recette_data["ingredients"][0]["unite"] == recette.ingredients.first(
     ).unite.abbreviation
     assert len(recette_data["categories"]) == 10
-    assert recette_data["categories"][0] == recette.categories.first().nom
+    assert recette_data["categories"][0] == recette.categories.first().name
 
 
 def test_adding_recette():
@@ -140,19 +140,19 @@ def test_adding_recette_deserializes_correctly_all_fields():
     assert recette_added.description == "description recette"
     assert recette_added.duree == datetime.timedelta(seconds=180)
     assert recette_added.ingredients.count() == 1
-    assert recette_added.ingredients.first().ingredient.nom == "deuxième ingrédient"
+    assert recette_added.ingredients.first().ingredient.name == "deuxième ingrédient"
     assert recette_added.ingredients.first().quantite == Decimal('10.00')
     assert recette_added.ingredients.first().unite.abbreviation == "kg"
     assert recette_added.categories.count() == 1
-    assert recette_added.categories.first().nom == "dessert"
+    assert recette_added.categories.first().name == "dessert"
 
 
 def _add_recette():
-    CategoryFactory(nom="dessert")
-    IngredientFactory(nom="premier ingrédient")
-    IngredientFactory(nom="deuxième ingrédient")
-    IngredientFactory(nom="troisième ingrédient")
-    masse = TypeUniteFactory(nom="masse")
+    CategoryFactory(name="dessert")
+    IngredientFactory(name="premier ingrédient")
+    IngredientFactory(name="deuxième ingrédient")
+    IngredientFactory(name="troisième ingrédient")
+    masse = TypeUniteFactory(name="masse")
     UniteFactory(abbreviation="kg", type=masse)
     request_data = {"titre": "titre recette",
                     "description": "description recette",
@@ -194,12 +194,12 @@ def test_categories_list_contains_2_categories():
     request = APIRequestFactory().get(url)
     response = CategorieViewSet.as_view({'get': 'list'})(request)
     assert response.status_code == 200
-    assertContains(response, categorie1.nom)
-    assertContains(response, categorie2.nom)
+    assertContains(response, categorie1.name)
+    assertContains(response, categorie2.name)
 
 
 def test_categories_list_has_correct_fields():
-    CategoryFactory(nom="Entrée")
+    CategoryFactory(name="Entrée")
     url = _get_categorie_list_absolute_url()
     request = APIRequestFactory().get(url)
     response = CategorieViewSet.as_view({'get': 'list'})(request)

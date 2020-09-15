@@ -46,7 +46,7 @@ def test_ingredientsFrigo_list_has_correct_fields(ingredientFrigo):
     assert len(response.data) == 1
     ingredientFrigo_data = response.data[0]
     assert ingredientFrigo_data["id"] == ingredientFrigo.id
-    assert ingredientFrigo_data["ingredient"] == ingredientFrigo.ingredient.nom
+    assert ingredientFrigo_data["ingredient"] == ingredientFrigo.ingredient.name
     assert ingredientFrigo_data["date_peremption"] == str(
         ingredientFrigo.date_peremption)
     assert ingredientFrigo_data["quantite"] == str(ingredientFrigo.quantite)
@@ -54,7 +54,7 @@ def test_ingredientsFrigo_list_has_correct_fields(ingredientFrigo):
 
 
 def test_adding_ingredientFrigo():
-    IngredientFactory(nom="premier ingrédient")
+    IngredientFactory(name="premier ingrédient")
     UniteFactory(abbreviation="g")
     request_data = {'ingredient': "premier ingrédient",
                     'quantite': "10.00",
@@ -71,7 +71,7 @@ def test_adding_ingredientFrigo():
 
 
 def test_adding_ingredientFrigo_deserializes_correctly_all_fields():
-    IngredientFactory(nom="deuxieme ingrédient")
+    IngredientFactory(name="deuxieme ingrédient")
     UniteFactory(abbreviation="g")
     request_data = {'ingredient': "deuxieme ingrédient",
                     'quantite': Decimal('10.00'),
@@ -87,13 +87,13 @@ def test_adding_ingredientFrigo_deserializes_correctly_all_fields():
     assert isinstance(ingredient.id, int)
     assert ingredient.quantite == Decimal('10.00')
     assert ingredient.date_peremption == datetime.date(2020, 7, 20)
-    assert ingredient.ingredient.nom == "deuxieme ingrédient"
+    assert ingredient.ingredient.name == "deuxieme ingrédient"
     assert ingredient.unite.abbreviation == "g"
 
 
 def test_adding_mergeable_ingredientFrigo_returns_correct_data():
-    IngredientFactory(nom="deuxieme ingrédient")
-    unit_type = TypeUniteFactory(nom="masse")
+    IngredientFactory(name="deuxieme ingrédient")
+    unit_type = TypeUniteFactory(name="masse")
     UniteFactory(abbreviation="g", rapport=1, type=unit_type)
     UniteFactory(abbreviation="kg", rapport=1000, type=unit_type)
     request_data = {'ingredient': "deuxieme ingrédient",

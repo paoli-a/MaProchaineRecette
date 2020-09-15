@@ -13,7 +13,7 @@ class IngredientViewSet(viewsets.ModelViewSet):
         authentication.TokenAuthentication
     ]
     serializer_class = IngredientSerializer
-    lookup_field = 'nom'
+    lookup_field = 'name'
 
 
 class RecetteViewSet(viewsets.ModelViewSet):

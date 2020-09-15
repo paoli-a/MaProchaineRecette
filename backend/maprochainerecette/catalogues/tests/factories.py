@@ -15,7 +15,7 @@ def ingredient():
 
 
 class IngredientFactory(factory.django.DjangoModelFactory):
-    nom = factory.fuzzy.FuzzyText()
+    name = factory.fuzzy.FuzzyText()
 
     class Meta:
         model = Ingredient
@@ -81,7 +81,7 @@ class IngredientRecetteFactory(factory.django.DjangoModelFactory):
 
 
 class CategoryFactory(factory.django.DjangoModelFactory):
-    nom = factory.fuzzy.FuzzyText()
+    name = factory.fuzzy.FuzzyText()
 
     class Meta:
         model = Categorie

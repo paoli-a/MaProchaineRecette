@@ -6,7 +6,7 @@ from catalogues.serializers import IngredientRecetteSerializer
 
 class IngredientFrigoSerializer(serializers.ModelSerializer):
     ingredient = serializers.SlugRelatedField(
-        queryset=Ingredient.objects.all(), slug_field="nom")
+        queryset=Ingredient.objects.all(), slug_field="name")
     unite = serializers.SlugRelatedField(
         queryset=Unite.objects.all(), slug_field="abbreviation")
 
@@ -34,7 +34,7 @@ class IngredientFrigoSerializer(serializers.ModelSerializer):
 class RecetteFrigoSerializer(serializers.ModelSerializer):
     ingredients = IngredientRecetteSerializer(many=True)
     categories = serializers.SlugRelatedField(many=True,
-                                              queryset=Categorie.objects.all(), slug_field="nom")
+                                              queryset=Categorie.objects.all(), slug_field="name")
     unsure_ingredients = serializers.SerializerMethodField()
     priority_ingredients = serializers.SerializerMethodField()
 

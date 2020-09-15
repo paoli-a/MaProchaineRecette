@@ -14,7 +14,7 @@ class IngredientFrigo(TimeStampedModel):
     date_peremption = models.DateField("Date de péremption")
 
     def __str__(self) -> str:
-        return self.ingredient.nom
+        return self.ingredient.name
 
     def save(self, *args, **kwargs):
         """Save the fridge ingredient or update the corresponding exsisting ingredient.

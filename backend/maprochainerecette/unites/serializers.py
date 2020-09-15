@@ -5,7 +5,7 @@ from unites.models import Unite, TypeUnite
 class TypeUniteSerializer(serializers.ModelSerializer):
     class Meta:
         model = TypeUnite
-        fields = ["nom"]
+        fields = ["name"]
 
 
 class UniteSerializer(serializers.ModelSerializer):
