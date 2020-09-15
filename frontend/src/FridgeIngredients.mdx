@@ -1,11 +1,11 @@
 ---
-name: IngredientsFrigo
+name: FridgeIngredients
 menu: Components
 ---
 
-# IngredientsFrigo
+# FridgeIngredients
 
-import IngredientsFrigo from "./IngredientsFrigo";
+import FridgeIngredients from "./FridgeIngredients";
 import { Playground, Props } from "docz";
 
 > Ce composant permet d'afficher les ingrédients du frigo, d'en ajouter
@@ -14,7 +14,7 @@ import { Playground, Props } from "docz";
 
 ## Props
 
-<Props of={IngredientsFrigo} />
+<Props of={FridgeIngredients} />
 
 ## Exemples d'utilisation
 
@@ -31,7 +31,7 @@ import { Playground, Props } from "docz";
         name: "Framboises",
       },
     ];
-    const ingredientsFrigo = [
+    const fridgeIngredients = [
       {
         id: 1,
         name: "Epinard",
@@ -49,8 +49,8 @@ import { Playground, Props } from "docz";
     ];
     const unites = ["kg", "g", "cl", "pièce(s)"];
     return (
-      <IngredientsFrigo
-        ingredients={ingredientsFrigo}
+      <FridgeIngredients
+        ingredients={fridgeIngredients}
         possibleIngredients={catalogIngredients}
         totalUnites={unites}
       />

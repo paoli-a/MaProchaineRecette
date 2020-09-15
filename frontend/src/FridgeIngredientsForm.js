@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import InputSuggestions from "./InputSuggestions";
 import PropTypes from "prop-types";
 
-function IngredientsFrigoForm({ onSubmit, possibleIngredients, totalUnites }) {
+function FridgeIngredientsForm({ onSubmit, possibleIngredients, totalUnites }) {
   const {
     register,
     handleSubmit,
@@ -141,7 +141,7 @@ function IngredientsFrigoForm({ onSubmit, possibleIngredients, totalUnites }) {
   );
 }
 
-IngredientsFrigoForm.propTypes = {
+FridgeIngredientsForm.propTypes = {
   /**
    * Cette fonction est exécutée au moment du submit de l'ingrédient,
    * lorsque la validité de tous les éléments entrés a été vérifiée,
@@ -160,4 +160,4 @@ IngredientsFrigoForm.propTypes = {
   totalUnites: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
-export default IngredientsFrigoForm;
+export default FridgeIngredientsForm;

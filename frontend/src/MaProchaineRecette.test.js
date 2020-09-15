@@ -8,13 +8,13 @@ require("mutationobserver-shim");
 jest.mock("axios");
 let recettesCatalogue;
 let feasibleRecipes;
-let ingredientsFrigo;
+let fridgeIngredients;
 let catalogIngredients;
 let categoriesCatalogue;
 let unites;
 let axiosResponseIngredients;
 let axiosResponseRecettes;
-let axiosResponseIngredientsFrigo;
+let axiosResponseFridgeIngredients;
 let axiosResponseCategories;
 let axiosResponseUnites;
 let axiosResponseRecettesFrigo;
@@ -65,7 +65,7 @@ beforeEach(() => {
       unsure_ingredients: ["ail"],
     },
   ];
-  ingredientsFrigo = [
+  fridgeIngredients = [
     {
       id: 1,
       ingredient: "épinard",
@@ -87,7 +87,7 @@ beforeEach(() => {
   axiosResponseIngredients = { data: catalogIngredients };
   axiosResponseRecettes = { data: recettesCatalogue };
   axiosResponseRecettesFrigo = { data: feasibleRecipes };
-  axiosResponseIngredientsFrigo = { data: ingredientsFrigo };
+  axiosResponseFridgeIngredients = { data: fridgeIngredients };
   axiosResponseCategories = { data: categoriesCatalogue };
   axiosResponseUnites = { data: unites };
   mockAxiosGet();
@@ -106,7 +106,7 @@ function mockAxiosGet(rejectedElement) {
     } else if (url === "/frigo/ingredients/") {
       return rejectedElement === "frigo"
         ? Promise.reject(new Error(""))
-        : Promise.resolve(axiosResponseIngredientsFrigo);
+        : Promise.resolve(axiosResponseFridgeIngredients);
     } else if (url === "/frigo/recettes/") {
       return rejectedElement === "feasibleRecipes"
         ? Promise.reject(new Error(""))
@@ -303,7 +303,7 @@ describe("displays correct error message on bad fetch", () => {
 });
 
 describe("Handle correctly new ingredientCatalogue", () => {
-  it(`takes into account newly entered ingredient in catalogIngredients by giving suggestions when an ingredient name is being entered in IngredientsFrigo`, async () => {
+  it(`takes into account newly entered ingredient in catalogIngredients by giving suggestions when an ingredient name is being entered in FridgeIngredients`, async () => {
     const maProchaineRecette = render(<MaProchaineRecette />);
     await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(FETCH_CALLS));
     await addIngredientCatalogue(maProchaineRecette, "Navets");

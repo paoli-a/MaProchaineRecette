@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import IngredientsFrigoForm from "./IngredientsFrigoForm";
+import FridgeIngredientsForm from "./FridgeIngredientsForm";
 import PropTypes from "prop-types";
 import axios from "axios";
 
-function IngredientsFrigo({ ingredients, possibleIngredients, totalUnites }) {
+function FridgeIngredients({ ingredients, possibleIngredients, totalUnites }) {
   const [ingredientsList, setIngredient] = useState(ingredients);
   const [postError, setPostError] = useState("");
   const [deleteError, setDeleteError] = useState({});
@@ -84,9 +84,9 @@ function IngredientsFrigo({ ingredients, possibleIngredients, totalUnites }) {
   });
 
   return (
-    <section id="ingredientsFrigo">
+    <section id="fridgeIngredients">
       <h2>Voici les ingrédients du frigo !</h2>
-      <IngredientsFrigoForm
+      <FridgeIngredientsForm
         onSubmit={handleSubmit}
         possibleIngredients={possibleIngredients}
         totalUnites={totalUnites}
@@ -97,7 +97,7 @@ function IngredientsFrigo({ ingredients, possibleIngredients, totalUnites }) {
   );
 }
 
-IngredientsFrigo.propTypes = {
+FridgeIngredients.propTypes = {
   possibleIngredients: PropTypes.arrayOf(
     PropTypes.shape({
       name: PropTypes.string.isRequired,
@@ -118,4 +118,4 @@ IngredientsFrigo.propTypes = {
   totalUnites: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
-export default IngredientsFrigo;
+export default FridgeIngredients;

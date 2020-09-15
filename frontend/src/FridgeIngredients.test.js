@@ -7,14 +7,14 @@ import {
   waitFor,
   queryByText,
 } from "@testing-library/react";
-import IngredientsFrigo from "./IngredientsFrigo";
+import FridgeIngredients from "./FridgeIngredients";
 import axios from "axios";
 
 require("mutationobserver-shim");
 
 jest.mock("axios");
 let catalogIngredients;
-let ingredientsFrigo;
+let fridgeIngredients;
 let unites;
 
 beforeEach(() => {
@@ -33,7 +33,7 @@ beforeEach(() => {
     },
   ];
 
-  ingredientsFrigo = [
+  fridgeIngredients = [
     {
       id: 1,
       name: "épinard",
@@ -59,8 +59,8 @@ afterEach(() => {
 describe("correct display of an ingredient", () => {
   it("renders names of ingredients", () => {
     const { getByText } = render(
-      <IngredientsFrigo
-        ingredients={ingredientsFrigo}
+      <FridgeIngredients
+        ingredients={fridgeIngredients}
         possibleIngredients={catalogIngredients}
         totalUnites={unites}
       />
@@ -71,21 +71,21 @@ describe("correct display of an ingredient", () => {
 
   it("renders expiration dates of ingredients", () => {
     const { getByText } = render(
-      <IngredientsFrigo
-        ingredients={ingredientsFrigo}
+      <FridgeIngredients
+        ingredients={fridgeIngredients}
         possibleIngredients={catalogIngredients}
         totalUnites={unites}
       />
     );
     const ingredient2 = getByText("céleri rave", { exact: false });
-    const expectedDate = ingredientsFrigo[1].datePeremption.toLocaleDateString();
+    const expectedDate = fridgeIngredients[1].datePeremption.toLocaleDateString();
     expect(ingredient2.textContent).toContain(expectedDate);
   });
 
   it("renders quantities of ingredients", () => {
     const { getByText } = render(
-      <IngredientsFrigo
-        ingredients={ingredientsFrigo}
+      <FridgeIngredients
+        ingredients={fridgeIngredients}
         possibleIngredients={catalogIngredients}
         totalUnites={unites}
       />
@@ -96,8 +96,8 @@ describe("correct display of an ingredient", () => {
 
   it("renders units of ingredients", () => {
     const { getByText } = render(
-      <IngredientsFrigo
-        ingredients={ingredientsFrigo}
+      <FridgeIngredients
+        ingredients={fridgeIngredients}
         possibleIngredients={catalogIngredients}
         totalUnites={unites}
       />
@@ -108,8 +108,8 @@ describe("correct display of an ingredient", () => {
 
   it("renders the right number of ingredients", () => {
     const { getAllByRole } = render(
-      <IngredientsFrigo
-        ingredients={ingredientsFrigo}
+      <FridgeIngredients
+        ingredients={fridgeIngredients}
         possibleIngredients={catalogIngredients}
         totalUnites={unites}
       />
@@ -118,17 +118,17 @@ describe("correct display of an ingredient", () => {
     expect(listItems).toHaveLength(2);
   });
 
-  it("updates ingredients when ingredientsFrigo prop changes", () => {
+  it("updates ingredients when fridgeIngredients prop changes", () => {
     const { getByText, rerender } = render(
-      <IngredientsFrigo
+      <FridgeIngredients
         ingredients={[]}
         possibleIngredients={catalogIngredients}
         totalUnites={unites}
       />
     );
     rerender(
-      <IngredientsFrigo
-        ingredients={ingredientsFrigo}
+      <FridgeIngredients
+        ingredients={fridgeIngredients}
         possibleIngredients={catalogIngredients}
         totalUnites={unites}
       />
@@ -140,8 +140,8 @@ describe("correct display of an ingredient", () => {
 
 it("displays provided units", () => {
   const { getByLabelText } = render(
-    <IngredientsFrigo
-      ingredients={ingredientsFrigo}
+    <FridgeIngredients
+      ingredients={fridgeIngredients}
       possibleIngredients={catalogIngredients}
       totalUnites={unites}
     />
@@ -156,8 +156,8 @@ it("displays provided units", () => {
 describe("functionalities work properly", () => {
   it("removes the correct ingredient when clicking on remove button", async () => {
     const { getByText, getAllByRole } = render(
-      <IngredientsFrigo
-        ingredients={ingredientsFrigo}
+      <FridgeIngredients
+        ingredients={fridgeIngredients}
         possibleIngredients={catalogIngredients}
         totalUnites={unites}
       />
@@ -176,8 +176,8 @@ describe("functionalities work properly", () => {
   it(`displays an error message and keeps the ingredient if the ingredient removal
 was not successful on backend side`, async () => {
     const { getByText } = render(
-      <IngredientsFrigo
-        ingredients={ingredientsFrigo}
+      <FridgeIngredients
+        ingredients={fridgeIngredients}
         possibleIngredients={catalogIngredients}
         totalUnites={unites}
       />
@@ -197,8 +197,8 @@ was not successful on backend side`, async () => {
 
   it("adds the correct ingredient when filling the form and clicking on submit", async () => {
     const { getByLabelText, getByText, getAllByRole } = render(
-      <IngredientsFrigo
-        ingredients={ingredientsFrigo}
+      <FridgeIngredients
+        ingredients={fridgeIngredients}
         possibleIngredients={catalogIngredients}
         totalUnites={unites}
       />
@@ -227,8 +227,8 @@ was not successful on backend side`, async () => {
 
   async function checkMissingInput(inputName) {
     const { getByLabelText, getByText, queryByText } = render(
-      <IngredientsFrigo
-        ingredients={ingredientsFrigo}
+      <FridgeIngredients
+        ingredients={fridgeIngredients}
         possibleIngredients={catalogIngredients}
         totalUnites={unites}
       />
@@ -245,8 +245,8 @@ was not successful on backend side`, async () => {
 
   it(`does not add the ingredient if no name was provided`, async () => {
     const { getByLabelText, getByText, queryByText } = render(
-      <IngredientsFrigo
-        ingredients={ingredientsFrigo}
+      <FridgeIngredients
+        ingredients={fridgeIngredients}
         possibleIngredients={catalogIngredients}
         totalUnites={unites}
       />
@@ -263,8 +263,8 @@ was not successful on backend side`, async () => {
 
   it(`does not add the ingredient if quantity is negative or null`, async () => {
     const { getByLabelText, getByText, queryByText } = render(
-      <IngredientsFrigo
-        ingredients={ingredientsFrigo}
+      <FridgeIngredients
+        ingredients={fridgeIngredients}
         possibleIngredients={catalogIngredients}
         totalUnites={unites}
       />
@@ -280,8 +280,8 @@ was not successful on backend side`, async () => {
 
   it(`does not add the ingredient if the given date is older than the current date`, async () => {
     const { getByLabelText, getByText, queryByText } = render(
-      <IngredientsFrigo
-        ingredients={ingredientsFrigo}
+      <FridgeIngredients
+        ingredients={fridgeIngredients}
         possibleIngredients={catalogIngredients}
         totalUnites={unites}
       />
@@ -294,8 +294,8 @@ was not successful on backend side`, async () => {
 
   it(`does not add the ingredient if the ingredient is not in catalogIngredients`, () => {
     const { getByLabelText, getByText, queryByText } = render(
-      <IngredientsFrigo
-        ingredients={ingredientsFrigo}
+      <FridgeIngredients
+        ingredients={fridgeIngredients}
         possibleIngredients={catalogIngredients}
         totalUnites={unites}
       />
@@ -308,8 +308,8 @@ was not successful on backend side`, async () => {
   it(`adds the ingredient returned by the backend and removes the ingredient that
    have the same id if there is one`, async () => {
     const { getByLabelText, getByText, queryByText } = render(
-      <IngredientsFrigo
-        ingredients={ingredientsFrigo}
+      <FridgeIngredients
+        ingredients={fridgeIngredients}
         possibleIngredients={catalogIngredients}
         totalUnites={unites}
       />
@@ -354,8 +354,8 @@ was not successful on backend side`, async () => {
 
   it(`provides the right proposals when a letter is entered in the input of the ingredient name`, () => {
     const { getByLabelText, getAllByTestId } = render(
-      <IngredientsFrigo
-        ingredients={ingredientsFrigo}
+      <FridgeIngredients
+        ingredients={fridgeIngredients}
         possibleIngredients={catalogIngredients}
         totalUnites={unites}
       />
@@ -373,8 +373,8 @@ was not successful on backend side`, async () => {
   it(`displays an error message and does not add the ingredient if the ingredient adding
 was not successful on backend side`, async () => {
     const { getByLabelText, getByText, queryByText } = render(
-      <IngredientsFrigo
-        ingredients={ingredientsFrigo}
+      <FridgeIngredients
+        ingredients={fridgeIngredients}
         possibleIngredients={catalogIngredients}
         totalUnites={unites}
       />

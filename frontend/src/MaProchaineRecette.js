@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, NavLink } from "react-router-dom";
 import axios from "axios";
 import RecettesAffichage from "./RecettesAffichage";
-import IngredientsFrigo from "./IngredientsFrigo";
+import FridgeIngredients from "./FridgeIngredients";
 import CatalogIngredients from "./CatalogIngredients";
 import RecettesCatalogue from "./RecettesCatalogue";
 import "./MaProchaineRecette.css";
@@ -11,7 +11,7 @@ import "./Nav.css";
 function MaProchaineRecette() {
   const [catalogIngredients, setCatalogIngredients] = useState([]);
   const [recettesCatalogue, setRecettesCatalogue] = useState([]);
-  const [ingredientsFrigo, setIngredientsFrigo] = useState([]);
+  const [fridgeIngredients, setFridgeIngredients] = useState([]);
   const [categoriesCatalogue, setCategoriesCatalogue] = useState([]);
   const [unites, setUnites] = useState([]);
   const [feasibleRecipes, setFeasibleRecipes] = useState([]);
@@ -54,7 +54,7 @@ function MaProchaineRecette() {
             unite: ingredientFrigo.unite,
           };
         });
-        setIngredientsFrigo(newData);
+        setFridgeIngredients(newData);
       })
       .catch(() =>
         setFetchError(
@@ -124,8 +124,8 @@ function MaProchaineRecette() {
         </Route>
         <Route path="/" exact>
           <main id="MesProchainesRecettes">
-            <IngredientsFrigo
-              ingredients={ingredientsFrigo}
+            <FridgeIngredients
+              ingredients={fridgeIngredients}
               possibleIngredients={catalogIngredients}
               totalUnites={unites}
             />
