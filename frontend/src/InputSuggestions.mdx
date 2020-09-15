@@ -23,25 +23,25 @@ Toutes les props supplémentaires seront transférées à la balise interne inpu
   {() => {
     const possibleIngredients = [
       {
-        nom: "Fraises",
+        name: "Fraises",
       },
       {
-        nom: "Sucre",
+        name: "Sucre",
       },
       {
-        nom: "Framboises",
+        name: "Framboises",
       },
     ];
-    const [nomIngredient, setNomIngredient] = React.useState("");
+    const [ingredientName, setNomIngredient] = React.useState("");
     return (
       <form>
-        <label htmlFor="nomIngredient">Nom de l'ingrédient : </label>
+        <label htmlFor="ingredientName">Nom de l'ingrédient : </label>
         <InputSuggestions
           elements={possibleIngredients}
-          id="nomIngredient"
-          getElementText={(ingredient) => ingredient.nom}
+          id="ingredientName"
+          getElementText={(ingredient) => ingredient.name}
           onChangeValue={(value) => setNomIngredient(value)}
-          value={nomIngredient}
+          value={ingredientName}
           name="ingredient"
           type="text"
         />

@@ -47,7 +47,7 @@ function RecettesForm({
     }
     let authorized = false;
     for (const ingredientPossible of possibleIngredients) {
-      if (ingredientPossible.nom === ingredientNom) {
+      if (ingredientPossible.name === ingredientNom) {
         authorized = true;
         break;
       }
@@ -94,10 +94,10 @@ function RecettesForm({
     }
   };
 
-  const handleSupprIngredient = (nom) => {
+  const handleSupprIngredient = (name) => {
     const ingredientsListUpdated = ingredients.slice();
     for (let i = 0; i < ingredientsListUpdated.length; i++) {
-      if (ingredientsListUpdated[i].ingredient === nom) {
+      if (ingredientsListUpdated[i].ingredient === name) {
         ingredientsListUpdated.splice(i, 1);
         setIngredients(ingredientsListUpdated);
         return;
@@ -181,8 +181,8 @@ function RecettesForm({
             <InputSuggestions
               elements={possibleIngredients}
               id="ingredient"
-              getElementText={(ingredient) => ingredient.nom}
-              onChangeValue={(nom) => setIngredientNom(nom)}
+              getElementText={(ingredient) => ingredient.name}
+              onChangeValue={(name) => setIngredientNom(name)}
               value={ingredientNom}
               name="ingredient"
               type="text"
@@ -267,7 +267,7 @@ RecettesForm.propTypes = {
    */
   possibleIngredients: PropTypes.arrayOf(
     PropTypes.shape({
-      nom: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
     })
   ).isRequired,
   totalCategories: PropTypes.arrayOf(PropTypes.string).isRequired,

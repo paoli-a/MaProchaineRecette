@@ -5,17 +5,18 @@ menu: Components
 
 # MaProchaineRecette
 
-import MaProchaineRecette from "./MaProchaineRecette"
-import { Playground, Props } from 'docz'
+import MaProchaineRecette from "./MaProchaineRecette";
+import { Playground, Props } from "docz";
 
 > Ce composant est le composant principal. Il permet d'afficher le menu, avec les trois pages :
-* les ingrédients du frigo et les recettes possibles en fonction de ceux-ci
-* le catalogue d'ingrédients
-* le catalogue des recettes
+
+- les ingrédients du frigo et les recettes possibles en fonction de ceux-ci
+- le catalogue d'ingrédients
+- le catalogue des recettes
 
 ## Props
-<Props of={MaProchaineRecette} />
 
+<Props of={MaProchaineRecette} />
 
 ## Exemples d'utilisation
 
@@ -29,7 +30,11 @@ import { Playground, Props } from 'docz'
         ingredients: [
           { ingredient: "pommes de terre", quantite: "1", unite: "kg" },
           { ingredient: "oeufs", quantite: "3", unite: "pièce(s)" },
-          { ingredient: "vinaigre non balsamique", quantite: "1", unite: "cas" },
+          {
+            ingredient: "vinaigre non balsamique",
+            quantite: "1",
+            unite: "cas",
+          },
           { ingredient: "radis", quantite: "2", unite: "botte(s)" },
           { ingredient: "oignons bottes", quantite: "2", unite: "pièce(s)" },
           { ingredient: "yaourt grec", quantite: "1", unite: "pièce(s)" },
@@ -46,12 +51,16 @@ import { Playground, Props } from 'docz'
         categories: ["Plat"],
         titre: "Gratin pommes de terre panais",
         ingredients: [
-          { ingredient: "pommes de terre", quantite: "1", "unite": "kg"},
-          { ingredient: "panais", quantite: "4", "unite": "pièce(s)"},
-          { ingredient: "crème fraiche épaisse", quantite: "20", "unite": "cl"},
-          { ingredient: "crème fraiche semi-épaisse", quantite: "10", "unite": "cl"},
-          { ingredient: "moutarde", quantite: "1.5", "unite": "cas"},
-          { ingredient: "gruillère rapé", quantite: "70", "unite": "g"},
+          { ingredient: "pommes de terre", quantite: "1", unite: "kg" },
+          { ingredient: "panais", quantite: "4", unite: "pièce(s)" },
+          { ingredient: "crème fraiche épaisse", quantite: "20", unite: "cl" },
+          {
+            ingredient: "crème fraiche semi-épaisse",
+            quantite: "10",
+            unite: "cl",
+          },
+          { ingredient: "moutarde", quantite: "1.5", unite: "cas" },
+          { ingredient: "gruillère rapé", quantite: "70", unite: "g" },
         ],
         duree: "1 h",
         description:
@@ -61,14 +70,14 @@ import { Playground, Props } from 'docz'
     const ingredientsFrigo = [
       {
         id: 1,
-        nom: "Epinard",
+        name: "Epinard",
         datePeremption: new Date(2020, 4, 15),
         quantite: "60",
         unite: "g",
       },
       {
         id: 2,
-        nom: "Céleri rave",
+        name: "Céleri rave",
         datePeremption: new Date(2020, 3, 13),
         quantite: "1",
         unite: "kg",
@@ -76,14 +85,12 @@ import { Playground, Props } from 'docz'
     ];
     const ingredientsCatalogue = [
       {
-        nom: "Fraises",
+        name: "Fraises",
       },
       {
-        nom: "Sucre",
+        name: "Sucre",
       },
     ];
-    return (
-      <MaProchaineRecette />
-    )
+    return <MaProchaineRecette />;
   }}
 </Playground>

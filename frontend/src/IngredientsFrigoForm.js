@@ -13,14 +13,14 @@ function IngredientsFrigoForm({ onSubmit, possibleIngredients, totalUnites }) {
     watch,
     setValue,
     setError,
-  } = useForm({ defaultValues: { nomIngredient: "" } });
-  const { nomIngredient } = watch();
+  } = useForm({ defaultValues: { ingredientName: "" } });
+  const { ingredientName } = watch();
 
   const validateNomIngredient = () => {
-    const nom = getValues().nomIngredient;
+    const name = getValues().ingredientName;
     let authorized = false;
     for (const ingredientPossible of possibleIngredients) {
-      if (ingredientPossible.nom === nom) {
+      if (ingredientPossible.name === name) {
         authorized = true;
         break;
       }
@@ -38,17 +38,17 @@ function IngredientsFrigoForm({ onSubmit, possibleIngredients, totalUnites }) {
   };
 
   useEffect(() => {
-    register({ name: "nomIngredient" });
+    register({ name: "ingredientName" });
   }, [register]);
 
   const handleNomIngredient = (value) => {
-    setValue("nomIngredient", value);
+    setValue("ingredientName", value);
   };
 
   const onSubmitWrapper = (data) => {
     const ingredientError = validateNomIngredient();
     if (ingredientError) {
-      setError("nomIngredient", "notMatch", ingredientError);
+      setError("ingredientName", "notMatch", ingredientError);
       return;
     }
     onSubmit(data);
@@ -76,17 +76,17 @@ function IngredientsFrigoForm({ onSubmit, possibleIngredients, totalUnites }) {
       <fieldset>
         <legend>Ajouter un ingredient frigo :</legend>
         <p>
-          <label htmlFor="nomIngredient">Nom de l'ingrédient : </label>
+          <label htmlFor="ingredientName">Nom de l'ingrédient : </label>
           <InputSuggestions
             elements={possibleIngredients}
-            id="nomIngredient"
-            getElementText={(ingredient) => ingredient.nom}
+            id="ingredientName"
+            getElementText={(ingredient) => ingredient.name}
             onChangeValue={handleNomIngredient}
-            value={nomIngredient}
+            value={ingredientName}
             name="ingredient"
             type="text"
           />
-          {errors.nomIngredient && errors.nomIngredient.message}
+          {errors.ingredientName && errors.ingredientName.message}
         </p>
         <p>
           <label htmlFor="quantiteIngredient">Quantité : </label>
@@ -154,7 +154,7 @@ IngredientsFrigoForm.propTypes = {
    */
   possibleIngredients: PropTypes.arrayOf(
     PropTypes.shape({
-      nom: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
     })
   ).isRequired,
   totalUnites: PropTypes.arrayOf(PropTypes.string).isRequired,

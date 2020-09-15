@@ -48,7 +48,7 @@ function MaProchaineRecette() {
         const newData = data.map((ingredientFrigo) => {
           return {
             id: ingredientFrigo.id,
-            nom: ingredientFrigo.ingredient,
+            name: ingredientFrigo.ingredient,
             datePeremption: new Date(ingredientFrigo.date_peremption),
             quantite: ingredientFrigo.quantite,
             unite: ingredientFrigo.unite,

@@ -76,10 +76,10 @@ beforeEach(() => {
   ];
   ingredientsCatalogue = [
     {
-      nom: "Fraises",
+      name: "Fraises",
     },
     {
-      nom: "Sucre",
+      name: "Sucre",
     },
   ];
   categoriesCatalogue = ["Entrée", "Plat", "Dessert"];
@@ -327,14 +327,14 @@ describe("Handle correctly new ingredientCatalogue", () => {
     expect(coriandre.value).toEqual("Coriandre");
   });
 
-  async function addIngredientCatalogue(maProchaineRecette, nom) {
-    const axiosPostResponse = { data: { nom: nom } };
+  async function addIngredientCatalogue(maProchaineRecette, name) {
+    const axiosPostResponse = { data: { name: name } };
     axios.post.mockResolvedValue(axiosPostResponse);
     const { getByLabelText, getByText, getByRole } = maProchaineRecette;
     navigateTo("Catalogue des ingrédients", getByRole);
     const inputNomCatalogue = getByLabelText("Nom de l'ingrédient à ajouter :");
     const submitButtonCatalogue = getByText("Envoyer");
-    fireEvent.change(inputNomCatalogue, { target: { value: nom } });
+    fireEvent.change(inputNomCatalogue, { target: { value: name } });
     fireEvent.click(submitButtonCatalogue);
     await waitFor(() => expect(axios.post).toHaveBeenCalledTimes(1));
   }

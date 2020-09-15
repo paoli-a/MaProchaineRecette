@@ -20,30 +20,30 @@ let unites;
 beforeEach(() => {
   ingredientsCatalogue = [
     {
-      nom: "Fraises",
+      name: "Fraises",
     },
     {
-      nom: "Poires",
+      name: "Poires",
     },
     {
-      nom: "Framboises",
+      name: "Framboises",
     },
     {
-      nom: "Carottes",
+      name: "Carottes",
     },
   ];
 
   ingredientsFrigo = [
     {
       id: 1,
-      nom: "épinard",
+      name: "épinard",
       datePeremption: new Date(2100, 4, 15),
       quantite: "60",
       unite: "g",
     },
     {
       id: 2,
-      nom: "céleri rave",
+      name: "céleri rave",
       datePeremption: new Date(2100, 3, 13),
       quantite: "1",
       unite: "kg",
@@ -255,7 +255,7 @@ was not successful on backend side`, async () => {
       getByLabelText,
       getByText,
       ["kiwi", 100, "2100-04-03", "kg"],
-      ["nom"]
+      ["name"]
     );
     const ingredient = queryByText(/100kg/);
     expect(ingredient).not.toBeInTheDocument();
@@ -421,7 +421,7 @@ was not successful on backend side`, async () => {
     const inputDate = getByLabelText("Date de péremption :");
     const selectedUnit = getByLabelText("Unité");
     const submitButton = getByText("Confirmer");
-    if (!missingFields.includes("nom")) {
+    if (!missingFields.includes("name")) {
       fireEvent.change(inputNom, { target: { value: value[0] } });
     }
     if (!missingFields.includes("quantité")) {

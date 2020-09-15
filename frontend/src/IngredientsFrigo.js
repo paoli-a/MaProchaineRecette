@@ -30,18 +30,18 @@ function IngredientsFrigo({ ingredients, possibleIngredients, totalUnites }) {
   };
 
   const handleSubmit = (data) => {
-    const newIngredient = {
-      ingredient: data.nomIngredient,
+    const ingredientNouveau = {
+      ingredient: data.ingredientName,
       date_peremption: data.datePeremption,
       quantite: data.quantiteIngredient + "",
       unite: data.unite,
     };
     axios
-      .post("/frigo/ingredients/", newIngredient)
+      .post("/frigo/ingredients/", ingredientNouveau)
       .then(({ data }) => {
         const newData = {
           id: data.id,
-          nom: data.ingredient,
+          name: data.ingredient,
           datePeremption: new Date(data.date_peremption),
           quantite: data.quantite,
           unite: data.unite,
@@ -70,8 +70,8 @@ function IngredientsFrigo({ ingredients, possibleIngredients, totalUnites }) {
     return (
       <React.Fragment key={monIngredient.id}>
         <li key={monIngredient.id}>
-          - {monIngredient.nom} : {monIngredient.quantite} {monIngredient.unite}
-          . Expiration : {formatedDate}.
+          - {monIngredient.name} : {monIngredient.quantite}{" "}
+          {monIngredient.unite}. Expiration : {formatedDate}.
           <button onClick={() => handleSupprClick(monIngredient.id)}>
             Supprimer
           </button>
@@ -100,7 +100,7 @@ function IngredientsFrigo({ ingredients, possibleIngredients, totalUnites }) {
 IngredientsFrigo.propTypes = {
   possibleIngredients: PropTypes.arrayOf(
     PropTypes.shape({
-      nom: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
     })
   ).isRequired,
   /**
@@ -109,7 +109,7 @@ IngredientsFrigo.propTypes = {
   ingredients: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number.isRequired,
-      nom: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
       datePeremption: PropTypes.instanceOf(Date),
       quantite: PropTypes.string.isRequired,
       unite: PropTypes.string.isRequired,

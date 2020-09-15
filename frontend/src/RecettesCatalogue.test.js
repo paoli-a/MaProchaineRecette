@@ -21,16 +21,16 @@ let unites;
 beforeEach(() => {
   ingredientsCatalogue = [
     {
-      nom: "Fraises",
+      name: "Fraises",
     },
     {
-      nom: "Poires",
+      name: "Poires",
     },
     {
-      nom: "Framboises",
+      name: "Framboises",
     },
     {
-      nom: "Beurre",
+      name: "Beurre",
     },
   ];
 

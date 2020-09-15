@@ -7,16 +7,16 @@ let ingredientsCatalogue;
 beforeEach(() => {
   ingredientsCatalogue = [
     {
-      nom: "Fraises",
+      name: "Fraises",
     },
     {
-      nom: "Poires",
+      name: "Poires",
     },
     {
-      nom: "Framboises",
+      name: "Framboises",
     },
     {
-      nom: "Beurre",
+      name: "Beurre",
     },
   ];
 });
@@ -32,7 +32,7 @@ it(`provides the right proposals when a letter is entered in the input of the in
       <InputSuggestions
         id="ingredients"
         elements={ingredientsCatalogue}
-        getElementText={(ingredient) => ingredient.nom}
+        getElementText={(ingredient) => ingredient.name}
         onChangeValue={handleChange}
         value={value}
       />

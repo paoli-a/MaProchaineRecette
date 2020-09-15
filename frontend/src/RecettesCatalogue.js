@@ -144,7 +144,7 @@ RecettesCatalogue.propTypes = {
    */
   possibleIngredients: PropTypes.arrayOf(
     PropTypes.shape({
-      nom: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
     })
   ).isRequired,
   totalCategories: PropTypes.arrayOf(PropTypes.string).isRequired,

@@ -15,12 +15,12 @@ function IngredientsCatalogue({
 
   const onSubmitWrapper = (dataForm) => {
     const ingredientToSend = {
-      nom: dataForm.ingredientNom,
+      name: dataForm.ingredientNom,
     };
     axios
       .post("/catalogues/ingredients/", ingredientToSend)
       .then(({ data }) => {
-        const newIngredient = { nom: data.nom };
+        const newIngredient = { name: data.name };
         const ingredientsListUpdated = possibleIngredients.slice();
         ingredientsListUpdated.push(newIngredient);
         updatePossibleIngredients(ingredientsListUpdated);
@@ -33,13 +33,13 @@ function IngredientsCatalogue({
       });
   };
 
-  const handleSupprClick = (nom) => {
+  const handleSupprClick = (name) => {
     axios
-      .delete(`/catalogues/ingredients/${nom}/`)
+      .delete(`/catalogues/ingredients/${name}/`)
       .then(() => {
         const ingredientsListUpdated = possibleIngredients.slice();
         const index = ingredientsListUpdated.findIndex((ingredient) => {
-          return ingredient.nom === nom;
+          return ingredient.name === name;
         });
         ingredientsListUpdated.splice(index, 1);
         updatePossibleIngredients(ingredientsListUpdated);
@@ -47,7 +47,7 @@ function IngredientsCatalogue({
       })
       .catch(() => {
         setDeleteError({
-          nom: nom,
+          name: name,
           message:
             "La suppression a échoué. Veuillez réessayer ultérieurement.",
         });
@@ -61,17 +61,17 @@ function IngredientsCatalogue({
   const ingredientsFiltres = useFilterSearch({
     elementsToFilter: possibleIngredients,
     searchResults: searchResults,
-    getSearchElement: (ingredient) => ingredient.nom,
+    getSearchElement: (ingredient) => ingredient.name,
   });
 
   const ingredient = ingredientsFiltres.map((unIngredient) => {
     return (
-      <React.Fragment key={unIngredient.nom}>
-        <li key={unIngredient.nom}>
-          {unIngredient.nom}
-          <button onClick={() => handleSupprClick(unIngredient.nom)}>X</button>
+      <React.Fragment key={unIngredient.name}>
+        <li key={unIngredient.name}>
+          {unIngredient.name}
+          <button onClick={() => handleSupprClick(unIngredient.name)}>X</button>
         </li>
-        {deleteError.nom === unIngredient.nom && (
+        {deleteError.name === unIngredient.name && (
           <span>{deleteError.message}</span>
         )}
       </React.Fragment>
@@ -134,7 +134,7 @@ function IngredientsCatalogue({
 IngredientsCatalogue.propTypes = {
   possibleIngredients: PropTypes.arrayOf(
     PropTypes.shape({
-      nom: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
     })
   ).isRequired,
   /**
