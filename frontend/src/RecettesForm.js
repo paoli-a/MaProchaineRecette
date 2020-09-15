@@ -11,7 +11,7 @@ function RecettesForm({
 }) {
   const { register, handleSubmit, errors, reset, watch, getValues } = useForm();
   const [ingredients, setIngredients] = useState([]);
-  const [ingredientNom, setIngredientNom] = useState("");
+  const [ingredientName, setIngredientName] = useState("");
   const [ingredientQuantite, setIngredientQuantite] = useState("");
   const [ingredientUnite, setIngredientUnite] = useState("");
   const [ingredientError, setIngredientError] = useState("");
@@ -31,7 +31,7 @@ function RecettesForm({
   };
 
   const resetIngredient = () => {
-    setIngredientNom("");
+    setIngredientName("");
     setIngredientQuantite("");
     setIngredientUnite("");
     setIngredientError("");
@@ -40,14 +40,14 @@ function RecettesForm({
   class UnauthorizedIngredient extends Error {}
 
   const validateNewIngredient = () => {
-    if (!ingredientNom || !ingredientQuantite || !ingredientUnite) {
+    if (!ingredientName || !ingredientQuantite || !ingredientUnite) {
       throw new Error(
         "Tous les champs concernant l'ingrédient doivent être remplis"
       );
     }
     let authorized = false;
     for (const ingredientPossible of possibleIngredients) {
-      if (ingredientPossible.name === ingredientNom) {
+      if (ingredientPossible.name === ingredientName) {
         authorized = true;
         break;
       }
@@ -58,7 +58,7 @@ function RecettesForm({
       );
     }
     for (let ingredientExistant of ingredients) {
-      if (ingredientExistant.ingredient === ingredientNom) {
+      if (ingredientExistant.ingredient === ingredientName) {
         throw new Error("Cet ingrédient a déjà été ajouté");
       }
     }
@@ -73,7 +73,7 @@ function RecettesForm({
       validateNewIngredient();
       const newIngredients = ingredients.slice();
       newIngredients.push({
-        ingredient: ingredientNom,
+        ingredient: ingredientName,
         quantite: ingredientQuantite,
         unite: ingredientUnite,
       });
@@ -182,8 +182,8 @@ function RecettesForm({
               elements={possibleIngredients}
               id="ingredient"
               getElementText={(ingredient) => ingredient.name}
-              onChangeValue={(name) => setIngredientNom(name)}
-              value={ingredientNom}
+              onChangeValue={(name) => setIngredientName(name)}
+              value={ingredientName}
               name="ingredient"
               type="text"
             />

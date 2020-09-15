@@ -15,7 +15,7 @@ function IngredientsCatalogue({
 
   const onSubmitWrapper = (dataForm) => {
     const ingredientToSend = {
-      name: dataForm.ingredientNom,
+      name: dataForm.ingredientName,
     };
     axios
       .post("/catalogues/ingredients/", ingredientToSend)
@@ -27,7 +27,7 @@ function IngredientsCatalogue({
         reset();
       })
       .catch(() => {
-        setError("ingredientNom", {
+        setError("ingredientName", {
           message: "L'ajout a échoué.",
         });
       });
@@ -58,20 +58,20 @@ function IngredientsCatalogue({
     setSearchResults(event.target.value);
   };
 
-  const ingredientsFiltres = useFilterSearch({
+  const filteredIngredients = useFilterSearch({
     elementsToFilter: possibleIngredients,
     searchResults: searchResults,
     getSearchElement: (ingredient) => ingredient.name,
   });
 
-  const ingredient = ingredientsFiltres.map((unIngredient) => {
+  const ingredientsToDisplay = filteredIngredients.map((ingredient) => {
     return (
-      <React.Fragment key={unIngredient.name}>
-        <li key={unIngredient.name}>
-          {unIngredient.name}
-          <button onClick={() => handleSupprClick(unIngredient.name)}>X</button>
+      <React.Fragment key={ingredient.name}>
+        <li key={ingredient.name}>
+          {ingredient.name}
+          <button onClick={() => handleSupprClick(ingredient.name)}>X</button>
         </li>
-        {deleteError.name === unIngredient.name && (
+        {deleteError.name === ingredient.name && (
           <span>{deleteError.message}</span>
         )}
       </React.Fragment>
@@ -86,24 +86,24 @@ function IngredientsCatalogue({
           <legend>Ajouter un ingredient dans le catalogue :</legend>
           <form id="ingredientForm" onSubmit={handleSubmit(onSubmitWrapper)}>
             <p>
-              <label htmlFor="ingredientNom">
+              <label htmlFor="ingredientName">
                 {" "}
                 Nom de l'ingrédient à ajouter :{" "}
               </label>
               <input
                 type="text"
-                name="ingredientNom"
-                id="ingredientNom"
+                name="ingredientName"
+                id="ingredientName"
                 defaultValue=""
                 ref={register({
                   required: "Ce champ est obligatoire",
                 })}
               />
-              {errors.ingredientNom && (
-                <span>{errors.ingredientNom.message}</span>
+              {errors.ingredientName && (
+                <span>{errors.ingredientName.message}</span>
               )}
-              {errors.ingredientNom && errors.ingredientNom.types && (
-                <span>{errors.ingredientNom.types.message}</span>
+              {errors.ingredientName && errors.ingredientName.types && (
+                <span>{errors.ingredientName.types.message}</span>
               )}
             </p>
             <p>
@@ -125,7 +125,7 @@ function IngredientsCatalogue({
             onChange={handleChangeSearch}
           />
         </form>
-        <ul>{ingredient}</ul>
+        <ul>{ingredientsToDisplay}</ul>
       </section>
     </main>
   );
