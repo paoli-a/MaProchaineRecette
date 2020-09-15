@@ -14,12 +14,12 @@ require("mutationobserver-shim");
 
 jest.mock("axios");
 let recettes;
-let ingredientsCatalogue;
+let catalogIngredients;
 let categoriesCatalogue;
 let unites;
 
 beforeEach(() => {
-  ingredientsCatalogue = [
+  catalogIngredients = [
     {
       name: "Fraises",
     },
@@ -146,7 +146,7 @@ describe("initial display is correct", () => {
     const { getByText } = render(
       <RecettesCatalogue
         totalRecettes={recettes}
-        possibleIngredients={ingredientsCatalogue}
+        possibleIngredients={catalogIngredients}
         totalCategories={categoriesCatalogue}
         totalUnites={unites}
       />
@@ -161,7 +161,7 @@ describe("initial display is correct", () => {
     const { getByLabelText } = render(
       <RecettesCatalogue
         totalRecettes={recettes}
-        possibleIngredients={ingredientsCatalogue}
+        possibleIngredients={catalogIngredients}
         totalCategories={categoriesCatalogue}
         totalUnites={unites}
       />
@@ -177,7 +177,7 @@ describe("initial display is correct", () => {
     const { getByText } = render(
       <RecettesCatalogue
         totalRecettes={recettes}
-        possibleIngredients={ingredientsCatalogue}
+        possibleIngredients={catalogIngredients}
         totalCategories={categoriesCatalogue}
         totalUnites={unites}
       />
@@ -194,7 +194,7 @@ describe("the adding recipe functionality works properly", () => {
     const { getByLabelText, getByText } = render(
       <RecettesCatalogue
         totalRecettes={recettes}
-        possibleIngredients={ingredientsCatalogue}
+        possibleIngredients={catalogIngredients}
         totalCategories={categoriesCatalogue}
         totalUnites={unites}
       />
@@ -228,7 +228,7 @@ describe("the adding recipe functionality works properly", () => {
     const { getByLabelText, getByText, queryByText } = render(
       <RecettesCatalogue
         totalRecettes={recettes}
-        possibleIngredients={ingredientsCatalogue}
+        possibleIngredients={catalogIngredients}
         totalCategories={categoriesCatalogue}
         totalUnites={unites}
       />
@@ -242,7 +242,7 @@ describe("the adding recipe functionality works properly", () => {
     const { getByLabelText, getByText, queryByText } = render(
       <RecettesCatalogue
         totalRecettes={recettes}
-        possibleIngredients={ingredientsCatalogue}
+        possibleIngredients={catalogIngredients}
         totalCategories={categoriesCatalogue}
         totalUnites={unites}
       />
@@ -256,7 +256,7 @@ describe("the adding recipe functionality works properly", () => {
     const { getByLabelText, getByText, queryByText } = render(
       <RecettesCatalogue
         totalRecettes={recettes}
-        possibleIngredients={ingredientsCatalogue}
+        possibleIngredients={catalogIngredients}
         totalCategories={categoriesCatalogue}
         totalUnites={unites}
       />
@@ -276,7 +276,7 @@ describe("the adding recipe functionality works properly", () => {
       const { getByLabelText, getByText, getAllByText } = render(
         <RecettesCatalogue
           totalRecettes={recettes}
-          possibleIngredients={ingredientsCatalogue}
+          possibleIngredients={catalogIngredients}
           totalCategories={categoriesCatalogue}
           totalUnites={unites}
         />
@@ -291,7 +291,7 @@ describe("the adding recipe functionality works properly", () => {
       const { getByLabelText, getByText, queryByText } = render(
         <RecettesCatalogue
           totalRecettes={recettes}
-          possibleIngredients={ingredientsCatalogue}
+          possibleIngredients={catalogIngredients}
           totalCategories={categoriesCatalogue}
           totalUnites={unites}
         />
@@ -304,11 +304,11 @@ describe("the adding recipe functionality works properly", () => {
       expect(fraises).not.toBeInTheDocument();
     });
 
-    it(`does not add the ingredient if the ingredient is not in ingredientsCatalogue`, () => {
+    it(`does not add the ingredient if the ingredient is not in catalogIngredients`, () => {
       const { getByLabelText, getByText, queryByText } = render(
         <RecettesCatalogue
           totalRecettes={recettes}
-          possibleIngredients={ingredientsCatalogue}
+          possibleIngredients={catalogIngredients}
           totalCategories={categoriesCatalogue}
           totalUnites={unites}
         />
@@ -322,7 +322,7 @@ describe("the adding recipe functionality works properly", () => {
       const { getByLabelText, getAllByTestId } = render(
         <RecettesCatalogue
           totalRecettes={recettes}
-          possibleIngredients={ingredientsCatalogue}
+          possibleIngredients={catalogIngredients}
           totalCategories={categoriesCatalogue}
           totalUnites={unites}
         />
@@ -342,7 +342,7 @@ describe("the adding recipe functionality works properly", () => {
       const { getByLabelText, getByText } = render(
         <RecettesCatalogue
           totalRecettes={recettes}
-          possibleIngredients={ingredientsCatalogue}
+          possibleIngredients={catalogIngredients}
           totalCategories={categoriesCatalogue}
           totalUnites={unites}
         />
@@ -363,7 +363,7 @@ describe("the adding recipe functionality works properly", () => {
       const { getByLabelText, getByText } = render(
         <RecettesCatalogue
           totalRecettes={recettes}
-          possibleIngredients={ingredientsCatalogue}
+          possibleIngredients={catalogIngredients}
           totalCategories={categoriesCatalogue}
           totalUnites={unites}
         />
@@ -447,7 +447,7 @@ was not successful on backend side`, async () => {
     const { getByLabelText, getByText, queryByText } = render(
       <RecettesCatalogue
         totalRecettes={recettes}
-        possibleIngredients={ingredientsCatalogue}
+        possibleIngredients={catalogIngredients}
         totalCategories={categoriesCatalogue}
         totalUnites={unites}
       />
@@ -484,7 +484,7 @@ describe("the removing recipe functionality works properly", () => {
     const { getByText } = render(
       <RecettesCatalogue
         totalRecettes={recettes}
-        possibleIngredients={ingredientsCatalogue}
+        possibleIngredients={catalogIngredients}
         totalCategories={categoriesCatalogue}
         totalUnites={unites}
       />
@@ -509,7 +509,7 @@ was not successful on backend side`, async () => {
     const { getByText } = render(
       <RecettesCatalogue
         totalRecettes={recettes}
-        possibleIngredients={ingredientsCatalogue}
+        possibleIngredients={catalogIngredients}
         totalCategories={categoriesCatalogue}
         totalUnites={unites}
       />
@@ -540,7 +540,7 @@ describe("the search bar functionality works properly", () => {
     const { getByText, queryByText, getByPlaceholderText } = render(
       <RecettesCatalogue
         totalRecettes={recettes}
-        possibleIngredients={ingredientsCatalogue}
+        possibleIngredients={catalogIngredients}
         totalCategories={categoriesCatalogue}
         totalUnites={unites}
       />
@@ -560,7 +560,7 @@ describe("the search bar functionality works properly", () => {
     const { getByText, queryByText, getByPlaceholderText } = render(
       <RecettesCatalogue
         totalRecettes={recettes}
-        possibleIngredients={ingredientsCatalogue}
+        possibleIngredients={catalogIngredients}
         totalCategories={categoriesCatalogue}
         totalUnites={unites}
       />

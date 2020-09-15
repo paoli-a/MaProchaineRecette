@@ -9,7 +9,7 @@ jest.mock("axios");
 let recettesCatalogue;
 let feasibleRecipes;
 let ingredientsFrigo;
-let ingredientsCatalogue;
+let catalogIngredients;
 let categoriesCatalogue;
 let unites;
 let axiosResponseIngredients;
@@ -74,7 +74,7 @@ beforeEach(() => {
       unite: "g",
     },
   ];
-  ingredientsCatalogue = [
+  catalogIngredients = [
     {
       name: "Fraises",
     },
@@ -84,7 +84,7 @@ beforeEach(() => {
   ];
   categoriesCatalogue = ["Entrée", "Plat", "Dessert"];
   unites = ["kg", "g", "cl", "pièce(s)"];
-  axiosResponseIngredients = { data: ingredientsCatalogue };
+  axiosResponseIngredients = { data: catalogIngredients };
   axiosResponseRecettes = { data: recettesCatalogue };
   axiosResponseRecettesFrigo = { data: feasibleRecipes };
   axiosResponseIngredientsFrigo = { data: ingredientsFrigo };
@@ -303,7 +303,7 @@ describe("displays correct error message on bad fetch", () => {
 });
 
 describe("Handle correctly new ingredientCatalogue", () => {
-  it(`takes into account newly entered ingredient in ingredientsCatalogue by giving suggestions when an ingredient name is being entered in IngredientsFrigo`, async () => {
+  it(`takes into account newly entered ingredient in catalogIngredients by giving suggestions when an ingredient name is being entered in IngredientsFrigo`, async () => {
     const maProchaineRecette = render(<MaProchaineRecette />);
     await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(FETCH_CALLS));
     await addIngredientCatalogue(maProchaineRecette, "Navets");
@@ -315,7 +315,7 @@ describe("Handle correctly new ingredientCatalogue", () => {
     expect(navets.value).toEqual("Navets");
   });
 
-  it(`takes into account newly entered ingredient in ingredientsCatalogue by giving suggestions when an ingredient name is being entered in RecettesCatalogue`, async () => {
+  it(`takes into account newly entered ingredient in catalogIngredients by giving suggestions when an ingredient name is being entered in RecettesCatalogue`, async () => {
     const maProchaineRecette = render(<MaProchaineRecette />);
     await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(FETCH_CALLS));
     await addIngredientCatalogue(maProchaineRecette, "Coriandre");

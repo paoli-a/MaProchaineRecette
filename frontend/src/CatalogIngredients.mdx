@@ -1,11 +1,11 @@
 ---
-name: IngredientsCatalogue
+name: CatalogIngredients
 menu: Components
 ---
 
-# IngredientsCatalogue
+# CatalogIngredients
 
-import IngredientsCatalogue from "./IngredientsCatalogue";
+import CatalogIngredients from "./CatalogIngredients";
 import { Playground, Props } from "docz";
 
 > Ce composant permet d'afficher les ingrédients du catalogue, d'en ajouter
@@ -14,13 +14,13 @@ import { Playground, Props } from "docz";
 
 ## Props
 
-<Props of={IngredientsCatalogue} />
+<Props of={CatalogIngredients} />
 
 ## Exemples d'utilisation
 
 <Playground>
   {() => {
-    const [ingredientsCatalogue, setIngredientsCatalogue] = React.useState([
+    const [catalogIngredients, setCatalogIngredients] = React.useState([
       {
         name: "Fraises",
       },
@@ -32,9 +32,9 @@ import { Playground, Props } from "docz";
       },
     ]);
     return (
-      <IngredientsCatalogue
-        possibleIngredients={ingredientsCatalogue}
-        updatePossibleIngredients={setIngredientsCatalogue}
+      <CatalogIngredients
+        possibleIngredients={catalogIngredients}
+        updatePossibleIngredients={setCatalogIngredients}
       />
     );
   }}

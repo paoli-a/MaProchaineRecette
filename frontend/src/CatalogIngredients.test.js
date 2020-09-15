@@ -1,15 +1,15 @@
 import React from "react";
 import { render, fireEvent, within, waitFor } from "@testing-library/react";
 import axios from "axios";
-import IngredientsCatalogue from "./IngredientsCatalogue";
+import CatalogIngredients from "./CatalogIngredients";
 
 require("mutationobserver-shim");
 
 jest.mock("axios");
-let ingredientsCatalogue;
+let catalogIngredients;
 
 beforeEach(() => {
-  ingredientsCatalogue = [
+  catalogIngredients = [
     {
       name: "Fraises",
     },
@@ -24,13 +24,13 @@ afterEach(() => {
 });
 
 const handlePossibleIngredients = (ingredients) => {
-  ingredientsCatalogue = ingredients;
+  catalogIngredients = ingredients;
 };
 
 const rerenderCatalogue = (rerender) => {
   rerender(
-    <IngredientsCatalogue
-      possibleIngredients={ingredientsCatalogue}
+    <CatalogIngredients
+      possibleIngredients={catalogIngredients}
       updatePossibleIngredients={handlePossibleIngredients}
     />
   );
@@ -38,8 +38,8 @@ const rerenderCatalogue = (rerender) => {
 
 it("removes the correct ingredient when clicking on remove button", async () => {
   const { getByText, getAllByRole, rerender } = render(
-    <IngredientsCatalogue
-      possibleIngredients={ingredientsCatalogue}
+    <CatalogIngredients
+      possibleIngredients={catalogIngredients}
       updatePossibleIngredients={handlePossibleIngredients}
     />
   );
@@ -58,8 +58,8 @@ it("removes the correct ingredient when clicking on remove button", async () => 
 it(`displays an error message and keeps the ingredient if the ingredient removal
 was not successful on backend side`, async () => {
   const { getByText, getAllByRole, rerender } = render(
-    <IngredientsCatalogue
-      possibleIngredients={ingredientsCatalogue}
+    <CatalogIngredients
+      possibleIngredients={catalogIngredients}
       updatePossibleIngredients={handlePossibleIngredients}
     />
   );
@@ -80,8 +80,8 @@ was not successful on backend side`, async () => {
 it(`adds the correct ingredient when filling the form and clicking
   on submit`, async () => {
   const { getByLabelText, getByText, getAllByRole, rerender } = render(
-    <IngredientsCatalogue
-      possibleIngredients={ingredientsCatalogue}
+    <CatalogIngredients
+      possibleIngredients={catalogIngredients}
       updatePossibleIngredients={handlePossibleIngredients}
     />
   );
@@ -108,8 +108,8 @@ was not successful on backend side`, async () => {
     getAllByRole,
     rerender,
   } = render(
-    <IngredientsCatalogue
-      possibleIngredients={ingredientsCatalogue}
+    <CatalogIngredients
+      possibleIngredients={catalogIngredients}
       updatePossibleIngredients={handlePossibleIngredients}
     />
   );
@@ -133,8 +133,8 @@ describe("the search bar functionality works properly", () => {
   it(`displays the correct ingredients when a letter is entered in the
     search bar`, () => {
     const { getByText, queryByText, getByPlaceholderText } = render(
-      <IngredientsCatalogue
-        possibleIngredients={ingredientsCatalogue}
+      <CatalogIngredients
+        possibleIngredients={catalogIngredients}
         updatePossibleIngredients={handlePossibleIngredients}
       />
     );
@@ -149,8 +149,8 @@ describe("the search bar functionality works properly", () => {
 
   it("redisplays all the ingredient of the catalog after a search", () => {
     const { getByText, queryByText, getByPlaceholderText } = render(
-      <IngredientsCatalogue
-        possibleIngredients={ingredientsCatalogue}
+      <CatalogIngredients
+        possibleIngredients={catalogIngredients}
         updatePossibleIngredients={handlePossibleIngredients}
       />
     );

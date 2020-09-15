@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import useFilterSearch from "./useFilterSearch";
-import "./IngredientsCatalogue.css";
+import "./CatalogIngredients.css";
 import PropTypes from "prop-types";
 
-function IngredientsCatalogue({
+function CatalogIngredients({
   possibleIngredients,
   updatePossibleIngredients,
 }) {
@@ -116,8 +116,7 @@ function IngredientsCatalogue({
         <form>
           <input
             type="search"
-            id="rechercheCatalogueIngredient"
-            name="q"
+            id="catalogIngredientsSearch"
             value={searchResults}
             placeholder="Recherche..."
             spellCheck="true"
@@ -131,7 +130,7 @@ function IngredientsCatalogue({
   );
 }
 
-IngredientsCatalogue.propTypes = {
+CatalogIngredients.propTypes = {
   possibleIngredients: PropTypes.arrayOf(
     PropTypes.shape({
       name: PropTypes.string.isRequired,
@@ -143,4 +142,4 @@ IngredientsCatalogue.propTypes = {
   updatePossibleIngredients: PropTypes.func.isRequired,
 };
 
-export default IngredientsCatalogue;
+export default CatalogIngredients;

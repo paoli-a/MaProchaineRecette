@@ -3,13 +3,13 @@ import { BrowserRouter as Router, Route, NavLink } from "react-router-dom";
 import axios from "axios";
 import RecettesAffichage from "./RecettesAffichage";
 import IngredientsFrigo from "./IngredientsFrigo";
-import IngredientsCatalogue from "./IngredientsCatalogue";
+import CatalogIngredients from "./CatalogIngredients";
 import RecettesCatalogue from "./RecettesCatalogue";
 import "./MaProchaineRecette.css";
 import "./Nav.css";
 
 function MaProchaineRecette() {
-  const [ingredientsCatalogue, setIngredientsCatalogue] = useState([]);
+  const [catalogIngredients, setCatalogIngredients] = useState([]);
   const [recettesCatalogue, setRecettesCatalogue] = useState([]);
   const [ingredientsFrigo, setIngredientsFrigo] = useState([]);
   const [categoriesCatalogue, setCategoriesCatalogue] = useState([]);
@@ -18,14 +18,14 @@ function MaProchaineRecette() {
   const [fetchError, setFetchError] = useState("");
 
   const handlePossibleIngredients = (ingredients) => {
-    setIngredientsCatalogue(ingredients);
+    setCatalogIngredients(ingredients);
   };
 
   useEffect(() => {
     axios
       .get("/catalogues/ingredients/")
       .then(({ data }) => {
-        setIngredientsCatalogue(data);
+        setCatalogIngredients(data);
       })
       .catch(() =>
         setFetchError(
@@ -111,14 +111,14 @@ function MaProchaineRecette() {
         <Route path="/recettes">
           <RecettesCatalogue
             totalRecettes={recettesCatalogue}
-            possibleIngredients={ingredientsCatalogue}
+            possibleIngredients={catalogIngredients}
             totalCategories={categoriesCatalogue}
             totalUnites={unites}
           />
         </Route>
         <Route path="/ingredients">
-          <IngredientsCatalogue
-            possibleIngredients={ingredientsCatalogue}
+          <CatalogIngredients
+            possibleIngredients={catalogIngredients}
             updatePossibleIngredients={handlePossibleIngredients}
           />
         </Route>
@@ -126,7 +126,7 @@ function MaProchaineRecette() {
           <main id="MesProchainesRecettes">
             <IngredientsFrigo
               ingredients={ingredientsFrigo}
-              possibleIngredients={ingredientsCatalogue}
+              possibleIngredients={catalogIngredients}
               totalUnites={unites}
             />
             <RecettesAffichage recettes={feasibleRecipes} />

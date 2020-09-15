@@ -2,10 +2,10 @@ import React from "react";
 import { render, fireEvent } from "@testing-library/react";
 import InputSuggestions from "./InputSuggestions";
 
-let ingredientsCatalogue;
+let catalogIngredients;
 
 beforeEach(() => {
-  ingredientsCatalogue = [
+  catalogIngredients = [
     {
       name: "Fraises",
     },
@@ -31,7 +31,7 @@ it(`provides the right proposals when a letter is entered in the input of the in
       <label htmlFor="ingredients">Ingrédients :</label>
       <InputSuggestions
         id="ingredients"
-        elements={ingredientsCatalogue}
+        elements={catalogIngredients}
         getElementText={(ingredient) => ingredient.name}
         onChangeValue={handleChange}
         value={value}
