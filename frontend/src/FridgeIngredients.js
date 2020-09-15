@@ -30,14 +30,14 @@ function FridgeIngredients({ ingredients, possibleIngredients, totalUnits }) {
   };
 
   const handleSubmit = (data) => {
-    const ingredientNouveau = {
+    const newIngredient = {
       ingredient: data.ingredientName,
       date_peremption: data.datePeremption,
       quantite: data.quantiteIngredient + "",
       unit: data.unit,
     };
     axios
-      .post("/frigo/ingredients/", ingredientNouveau)
+      .post("/frigo/ingredients/", newIngredient)
       .then(({ data }) => {
         const newData = {
           id: data.id,
@@ -65,20 +65,18 @@ function FridgeIngredients({ ingredients, possibleIngredients, totalUnits }) {
     }
   }
 
-  const ingredientElement = ingredientsList.map((monIngredient) => {
-    const formatedDate = monIngredient.datePeremption.toLocaleDateString();
+  const ingredientElement = ingredientsList.map((ingredient) => {
+    const formatedDate = ingredient.datePeremption.toLocaleDateString();
     return (
-      <React.Fragment key={monIngredient.id}>
-        <li key={monIngredient.id}>
-          - {monIngredient.name} : {monIngredient.quantite} {monIngredient.unit}
-          . Expiration : {formatedDate}.
-          <button onClick={() => handleSupprClick(monIngredient.id)}>
+      <React.Fragment key={ingredient.id}>
+        <li key={ingredient.id}>
+          - {ingredient.name} : {ingredient.quantite} {ingredient.unit}.
+          Expiration : {formatedDate}.
+          <button onClick={() => handleSupprClick(ingredient.id)}>
             Supprimer
           </button>
         </li>
-        {deleteError.id === monIngredient.id && (
-          <span>{deleteError.message}</span>
-        )}
+        {deleteError.id === ingredient.id && <span>{deleteError.message}</span>}
       </React.Fragment>
     );
   });
