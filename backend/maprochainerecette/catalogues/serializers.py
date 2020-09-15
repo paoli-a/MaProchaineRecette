@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from catalogues.models import Ingredient, Recette, IngredientRecette, Categorie
-from unites.models import Unite
+from units.models import Unit
 
 
 class IngredientSerializer(serializers.ModelSerializer):
@@ -20,15 +20,15 @@ class CategorieSerializer(serializers.ModelSerializer):
 
 
 class IngredientRecetteSerializer(serializers.ModelSerializer):
-    unite = serializers.SlugRelatedField(
-        queryset=Unite.objects.all(), slug_field="abbreviation")
+    unit = serializers.SlugRelatedField(
+        queryset=Unit.objects.all(), slug_field="abbreviation")
     ingredient = serializers.SlugRelatedField(
         queryset=Ingredient.objects.all(), slug_field="name")
 
     class Meta:
         model = IngredientRecette
         fields = ["ingredient", "quantite",
-                  "unite"]
+                  "unit"]
 
 
 class RecetteSerializer(serializers.ModelSerializer):

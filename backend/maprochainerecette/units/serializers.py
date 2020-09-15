@@ -1,17 +1,17 @@
 from rest_framework import serializers
-from unites.models import Unite, TypeUnite
+from units.models import Unit, UnitType
 
 
-class TypeUniteSerializer(serializers.ModelSerializer):
+class UnitTypeSerializer(serializers.ModelSerializer):
     class Meta:
-        model = TypeUnite
+        model = UnitType
         fields = ["name"]
 
 
-class UniteSerializer(serializers.ModelSerializer):
+class UnitSerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = Unite
+        model = Unit
         fields = ["abbreviation"]
 
     def to_representation(self, value) -> str:

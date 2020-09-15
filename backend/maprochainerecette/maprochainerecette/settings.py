@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     # local apps
     'catalogues',
     'frigo',
-    'unites'
+    'units'
 ]
 
 MIDDLEWARE = [

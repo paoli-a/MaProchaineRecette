@@ -1,18 +1,18 @@
 from rest_framework import serializers
 from frigo.models import IngredientFrigo
-from catalogues.models import Ingredient, Unite, Recette, Categorie
+from catalogues.models import Ingredient, Unit, Recette, Categorie
 from catalogues.serializers import IngredientRecetteSerializer
 
 
 class IngredientFrigoSerializer(serializers.ModelSerializer):
     ingredient = serializers.SlugRelatedField(
         queryset=Ingredient.objects.all(), slug_field="name")
-    unite = serializers.SlugRelatedField(
-        queryset=Unite.objects.all(), slug_field="abbreviation")
+    unit = serializers.SlugRelatedField(
+        queryset=Unit.objects.all(), slug_field="abbreviation")
 
     class Meta:
         model = IngredientFrigo
-        fields = ["id", "ingredient", "date_peremption", "quantite", "unite"]
+        fields = ["id", "ingredient", "date_peremption", "quantite", "unit"]
 
     def create(self, validated_data):
         """Create the fridge ingredient and solve the bug when the ingredient is merged.
@@ -27,7 +27,7 @@ class IngredientFrigoSerializer(serializers.ModelSerializer):
             ingredient = IngredientFrigo.objects.filter(
                 ingredient=ingredient.ingredient,
                 date_peremption=ingredient.date_peremption,
-                unite__type=ingredient.unite.type).first()
+                unit__type=ingredient.unit.type).first()
         return ingredient
 
 

@@ -3,7 +3,7 @@ import FridgeIngredientsForm from "./FridgeIngredientsForm";
 import PropTypes from "prop-types";
 import axios from "axios";
 
-function FridgeIngredients({ ingredients, possibleIngredients, totalUnites }) {
+function FridgeIngredients({ ingredients, possibleIngredients, totalUnits }) {
   const [ingredientsList, setIngredient] = useState(ingredients);
   const [postError, setPostError] = useState("");
   const [deleteError, setDeleteError] = useState({});
@@ -34,7 +34,7 @@ function FridgeIngredients({ ingredients, possibleIngredients, totalUnites }) {
       ingredient: data.ingredientName,
       date_peremption: data.datePeremption,
       quantite: data.quantiteIngredient + "",
-      unite: data.unite,
+      unit: data.unit,
     };
     axios
       .post("/frigo/ingredients/", ingredientNouveau)
@@ -44,7 +44,7 @@ function FridgeIngredients({ ingredients, possibleIngredients, totalUnites }) {
           name: data.ingredient,
           datePeremption: new Date(data.date_peremption),
           quantite: data.quantite,
-          unite: data.unite,
+          unit: data.unit,
         };
         const ingredientsListUpdated = ingredientsList.slice();
         eliminateIngredientWithId(ingredientsListUpdated, data.id);
@@ -70,8 +70,8 @@ function FridgeIngredients({ ingredients, possibleIngredients, totalUnites }) {
     return (
       <React.Fragment key={monIngredient.id}>
         <li key={monIngredient.id}>
-          - {monIngredient.name} : {monIngredient.quantite}{" "}
-          {monIngredient.unite}. Expiration : {formatedDate}.
+          - {monIngredient.name} : {monIngredient.quantite} {monIngredient.unit}
+          . Expiration : {formatedDate}.
           <button onClick={() => handleSupprClick(monIngredient.id)}>
             Supprimer
           </button>
@@ -89,7 +89,7 @@ function FridgeIngredients({ ingredients, possibleIngredients, totalUnites }) {
       <FridgeIngredientsForm
         onSubmit={handleSubmit}
         possibleIngredients={possibleIngredients}
-        totalUnites={totalUnites}
+        totalUnits={totalUnits}
       />
       {postError && <span>{postError}</span>}
       <ul>{ingredientElement}</ul>
@@ -112,10 +112,10 @@ FridgeIngredients.propTypes = {
       name: PropTypes.string.isRequired,
       datePeremption: PropTypes.instanceOf(Date),
       quantite: PropTypes.string.isRequired,
-      unite: PropTypes.string.isRequired,
+      unit: PropTypes.string.isRequired,
     })
   ).isRequired,
-  totalUnites: PropTypes.arrayOf(PropTypes.string).isRequired,
+  totalUnits: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export default FridgeIngredients;

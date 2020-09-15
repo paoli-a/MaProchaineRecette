@@ -8,15 +8,15 @@ let unsureIngredients;
 
 beforeEach(() => {
   ingredients = [
-    { ingredient: "pommes de terre", quantite: "1", unite: "kg" },
-    { ingredient: "oeufs", quantite: "3", unite: "pièce(s)" },
-    { ingredient: "vinaigre non balsamique", quantite: "1", unite: "cas" },
-    { ingredient: "radis", quantite: "2", unite: "botte(s)" },
-    { ingredient: "oignons bottes", quantite: "2", unite: "pièce(s)" },
-    { ingredient: "yaourt grec", quantite: "1", unite: "pièce(s)" },
-    { ingredient: "mayonnaise", quantite: "1", unite: "cas" },
-    { ingredient: "moutarde", quantite: "0.5", unite: "cas" },
-    { ingredient: "ail", quantite: "1", unite: "gousse(s)" },
+    { ingredient: "pommes de terre", quantite: "1", unit: "kg" },
+    { ingredient: "oeufs", quantite: "3", unit: "pièce(s)" },
+    { ingredient: "vinaigre non balsamique", quantite: "1", unit: "cas" },
+    { ingredient: "radis", quantite: "2", unit: "botte(s)" },
+    { ingredient: "oignons bottes", quantite: "2", unit: "pièce(s)" },
+    { ingredient: "yaourt grec", quantite: "1", unit: "pièce(s)" },
+    { ingredient: "mayonnaise", quantite: "1", unit: "cas" },
+    { ingredient: "moutarde", quantite: "0.5", unit: "cas" },
+    { ingredient: "ail", quantite: "1", unit: "gousse(s)" },
   ];
   priorityIngredients = ["mayonnaise"];
   unsureIngredients = ["radis", "ail"];

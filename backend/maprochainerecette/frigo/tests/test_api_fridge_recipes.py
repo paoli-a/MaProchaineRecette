@@ -13,7 +13,7 @@ from frigo.tests.factories import (
     IngredientFrigoFactory,
 )
 from catalogues.tests.factories import IngredientFactory, RecetteFactory, IngredientRecetteFactory
-from unites.tests.factories import UniteFactory, TypeUniteFactory
+from units.tests.factories import UnitFactory, UnitTypeFactory
 
 
 pytestmark = pytest.mark.django_db
@@ -21,15 +21,15 @@ pytestmark = pytest.mark.django_db
 
 def test_get_fridge_recipes_returns_feasible_recipes():
     carottes, tomates, oignons, gramme, _ = _dataset_for_fridge_recipes_tests()
-    ingredients_recettes1 = [IngredientRecetteFactory(ingredient=carottes, quantite=500, unite=gramme),
+    ingredients_recettes1 = [IngredientRecetteFactory(ingredient=carottes, quantite=500, unit=gramme),
                              IngredientRecetteFactory(
-                                 ingredient=tomates, quantite=50, unite=gramme),
-                             IngredientRecetteFactory(ingredient=oignons, quantite=60, unite=gramme)]
+                                 ingredient=tomates, quantite=50, unit=gramme),
+                             IngredientRecetteFactory(ingredient=oignons, quantite=60, unit=gramme)]
     RecetteFactory(ingredients=ingredients_recettes1, titre="Recette 1")
-    ingredients_recettes2 = [IngredientRecetteFactory(ingredient=carottes, quantite=350, unite=gramme),
+    ingredients_recettes2 = [IngredientRecetteFactory(ingredient=carottes, quantite=350, unit=gramme),
                              IngredientRecetteFactory(
-                                 ingredient=tomates, quantite=40, unite=gramme),
-                             IngredientRecetteFactory(ingredient=oignons, quantite=12, unite=gramme)]
+                                 ingredient=tomates, quantite=40, unit=gramme),
+                             IngredientRecetteFactory(ingredient=oignons, quantite=12, unit=gramme)]
     RecetteFactory(ingredients=ingredients_recettes2, titre="Recette 2")
     url = reverse("recettes_frigo_list")
     request = APIRequestFactory().get(url)
@@ -41,17 +41,17 @@ def test_get_fridge_recipes_returns_feasible_recipes():
 def test_get_fridge_recipes_does_not_return_recipes_for_which_an_ingredient_is_missing():
     carottes, tomates, oignons, gramme, _ = _dataset_for_fridge_recipes_tests()
     poivrons = IngredientFactory(name="Poivrons")
-    ingredients_recettes1 = [IngredientRecetteFactory(ingredient=carottes, quantite=500, unite=gramme),
+    ingredients_recettes1 = [IngredientRecetteFactory(ingredient=carottes, quantite=500, unit=gramme),
                              IngredientRecetteFactory(
-                                 ingredient=tomates, quantite=50, unite=gramme),
+                                 ingredient=tomates, quantite=50, unit=gramme),
                              IngredientRecetteFactory(
-                                 ingredient=oignons, quantite=60, unite=gramme),
-                             IngredientRecetteFactory(ingredient=poivrons, quantite=200, unite=gramme)]
+                                 ingredient=oignons, quantite=60, unit=gramme),
+                             IngredientRecetteFactory(ingredient=poivrons, quantite=200, unit=gramme)]
     RecetteFactory(ingredients=ingredients_recettes1, titre="Recette 1")
-    ingredients_recettes2 = [IngredientRecetteFactory(ingredient=carottes, quantite=350, unite=gramme),
+    ingredients_recettes2 = [IngredientRecetteFactory(ingredient=carottes, quantite=350, unit=gramme),
                              IngredientRecetteFactory(
-                                 ingredient=tomates, quantite=40, unite=gramme),
-                             IngredientRecetteFactory(ingredient=oignons, quantite=12, unite=gramme)]
+                                 ingredient=tomates, quantite=40, unit=gramme),
+                             IngredientRecetteFactory(ingredient=oignons, quantite=12, unit=gramme)]
     RecetteFactory(ingredients=ingredients_recettes2, titre="Recette 2")
     url = reverse("recettes_frigo_list")
     request = APIRequestFactory().get(url)
@@ -62,15 +62,15 @@ def test_get_fridge_recipes_does_not_return_recipes_for_which_an_ingredient_is_m
 
 def test_get_fridge_recipes_does_not_return_recipes_for_which_an_ingredient_has_not_enough_quantity():
     carottes, tomates, oignons, gramme, _ = _dataset_for_fridge_recipes_tests()
-    ingredients_recettes1 = [IngredientRecetteFactory(ingredient=carottes, quantite=600, unite=gramme),
+    ingredients_recettes1 = [IngredientRecetteFactory(ingredient=carottes, quantite=600, unit=gramme),
                              IngredientRecetteFactory(
-                                 ingredient=tomates, quantite=50, unite=gramme),
-                             IngredientRecetteFactory(ingredient=oignons, quantite=60, unite=gramme)]
+                                 ingredient=tomates, quantite=50, unit=gramme),
+                             IngredientRecetteFactory(ingredient=oignons, quantite=60, unit=gramme)]
     RecetteFactory(ingredients=ingredients_recettes1, titre="Recette 1")
-    ingredients_recettes2 = [IngredientRecetteFactory(ingredient=carottes, quantite=350, unite=gramme),
+    ingredients_recettes2 = [IngredientRecetteFactory(ingredient=carottes, quantite=350, unit=gramme),
                              IngredientRecetteFactory(
-                                 ingredient=tomates, quantite=40, unite=gramme),
-                             IngredientRecetteFactory(ingredient=oignons, quantite=12, unite=gramme)]
+                                 ingredient=tomates, quantite=40, unit=gramme),
+                             IngredientRecetteFactory(ingredient=oignons, quantite=12, unit=gramme)]
     RecetteFactory(ingredients=ingredients_recettes2, titre="Recette 2")
     url = reverse("recettes_frigo_list")
     request = APIRequestFactory().get(url)
@@ -87,18 +87,18 @@ def test_get_fridge_recipes_returns_recipes_for_which_ingredients_are_splitted()
     carottes, tomates, _, gramme, _ = _dataset_for_fridge_recipes_tests()
     navet = IngredientFactory(name="Navet")
     IngredientFrigoFactory(ingredient=navet, quantite=60,
-                           unite=gramme, date_peremption=datetime.date(2030, 1, 1))
+                           unit=gramme, date_peremption=datetime.date(2030, 1, 1))
     IngredientFrigoFactory(ingredient=navet, quantite=40,
-                           unite=gramme, date_peremption=datetime.date(2030, 2, 2))
-    ingredients_recettes1 = [IngredientRecetteFactory(ingredient=carottes, quantite=500, unite=gramme),
+                           unit=gramme, date_peremption=datetime.date(2030, 2, 2))
+    ingredients_recettes1 = [IngredientRecetteFactory(ingredient=carottes, quantite=500, unit=gramme),
                              IngredientRecetteFactory(
-                                 ingredient=tomates, quantite=50, unite=gramme),
-                             IngredientRecetteFactory(ingredient=navet, quantite=100, unite=gramme)]
+                                 ingredient=tomates, quantite=50, unit=gramme),
+                             IngredientRecetteFactory(ingredient=navet, quantite=100, unit=gramme)]
     RecetteFactory(ingredients=ingredients_recettes1, titre="Recette 1")
-    ingredients_recettes2 = [IngredientRecetteFactory(ingredient=carottes, quantite=350, unite=gramme),
+    ingredients_recettes2 = [IngredientRecetteFactory(ingredient=carottes, quantite=350, unit=gramme),
                              IngredientRecetteFactory(
-                                 ingredient=tomates, quantite=40, unite=gramme),
-                             IngredientRecetteFactory(ingredient=navet, quantite=80, unite=gramme)]
+                                 ingredient=tomates, quantite=40, unit=gramme),
+                             IngredientRecetteFactory(ingredient=navet, quantite=80, unit=gramme)]
     RecetteFactory(ingredients=ingredients_recettes2, titre="Recette 2")
     url = reverse("recettes_frigo_list")
     request = APIRequestFactory().get(url)
@@ -109,21 +109,21 @@ def test_get_fridge_recipes_returns_recipes_for_which_ingredients_are_splitted()
 
 def test_get_fridge_recipes_returns_recipes_for_which_an_ingredient_has_different_units():
     carottes, tomates, _, gramme, masse = _dataset_for_fridge_recipes_tests()
-    kg = UniteFactory(abbreviation="kg", rapport=1000, type=masse)
+    kg = UnitFactory(abbreviation="kg", rapport=1000, type=masse)
     navet = IngredientFactory(name="Navet")
     IngredientFrigoFactory(ingredient=navet, quantite=2,
-                           unite=kg, date_peremption=datetime.date(2030, 1, 1))
+                           unit=kg, date_peremption=datetime.date(2030, 1, 1))
     IngredientFrigoFactory(ingredient=navet, quantite=400,
-                           unite=gramme, date_peremption=datetime.date(2030, 2, 2))
-    ingredients_recettes1 = [IngredientRecetteFactory(ingredient=carottes, quantite=500, unite=gramme),
+                           unit=gramme, date_peremption=datetime.date(2030, 2, 2))
+    ingredients_recettes1 = [IngredientRecetteFactory(ingredient=carottes, quantite=500, unit=gramme),
                              IngredientRecetteFactory(
-                                 ingredient=tomates, quantite=50, unite=gramme),
-                             IngredientRecetteFactory(ingredient=navet, quantite=2400, unite=gramme)]
+                                 ingredient=tomates, quantite=50, unit=gramme),
+                             IngredientRecetteFactory(ingredient=navet, quantite=2400, unit=gramme)]
     RecetteFactory(ingredients=ingredients_recettes1, titre="Recette 1")
-    ingredients_recettes2 = [IngredientRecetteFactory(ingredient=carottes, quantite=350, unite=gramme),
+    ingredients_recettes2 = [IngredientRecetteFactory(ingredient=carottes, quantite=350, unit=gramme),
                              IngredientRecetteFactory(
-                                 ingredient=tomates, quantite=40, unite=gramme),
-                             IngredientRecetteFactory(ingredient=navet, quantite=2.4, unite=kg)]
+                                 ingredient=tomates, quantite=40, unit=gramme),
+                             IngredientRecetteFactory(ingredient=navet, quantite=2.4, unit=kg)]
     RecetteFactory(ingredients=ingredients_recettes2, titre="Recette 2")
     url = reverse("recettes_frigo_list")
     request = APIRequestFactory().get(url)
@@ -138,20 +138,20 @@ def test_get_fridge_recipes_returns_recipes_that_have_unsure_ingredients():
     types has not been implemented yet, so the feasibility of the recipe is not sure.
     """
     carottes, tomates, _, gramme, _ = _dataset_for_fridge_recipes_tests()
-    pieces_type = TypeUniteFactory(name="pièce(s)")
-    pieces = UniteFactory(abbreviation="pièce(s)", rapport=1, type=pieces_type)
+    pieces_type = UnitTypeFactory(name="pièce(s)")
+    pieces = UnitFactory(abbreviation="pièce(s)", rapport=1, type=pieces_type)
     navet = IngredientFactory(name="Navet")
-    IngredientFrigoFactory(ingredient=navet, quantite=1, unite=pieces)
-    ingredients_recettes1 = [IngredientRecetteFactory(ingredient=carottes, quantite=500, unite=gramme),
+    IngredientFrigoFactory(ingredient=navet, quantite=1, unit=pieces)
+    ingredients_recettes1 = [IngredientRecetteFactory(ingredient=carottes, quantite=500, unit=gramme),
                              IngredientRecetteFactory(
-                                 ingredient=tomates, quantite=50, unite=gramme),
-                             IngredientRecetteFactory(ingredient=navet, quantite=400, unite=gramme)]
+                                 ingredient=tomates, quantite=50, unit=gramme),
+                             IngredientRecetteFactory(ingredient=navet, quantite=400, unit=gramme)]
     RecetteFactory(ingredients=ingredients_recettes1, titre="Recette 1")
-    IngredientFrigoFactory(ingredient=navet, quantite=200, unite=gramme)
-    ingredients_recettes2 = [IngredientRecetteFactory(ingredient=carottes, quantite=350, unite=gramme),
+    IngredientFrigoFactory(ingredient=navet, quantite=200, unit=gramme)
+    ingredients_recettes2 = [IngredientRecetteFactory(ingredient=carottes, quantite=350, unit=gramme),
                              IngredientRecetteFactory(
-                                 ingredient=tomates, quantite=40, unite=gramme),
-                             IngredientRecetteFactory(ingredient=navet, quantite=400, unite=gramme)]
+                                 ingredient=tomates, quantite=40, unit=gramme),
+                             IngredientRecetteFactory(ingredient=navet, quantite=400, unit=gramme)]
     RecetteFactory(ingredients=ingredients_recettes2, titre="Recette 2")
     url = reverse("recettes_frigo_list")
     request = APIRequestFactory().get(url)
@@ -166,15 +166,15 @@ def test_get_fridge_recipes_returns_correctly_ordered_recipes():
     carottes, tomates, oignons, gramme, _ = _dataset_for_fridge_recipes_tests()
     navet = IngredientFactory(name="Navet")
     IngredientFrigoFactory(ingredient=navet, quantite=100,
-                           unite=gramme, date_peremption=datetime.date(2132, 1, 1))
-    ingredients_recettes1 = [IngredientRecetteFactory(ingredient=oignons, quantite=50, unite=gramme),
-                             IngredientRecetteFactory(ingredient=navet, quantite=50, unite=gramme)]
+                           unit=gramme, date_peremption=datetime.date(2132, 1, 1))
+    ingredients_recettes1 = [IngredientRecetteFactory(ingredient=oignons, quantite=50, unit=gramme),
+                             IngredientRecetteFactory(ingredient=navet, quantite=50, unit=gramme)]
     RecetteFactory(ingredients=ingredients_recettes1, titre="Recette 1")
-    ingredients_recettes2 = [IngredientRecetteFactory(ingredient=carottes, quantite=350, unite=gramme),
-                             IngredientRecetteFactory(ingredient=navet, quantite=40, unite=gramme)]
+    ingredients_recettes2 = [IngredientRecetteFactory(ingredient=carottes, quantite=350, unit=gramme),
+                             IngredientRecetteFactory(ingredient=navet, quantite=40, unit=gramme)]
     RecetteFactory(ingredients=ingredients_recettes2, titre="Recette 2")
-    ingredients_recettes3 = [IngredientRecetteFactory(ingredient=oignons, quantite=50, unite=gramme),
-                             IngredientRecetteFactory(ingredient=tomates, quantite=40, unite=gramme)]
+    ingredients_recettes3 = [IngredientRecetteFactory(ingredient=oignons, quantite=50, unit=gramme),
+                             IngredientRecetteFactory(ingredient=tomates, quantite=40, unit=gramme)]
     RecetteFactory(ingredients=ingredients_recettes3, titre="Recette 3")
     url = reverse("recettes_frigo_list")
     request = APIRequestFactory().get(url)
@@ -187,10 +187,10 @@ def test_get_fridge_recipes_returns_correctly_ordered_recipes():
 
 def test_get_fridge_recipes_returns_correct_fields():
     carottes, tomates, oignons, gramme, _ = _dataset_for_fridge_recipes_tests()
-    ingredients_recettes1 = [IngredientRecetteFactory(ingredient=carottes, quantite=500, unite=gramme),
+    ingredients_recettes1 = [IngredientRecetteFactory(ingredient=carottes, quantite=500, unit=gramme),
                              IngredientRecetteFactory(
-                                 ingredient=tomates, quantite=50, unite=gramme),
-                             IngredientRecetteFactory(ingredient=oignons, quantite=60, unite=gramme)]
+                                 ingredient=tomates, quantite=50, unit=gramme),
+                             IngredientRecetteFactory(ingredient=oignons, quantite=60, unit=gramme)]
     recette = RecetteFactory(
         ingredients=ingredients_recettes1, titre="Recette 1")
     url = reverse("recettes_frigo_list")
@@ -202,12 +202,12 @@ def test_get_fridge_recipes_returns_correct_fields():
 
 def test_get_fridge_recipes_returns_correct_fields_with_unsure_ingredients():
     carottes, tomates, oignons, gramme, _ = _dataset_for_fridge_recipes_tests()
-    pieces_type = TypeUniteFactory(name="pièce(s)")
-    pieces = UniteFactory(abbreviation="pièce(s)", rapport=1, type=pieces_type)
-    ingredients_recettes1 = [IngredientRecetteFactory(ingredient=carottes, quantite=3, unite=pieces),
+    pieces_type = UnitTypeFactory(name="pièce(s)")
+    pieces = UnitFactory(abbreviation="pièce(s)", rapport=1, type=pieces_type)
+    ingredients_recettes1 = [IngredientRecetteFactory(ingredient=carottes, quantite=3, unit=pieces),
                              IngredientRecetteFactory(
-                                 ingredient=tomates, quantite=50, unite=gramme),
-                             IngredientRecetteFactory(ingredient=oignons, quantite=2, unite=pieces)]
+                                 ingredient=tomates, quantite=50, unit=gramme),
+                             IngredientRecetteFactory(ingredient=oignons, quantite=2, unit=pieces)]
     recette = RecetteFactory(
         ingredients=ingredients_recettes1, titre="Recette 1")
     url = reverse("recettes_frigo_list")
@@ -226,9 +226,9 @@ def _check_recipe_fields(response, recette):
     assertContains(response, recette.duree)
     assert len(recette_data["ingredients"]) == 3
     assert set(recette_data["ingredients"][0].keys(
-    )) == {"ingredient", "quantite", "unite"}
+    )) == {"ingredient", "quantite", "unit"}
     assert recette_data["ingredients"][1]["ingredient"] == "Tomates"
-    assert recette_data["ingredients"][1]["unite"] == "g"
+    assert recette_data["ingredients"][1]["unit"] == "g"
     assert recette_data["ingredients"][1]["quantite"] == "50.00"
     assert len(recette_data["categories"]) == 0
     assert len(recette_data["priority_ingredients"]) == 1
@@ -236,15 +236,15 @@ def _check_recipe_fields(response, recette):
 
 
 def _dataset_for_fridge_recipes_tests():
-    masse = TypeUniteFactory(name="masse")
-    gramme = UniteFactory(abbreviation="g", rapport=1, type=masse)
+    masse = UnitTypeFactory(name="masse")
+    gramme = UnitFactory(abbreviation="g", rapport=1, type=masse)
     carottes = IngredientFactory(name="Carottes")
     tomates = IngredientFactory(name="Tomates")
     oignons = IngredientFactory(name="Oignons")
     IngredientFrigoFactory(ingredient=carottes, quantite=500,
-                           unite=gramme, date_peremption=datetime.date(2130, 1, 1))
+                           unit=gramme, date_peremption=datetime.date(2130, 1, 1))
     IngredientFrigoFactory(ingredient=tomates, quantite=50,
-                           unite=gramme, date_peremption=datetime.date(2130, 2, 2))
+                           unit=gramme, date_peremption=datetime.date(2130, 2, 2))
     IngredientFrigoFactory(ingredient=oignons, quantite=60,
-                           unite=gramme, date_peremption=datetime.date(2131, 1, 1))
+                           unit=gramme, date_peremption=datetime.date(2131, 1, 1))
     return carottes, tomates, oignons, gramme, masse

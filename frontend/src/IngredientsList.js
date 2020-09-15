@@ -17,7 +17,7 @@ function IngredientsList({
     }
   };
 
-  const renderIngredient = (ingredient, quantite, unite) => {
+  const renderIngredient = (ingredient, quantite, unit) => {
     const isIngredientUnsure = unsureIngredients.includes(ingredient);
     if (isIngredientUnsure) {
       return (
@@ -25,22 +25,22 @@ function IngredientsList({
           title="Il n'y a peut-être pas la bonne quantité de cet ingredient"
           className="unsure-ingredient"
         >
-          {renderName(ingredient)} : {quantite} {unite}
+          {renderName(ingredient)} : {quantite} {unit}
         </em>
       );
     } else {
       return (
         <React.Fragment>
-          {renderName(ingredient)} : {quantite} {unite}
+          {renderName(ingredient)} : {quantite} {unit}
         </React.Fragment>
       );
     }
   };
 
   const ingredientsList = [];
-  for (let { ingredient, quantite, unite } of ingredients) {
+  for (let { ingredient, quantite, unit } of ingredients) {
     ingredientsList.push(
-      <li key={ingredient}>{renderIngredient(ingredient, quantite, unite)}</li>
+      <li key={ingredient}>{renderIngredient(ingredient, quantite, unit)}</li>
     );
   }
 
@@ -56,7 +56,7 @@ IngredientsList.propTypes = {
     PropTypes.shape({
       ingredient: PropTypes.string.isRequired,
       quantite: PropTypes.string.isRequired,
-      unite: PropTypes.string.isRequired,
+      unit: PropTypes.string.isRequired,
     }).isRequired
   ),
   /**

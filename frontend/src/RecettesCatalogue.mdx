@@ -26,19 +26,19 @@ permettra d'afficher au fur et à mesure les recettes correspondantes.
         categories: ["Plat", "Entrée"],
         titre: "Salade de pommes de terre radis",
         ingredients: [
-          { ingredient: "pommes de terre", quantite: "1", unite: "kg" },
-          { ingredient: "oeufs", quantite: "3", unite: "pièce(s)" },
+          { ingredient: "pommes de terre", quantite: "1", unit: "kg" },
+          { ingredient: "oeufs", quantite: "3", unit: "pièce(s)" },
           {
             ingredient: "vinaigre non balsamique",
             quantite: "1",
-            unite: "cas",
+            unit: "cas",
           },
-          { ingredient: "radis", quantite: "2", unite: "botte(s)" },
-          { ingredient: "oignons bottes", quantite: "2", unite: "pièce(s)" },
-          { ingredient: "yaourt grec", quantite: "1", unite: "pièce(s)" },
-          { ingredient: "mayonnaise", quantite: "1", unite: "cas" },
-          { ingredient: "moutarde", quantite: "0.5", unite: "cas" },
-          { ingredient: "ail", quantite: "1", unite: "gousse(s)" },
+          { ingredient: "radis", quantite: "2", unit: "botte(s)" },
+          { ingredient: "oignons bottes", quantite: "2", unit: "pièce(s)" },
+          { ingredient: "yaourt grec", quantite: "1", unit: "pièce(s)" },
+          { ingredient: "mayonnaise", quantite: "1", unit: "cas" },
+          { ingredient: "moutarde", quantite: "0.5", unit: "cas" },
+          { ingredient: "ail", quantite: "1", unit: "gousse(s)" },
         ],
         duree: "35 min",
         description:
@@ -49,16 +49,16 @@ permettra d'afficher au fur et à mesure les recettes correspondantes.
         categories: ["Plat"],
         titre: "Gratin pommes de terre panais",
         ingredients: [
-          { ingredient: "pommes de terre", quantite: "1", unite: "kg" },
-          { ingredient: "panais", quantite: "4", unite: "pièce(s)" },
-          { ingredient: "crème fraiche épaisse", quantite: "20", unite: "cl" },
+          { ingredient: "pommes de terre", quantite: "1", unit: "kg" },
+          { ingredient: "panais", quantite: "4", unit: "pièce(s)" },
+          { ingredient: "crème fraiche épaisse", quantite: "20", unit: "cl" },
           {
             ingredient: "crème fraiche semi-épaisse",
             quantite: "10",
-            unite: "cl",
+            unit: "cl",
           },
-          { ingredient: "moutarde", quantite: "1.5", unite: "cas" },
-          { ingredient: "gruillère rapé", quantite: "70", unite: "g" },
+          { ingredient: "moutarde", quantite: "1.5", unit: "cas" },
+          { ingredient: "gruillère rapé", quantite: "70", unit: "g" },
         ],
         duree: "1 h",
         description:
@@ -74,13 +74,13 @@ permettra d'afficher au fur et à mesure les recettes correspondantes.
       },
     ];
     const categoriesCatalogue = ["Entrée", "Plat", "Dessert", "Gouter"];
-    const unites = ["kg", "g", "cl", "pièce(s)"];
+    const units = ["kg", "g", "cl", "pièce(s)"];
     return (
       <RecettesCatalogue
         totalRecettes={recettes}
         possibleIngredients={catalogIngredients}
         totalCategories={categoriesCatalogue}
-        totalUnites={unites}
+        totalUnits={units}
       />
     );
   }}

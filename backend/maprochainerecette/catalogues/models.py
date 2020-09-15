@@ -1,7 +1,7 @@
 from django.db import models
 from model_utils.models import TimeStampedModel
 
-from unites.models import Unite
+from units.models import Unit
 
 
 class Ingredient(TimeStampedModel):
@@ -25,7 +25,7 @@ class Recette(TimeStampedModel):
 class IngredientRecette(TimeStampedModel):
     ingredient = models.ForeignKey(Ingredient, on_delete=models.PROTECT)
     quantite = models.DecimalField(max_digits=10, decimal_places=2)
-    unite = models.ForeignKey(Unite, on_delete=models.PROTECT)
+    unit = models.ForeignKey(Unit, on_delete=models.PROTECT)
 
     def __str__(self) -> str:
         return self.ingredient.name

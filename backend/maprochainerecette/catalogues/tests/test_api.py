@@ -18,7 +18,7 @@ from .factories import (
     IngredientRecetteFactory,
     CategoryFactory
 )
-from unites.tests.factories import UniteFactory, TypeUniteFactory
+from units.tests.factories import UnitFactory, UnitTypeFactory
 
 pytestmark = pytest.mark.django_db
 
@@ -118,11 +118,11 @@ def test_recettes_list_has_correct_fields(recette):
     assertContains(response, recette.duree)
     assert len(recette_data["ingredients"]) == 10
     assert set(recette_data["ingredients"][0].keys(
-    )) == {"ingredient", "quantite", "unite"}
+    )) == {"ingredient", "quantite", "unit"}
     assert recette_data["ingredients"][0]["ingredient"] == recette.ingredients.first(
     ).ingredient.name
-    assert recette_data["ingredients"][0]["unite"] == recette.ingredients.first(
-    ).unite.abbreviation
+    assert recette_data["ingredients"][0]["unit"] == recette.ingredients.first(
+    ).unit.abbreviation
     assert len(recette_data["categories"]) == 10
     assert recette_data["categories"][0] == recette.categories.first().name
 
@@ -142,7 +142,7 @@ def test_adding_recette_deserializes_correctly_all_fields():
     assert recette_added.ingredients.count() == 1
     assert recette_added.ingredients.first().ingredient.name == "deuxième ingrédient"
     assert recette_added.ingredients.first().quantite == Decimal('10.00')
-    assert recette_added.ingredients.first().unite.abbreviation == "kg"
+    assert recette_added.ingredients.first().unit.abbreviation == "kg"
     assert recette_added.categories.count() == 1
     assert recette_added.categories.first().name == "dessert"
 
@@ -152,15 +152,15 @@ def _add_recette():
     IngredientFactory(name="premier ingrédient")
     IngredientFactory(name="deuxième ingrédient")
     IngredientFactory(name="troisième ingrédient")
-    masse = TypeUniteFactory(name="masse")
-    UniteFactory(abbreviation="kg", type=masse)
+    masse = UnitTypeFactory(name="masse")
+    UnitFactory(abbreviation="kg", type=masse)
     request_data = {"titre": "titre recette",
                     "description": "description recette",
                     "duree": "00:03:00",
                     "ingredients": [{
                         "ingredient": "deuxième ingrédient",
                         "quantite": "10.0",
-                        "unite": "kg"
+                        "unit": "kg"
                     }],
                     "categories": ["dessert"]}
     url = _get_recettes_list_absolute_url()

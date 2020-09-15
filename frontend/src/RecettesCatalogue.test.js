@@ -16,7 +16,7 @@ jest.mock("axios");
 let recettes;
 let catalogIngredients;
 let categoriesCatalogue;
-let unites;
+let units;
 
 beforeEach(() => {
   catalogIngredients = [
@@ -43,47 +43,47 @@ beforeEach(() => {
         {
           ingredient: "pommes de terre",
           quantite: "1",
-          unite: "kg",
+          unit: "kg",
         },
         {
           ingredient: "oeufs",
           quantite: "3",
-          unite: "pièce(s)",
+          unit: "pièce(s)",
         },
         {
           ingredient: "vinaigre non balsamique",
           quantite: "1",
-          unite: "cas",
+          unit: "cas",
         },
         {
           ingredient: "radis",
           quantite: "2",
-          unite: "bottes",
+          unit: "bottes",
         },
         {
           ingredient: "oignons bottes",
           quantite: "2",
-          unite: "pièce(s)",
+          unit: "pièce(s)",
         },
         {
           ingredient: "yaourt grec",
           quantite: "1",
-          unite: "pièce(s)",
+          unit: "pièce(s)",
         },
         {
           ingredient: "mayonnaise",
           quantite: "1",
-          unite: "cas",
+          unit: "cas",
         },
         {
           ingredient: "moutarde",
           quantite: "0.5",
-          unite: "cas",
+          unit: "cas",
         },
         {
           ingredient: "ail",
           quantite: "1",
-          unite: "gousse",
+          unit: "gousse",
         },
       ],
       duree: "00:35:00",
@@ -99,32 +99,32 @@ beforeEach(() => {
         {
           ingredient: "saumon fumé",
           quantite: "200",
-          unite: "g",
+          unit: "g",
         },
         {
           ingredient: "citon vert",
           quantite: "0.5",
-          unite: "pièce(s)",
+          unit: "pièce(s)",
         },
         {
           ingredient: "vinaigre balsamique",
           quantite: "2",
-          unite: "cas",
+          unit: "cas",
         },
         {
           ingredient: "huile d'olive",
           quantite: "2",
-          unite: "cas",
+          unit: "cas",
         },
         {
           ingredient: "échalotte",
           quantite: "1",
-          unite: "pièce(s)",
+          unit: "pièce(s)",
         },
         {
           ingredient: "herbes fraiches",
           quantite: "1",
-          unite: "pièce(s)",
+          unit: "pièce(s)",
         },
       ],
       duree: "11:00:00",
@@ -134,7 +134,7 @@ beforeEach(() => {
   ];
 
   categoriesCatalogue = ["Entrée", "Plat", "Dessert", "Gouter"];
-  unites = ["kg", "g", "cl", "pièce(s)"];
+  units = ["kg", "g", "cl", "pièce(s)"];
 });
 
 afterEach(() => {
@@ -148,7 +148,7 @@ describe("initial display is correct", () => {
         totalRecettes={recettes}
         possibleIngredients={catalogIngredients}
         totalCategories={categoriesCatalogue}
-        totalUnites={unites}
+        totalUnits={units}
       />
     );
     const entree = getByText(/Entrée/);
@@ -163,7 +163,7 @@ describe("initial display is correct", () => {
         totalRecettes={recettes}
         possibleIngredients={catalogIngredients}
         totalCategories={categoriesCatalogue}
-        totalUnites={unites}
+        totalUnits={units}
       />
     );
     const unitSelect = getByLabelText("Unité");
@@ -179,7 +179,7 @@ describe("initial display is correct", () => {
         totalRecettes={recettes}
         possibleIngredients={catalogIngredients}
         totalCategories={categoriesCatalogue}
-        totalUnites={unites}
+        totalUnits={units}
       />
     );
     const salade = getByText(/Salade de pommes de terre radis/);
@@ -196,7 +196,7 @@ describe("the adding recipe functionality works properly", () => {
         totalRecettes={recettes}
         possibleIngredients={catalogIngredients}
         totalCategories={categoriesCatalogue}
-        totalUnites={unites}
+        totalUnits={units}
       />
     );
     await addRecipe(getByLabelText, getByText);
@@ -230,7 +230,7 @@ describe("the adding recipe functionality works properly", () => {
         totalRecettes={recettes}
         possibleIngredients={catalogIngredients}
         totalCategories={categoriesCatalogue}
-        totalUnites={unites}
+        totalUnits={units}
       />
     );
     await addRecipe(getByLabelText, getByText, [inputName]);
@@ -244,7 +244,7 @@ describe("the adding recipe functionality works properly", () => {
         totalRecettes={recettes}
         possibleIngredients={catalogIngredients}
         totalCategories={categoriesCatalogue}
-        totalUnites={unites}
+        totalUnits={units}
       />
     );
     await addRecipe(getByLabelText, getByText, ["titre"]);
@@ -258,7 +258,7 @@ describe("the adding recipe functionality works properly", () => {
         totalRecettes={recettes}
         possibleIngredients={catalogIngredients}
         totalCategories={categoriesCatalogue}
-        totalUnites={unites}
+        totalUnits={units}
       />
     );
     await addRecipe(getByLabelText, getByText, [], { duree: "00:00" });
@@ -278,7 +278,7 @@ describe("the adding recipe functionality works properly", () => {
           totalRecettes={recettes}
           possibleIngredients={catalogIngredients}
           totalCategories={categoriesCatalogue}
-          totalUnites={unites}
+          totalUnits={units}
         />
       );
       addIngredient(getByLabelText, getByText, ["Fraises", "5", "g"]);
@@ -293,7 +293,7 @@ describe("the adding recipe functionality works properly", () => {
           totalRecettes={recettes}
           possibleIngredients={catalogIngredients}
           totalCategories={categoriesCatalogue}
-          totalUnites={unites}
+          totalUnits={units}
         />
       );
       addIngredient(getByLabelText, getByText, ["Fraises", "-1", "g"]);
@@ -310,7 +310,7 @@ describe("the adding recipe functionality works properly", () => {
           totalRecettes={recettes}
           possibleIngredients={catalogIngredients}
           totalCategories={categoriesCatalogue}
-          totalUnites={unites}
+          totalUnits={units}
         />
       );
       addIngredient(getByLabelText, getByText, ["Poireaux", "50", "g"]);
@@ -324,7 +324,7 @@ describe("the adding recipe functionality works properly", () => {
           totalRecettes={recettes}
           possibleIngredients={catalogIngredients}
           totalCategories={categoriesCatalogue}
-          totalUnites={unites}
+          totalUnits={units}
         />
       );
       const inputIngredientName = getByLabelText("Nom :");
@@ -344,7 +344,7 @@ describe("the adding recipe functionality works properly", () => {
           totalRecettes={recettes}
           possibleIngredients={catalogIngredients}
           totalCategories={categoriesCatalogue}
-          totalUnites={unites}
+          totalUnits={units}
         />
       );
       addIngredient(getByLabelText, getByText, ["Poires", "1", "kg"]);
@@ -365,7 +365,7 @@ describe("the adding recipe functionality works properly", () => {
           totalRecettes={recettes}
           possibleIngredients={catalogIngredients}
           totalCategories={categoriesCatalogue}
-          totalUnites={unites}
+          totalUnits={units}
         />
       );
       addIngredient(getByLabelText, getByText, ["Poires", "1", "kg"]);
@@ -390,8 +390,8 @@ describe("the adding recipe functionality works properly", () => {
         categories: ["Entrée"],
         duree: customFields["duree"] || "00:10:00",
         ingredients: [
-          { ingredient: "Poires", quantite: "1", unite: "kg" },
-          { ingredient: "Beurre", quantite: "30", unite: "g" },
+          { ingredient: "Poires", quantite: "1", unit: "kg" },
+          { ingredient: "Beurre", quantite: "30", unit: "g" },
         ],
         description: "Épluchez et épépinez les poires. Coupez-les en dés.",
       },
@@ -449,7 +449,7 @@ was not successful on backend side`, async () => {
         totalRecettes={recettes}
         possibleIngredients={catalogIngredients}
         totalCategories={categoriesCatalogue}
-        totalUnites={unites}
+        totalUnits={units}
       />
     );
     const axiosPostResponse = {};
@@ -486,7 +486,7 @@ describe("the removing recipe functionality works properly", () => {
         totalRecettes={recettes}
         possibleIngredients={catalogIngredients}
         totalCategories={categoriesCatalogue}
-        totalUnites={unites}
+        totalUnits={units}
       />
     );
     const axiosDeleteResponse = { data: "" };
@@ -511,7 +511,7 @@ was not successful on backend side`, async () => {
         totalRecettes={recettes}
         possibleIngredients={catalogIngredients}
         totalCategories={categoriesCatalogue}
-        totalUnites={unites}
+        totalUnits={units}
       />
     );
     const axiosDeleteResponse = { data: "" };
@@ -542,7 +542,7 @@ describe("the search bar functionality works properly", () => {
         totalRecettes={recettes}
         possibleIngredients={catalogIngredients}
         totalCategories={categoriesCatalogue}
-        totalUnites={unites}
+        totalUnits={units}
       />
     );
     const searchBar = getByPlaceholderText("Recherche par titre...");
@@ -562,7 +562,7 @@ describe("the search bar functionality works properly", () => {
         totalRecettes={recettes}
         possibleIngredients={catalogIngredients}
         totalCategories={categoriesCatalogue}
-        totalUnites={unites}
+        totalUnits={units}
       />
     );
     const searchBar = getByPlaceholderText("Recherche par titre...");

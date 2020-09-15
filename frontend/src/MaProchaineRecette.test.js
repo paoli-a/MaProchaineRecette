@@ -11,12 +11,12 @@ let feasibleRecipes;
 let fridgeIngredients;
 let catalogIngredients;
 let categoriesCatalogue;
-let unites;
+let units;
 let axiosResponseIngredients;
 let axiosResponseRecettes;
 let axiosResponseFridgeIngredients;
 let axiosResponseCategories;
-let axiosResponseUnites;
+let axiosResponseUnits;
 let axiosResponseRecettesFrigo;
 const FETCH_CALLS = 6;
 
@@ -27,15 +27,15 @@ beforeEach(() => {
       categories: ["Plat"],
       titre: "Salade de pommes de terre radis",
       ingredients: [
-        { ingredient: "pommes de terre", quantite: "1", unite: "kg" },
-        { ingredient: "oeufs", quantite: "3", unite: "pièce(s)" },
-        { ingredient: "vinaigre non balsamique", quantite: "1", unite: "cas" },
-        { ingredient: "radis", quantite: "2", unite: "botte(s)" },
-        { ingredient: "oignons bottes", quantite: "2", unite: "pièce(s)" },
-        { ingredient: "yaourt grec", quantite: "1", unite: "pièce(s)" },
-        { ingredient: "mayonnaise", quantite: "1", unite: "cas" },
-        { ingredient: "moutarde", quantite: "0.5", unite: "cas" },
-        { ingredient: "ail", quantite: "1", unite: "gousse(s)" },
+        { ingredient: "pommes de terre", quantite: "1", unit: "kg" },
+        { ingredient: "oeufs", quantite: "3", unit: "pièce(s)" },
+        { ingredient: "vinaigre non balsamique", quantite: "1", unit: "cas" },
+        { ingredient: "radis", quantite: "2", unit: "botte(s)" },
+        { ingredient: "oignons bottes", quantite: "2", unit: "pièce(s)" },
+        { ingredient: "yaourt grec", quantite: "1", unit: "pièce(s)" },
+        { ingredient: "mayonnaise", quantite: "1", unit: "cas" },
+        { ingredient: "moutarde", quantite: "0.5", unit: "cas" },
+        { ingredient: "ail", quantite: "1", unit: "gousse(s)" },
       ],
       duree: "35 min",
       description:
@@ -48,15 +48,15 @@ beforeEach(() => {
       categories: ["Plat"],
       titre: "Salade de pommes de terre radis",
       ingredients: [
-        { ingredient: "pommes de terre", quantite: "1", unite: "kg" },
-        { ingredient: "oeufs", quantite: "3", unite: "pièce(s)" },
-        { ingredient: "vinaigre non balsamique", quantite: "1", unite: "cas" },
-        { ingredient: "radis", quantite: "2", unite: "botte(s)" },
-        { ingredient: "oignons bottes", quantite: "2", unite: "pièce(s)" },
-        { ingredient: "yaourt grec", quantite: "1", unite: "pièce(s)" },
-        { ingredient: "mayonnaise", quantite: "1", unite: "cas" },
-        { ingredient: "moutarde", quantite: "0.5", unite: "cas" },
-        { ingredient: "ail", quantite: "1", unite: "gousse(s)" },
+        { ingredient: "pommes de terre", quantite: "1", unit: "kg" },
+        { ingredient: "oeufs", quantite: "3", unit: "pièce(s)" },
+        { ingredient: "vinaigre non balsamique", quantite: "1", unit: "cas" },
+        { ingredient: "radis", quantite: "2", unit: "botte(s)" },
+        { ingredient: "oignons bottes", quantite: "2", unit: "pièce(s)" },
+        { ingredient: "yaourt grec", quantite: "1", unit: "pièce(s)" },
+        { ingredient: "mayonnaise", quantite: "1", unit: "cas" },
+        { ingredient: "moutarde", quantite: "0.5", unit: "cas" },
+        { ingredient: "ail", quantite: "1", unit: "gousse(s)" },
       ],
       duree: "35 min",
       description:
@@ -71,7 +71,7 @@ beforeEach(() => {
       ingredient: "épinard",
       date_peremption: "2020-04-15",
       quantite: "60",
-      unite: "g",
+      unit: "g",
     },
   ];
   catalogIngredients = [
@@ -83,13 +83,13 @@ beforeEach(() => {
     },
   ];
   categoriesCatalogue = ["Entrée", "Plat", "Dessert"];
-  unites = ["kg", "g", "cl", "pièce(s)"];
+  units = ["kg", "g", "cl", "pièce(s)"];
   axiosResponseIngredients = { data: catalogIngredients };
   axiosResponseRecettes = { data: recettesCatalogue };
   axiosResponseRecettesFrigo = { data: feasibleRecipes };
   axiosResponseFridgeIngredients = { data: fridgeIngredients };
   axiosResponseCategories = { data: categoriesCatalogue };
-  axiosResponseUnites = { data: unites };
+  axiosResponseUnits = { data: units };
   mockAxiosGet();
 });
 
@@ -115,10 +115,10 @@ function mockAxiosGet(rejectedElement) {
       return rejectedElement === "categories"
         ? Promise.reject(new Error(""))
         : Promise.resolve(axiosResponseCategories);
-    } else if (url === "/unites/") {
-      return rejectedElement === "unites"
+    } else if (url === "/units/") {
+      return rejectedElement === "units"
         ? Promise.reject(new Error(""))
-        : Promise.resolve(axiosResponseUnites);
+        : Promise.resolve(axiosResponseUnits);
     } else {
       return Promise.reject(new Error(`L'URL '${url}' n'est pas supportée.`));
     }
@@ -286,7 +286,7 @@ describe("displays correct error message on bad fetch", () => {
   });
 
   it("displays an error message if the units fetch was not successful", async () => {
-    mockAxiosGet("unites");
+    mockAxiosGet("units");
     const { getByText } = render(<MaProchaineRecette />);
     await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(FETCH_CALLS));
     const error = getByText(/Il y a eu une erreur vis-à-vis du serveur/);

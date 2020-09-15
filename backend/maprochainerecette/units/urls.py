@@ -1,9 +1,9 @@
 from rest_framework import routers
 
-from unites.api import UniteViewSet
+from units.api import UnitViewSet
 
 
 router = routers.DefaultRouter()
-router.register("", UniteViewSet, "unites")
+router.register("", UnitViewSet, "units")
 
 urlpatterns = router.urls

@@ -15,7 +15,7 @@ require("mutationobserver-shim");
 jest.mock("axios");
 let catalogIngredients;
 let fridgeIngredients;
-let unites;
+let units;
 
 beforeEach(() => {
   catalogIngredients = [
@@ -39,17 +39,17 @@ beforeEach(() => {
       name: "épinard",
       datePeremption: new Date(2100, 4, 15),
       quantite: "60",
-      unite: "g",
+      unit: "g",
     },
     {
       id: 2,
       name: "céleri rave",
       datePeremption: new Date(2100, 3, 13),
       quantite: "1",
-      unite: "kg",
+      unit: "kg",
     },
   ];
-  unites = ["kg", "g", "cl", "pièce(s)"];
+  units = ["kg", "g", "cl", "pièce(s)"];
 });
 
 afterEach(() => {
@@ -62,7 +62,7 @@ describe("correct display of an ingredient", () => {
       <FridgeIngredients
         ingredients={fridgeIngredients}
         possibleIngredients={catalogIngredients}
-        totalUnites={unites}
+        totalUnits={units}
       />
     );
     const ingredient1 = getByText("épinard", { exact: false });
@@ -74,7 +74,7 @@ describe("correct display of an ingredient", () => {
       <FridgeIngredients
         ingredients={fridgeIngredients}
         possibleIngredients={catalogIngredients}
-        totalUnites={unites}
+        totalUnits={units}
       />
     );
     const ingredient2 = getByText("céleri rave", { exact: false });
@@ -87,7 +87,7 @@ describe("correct display of an ingredient", () => {
       <FridgeIngredients
         ingredients={fridgeIngredients}
         possibleIngredients={catalogIngredients}
-        totalUnites={unites}
+        totalUnits={units}
       />
     );
     const ingredient1 = getByText("épinard", { exact: false });
@@ -99,7 +99,7 @@ describe("correct display of an ingredient", () => {
       <FridgeIngredients
         ingredients={fridgeIngredients}
         possibleIngredients={catalogIngredients}
-        totalUnites={unites}
+        totalUnits={units}
       />
     );
     const ingredient1 = getByText("épinard", { exact: false });
@@ -111,7 +111,7 @@ describe("correct display of an ingredient", () => {
       <FridgeIngredients
         ingredients={fridgeIngredients}
         possibleIngredients={catalogIngredients}
-        totalUnites={unites}
+        totalUnits={units}
       />
     );
     const listItems = getAllByRole("listitem");
@@ -123,14 +123,14 @@ describe("correct display of an ingredient", () => {
       <FridgeIngredients
         ingredients={[]}
         possibleIngredients={catalogIngredients}
-        totalUnites={unites}
+        totalUnits={units}
       />
     );
     rerender(
       <FridgeIngredients
         ingredients={fridgeIngredients}
         possibleIngredients={catalogIngredients}
-        totalUnites={unites}
+        totalUnits={units}
       />
     );
     const ingredient1 = getByText("épinard", { exact: false });
@@ -143,7 +143,7 @@ it("displays provided units", () => {
     <FridgeIngredients
       ingredients={fridgeIngredients}
       possibleIngredients={catalogIngredients}
-      totalUnites={unites}
+      totalUnits={units}
     />
   );
   const unitSelect = getByLabelText("Unité");
@@ -159,7 +159,7 @@ describe("functionalities work properly", () => {
       <FridgeIngredients
         ingredients={fridgeIngredients}
         possibleIngredients={catalogIngredients}
-        totalUnites={unites}
+        totalUnits={units}
       />
     );
     const axiosDeleteResponse = { data: "" };
@@ -179,7 +179,7 @@ was not successful on backend side`, async () => {
       <FridgeIngredients
         ingredients={fridgeIngredients}
         possibleIngredients={catalogIngredients}
-        totalUnites={unites}
+        totalUnits={units}
       />
     );
     const axiosDeleteResponse = { data: "" };
@@ -200,7 +200,7 @@ was not successful on backend side`, async () => {
       <FridgeIngredients
         ingredients={fridgeIngredients}
         possibleIngredients={catalogIngredients}
-        totalUnites={unites}
+        totalUnits={units}
       />
     );
     const values = ["Carottes", 1, "2100-04-03", "kg"];
@@ -230,7 +230,7 @@ was not successful on backend side`, async () => {
       <FridgeIngredients
         ingredients={fridgeIngredients}
         possibleIngredients={catalogIngredients}
-        totalUnites={unites}
+        totalUnits={units}
       />
     );
     await addIngredient(
@@ -248,7 +248,7 @@ was not successful on backend side`, async () => {
       <FridgeIngredients
         ingredients={fridgeIngredients}
         possibleIngredients={catalogIngredients}
-        totalUnites={unites}
+        totalUnits={units}
       />
     );
     await addIngredient(
@@ -266,7 +266,7 @@ was not successful on backend side`, async () => {
       <FridgeIngredients
         ingredients={fridgeIngredients}
         possibleIngredients={catalogIngredients}
-        totalUnites={unites}
+        totalUnits={units}
       />
     );
     const values = ["kiwi", -1, "2100-04-03", "kg"];
@@ -283,7 +283,7 @@ was not successful on backend side`, async () => {
       <FridgeIngredients
         ingredients={fridgeIngredients}
         possibleIngredients={catalogIngredients}
-        totalUnites={unites}
+        totalUnits={units}
       />
     );
     const values = ["kiwi", 5, "2019-04-03", "g"];
@@ -297,7 +297,7 @@ was not successful on backend side`, async () => {
       <FridgeIngredients
         ingredients={fridgeIngredients}
         possibleIngredients={catalogIngredients}
-        totalUnites={unites}
+        totalUnits={units}
       />
     );
     addIngredient(getByLabelText, getByText, ["Poireaux", 50, "g"]);
@@ -311,7 +311,7 @@ was not successful on backend side`, async () => {
       <FridgeIngredients
         ingredients={fridgeIngredients}
         possibleIngredients={catalogIngredients}
-        totalUnites={unites}
+        totalUnits={units}
       />
     );
     await addIngredient(getByLabelText, getByText, [
@@ -328,7 +328,7 @@ was not successful on backend side`, async () => {
         ingredient: "Carottes",
         date_peremption: "2100-04-03",
         quantite: 28.15,
-        unite: "kg",
+        unit: "kg",
       },
     };
     axios.post.mockResolvedValue(axiosPostResponse);
@@ -357,7 +357,7 @@ was not successful on backend side`, async () => {
       <FridgeIngredients
         ingredients={fridgeIngredients}
         possibleIngredients={catalogIngredients}
-        totalUnites={unites}
+        totalUnits={units}
       />
     );
     const inputIngredientName = getByLabelText("Nom de l'ingrédient :");
@@ -376,7 +376,7 @@ was not successful on backend side`, async () => {
       <FridgeIngredients
         ingredients={fridgeIngredients}
         possibleIngredients={catalogIngredients}
-        totalUnites={unites}
+        totalUnits={units}
       />
     );
     const axiosPostResponse = {};
@@ -412,7 +412,7 @@ was not successful on backend side`, async () => {
         ingredient: value[0],
         date_peremption: value[2],
         quantite: value[1] + "",
-        unite: value[3],
+        unit: value[3],
       },
     };
     axios.post.mockResolvedValue(axiosPostResponse);

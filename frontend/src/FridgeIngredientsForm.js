@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import InputSuggestions from "./InputSuggestions";
 import PropTypes from "prop-types";
 
-function FridgeIngredientsForm({ onSubmit, possibleIngredients, totalUnites }) {
+function FridgeIngredientsForm({ onSubmit, possibleIngredients, totalUnits }) {
   const {
     register,
     handleSubmit,
@@ -103,21 +103,21 @@ function FridgeIngredientsForm({ onSubmit, possibleIngredients, totalUnites }) {
             />
             {errors.quantiteIngredient && errors.quantiteIngredient.message}
             <select
-              name="unite"
+              name="unit"
               defaultValue=""
               ref={register({ required: true })}
               aria-label="Unité"
             >
               <option value="">...</option>
-              {totalUnites.map((unite) => {
+              {totalUnits.map((unit) => {
                 return (
-                  <option value={unite} key={unite}>
-                    {unite}
+                  <option value={unit} key={unit}>
+                    {unit}
                   </option>
                 );
               })}
             </select>
-            {errors.unite && <span>Ce champ est obligatoire</span>}
+            {errors.unit && <span>Ce champ est obligatoire</span>}
           </span>
         </p>
         <p>
@@ -157,7 +157,7 @@ FridgeIngredientsForm.propTypes = {
       name: PropTypes.string.isRequired,
     })
   ).isRequired,
-  totalUnites: PropTypes.arrayOf(PropTypes.string).isRequired,
+  totalUnits: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export default FridgeIngredientsForm;

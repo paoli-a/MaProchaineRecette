@@ -7,13 +7,13 @@ function RecettesForm({
   onSubmitRecette,
   possibleIngredients,
   totalCategories,
-  totalUnites,
+  totalUnits,
 }) {
   const { register, handleSubmit, errors, reset, watch, getValues } = useForm();
   const [ingredients, setIngredients] = useState([]);
   const [ingredientName, setIngredientName] = useState("");
   const [ingredientQuantite, setIngredientQuantite] = useState("");
-  const [ingredientUnite, setIngredientUnite] = useState("");
+  const [ingredientUnit, setIngredientUnit] = useState("");
   const [ingredientError, setIngredientError] = useState("");
 
   const onSubmitForm = (data) => {
@@ -33,14 +33,14 @@ function RecettesForm({
   const resetIngredient = () => {
     setIngredientName("");
     setIngredientQuantite("");
-    setIngredientUnite("");
+    setIngredientUnit("");
     setIngredientError("");
   };
 
   class UnauthorizedIngredient extends Error {}
 
   const validateNewIngredient = () => {
-    if (!ingredientName || !ingredientQuantite || !ingredientUnite) {
+    if (!ingredientName || !ingredientQuantite || !ingredientUnit) {
       throw new Error(
         "Tous les champs concernant l'ingrédient doivent être remplis"
       );
@@ -75,7 +75,7 @@ function RecettesForm({
       newIngredients.push({
         ingredient: ingredientName,
         quantite: ingredientQuantite,
-        unite: ingredientUnite,
+        unit: ingredientUnit,
       });
       setIngredients(newIngredients);
       resetIngredient();
@@ -200,16 +200,16 @@ function RecettesForm({
                 value={ingredientQuantite}
               />
               <select
-                name="unite"
+                name="unit"
                 aria-label="Unité"
-                onChange={(e) => setIngredientUnite(e.target.value)}
-                value={ingredientUnite}
+                onChange={(e) => setIngredientUnit(e.target.value)}
+                value={ingredientUnit}
               >
                 <option value="">...</option>
-                {totalUnites.map((unite) => {
+                {totalUnits.map((unit) => {
                   return (
-                    <option value={unite} key={unite}>
-                      {unite}
+                    <option value={unit} key={unit}>
+                      {unit}
                     </option>
                   );
                 })}
@@ -225,7 +225,7 @@ function RecettesForm({
               return (
                 <li key={ingredient.ingredient}>
                   {ingredient.ingredient} : {ingredient.quantite}{" "}
-                  {ingredient.unite}
+                  {ingredient.unit}
                   <button
                     onClick={() => handleSupprIngredient(ingredient.ingredient)}
                   >
@@ -271,7 +271,7 @@ RecettesForm.propTypes = {
     })
   ).isRequired,
   totalCategories: PropTypes.arrayOf(PropTypes.string).isRequired,
-  totalUnites: PropTypes.arrayOf(PropTypes.string).isRequired,
+  totalUnits: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export default RecettesForm;

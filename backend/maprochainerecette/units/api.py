@@ -1,15 +1,15 @@
 from rest_framework import viewsets, permissions, authentication
 
-from unites.models import Unite
-from unites.serializers import UniteSerializer
+from units.models import Unit
+from units.serializers import UnitSerializer
 
 
-class UniteViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = Unite.objects.all()
+class UnitViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Unit.objects.all()
     permission_classes = [
         permissions.AllowAny
     ]
     authentication_classes = [
         authentication.TokenAuthentication
     ]
-    serializer_class = UniteSerializer
+    serializer_class = UnitSerializer

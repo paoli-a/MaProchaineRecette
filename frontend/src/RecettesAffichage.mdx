@@ -5,14 +5,14 @@ menu: Components
 
 # RecettesAffichage
 
-import RecettesAffichage from "./RecettesAffichage"
-import { Playground, Props } from 'docz'
+import RecettesAffichage from "./RecettesAffichage";
+import { Playground, Props } from "docz";
 
 > Ce composant permet d'afficher les recettes. Il donne la possibilité de trier les recettes par catégories mais aussi de faire une recherche "filtrante" sur le titre, la description ou le nom d'un ingrédient.
 
 ## Props
-<Props of={RecettesAffichage} />
 
+<Props of={RecettesAffichage} />
 
 ## Exemples d'utilisation
 
@@ -24,15 +24,15 @@ import { Playground, Props } from 'docz'
         categories: ["Plat", "Entrée"],
         titre: "Salade de pommes de terre radis",
         ingredients: [
-          { ingredient: "pommes de terre", quantite: "1", unite: "kg" },
-          { ingredient: "oeufs", quantite: "3", unite: "pièce(s)" },
-          { ingredient: "vinaigre non balsamique", quantite: "1", unite: "cas" },
-          { ingredient: "radis", quantite: "2", unite: "botte(s)" },
-          { ingredient: "oignons bottes", quantite: "2", unite: "pièce(s)" },
-          { ingredient: "yaourt grec", quantite: "1", unite: "pièce(s)" },
-          { ingredient: "mayonnaise", quantite: "1", unite: "cas" },
-          { ingredient: "moutarde", quantite: "0.5", unite: "cas" },
-          { ingredient: "ail", quantite: "1", unite: "gousse(s)" },
+          { ingredient: "pommes de terre", quantite: "1", unit: "kg" },
+          { ingredient: "oeufs", quantite: "3", unit: "pièce(s)" },
+          { ingredient: "vinaigre non balsamique", quantite: "1", unit: "cas" },
+          { ingredient: "radis", quantite: "2", unit: "botte(s)" },
+          { ingredient: "oignons bottes", quantite: "2", unit: "pièce(s)" },
+          { ingredient: "yaourt grec", quantite: "1", unit: "pièce(s)" },
+          { ingredient: "mayonnaise", quantite: "1", unit: "cas" },
+          { ingredient: "moutarde", quantite: "0.5", unit: "cas" },
+          { ingredient: "ail", quantite: "1", unit: "gousse(s)" },
         ],
         duree: "35 min",
         description:
@@ -45,12 +45,16 @@ import { Playground, Props } from 'docz'
         categories: ["Plat"],
         titre: "Gratin pommes de terre panais",
         ingredients: [
-          { ingredient: "pommes de terre", quantite: "1", "unite": "kg"},
-          { ingredient: "panais", quantite: "4", "unite": "pièce(s)"},
-          { ingredient: "crème fraiche épaisse", quantite: "20", "unite": "cl"},
-          { ingredient: "crème fraiche semi-épaisse", quantite: "10", "unite": "cl"},
-          { ingredient: "moutarde", quantite: "1.5", "unite": "cas"},
-          { ingredient: "gruillère rapé", quantite: "70", "unite": "g"},
+          { ingredient: "pommes de terre", quantite: "1", unit: "kg" },
+          { ingredient: "panais", quantite: "4", unit: "pièce(s)" },
+          { ingredient: "crème fraiche épaisse", quantite: "20", unit: "cl" },
+          {
+            ingredient: "crème fraiche semi-épaisse",
+            quantite: "10",
+            unit: "cl",
+          },
+          { ingredient: "moutarde", quantite: "1.5", unit: "cas" },
+          { ingredient: "gruillère rapé", quantite: "70", unit: "g" },
         ],
         duree: "1 h",
         description:
@@ -58,9 +62,7 @@ import { Playground, Props } from 'docz'
         priority_ingredients: ["moutarde"],
         unsure_ingredients: [],
       },
-    ]
-    return (
-      <RecettesAffichage recettes={recettes} />
-    )
+    ];
+    return <RecettesAffichage recettes={recettes} />;
   }}
 </Playground>

@@ -13,7 +13,7 @@ function MaProchaineRecette() {
   const [recettesCatalogue, setRecettesCatalogue] = useState([]);
   const [fridgeIngredients, setFridgeIngredients] = useState([]);
   const [categoriesCatalogue, setCategoriesCatalogue] = useState([]);
-  const [unites, setUnites] = useState([]);
+  const [units, setUnits] = useState([]);
   const [feasibleRecipes, setFeasibleRecipes] = useState([]);
   const [fetchError, setFetchError] = useState("");
 
@@ -51,7 +51,7 @@ function MaProchaineRecette() {
             name: ingredientFrigo.ingredient,
             datePeremption: new Date(ingredientFrigo.date_peremption),
             quantite: ingredientFrigo.quantite,
-            unite: ingredientFrigo.unite,
+            unit: ingredientFrigo.unit,
           };
         });
         setFridgeIngredients(newData);
@@ -72,9 +72,9 @@ function MaProchaineRecette() {
         )
       );
     axios
-      .get("/unites/")
+      .get("/units/")
       .then(({ data }) => {
-        setUnites(data);
+        setUnits(data);
       })
       .catch(() =>
         setFetchError(
@@ -113,7 +113,7 @@ function MaProchaineRecette() {
             totalRecettes={recettesCatalogue}
             possibleIngredients={catalogIngredients}
             totalCategories={categoriesCatalogue}
-            totalUnites={unites}
+            totalUnits={units}
           />
         </Route>
         <Route path="/ingredients">
@@ -127,7 +127,7 @@ function MaProchaineRecette() {
             <FridgeIngredients
               ingredients={fridgeIngredients}
               possibleIngredients={catalogIngredients}
-              totalUnites={unites}
+              totalUnits={units}
             />
             <RecettesAffichage recettes={feasibleRecipes} />
           </main>

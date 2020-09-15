@@ -6,7 +6,7 @@ import pytest
 
 from frigo.models import IngredientFrigo
 from catalogues.tests.factories import IngredientFactory
-from unites.tests.factories import UniteFactory
+from units.tests.factories import UnitFactory
 
 
 @pytest.fixture
@@ -18,7 +18,7 @@ class IngredientFrigoFactory(factory.django.DjangoModelFactory):
     ingredient = factory.SubFactory(IngredientFactory)
     quantite = factory.fuzzy.FuzzyDecimal(0)
     date_peremption = factory.fuzzy.FuzzyDate(datetime.date(2020, 1, 1))
-    unite = factory.SubFactory(UniteFactory)
+    unit = factory.SubFactory(UnitFactory)
 
     class Meta:
         model = IngredientFrigo

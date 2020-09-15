@@ -37,22 +37,22 @@ import { Playground, Props } from "docz";
         name: "Epinard",
         datePeremption: new Date(2020, 4, 15),
         quantite: "60",
-        unite: "g",
+        unit: "g",
       },
       {
         id: 2,
         name: "Céleri rave",
         datePeremption: new Date(2020, 3, 13),
         quantite: "1",
-        unite: "g",
+        unit: "g",
       },
     ];
-    const unites = ["kg", "g", "cl", "pièce(s)"];
+    const units = ["kg", "g", "cl", "pièce(s)"];
     return (
       <FridgeIngredients
         ingredients={fridgeIngredients}
         possibleIngredients={catalogIngredients}
-        totalUnites={unites}
+        totalUnits={units}
       />
     );
   }}

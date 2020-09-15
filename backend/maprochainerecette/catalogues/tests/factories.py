@@ -6,7 +6,7 @@ import factory.fuzzy
 import pytest
 
 from catalogues.models import Ingredient, Recette, Categorie, IngredientRecette
-from unites.tests.factories import UniteFactory
+from units.tests.factories import UnitFactory
 
 
 @pytest.fixture
@@ -74,7 +74,7 @@ class RecetteFactory(factory.django.DjangoModelFactory):
 class IngredientRecetteFactory(factory.django.DjangoModelFactory):
     ingredient = factory.SubFactory(IngredientFactory)
     quantite = factory.fuzzy.FuzzyDecimal(0)
-    unite = factory.SubFactory(UniteFactory)
+    unit = factory.SubFactory(UnitFactory)
 
     class Meta:
         model = IngredientRecette

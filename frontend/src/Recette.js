@@ -63,7 +63,7 @@ Recette.propTypes = {
       PropTypes.shape({
         ingredient: PropTypes.string.isRequired,
         quantite: PropTypes.string.isRequired,
-        unite: PropTypes.string.isRequired,
+        unit: PropTypes.string.isRequired,
       }).isRequired
     ),
     duree: PropTypes.string.isRequired,

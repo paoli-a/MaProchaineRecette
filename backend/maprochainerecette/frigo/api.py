@@ -79,9 +79,9 @@ class RecettesFrigo(APIView):
         # {name : {unit_type: {quantity or date: ingredient quantity or date}}}
         for fridge_ingredient in IngredientFrigo.objects.all():
             name = fridge_ingredient.ingredient.name
-            unit_type = fridge_ingredient.unite.type.name
+            unit_type = fridge_ingredient.unit.type.name
             date = fridge_ingredient.date_peremption
-            converted_quantity = fridge_ingredient.quantite * fridge_ingredient.unite.rapport
+            converted_quantity = fridge_ingredient.quantite * fridge_ingredient.unit.rapport
             if name not in data:
                 data[name] = {unit_type: {
                     "quantity": converted_quantity, "date": date}}
@@ -98,8 +98,8 @@ class RecettesFrigo(APIView):
     @staticmethod
     def _check_recipe_ingredient_against_fridge(recipe_ingredient, fridge_ingredients):
         name = recipe_ingredient.ingredient.name
-        unit_type = recipe_ingredient.unite.type.name
-        converted_quantity = recipe_ingredient.quantite * recipe_ingredient.unite.rapport
+        unit_type = recipe_ingredient.unit.type.name
+        converted_quantity = recipe_ingredient.quantite * recipe_ingredient.unit.rapport
         ingredient_available = True
         ingredient_unsure = False
         ingredient_date = None

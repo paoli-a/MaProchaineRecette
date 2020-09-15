@@ -15,7 +15,7 @@ from frigo.tests.factories import (
     ingredientFrigo,
 )
 from catalogues.tests.factories import IngredientFactory
-from unites.tests.factories import UniteFactory, TypeUniteFactory
+from units.tests.factories import UnitFactory, UnitTypeFactory
 
 
 pytestmark = pytest.mark.django_db
@@ -50,15 +50,15 @@ def test_ingredientsFrigo_list_has_correct_fields(ingredientFrigo):
     assert ingredientFrigo_data["date_peremption"] == str(
         ingredientFrigo.date_peremption)
     assert ingredientFrigo_data["quantite"] == str(ingredientFrigo.quantite)
-    assert ingredientFrigo_data["unite"] == ingredientFrigo.unite.abbreviation
+    assert ingredientFrigo_data["unit"] == ingredientFrigo.unit.abbreviation
 
 
 def test_adding_ingredientFrigo():
     IngredientFactory(name="premier ingrédient")
-    UniteFactory(abbreviation="g")
+    UnitFactory(abbreviation="g")
     request_data = {'ingredient': "premier ingrédient",
                     'quantite': "10.00",
-                    'unite': "g",
+                    'unit': "g",
                     'date_peremption': "2020-07-20"
                     }
     url = _get_ingredientsFrigo_list_absolute_url()
@@ -72,11 +72,11 @@ def test_adding_ingredientFrigo():
 
 def test_adding_ingredientFrigo_deserializes_correctly_all_fields():
     IngredientFactory(name="deuxieme ingrédient")
-    UniteFactory(abbreviation="g")
+    UnitFactory(abbreviation="g")
     request_data = {'ingredient': "deuxieme ingrédient",
                     'quantite': Decimal('10.00'),
                     'date_peremption': datetime.date(2020, 7, 20),
-                    'unite': "g"
+                    'unit': "g"
                     }
     url = _get_ingredientsFrigo_list_absolute_url()
     request_post = APIRequestFactory().post(url, request_data)
@@ -88,18 +88,18 @@ def test_adding_ingredientFrigo_deserializes_correctly_all_fields():
     assert ingredient.quantite == Decimal('10.00')
     assert ingredient.date_peremption == datetime.date(2020, 7, 20)
     assert ingredient.ingredient.name == "deuxieme ingrédient"
-    assert ingredient.unite.abbreviation == "g"
+    assert ingredient.unit.abbreviation == "g"
 
 
 def test_adding_mergeable_ingredientFrigo_returns_correct_data():
     IngredientFactory(name="deuxieme ingrédient")
-    unit_type = TypeUniteFactory(name="masse")
-    UniteFactory(abbreviation="g", rapport=1, type=unit_type)
-    UniteFactory(abbreviation="kg", rapport=1000, type=unit_type)
+    unit_type = UnitTypeFactory(name="masse")
+    UnitFactory(abbreviation="g", rapport=1, type=unit_type)
+    UnitFactory(abbreviation="kg", rapport=1000, type=unit_type)
     request_data = {'ingredient': "deuxieme ingrédient",
                     'quantite': '10.00',
                     'date_peremption': "2020-07-20",
-                    'unite': "g"
+                    'unit': "g"
                     }
     url = _get_ingredientsFrigo_list_absolute_url()
     request_post = APIRequestFactory().post(url, request_data)
@@ -107,12 +107,12 @@ def test_adding_mergeable_ingredientFrigo_returns_correct_data():
         {'post': 'create'})(request_post)
     assert response_post.status_code == 201
     expected_response = {'id': 1, 'ingredient': 'deuxieme ingrédient',
-                         'date_peremption': '2020-07-20', 'quantite': '10.00', 'unite': 'g'}
+                         'date_peremption': '2020-07-20', 'quantite': '10.00', 'unit': 'g'}
     assert response_post.data == expected_response
     request_data_mergeable = {'ingredient': "deuxieme ingrédient",
                               'quantite': '0.10',
                               'date_peremption': "2020-07-20",
-                              'unite': "kg"
+                              'unit': "kg"
                               }
     url = _get_ingredientsFrigo_list_absolute_url()
     request_post = APIRequestFactory().post(url, request_data_mergeable)
@@ -120,7 +120,7 @@ def test_adding_mergeable_ingredientFrigo_returns_correct_data():
         {'post': 'create'})(request_post)
     assert response_post.status_code == 201
     expected_response = {'id': 1, 'ingredient': 'deuxieme ingrédient',
-                         'date_peremption': '2020-07-20', 'quantite': '0.11', 'unite': 'kg'}
+                         'date_peremption': '2020-07-20', 'quantite': '0.11', 'unit': 'kg'}
     assert response_post.data == expected_response
 
 
