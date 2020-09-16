@@ -60,7 +60,7 @@ Once installed, you can run it with the following command:
 yarn start
 ```
 
-The application should the start and open the browser. It will be available from your browser at the address `http://127.0.0.1:3000/`.
+The application should then start and open the browser. It will be available from your browser at the address `http://127.0.0.1:3000/`.
 
 ## Features overview
 
@@ -70,7 +70,7 @@ The application consists of three main pages :
 
 - The feasible recipes are displayed in an order allowing to take into account the ingredients which will expire the fastest.
 - For each recipe displayed, the ingredient from the fridge that expires the fastest is put in bold.
-- For each recipe displayed, the ingredients that are present in it but whose type of unit does not allow their quantity to be compared with the corresponding ones in the fridge are displayed in gray and italics. These recipes are also surrounded by a gray frame to indicate that they may not be feasible.
+- For each recipe displayed, the ingredients that are present in it but whose type of unit does not allow their quantity to be compared with the corresponding ones in the fridge are displayed in grey and italics. These recipes are also surrounded by a grey frame to indicate that they may not be feasible.
 - It is possible to filter the recipes by categories (for example starter, main course, dessert) or to filter by keyword using the search bar.
 - When an ingredient is added to the fridge, if the same ingredient is already present with the same expiration date, the two ingredients will be merged and their quantity summed provided that their units are of the same type (for example `gram` and `kilogram`, while `gram` and `piece` will not be merged).
 

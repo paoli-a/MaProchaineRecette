@@ -28,4 +28,4 @@ pipenv run pytest
 
 ## Documentation
 
-The documentation is available through the docstrings but no other form of documentation has yet been implemented.
+The documentation is available through the docstrings but no other form of documentation has been implemented yet.
