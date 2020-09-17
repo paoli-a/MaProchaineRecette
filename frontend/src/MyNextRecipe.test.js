@@ -25,7 +25,7 @@ beforeEach(() => {
     {
       id: 1,
       categories: ["Plat"],
-      titre: "Salade de pommes de terre radis",
+      title: "Salade de pommes de terre radis",
       ingredients: [
         { ingredient: "pommes de terre", amount: "1", unit: "kg" },
         { ingredient: "oeufs", amount: "3", unit: "pièce(s)" },
@@ -37,7 +37,7 @@ beforeEach(() => {
         { ingredient: "moutarde", amount: "0.5", unit: "cas" },
         { ingredient: "ail", amount: "1", unit: "gousse(s)" },
       ],
-      duree: "35 min",
+      duration: "35 min",
       description:
         "Eplucher et couper les patates en rondelles et les cuire à l'eau. Cuire les oeufs durs. Couper les radis en rondelles. Emincer les échalottes et les oignons. Couper les oeufs durs. Mettre le tout dans un saladier et rajouter le vinaigre. Mélanger. Préparer la sauce :  mélanger le yaourt, la mayonnaise, la moutarde, la gousse d'ail rapée. Assaisoner.",
     },
@@ -46,7 +46,7 @@ beforeEach(() => {
     {
       id: 1,
       categories: ["Plat"],
-      titre: "Salade de pommes de terre radis",
+      title: "Salade de pommes de terre radis",
       ingredients: [
         { ingredient: "pommes de terre", amount: "1", unit: "kg" },
         { ingredient: "oeufs", amount: "3", unit: "pièce(s)" },
@@ -58,7 +58,7 @@ beforeEach(() => {
         { ingredient: "moutarde", amount: "0.5", unit: "cas" },
         { ingredient: "ail", amount: "1", unit: "gousse(s)" },
       ],
-      duree: "35 min",
+      duration: "35 min",
       description:
         "Eplucher et couper les patates en rondelles et les cuire à l'eau. Cuire les oeufs durs. Couper les radis en rondelles. Emincer les échalottes et les oignons. Couper les oeufs durs. Mettre le tout dans un saladier et rajouter le vinaigre. Mélanger. Préparer la sauce :  mélanger le yaourt, la mayonnaise, la moutarde, la gousse d'ail rapée. Assaisoner.",
       priority_ingredients: ["oeufs"],
@@ -241,8 +241,8 @@ describe("fetches correctly", () => {
     const { getByRole, getByText } = render(<MyNextRecipe />);
     await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(FETCH_CALLS));
     navigateTo("Ma prochaine recette", getByRole);
-    const titre = getByText("Salade de pommes de terre radis");
-    expect(titre).toBeInTheDocument();
+    const title = getByText("Salade de pommes de terre radis");
+    expect(title).toBeInTheDocument();
   });
 });
 

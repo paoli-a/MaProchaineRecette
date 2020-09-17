@@ -1,8 +1,8 @@
 [
   {
     "id": "001",
-    "categorie": "plat",
-    "titre": "Salade de pommes de terre radis",
+    "category": "plat",
+    "title": "Salade de pommes de terre radis",
     "ingredients": {
       "pommes de terre": "1 kg",
       "oeufs": "3",
@@ -14,14 +14,14 @@
       "moutarde": "1/2 cas",
       "ail": "1 gousse"
     },
-    "temps": "35 min",
+    "duration": "35 min",
     "description": "Eplucher et couper les patates en rondelles et les cuire à l'eau. Cuire les oeufs durs. Couper les radis en rondelles. Emincer les échalottes et les oignons. Couper les oeufs durs.\nMettre le tout dans un saladier et rajouter le vinaigre. Mélanger.\nPréparer la sauce :  mélanger le yaourt, la mayonnaise, la moutarde, la gousse d'ail rapée. Assaisoner."
   },
 
   {
     "id": "002",
-    "categorie": "plat",
-    "titre": "Gratin pommes de terre panais",
+    "category": "plat",
+    "title": "Gratin pommes de terre panais",
     "ingredients": {
       "pommes de terre": "1 kg",
       "panais": "4",
@@ -30,14 +30,14 @@
       "moutarde": "1,5 cas",
       "gruillère rapé": "70 g"
     },
-    "temps": "1 h",
+    "duration": "1 h",
     "description": "Eplucher et couper les patates en rondelles et les cuire à l'eau. Eplucher et couper las panais en rondelles et les cuire à la vapeur.\nPréparer la sauce : dans une casserole à feu doux mélanger les deux crèmes puis ajouter la moutarde et assaisoner.\nRépartir les panais et les pommes de terre dans un plat, recouvrir de sauce puis de gruillère rapé.\nFaire gratiner au four."
   },
 
   {
     "id": "003",
-    "categorie": "déjeuner",
-    "titre": "Granola",
+    "category": "déjeuner",
+    "title": "Granola",
     "ingredients": {
       "flocons d'avoine": "100 g",
       "amandes": "25 g",
@@ -47,14 +47,14 @@
       "huile de coco": "40 g",
       "graines": "20 g"
     },
-    "temps": "1 h",
+    "duration": "1 h",
     "description": "Concasser les amandes et les noix de cajou. Faire des pépites de chocolat.Faire fondre l'huile de coco.\nMélanger le tout. Répartir sur une plaque de cuisson en forme de rectangle d'environ 1 cm d'épaisseur.\nCuire pendant 30 minutes à 170°C "
   },
 
   {
     "id": "004",
-    "categorie": "plat",
-    "titre": "Tarte à la carotte",
+    "category": "plat",
+    "title": "Tarte à la carotte",
     "ingredients": {
       "carottes": "5",
       "oignon": "1",
@@ -63,7 +63,7 @@
       "crème fraiche semi-épaisse": "4 cas",
       "oeufs": "2"
     },
-    "temps": "50 min",
-    "description": "Faire revenir l’oignon Y ajouter les carottes épluchées et râpées. Cuire pendant 10min à feu moyen.\nPendant ce temps battre 2 oeufs dans un bol et y ajouter 4 càs de crème fraiche. Assaisonner (sel, poivre et curry).\nEtaler la pâte feuilletée dans un moule, la badigeonner de moutarde et y ajouter les carottes/ oignons. Verser l’appareil oeuf et crème. Enfourner 23 min à 200°C. "
+    "duration": "50 min",
+    "description": "Faire revenir l’oignon Y ajouter les carottes épluchées et râpées. Cuire pendant 10min à feu moyen.\nPendant ce duration battre 2 oeufs dans un bol et y ajouter 4 càs de crème fraiche. Assaisonner (sel, poivre et curry).\nEtaler la pâte feuilletée dans un moule, la badigeonner de moutarde et y ajouter les carottes/ oignons. Verser l’appareil oeuf et crème. Enfourner 23 min à 200°C. "
   }
 ]

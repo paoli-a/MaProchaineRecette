@@ -38,7 +38,7 @@ beforeEach(() => {
     {
       id: 1,
       categories: ["Plat"],
-      titre: "Salade de pommes de terre radis",
+      title: "Salade de pommes de terre radis",
       ingredients: [
         {
           ingredient: "pommes de terre",
@@ -86,7 +86,7 @@ beforeEach(() => {
           unit: "gousse",
         },
       ],
-      duree: "00:35:00",
+      duration: "00:35:00",
       description:
         "Epluchez et coupez les patates en rondelles et les cuire à l'eau. Cuire les oeufs durs. Coupez les radis en rondelles. Emincez les échalottes et les oignons. Coupez les oeufs durs. Mettre le tout dans un saladier et rajoutez le vinaigre. Mélangez. Préparez la sauce :  mélangez le yaourt, la mayonnaise, la moutarde, la gousse d'ail rapée. Assaisoner.",
     },
@@ -94,7 +94,7 @@ beforeEach(() => {
     {
       id: 2,
       categories: ["Entrée"],
-      titre: "Marinade de saumon fumé",
+      title: "Marinade de saumon fumé",
       ingredients: [
         {
           ingredient: "saumon fumé",
@@ -127,7 +127,7 @@ beforeEach(() => {
           unit: "pièce(s)",
         },
       ],
-      duree: "11:00:00",
+      duration: "11:00:00",
       description:
         "Emincez le saumon, l'échalotte et le persil. Ajoutez le vinaigre, l'huile, le citron et un peu de poivre. Mélangez et laissez mariner toute la nuit.",
     },
@@ -216,8 +216,8 @@ describe("the adding recipe functionality works properly", () => {
     await checkMissingInput("categories");
   });
 
-  it(`does not add the recipe if no time was provided`, async () => {
-    await checkMissingInput("duree");
+  it(`does not add the recipe if no duration was provided`, async () => {
+    await checkMissingInput("duration");
   });
 
   it(`does not add the recipe if no description was provided`, async () => {
@@ -247,12 +247,12 @@ describe("the adding recipe functionality works properly", () => {
         totalUnits={units}
       />
     );
-    await addRecipe(getByLabelText, getByText, ["titre"]);
+    await addRecipe(getByLabelText, getByText, ["title"]);
     const recipe = queryByText("Épluchez et épépinez", { exact: false });
     expect(recipe).not.toBeInTheDocument();
   });
 
-  it(`does not add the recipe if the time for the recipe is negative or null`, async () => {
+  it(`does not add the recipe if the duration for the recipe is negative or null`, async () => {
     const { getByLabelText, getByText, queryByText } = render(
       <CatalogRecipes
         totalRecipes={recipes}
@@ -261,11 +261,11 @@ describe("the adding recipe functionality works properly", () => {
         totalUnits={units}
       />
     );
-    await addRecipe(getByLabelText, getByText, [], { duree: "00:00" });
+    await addRecipe(getByLabelText, getByText, [], { duration: "00:00" });
     let recipe = queryByText("Crumble aux poires", { exact: false });
     expect(recipe).not.toBeInTheDocument();
 
-    await addRecipe(getByLabelText, getByText, [], { duree: "-01:00" });
+    await addRecipe(getByLabelText, getByText, [], { duration: "-01:00" });
     recipe = queryByText("Crumble aux poires", { exact: false });
     expect(recipe).not.toBeInTheDocument();
   });
@@ -386,9 +386,9 @@ describe("the adding recipe functionality works properly", () => {
     const axiosPostResponse = {
       data: {
         id: 5,
-        titre: "Crumble aux poires",
+        title: "Crumble aux poires",
         categories: ["Entrée"],
-        duree: customFields["duree"] || "00:10:00",
+        duration: customFields["duration"] || "00:10:00",
         ingredients: [
           { ingredient: "Poires", amount: "1", unit: "kg" },
           { ingredient: "Beurre", amount: "30", unit: "g" },
@@ -397,20 +397,20 @@ describe("the adding recipe functionality works properly", () => {
       },
     };
     axios.post.mockResolvedValue(axiosPostResponse);
-    const inputTitre = getByLabelText("Titre de la recette :");
+    const inputTitle = getByLabelText("Titre de la recette :");
     const entree = getByLabelText("Entrée");
-    const inputTemps = getByLabelText("Temps total de la recette :");
+    const inputDuration = getByLabelText("Temps total de la recette :");
     const inputDescription = getByLabelText("Corps de la recette :");
     const submitButton = getByText("Confirmer");
-    if (!missingFields.includes("titre")) {
-      fireEvent.change(inputTitre, { target: { value: "Crumble aux poires" } });
+    if (!missingFields.includes("title")) {
+      fireEvent.change(inputTitle, { target: { value: "Crumble aux poires" } });
     }
     if (!missingFields.includes("categories")) {
       fireEvent.click(entree);
     }
-    if (!missingFields.includes("duree")) {
-      const duree = customFields["duree"] || "00:10";
-      fireEvent.change(inputTemps, { target: { value: duree } });
+    if (!missingFields.includes("duration")) {
+      const duration = customFields["duration"] || "00:10";
+      fireEvent.change(inputDuration, { target: { value: duration } });
     }
     if (!missingFields.includes("ingredients")) {
       addIngredient(getByLabelText, getByText, ["Poires", "1", "kg"]);
@@ -454,14 +454,14 @@ was not successful on backend side`, async () => {
     );
     const axiosPostResponse = {};
     axios.post.mockRejectedValue(axiosPostResponse);
-    const inputTitre = getByLabelText("Titre de la recette :");
+    const inputTitle = getByLabelText("Titre de la recette :");
     const entree = getByLabelText("Entrée");
-    const inputTemps = getByLabelText("Temps total de la recette :");
+    const inputDuration = getByLabelText("Temps total de la recette :");
     const inputDescription = getByLabelText("Corps de la recette :");
     const submitButton = getByText("Confirmer");
-    fireEvent.change(inputTitre, { target: { value: "Crumble aux poires" } });
+    fireEvent.change(inputTitle, { target: { value: "Crumble aux poires" } });
     fireEvent.click(entree);
-    fireEvent.change(inputTemps, { target: { value: "00:10" } });
+    fireEvent.change(inputDuration, { target: { value: "00:10" } });
     addIngredient(getByLabelText, getByText, ["Poires", "1", "kg"]);
     fireEvent.change(inputDescription, {
       target: {

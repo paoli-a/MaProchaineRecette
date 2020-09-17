@@ -45,9 +45,9 @@ function CatalogRecipes({
     const categories = data.categories.filter(Boolean);
     const recipeToSend = {
       categories: categories,
-      titre: data.recipeTitle,
+      title: data.recipeTitle,
       ingredients: data.ingredients,
-      duree: data.recipeTime,
+      duration: data.recipeTime,
       description: data.recipeDescription,
     };
     axios
@@ -70,7 +70,7 @@ function CatalogRecipes({
   const filteredRecipes = useFilterSearch({
     elementsToFilter: recipesList,
     searchResults: searchResults,
-    getSearchElement: (recipe) => recipe.titre,
+    getSearchElement: (recipe) => recipe.title,
   });
 
   const allMyRecipes = filteredRecipes.map((myRecipe) => {
@@ -126,7 +126,7 @@ CatalogRecipes.propTypes = {
     PropTypes.shape({
       id: PropTypes.number.isRequired,
       categories: PropTypes.arrayOf(PropTypes.string).isRequired,
-      titre: PropTypes.string.isRequired,
+      title: PropTypes.string.isRequired,
       ingredients: PropTypes.arrayOf(
         PropTypes.shape({
           ingredient: PropTypes.string.isRequired,
@@ -134,7 +134,7 @@ CatalogRecipes.propTypes = {
           unit: PropTypes.string.isRequired,
         }).isRequired
       ),
-      duree: PropTypes.string.isRequired,
+      duration: PropTypes.string.isRequired,
       description: PropTypes.string.isRequired,
     })
   ).isRequired,

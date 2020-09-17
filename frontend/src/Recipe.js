@@ -22,14 +22,14 @@ function Recipe({ recipe, optionalButton, activateClick, highlight }) {
     if (activateClick) {
       return (
         <h2 className="curseurMain" onClick={handleTitleClick}>
-          {highlight(recipe.titre)} {optionalButton}
+          {highlight(recipe.title)} {optionalButton}
         </h2>
       );
     } else {
       return (
         <h2>
           {" "}
-          {highlight(recipe.titre)} {optionalButton}
+          {highlight(recipe.title)} {optionalButton}
         </h2>
       );
     }
@@ -58,7 +58,7 @@ Recipe.propTypes = {
   recipe: PropTypes.shape({
     id: PropTypes.number.isRequired,
     categories: PropTypes.arrayOf(PropTypes.string).isRequired,
-    titre: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
     ingredients: PropTypes.arrayOf(
       PropTypes.shape({
         ingredient: PropTypes.string.isRequired,
@@ -66,7 +66,7 @@ Recipe.propTypes = {
         unit: PropTypes.string.isRequired,
       }).isRequired
     ),
-    duree: PropTypes.string.isRequired,
+    duration: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
   }).isRequired,
   /**

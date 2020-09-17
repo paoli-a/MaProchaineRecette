@@ -32,19 +32,19 @@
   background-image: url(images/fleche_dropdown_haut.png);
 }
 
-#recherche {
+#search {
   display: flex;
   margin-left: auto;
 }
 
-#recherche input {
+#search input {
   font-family: "Roboto", "Noto", sans-serif;
   font-size: 14px;
   height: 25px;
   padding-left: 4px;
 }
 
-#recherche button {
+#search button {
   cursor: pointer;
   width: 65px;
   height: 25px;
@@ -56,7 +56,7 @@
   border-radius: 0 2px 2px 0;
 }
 
-#recherche button:hover {
+#search button:hover {
   background-color: rgb(240, 240, 240);
   background-image: url("images/loupe_dark.png");
 }

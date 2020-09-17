@@ -29,19 +29,19 @@ function RecipesToolbar({ onChangeCategories, onChangeSearch, categories }) {
   };
 
   const categoriesKeys = Object.keys(categories);
-  const categoriesCheckbox = categoriesKeys.map((categorie) => {
+  const categoriesCheckbox = categoriesKeys.map((category) => {
     return (
-      <li key={categorie}>
+      <li key={category}>
         <input
           type="checkbox"
-          value={categorie}
-          name={categorie}
-          aria-label={categorie}
+          value={category}
+          name={category}
+          aria-label={category}
           ref={registerCategories}
           onClick={handleCheckbox}
         />
-        {categorie}
-        <span>{categories[categorie]}</span>
+        {category}
+        <span>{categories[category]}</span>
       </li>
     );
   });
@@ -68,11 +68,11 @@ function RecipesToolbar({ onChangeCategories, onChangeSearch, categories }) {
         <form
           role="search"
           onSubmit={handleSubmitSearch(handleSearch)}
-          id="recherche"
+          id="search"
         >
           <input
             type="search"
-            id="maRecherche"
+            id="mySearch"
             name="q"
             placeholder="Recherche..."
             spellCheck="true"

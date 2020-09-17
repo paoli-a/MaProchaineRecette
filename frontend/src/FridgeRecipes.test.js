@@ -11,7 +11,7 @@ beforeEach(() => {
     {
       id: 1,
       categories: ["Plat", "Entrée"],
-      titre: "Salade de pommes de terre radis",
+      title: "Salade de pommes de terre radis",
       ingredients: [
         { ingredient: "pommes de terre", amount: "1", unit: "kg" },
         { ingredient: "oeufs", amount: "3", unit: "pièce(s)" },
@@ -23,7 +23,7 @@ beforeEach(() => {
         { ingredient: "moutarde", amount: "0.5", unit: "cas" },
         { ingredient: "ail", amount: "1", unit: "gousse(s)" },
       ],
-      duree: "35 min",
+      duration: "35 min",
       description:
         "Epluchez et coupez les patates en rondelles et les cuire à l'eau. Cuire les oeufs durs. Coupez les radis en rondelles. Emincez les échalottes et les oignons. Coupez les oeufs durs. Mettre le tout dans un saladier et rajoutez le vinaigre. Mélangez. Préparez la sauce :  mélangez le yaourt, la mayonnaise, la moutarde, la gousse d'ail rapée. Assaisoner. Une recette en or ...",
       priority_ingredients: ["oeufs"],
@@ -32,7 +32,7 @@ beforeEach(() => {
     {
       id: 2,
       categories: ["Entrée"],
-      titre: "Marinade de saumon fumé",
+      title: "Marinade de saumon fumé",
       ingredients: [
         { ingredient: "saumon fumé", amount: "200", unit: "g" },
         { ingredient: "citon vert", amount: "0,5", unit: "pièce(s)" },
@@ -41,7 +41,7 @@ beforeEach(() => {
         { ingredient: "échalotte", amount: "1", unit: "pièce(s)" },
         { ingredient: "herbes fraiches", amount: "1", unit: "cas" },
       ],
-      duree: "11 h",
+      duration: "11 h",
       description:
         "Emincez le saumon, l'échalotte et le persil. Ajoutez le vinaigre, l'huile, le citron et un peu de poivre. Mélangez et laissez mariner toute la nuit.",
       priority_ingredients: ["herbes raiches"],
@@ -50,14 +50,14 @@ beforeEach(() => {
     {
       id: 3,
       categories: ["Dessert"],
-      titre: "Crumble aux poires",
+      title: "Crumble aux poires",
       ingredients: [
         { ingredient: "poires", amount: "1", unit: "kg" },
         { ingredient: "farine", amount: "150", unit: "g" },
         { ingredient: "beurre", amount: "130", unit: "g" },
         { ingredient: "cassonade", amount: "120", unit: "g" },
       ],
-      duree: "1 h",
+      duration: "1 h",
       description:
         "Épluchez et épépinez les poires. Coupez-les en dés. Faites-les revenir 10 min dans 40 g de beurre et 40 g de cassonade. Préchauffez le four à 210 °C. Mélangez la farine avec le reste de cassonade, 80 g de beurre mou en dés et 1 pincée de sel afin d'obtenir une pâte sableuse. Disposez les poires dans un plat à gratin beurré. Parsemez de pâte en l'effritant du bout des doigts. Enfournez 30 min. Servez chaud ou tiède.",
       priority_ingredients: ["poires"],
@@ -137,7 +137,7 @@ describe("the category filtration functionality works properly", () => {
     expect(recipeTitle3).toBeInTheDocument();
   });
 
-  it("checks categorie checkboxes when it's clicked", () => {
+  it("checks category checkboxes when it's clicked", () => {
     const { getByLabelText } = render(<FridgeRecipes recipes={recipes} />);
     const entree = getByLabelText("Entrée");
     const dessert = getByLabelText("Dessert");

@@ -142,17 +142,17 @@ function RecipesForm({
         <div>
           Catégories :
           <ul>
-            {totalCategories.map((categorie, index) => {
+            {totalCategories.map((category, index) => {
               return (
-                <li key={categorie}>
+                <li key={category}>
                   <input
                     type="checkbox"
-                    value={categorie}
+                    value={category}
                     name={`categories[${index}]`}
-                    aria-label={categorie}
+                    aria-label={category}
                     ref={register({ validate: validateCategories })}
                   />
-                  {categorie}
+                  {category}
                 </li>
               );
             })}

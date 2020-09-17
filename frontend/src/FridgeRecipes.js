@@ -61,7 +61,7 @@ function FridgeRecipes({ recipes }) {
         return ingredientInfos.ingredient.toLowerCase();
       });
       const resultsLower = {
-        recipeTitle: recipe.titre.toLowerCase(),
+        recipeTitle: recipe.title.toLowerCase(),
         description: recipe.description.toLowerCase(),
         ingredientsList: ingredientsListLower,
       };
@@ -145,7 +145,7 @@ FridgeRecipes.propTypes = {
     PropTypes.shape({
       id: PropTypes.number.isRequired,
       categories: PropTypes.arrayOf(PropTypes.string).isRequired,
-      titre: PropTypes.string.isRequired,
+      title: PropTypes.string.isRequired,
       ingredients: PropTypes.arrayOf(
         PropTypes.shape({
           ingredient: PropTypes.string.isRequired,
@@ -153,7 +153,7 @@ FridgeRecipes.propTypes = {
           unit: PropTypes.string.isRequired,
         }).isRequired
       ),
-      duree: PropTypes.string.isRequired,
+      duration: PropTypes.string.isRequired,
       description: PropTypes.string.isRequired,
     })
   ).isRequired,
