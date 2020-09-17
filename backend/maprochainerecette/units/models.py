@@ -16,3 +16,6 @@ class Unit(TimeStampedModel):
 class UnitType(TimeStampedModel):
     name = models.CharField(
         "Unit nature (mass, volume ...)", max_length=255, unique=True)
+
+    def __str__(self) -> str:
+        return self.name
