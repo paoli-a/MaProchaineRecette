@@ -7,13 +7,13 @@ import {
   waitFor,
   getByLabelText,
 } from "@testing-library/react";
-import RecettesCatalogue from "./RecettesCatalogue";
+import CatalogRecipes from "./CatalogRecipes";
 import axios from "axios";
 
 require("mutationobserver-shim");
 
 jest.mock("axios");
-let recettes;
+let recipes;
 let catalogIngredients;
 let categoriesCatalogue;
 let units;
@@ -34,7 +34,7 @@ beforeEach(() => {
     },
   ];
 
-  recettes = [
+  recipes = [
     {
       id: 1,
       categories: ["Plat"],
@@ -144,8 +144,8 @@ afterEach(() => {
 describe("initial display is correct", () => {
   it("displays provided categories", () => {
     const { getByText } = render(
-      <RecettesCatalogue
-        totalRecettes={recettes}
+      <CatalogRecipes
+        totalRecipes={recipes}
         possibleIngredients={catalogIngredients}
         totalCategories={categoriesCatalogue}
         totalUnits={units}
@@ -159,8 +159,8 @@ describe("initial display is correct", () => {
 
   it("displays provided units", () => {
     const { getByLabelText } = render(
-      <RecettesCatalogue
-        totalRecettes={recettes}
+      <CatalogRecipes
+        totalRecipes={recipes}
         possibleIngredients={catalogIngredients}
         totalCategories={categoriesCatalogue}
         totalUnits={units}
@@ -175,8 +175,8 @@ describe("initial display is correct", () => {
 
   it("displays provided recipes", () => {
     const { getByText } = render(
-      <RecettesCatalogue
-        totalRecettes={recettes}
+      <CatalogRecipes
+        totalRecipes={recipes}
         possibleIngredients={catalogIngredients}
         totalCategories={categoriesCatalogue}
         totalUnits={units}
@@ -192,18 +192,18 @@ describe("initial display is correct", () => {
 describe("the adding recipe functionality works properly", () => {
   it("adds the correct recipe when filling the form and clicking on submit", async () => {
     const { getByLabelText, getByText } = render(
-      <RecettesCatalogue
-        totalRecettes={recettes}
+      <CatalogRecipes
+        totalRecipes={recipes}
         possibleIngredients={catalogIngredients}
         totalCategories={categoriesCatalogue}
         totalUnits={units}
       />
     );
     await addRecipe(getByLabelText, getByText);
-    const recette = getByText("Crumble aux poires", { exact: false });
+    const recipe = getByText("Crumble aux poires", { exact: false });
     const poires = getByText(/Poires :/);
     const beurre = getByText(/Beurre :/);
-    expect(recette).toBeInTheDocument();
+    expect(recipe).toBeInTheDocument();
     expect(poires).toBeInTheDocument();
     expect(beurre).toBeInTheDocument();
   });
@@ -226,56 +226,56 @@ describe("the adding recipe functionality works properly", () => {
 
   async function checkMissingInput(inputName) {
     const { getByLabelText, getByText, queryByText } = render(
-      <RecettesCatalogue
-        totalRecettes={recettes}
+      <CatalogRecipes
+        totalRecipes={recipes}
         possibleIngredients={catalogIngredients}
         totalCategories={categoriesCatalogue}
         totalUnits={units}
       />
     );
     await addRecipe(getByLabelText, getByText, [inputName]);
-    const recette = queryByText("Crumble aux poires", { exact: false });
-    expect(recette).not.toBeInTheDocument();
+    const recipe = queryByText("Crumble aux poires", { exact: false });
+    expect(recipe).not.toBeInTheDocument();
   }
 
   it(`does not add the recipe if no title was provided`, async () => {
     const { getByLabelText, getByText, queryByText } = render(
-      <RecettesCatalogue
-        totalRecettes={recettes}
+      <CatalogRecipes
+        totalRecipes={recipes}
         possibleIngredients={catalogIngredients}
         totalCategories={categoriesCatalogue}
         totalUnits={units}
       />
     );
     await addRecipe(getByLabelText, getByText, ["titre"]);
-    const recette = queryByText("Épluchez et épépinez", { exact: false });
-    expect(recette).not.toBeInTheDocument();
+    const recipe = queryByText("Épluchez et épépinez", { exact: false });
+    expect(recipe).not.toBeInTheDocument();
   });
 
   it(`does not add the recipe if the time for the recipe is negative or null`, async () => {
     const { getByLabelText, getByText, queryByText } = render(
-      <RecettesCatalogue
-        totalRecettes={recettes}
+      <CatalogRecipes
+        totalRecipes={recipes}
         possibleIngredients={catalogIngredients}
         totalCategories={categoriesCatalogue}
         totalUnits={units}
       />
     );
     await addRecipe(getByLabelText, getByText, [], { duree: "00:00" });
-    let recette = queryByText("Crumble aux poires", { exact: false });
-    expect(recette).not.toBeInTheDocument();
+    let recipe = queryByText("Crumble aux poires", { exact: false });
+    expect(recipe).not.toBeInTheDocument();
 
     await addRecipe(getByLabelText, getByText, [], { duree: "-01:00" });
-    recette = queryByText("Crumble aux poires", { exact: false });
-    expect(recette).not.toBeInTheDocument();
+    recipe = queryByText("Crumble aux poires", { exact: false });
+    expect(recipe).not.toBeInTheDocument();
   });
 
   describe("the adding of ingredient on the recipe form works properly", () => {
     it(`does not add the ingredient if an ingredient with the same name
       was already provided`, () => {
       const { getByLabelText, getByText, getAllByText } = render(
-        <RecettesCatalogue
-          totalRecettes={recettes}
+        <CatalogRecipes
+          totalRecipes={recipes}
           possibleIngredients={catalogIngredients}
           totalCategories={categoriesCatalogue}
           totalUnits={units}
@@ -289,8 +289,8 @@ describe("the adding recipe functionality works properly", () => {
 
     it(`does not add the ingredient if amount is negative or null`, () => {
       const { getByLabelText, getByText, queryByText } = render(
-        <RecettesCatalogue
-          totalRecettes={recettes}
+        <CatalogRecipes
+          totalRecipes={recipes}
           possibleIngredients={catalogIngredients}
           totalCategories={categoriesCatalogue}
           totalUnits={units}
@@ -306,8 +306,8 @@ describe("the adding recipe functionality works properly", () => {
 
     it(`does not add the ingredient if the ingredient is not in catalogIngredients`, () => {
       const { getByLabelText, getByText, queryByText } = render(
-        <RecettesCatalogue
-          totalRecettes={recettes}
+        <CatalogRecipes
+          totalRecipes={recipes}
           possibleIngredients={catalogIngredients}
           totalCategories={categoriesCatalogue}
           totalUnits={units}
@@ -320,8 +320,8 @@ describe("the adding recipe functionality works properly", () => {
 
     it(`provides the right proposals when a letter is entered in the input of the ingredient name`, () => {
       const { getByLabelText, getAllByTestId } = render(
-        <RecettesCatalogue
-          totalRecettes={recettes}
+        <CatalogRecipes
+          totalRecipes={recipes}
           possibleIngredients={catalogIngredients}
           totalCategories={categoriesCatalogue}
           totalUnits={units}
@@ -340,8 +340,8 @@ describe("the adding recipe functionality works properly", () => {
     it(`removes ingredient on the form when clicking on the
       remove button`, async () => {
       const { getByLabelText, getByText } = render(
-        <RecettesCatalogue
-          totalRecettes={recettes}
+        <CatalogRecipes
+          totalRecipes={recipes}
           possibleIngredients={catalogIngredients}
           totalCategories={categoriesCatalogue}
           totalUnits={units}
@@ -361,8 +361,8 @@ describe("the adding recipe functionality works properly", () => {
 
     it(`adds ingredients on the form when they are validated`, () => {
       const { getByLabelText, getByText } = render(
-        <RecettesCatalogue
-          totalRecettes={recettes}
+        <CatalogRecipes
+          totalRecipes={recipes}
           possibleIngredients={catalogIngredients}
           totalCategories={categoriesCatalogue}
           totalUnits={units}
@@ -445,8 +445,8 @@ describe("the adding recipe functionality works properly", () => {
   it(`displays an error message and does not add the recipe if the recipe adding
 was not successful on backend side`, async () => {
     const { getByLabelText, getByText, queryByText } = render(
-      <RecettesCatalogue
-        totalRecettes={recettes}
+      <CatalogRecipes
+        totalRecipes={recipes}
         possibleIngredients={catalogIngredients}
         totalCategories={categoriesCatalogue}
         totalUnits={units}
@@ -482,8 +482,8 @@ was not successful on backend side`, async () => {
 describe("the removing recipe functionality works properly", () => {
   it("removes the recipe when clicking on the button", async () => {
     const { getByText } = render(
-      <RecettesCatalogue
-        totalRecettes={recettes}
+      <CatalogRecipes
+        totalRecipes={recipes}
         possibleIngredients={catalogIngredients}
         totalCategories={categoriesCatalogue}
         totalUnits={units}
@@ -507,8 +507,8 @@ describe("the removing recipe functionality works properly", () => {
   it(`displays an error message and keeps the recipe if the recipe removal
 was not successful on backend side`, async () => {
     const { getByText } = render(
-      <RecettesCatalogue
-        totalRecettes={recettes}
+      <CatalogRecipes
+        totalRecipes={recipes}
         possibleIngredients={catalogIngredients}
         totalCategories={categoriesCatalogue}
         totalUnits={units}
@@ -538,8 +538,8 @@ describe("the search bar functionality works properly", () => {
   it(`displays the correct recipes according to their title when a letter
     is entered in the search bar`, async () => {
     const { getByText, queryByText, getByPlaceholderText } = render(
-      <RecettesCatalogue
-        totalRecettes={recettes}
+      <CatalogRecipes
+        totalRecipes={recipes}
         possibleIngredients={catalogIngredients}
         totalCategories={categoriesCatalogue}
         totalUnits={units}
@@ -558,8 +558,8 @@ describe("the search bar functionality works properly", () => {
 
   it("redisplays all the recipes of the catalog after a search", () => {
     const { getByText, queryByText, getByPlaceholderText } = render(
-      <RecettesCatalogue
-        totalRecettes={recettes}
+      <CatalogRecipes
+        totalRecipes={recipes}
         possibleIngredients={catalogIngredients}
         totalCategories={categoriesCatalogue}
         totalUnits={units}

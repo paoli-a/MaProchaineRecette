@@ -1,11 +1,11 @@
 ---
-name: Recette
+name: Recipe
 menu: Components
 ---
 
-# Recettes
+# Recipes
 
-import Recette from "./Recette";
+import Recipe from "./Recipe";
 import { Playground, Props } from "docz";
 import Highlighter from "react-highlight-words";
 import "./index.css";
@@ -19,13 +19,13 @@ import "./index.css";
 
 ## Props
 
-<Props of={Recette} />
+<Props of={Recipe} />
 
 ## Exemples d'utilisation
 
 <Playground>
   {() => {
-    const recette = {
+    const recipe = {
       id: 1,
       categories: ["Plat", "Entrée"],
       titre: "Salade de pommes de terre radis",
@@ -45,7 +45,7 @@ import "./index.css";
         "Eplucher et couper les patates en rondelles et les cuire à l'eau. Cuire les oeufs durs. Couper les radis en rondelles. Emincer les échalottes et les oignons. Couper les oeufs durs. Mettre le tout dans un saladier et rajouter le vinaigre. Mélanger. Préparer la sauce :  mélanger le yaourt, la mayonnaise, la moutarde, la gousse d'ail rapée. Assaisoner.",
     };
     const highlight = (texte) => texte;
-    return <Recette recette={recette} highlight={highlight} />;
+    return <Recipe recipe={recipe} highlight={highlight} />;
   }}
 </Playground>
 
@@ -53,7 +53,7 @@ import "./index.css";
 
 <Playground>
   {() => {
-    const recette = {
+    const recipe = {
       id: 1,
       categories: ["Plat", "Entrée"],
       titre: "Salade de pommes de terre radis",
@@ -81,7 +81,7 @@ import "./index.css";
         />
       );
     };
-    return <Recette recette={recette} highlight={highlight} />;
+    return <Recipe recipe={recipe} highlight={highlight} />;
   }}
 </Playground>
 
@@ -89,7 +89,7 @@ import "./index.css";
 
 <Playground>
   {() => {
-    const recette = {
+    const recipe = {
       id: 1,
       categories: ["Plat", "Entrée"],
       titre: "Salade de pommes de terre radis",
@@ -110,14 +110,10 @@ import "./index.css";
     };
     const highlight = (texte) => texte;
     const button = (
-      <button onClick={() => handleSupprClick(recette.id)}>X</button>
+      <button onClick={() => handleSupprClick(recipe.id)}>X</button>
     );
     return (
-      <Recette
-        recette={recette}
-        highlight={highlight}
-        optionalButton={button}
-      />
+      <Recipe recipe={recipe} highlight={highlight} optionalButton={button} />
     );
   }}
 </Playground>
@@ -126,7 +122,7 @@ import "./index.css";
 
 <Playground>
   {() => {
-    const recette = {
+    const recipe = {
       id: 1,
       categories: ["Plat", "Entrée"],
       titre: "Salade de pommes de terre radis",
@@ -147,7 +143,7 @@ import "./index.css";
     };
     const highlight = (texte) => texte;
     return (
-      <Recette recette={recette} highlight={highlight} activateClick={true} />
+      <Recipe recipe={recipe} highlight={highlight} activateClick={true} />
     );
   }}
 </Playground>

@@ -6,7 +6,7 @@ function useFilterSearch({
   getSearchElement,
 }) {
   return useMemo(() => {
-    const filtreurUtilSearch = function (element) {
+    const filterUtilSearch = function (element) {
       const searchElement = getSearchElement(element).toLowerCase();
       const searchResultsLower = searchResults.toLowerCase();
       const totalLetters = Math.min(searchElement.length, searchResults.length);
@@ -18,15 +18,15 @@ function useFilterSearch({
       return true;
     };
 
-    const filtreurIngredientSearch = function () {
+    const filterIngredientSearch = function () {
       if (searchResults === "") {
         return elementsToFilter;
       } else {
-        return elementsToFilter.filter(filtreurUtilSearch);
+        return elementsToFilter.filter(filterUtilSearch);
       }
     };
 
-    return filtreurIngredientSearch();
+    return filterIngredientSearch();
   }, [elementsToFilter, getSearchElement, searchResults]);
 }
 

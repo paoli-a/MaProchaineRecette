@@ -54,7 +54,7 @@ fieldset {
   margin-top: 3%;
 }
 
-#MesProchainesRecettes {
+#MyNextRecipes {
   display: grid;
   margin-top: 80px;
 }
@@ -67,14 +67,14 @@ fieldset {
   box-sizing: border-box;
 }
 
-#RecettesFrigo h1 {
+#FridgeRecipes h1 {
   margin-bottom: 6%;
 }
 
 @media (min-width: 948px) {
-  #MesProchainesRecettes {
+  #MyNextRecipes {
     grid-template-columns: 0.5fr minmax(420px, 540px) minmax(440px, 900px) 1fr;
-    grid-template-areas: ". ingredients recettes .";
+    grid-template-areas: ". ingredients recipes .";
   }
 
   #fridgeIngredients {
@@ -83,18 +83,18 @@ fieldset {
     margin-right: 20%;
   }
 
-  #RecettesFrigo {
-    grid-area: recettes;
+  #FridgeRecipes {
+    grid-area: recipes;
     margin-right: 10px;
   }
 }
 
 @media (max-width: 947px) {
-  #MesProchainesRecettes {
+  #MyNextRecipes {
     grid-template-columns: minmax(0px, 460px);
     grid-template-areas:
       "ingredients"
-      "recettes";
+      "recipes";
     justify-content: center;
     gap: 60px;
   }

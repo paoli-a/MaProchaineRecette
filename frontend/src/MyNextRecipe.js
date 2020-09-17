@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, NavLink } from "react-router-dom";
 import axios from "axios";
-import RecettesAffichage from "./RecettesAffichage";
+import FridgeRecipes from "./FridgeRecipes";
 import FridgeIngredients from "./FridgeIngredients";
 import CatalogIngredients from "./CatalogIngredients";
-import RecettesCatalogue from "./RecettesCatalogue";
-import "./MaProchaineRecette.css";
+import CatalogRecipes from "./CatalogRecipes";
+import "./MyNextRecipe.css";
 import "./Nav.css";
 
-function MaProchaineRecette() {
+function MyNextRecipe() {
   const [catalogIngredients, setCatalogIngredients] = useState([]);
-  const [recettesCatalogue, setRecettesCatalogue] = useState([]);
+  const [catalogRecipes, setCatalogRecipes] = useState([]);
   const [fridgeIngredients, setFridgeIngredients] = useState([]);
   const [categoriesCatalogue, setCategoriesCatalogue] = useState([]);
   const [units, setUnits] = useState([]);
@@ -33,9 +33,9 @@ function MaProchaineRecette() {
         )
       );
     axios
-      .get("/catalogues/recettes/")
+      .get("/catalogues/recipes/")
       .then(({ data }) => {
-        setRecettesCatalogue(data);
+        setCatalogRecipes(data);
       })
       .catch(() =>
         setFetchError(
@@ -82,7 +82,7 @@ function MaProchaineRecette() {
         )
       );
     axios
-      .get("/frigo/recettes/")
+      .get("/frigo/recipes/")
       .then(({ data }) => {
         setFeasibleRecipes(data);
       })
@@ -100,7 +100,7 @@ function MaProchaineRecette() {
           <NavLink activeClassName="currentTab" exact={true} to="/">
             Ma prochaine recette
           </NavLink>
-          <NavLink activeClassName="currentTab" to="/recettes">
+          <NavLink activeClassName="currentTab" to="/recipes">
             Catalogue des recettes
           </NavLink>
           <NavLink activeClassName="currentTab" to="/ingredients">
@@ -108,9 +108,9 @@ function MaProchaineRecette() {
           </NavLink>
         </nav>
         {fetchError && <span>{fetchError}</span>}
-        <Route path="/recettes">
-          <RecettesCatalogue
-            totalRecettes={recettesCatalogue}
+        <Route path="/recipes">
+          <CatalogRecipes
+            totalRecipes={catalogRecipes}
             possibleIngredients={catalogIngredients}
             totalCategories={categoriesCatalogue}
             totalUnits={units}
@@ -123,13 +123,13 @@ function MaProchaineRecette() {
           />
         </Route>
         <Route path="/" exact>
-          <main id="MesProchainesRecettes">
+          <main id="MyNextRecipes">
             <FridgeIngredients
               ingredients={fridgeIngredients}
               possibleIngredients={catalogIngredients}
               totalUnits={units}
             />
-            <RecettesAffichage recettes={feasibleRecipes} />
+            <FridgeRecipes recipes={feasibleRecipes} />
           </main>
         </Route>
       </div>
@@ -137,4 +137,4 @@ function MaProchaineRecette() {
   );
 }
 
-export default MaProchaineRecette;
+export default MyNextRecipe;

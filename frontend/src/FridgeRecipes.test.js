@@ -1,13 +1,13 @@
 import React from "react";
 import { render, fireEvent, act, within } from "@testing-library/react";
-import RecettesAffichage from "./RecettesAffichage";
+import FridgeRecipes from "./FridgeRecipes";
 
 require("mutationobserver-shim");
 
-let recettes;
+let recipes;
 
 beforeEach(() => {
-  recettes = [
+  recipes = [
     {
       id: 1,
       categories: ["Plat", "Entrée"],
@@ -68,36 +68,34 @@ beforeEach(() => {
 
 describe("Renders correctly each recipe", () => {
   it("renders title element of all the recipes", () => {
-    const { getByText } = render(<RecettesAffichage recettes={recettes} />);
-    const titreRecette1 = getByText("Salade de pommes de terre radis");
-    const titreRecette2 = getByText("Marinade de saumon fumé");
-    const titreRecette3 = getByText("Crumble aux poires");
-    expect(titreRecette1).toBeInTheDocument();
-    expect(titreRecette2).toBeInTheDocument();
-    expect(titreRecette3).toBeInTheDocument();
+    const { getByText } = render(<FridgeRecipes recipes={recipes} />);
+    const recipeTitle1 = getByText("Salade de pommes de terre radis");
+    const recipeTitle2 = getByText("Marinade de saumon fumé");
+    const recipeTitle3 = getByText("Crumble aux poires");
+    expect(recipeTitle1).toBeInTheDocument();
+    expect(recipeTitle2).toBeInTheDocument();
+    expect(recipeTitle3).toBeInTheDocument();
   });
 });
 
 describe("the category filtration functionality works properly", () => {
   it("renders only the categories present in the possible recipes", () => {
-    const { getByText, rerender } = render(
-      <RecettesAffichage recettes={recettes} />
-    );
+    const { getByText, rerender } = render(<FridgeRecipes recipes={recipes} />);
     const plat = getByText("Plat");
     const entrée = getByText("Entrée");
     const dessert = getByText("Dessert");
     expect(plat).toBeInTheDocument();
     expect(entrée).toBeInTheDocument();
     expect(dessert).toBeInTheDocument();
-    recettes.splice(0, 1);
-    rerender(<RecettesAffichage recettes={recettes} />);
+    recipes.splice(0, 1);
+    rerender(<FridgeRecipes recipes={recipes} />);
     expect(plat).not.toBeInTheDocument();
     expect(entrée).toBeInTheDocument();
     expect(dessert).toBeInTheDocument();
   });
 
   it("renders the right numbers of each possible categories", () => {
-    const { getByText } = render(<RecettesAffichage recettes={recettes} />);
+    const { getByText } = render(<FridgeRecipes recipes={recipes} />);
     const plat = getByText("Plat");
     const entree = getByText("Entrée");
     const dessert = getByText("Dessert");
@@ -111,38 +109,36 @@ describe("the category filtration functionality works properly", () => {
 
   it("renders only the recipes with the category selected", () => {
     const { getByText, getByLabelText, queryByText } = render(
-      <RecettesAffichage recettes={recettes} />
+      <FridgeRecipes recipes={recipes} />
     );
     const plat = getByLabelText("Plat");
     fireEvent.click(plat);
-    const titreRecette1 = getByText("Salade de pommes de terre radis");
-    const titreRecette2 = queryByText("Marinade de saumon fumé");
-    const titreRecette3 = queryByText("Crumble aux poires");
-    expect(titreRecette1).toBeInTheDocument();
-    expect(titreRecette2).not.toBeInTheDocument();
-    expect(titreRecette3).not.toBeInTheDocument();
+    const recipeTitle1 = getByText("Salade de pommes de terre radis");
+    const recipeTitle2 = queryByText("Marinade de saumon fumé");
+    const recipeTitle3 = queryByText("Crumble aux poires");
+    expect(recipeTitle1).toBeInTheDocument();
+    expect(recipeTitle2).not.toBeInTheDocument();
+    expect(recipeTitle3).not.toBeInTheDocument();
   });
 
   it("renders only the recipes with the two categories selected", () => {
     const { getByText, getByLabelText, queryByText } = render(
-      <RecettesAffichage recettes={recettes} />
+      <FridgeRecipes recipes={recipes} />
     );
     const plat = getByLabelText("Plat");
     const dessert = getByLabelText("Dessert");
     fireEvent.click(plat);
     fireEvent.click(dessert);
-    const titreRecette1 = getByText("Salade de pommes de terre radis");
-    const titreRecette2 = queryByText("Marinade de saumon fumé");
-    const titreRecette3 = getByText("Crumble aux poires");
-    expect(titreRecette1).toBeInTheDocument();
-    expect(titreRecette2).not.toBeInTheDocument();
-    expect(titreRecette3).toBeInTheDocument();
+    const recipeTitle1 = getByText("Salade de pommes de terre radis");
+    const recipeTitle2 = queryByText("Marinade de saumon fumé");
+    const recipeTitle3 = getByText("Crumble aux poires");
+    expect(recipeTitle1).toBeInTheDocument();
+    expect(recipeTitle2).not.toBeInTheDocument();
+    expect(recipeTitle3).toBeInTheDocument();
   });
 
   it("checks categorie checkboxes when it's clicked", () => {
-    const { getByLabelText } = render(
-      <RecettesAffichage recettes={recettes} />
-    );
+    const { getByLabelText } = render(<FridgeRecipes recipes={recipes} />);
     const entree = getByLabelText("Entrée");
     const dessert = getByLabelText("Dessert");
     expect(entree.checked).toEqual(false);
@@ -176,7 +172,7 @@ describe("the search filtration functionality works properly", () => {
       getByText,
       getByTestId,
       queryByText,
-    } = render(<RecettesAffichage recettes={recettes} />);
+    } = render(<FridgeRecipes recipes={recipes} />);
     await makeASearch("salade", getByPlaceholderText, getByTestId);
     expect(
       getByText(getContent("Salade de pommes de terre radis"))
@@ -197,7 +193,7 @@ describe("the search filtration functionality works properly", () => {
       getByText,
       getByTestId,
       queryByText,
-    } = render(<RecettesAffichage recettes={recettes} />);
+    } = render(<FridgeRecipes recipes={recipes} />);
     await makeASearch("épépinez", getByPlaceholderText, getByTestId);
     expect(getByText("Crumble aux poires")).toBeInTheDocument();
     expect(
@@ -218,7 +214,7 @@ describe("the search filtration functionality works properly", () => {
       getByText,
       getByTestId,
       queryByText,
-    } = render(<RecettesAffichage recettes={recettes} />);
+    } = render(<FridgeRecipes recipes={recipes} />);
     await makeASearch("Vert", getByPlaceholderText, getByTestId);
     expect(getByText("Marinade de saumon fumé")).toBeInTheDocument();
     expect(queryByText("Crumble aux poires")).not.toBeInTheDocument();
@@ -240,7 +236,7 @@ describe("the search filtration functionality works properly", () => {
       getByText,
       getByTestId,
       queryByText,
-    } = render(<RecettesAffichage recettes={recettes} />);
+    } = render(<FridgeRecipes recipes={recipes} />);
     await makeASearch("Marinade y", getByPlaceholderText, getByTestId);
     expect(
       getByText(getContent("Marinade de saumon fumé"))
@@ -257,7 +253,7 @@ describe("the search filtration functionality works properly", () => {
   it(`renders only the recipes containing the searched words, for words of
     2 characters`, async () => {
     const { getByPlaceholderText, getByText, getByTestId } = render(
-      <RecettesAffichage recettes={recettes} />
+      <FridgeRecipes recipes={recipes} />
     );
     await makeASearch("Marinade or", getByPlaceholderText, getByTestId);
     expect(
@@ -273,7 +269,7 @@ describe("the search filtration functionality works properly", () => {
       getByText,
       getByTestId,
       queryByText,
-    } = render(<RecettesAffichage recettes={recettes} />);
+    } = render(<FridgeRecipes recipes={recipes} />);
     await makeASearch(
       "Marinade les de et la l",
       getByPlaceholderText,
@@ -297,7 +293,7 @@ describe("the search filtration functionality works properly", () => {
       getByText,
       getByTestId,
       queryByText,
-    } = render(<RecettesAffichage recettes={recettes} />);
+    } = render(<FridgeRecipes recipes={recipes} />);
     await makeASearch("'Marinade. , ! ...", getByPlaceholderText, getByTestId);
     expect(
       getByText(getContent("Marinade de saumon fumé"))
@@ -316,7 +312,7 @@ describe("the search filtration functionality works properly", () => {
       getByText,
       getByTestId,
       queryByText,
-    } = render(<RecettesAffichage recettes={recettes} />);
+    } = render(<FridgeRecipes recipes={recipes} />);
     await makeASearch("Marinade crumble", getByPlaceholderText, getByTestId);
     expect(
       getByText(getContent("Marinade de saumon fumé"))

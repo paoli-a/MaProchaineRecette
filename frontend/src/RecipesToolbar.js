@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import "./RecettesToolbar.css";
+import "./RecipesToolbar.css";
 import { useForm } from "react-hook-form";
 import PropTypes from "prop-types";
 
-function RecettesToolbar({ onChangeCategories, onChangeSearch, categories }) {
+function RecipesToolbar({ onChangeCategories, onChangeSearch, categories }) {
   const {
     register: registerCategories,
     getValues: getCategoriesValues,
@@ -86,7 +86,7 @@ function RecettesToolbar({ onChangeCategories, onChangeSearch, categories }) {
   );
 }
 
-RecettesToolbar.propTypes = {
+RecipesToolbar.propTypes = {
   /**
    * Cette fonction permet de récupérer les nouvelles catégories sélectionnées
    * lorsque l'utilisateur clique sur la checkbox des catégories.
@@ -104,4 +104,4 @@ RecettesToolbar.propTypes = {
   categories: PropTypes.objectOf(PropTypes.number).isRequired,
 };
 
-export default RecettesToolbar;
+export default RecipesToolbar;

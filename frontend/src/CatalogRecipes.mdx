@@ -1,11 +1,11 @@
 ---
-name: RecettesCatalogue
+name: CatalogRecipes
 menu: Components
 ---
 
-# RecettesCatalogue
+# CatalogRecipes
 
-import RecettesCatalogue from "./RecettesCatalogue";
+import CatalogRecipes from "./CatalogRecipes";
 import { Playground, Props } from "docz";
 
 Ce composant permet d'afficher les recettes du catalogue, d'en ajouter
@@ -14,13 +14,13 @@ permettra d'afficher au fur et à mesure les recettes correspondantes.
 
 ## Props
 
-<Props of={RecettesCatalogue} />
+<Props of={CatalogRecipes} />
 
 ## Exemples d'utilisation
 
 <Playground>
   {() => {
-    const recettes = [
+    const recipes = [
       {
         id: 1,
         categories: ["Plat", "Entrée"],
@@ -76,8 +76,8 @@ permettra d'afficher au fur et à mesure les recettes correspondantes.
     const categoriesCatalogue = ["Entrée", "Plat", "Dessert", "Gouter"];
     const units = ["kg", "g", "cl", "pièce(s)"];
     return (
-      <RecettesCatalogue
-        totalRecettes={recettes}
+      <CatalogRecipes
+        totalRecipes={recipes}
         possibleIngredients={catalogIngredients}
         totalCategories={categoriesCatalogue}
         totalUnits={units}

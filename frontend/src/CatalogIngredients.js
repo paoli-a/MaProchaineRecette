@@ -79,9 +79,9 @@ function CatalogIngredients({
   });
 
   return (
-    <main id="ComponentCatalogueIngredients">
+    <main id="ComponentCatalogIngredients">
       <h1>Catalogue de tous mes ingrédients</h1>
-      <section id="AjoutIngredientCatalogue">
+      <section id="AddCatalogIngredient">
         <fieldset>
           <legend>Ajouter un ingredient dans le catalogue :</legend>
           <form id="ingredientForm" onSubmit={handleSubmit(onSubmitWrapper)}>
@@ -112,7 +112,7 @@ function CatalogIngredients({
           </form>
         </fieldset>
       </section>
-      <section id="CatalogueIngredients">
+      <section id="CatalogIngredients">
         <form>
           <input
             type="search"

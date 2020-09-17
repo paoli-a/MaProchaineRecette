@@ -1,36 +1,36 @@
 import React, { useState, useEffect } from "react";
-import RecettesForm from "./RecettesForm";
-import Recette from "./Recette";
+import RecipesForm from "./RecipesForm";
+import Recipe from "./Recipe";
 import useFilterSearch from "./useFilterSearch";
-import "./RecettesCatalogue.css";
+import "./CatalogRecipes.css";
 import PropTypes from "prop-types";
 import axios from "axios";
 
-function RecettesCatalogue({
-  totalRecettes,
+function CatalogRecipes({
+  totalRecipes,
   possibleIngredients,
   totalCategories,
   totalUnits,
 }) {
-  const [recettesList, setRecettes] = useState(totalRecettes);
+  const [recipesList, setRecipes] = useState(totalRecipes);
   const [searchResults, setSearchResults] = useState("");
   const [deleteError, setDeleteError] = useState({});
   const [postError, setPostError] = useState("");
 
   useEffect(() => {
-    setRecettes(totalRecettes);
-  }, [totalRecettes]);
+    setRecipes(totalRecipes);
+  }, [totalRecipes]);
 
   const handleSupprClick = (id) => {
     axios
-      .delete(`/catalogues/recettes/${id}/`)
+      .delete(`/catalogues/recipes/${id}/`)
       .then(() => {
-        const recettesUpdated = recettesList.slice();
-        const index = recettesUpdated.findIndex((recette) => {
-          return recette.id === id;
+        const updatedRecipes = recipesList.slice();
+        const index = updatedRecipes.findIndex((recipe) => {
+          return recipe.id === id;
         });
-        recettesUpdated.splice(index, 1);
-        setRecettes(recettesUpdated);
+        updatedRecipes.splice(index, 1);
+        setRecipes(updatedRecipes);
       })
       .catch(() => {
         setDeleteError({
@@ -43,20 +43,20 @@ function RecettesCatalogue({
 
   const handleSubmit = (data) => {
     const categories = data.categories.filter(Boolean);
-    const recetteAEnvoyer = {
+    const recipeToSend = {
       categories: categories,
-      titre: data.titreRecette,
+      titre: data.recipeTitle,
       ingredients: data.ingredients,
-      duree: data.tempsRecette,
-      description: data.descriptionRecette,
+      duree: data.recipeTime,
+      description: data.recipeDescription,
     };
     axios
-      .post("/catalogues/recettes/", recetteAEnvoyer)
+      .post("/catalogues/recipes/", recipeToSend)
       .then(({ data }) => {
-        const nouvelleRecette = data;
-        const recettesUpdated = recettesList.slice();
-        recettesUpdated.push(nouvelleRecette);
-        setRecettes(recettesUpdated);
+        const newRecipe = data;
+        const updatedRecipes = recipesList.slice();
+        updatedRecipes.push(newRecipe);
+        setRecipes(updatedRecipes);
       })
       .catch((e) => {
         setPostError("L'ajout de recette a échoué.");
@@ -67,46 +67,46 @@ function RecettesCatalogue({
     setSearchResults(event.target.value);
   };
 
-  const recettesFiltres = useFilterSearch({
-    elementsToFilter: recettesList,
+  const filteredRecipes = useFilterSearch({
+    elementsToFilter: recipesList,
     searchResults: searchResults,
-    getSearchElement: (recette) => recette.titre,
+    getSearchElement: (recipe) => recipe.titre,
   });
 
-  const toutesMesRecettes = recettesFiltres.map((maRecette) => {
+  const allMyRecipes = filteredRecipes.map((myRecipe) => {
     const button = (
-      <button onClick={() => handleSupprClick(maRecette.id)}>X</button>
+      <button onClick={() => handleSupprClick(myRecipe.id)}>X</button>
     );
     return (
-      <React.Fragment key={maRecette.id}>
-        <Recette
-          key={maRecette.id}
-          recette={maRecette}
+      <React.Fragment key={myRecipe.id}>
+        <Recipe
+          key={myRecipe.id}
+          recipe={myRecipe}
           activateClick={true}
           optionalButton={button}
         />
-        {deleteError.id === maRecette.id && <span>{deleteError.message}</span>}
+        {deleteError.id === myRecipe.id && <span>{deleteError.message}</span>}
       </React.Fragment>
     );
   });
 
   return (
-    <main id="ComponentCatalogueRecette">
+    <main id="ComponentCatalogRecipe">
       <h1>Catalogue de toutes mes recettes</h1>
-      <section id="AjoutRecette">
-        <RecettesForm
-          onSubmitRecette={handleSubmit}
+      <section id="AddRecipe">
+        <RecipesForm
+          onSubmitRecipe={handleSubmit}
           possibleIngredients={possibleIngredients}
           totalCategories={totalCategories}
           totalUnits={totalUnits}
         />
         {postError && <span>{postError}</span>}
       </section>
-      <section id="DisplayCatalogueRecette">
+      <section id="DisplayCatalogRecipe">
         <form>
           <input
             type="search"
-            id="rechercheCatalogueRecette"
+            id="catalogRecipeSearch"
             name="q"
             value={searchResults}
             placeholder="Recherche par titre..."
@@ -115,14 +115,14 @@ function RecettesCatalogue({
             onChange={handleChangeSearch}
           />
         </form>
-        {toutesMesRecettes}
+        {allMyRecipes}
       </section>
     </main>
   );
 }
 
-RecettesCatalogue.propTypes = {
-  totalRecettes: PropTypes.arrayOf(
+CatalogRecipes.propTypes = {
+  totalRecipes: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number.isRequired,
       categories: PropTypes.arrayOf(PropTypes.string).isRequired,
@@ -151,4 +151,4 @@ RecettesCatalogue.propTypes = {
   totalUnits: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
-export default RecettesCatalogue;
+export default CatalogRecipes;

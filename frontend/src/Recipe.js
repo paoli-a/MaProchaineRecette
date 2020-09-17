@@ -1,61 +1,61 @@
 import React, { useState, useEffect } from "react";
 import IngredientsList from "./IngredientsList";
-import "./Recette.css";
+import "./Recipe.css";
 import PropTypes from "prop-types";
 
-function Recette({ recette, optionalButton, activateClick, highlight }) {
-  const [isRecetteOpen, setRecetteOpen] = useState();
+function Recipe({ recipe, optionalButton, activateClick, highlight }) {
+  const [isRecipeOpen, setRecipeOpen] = useState();
 
   useEffect(() => {
     if (activateClick === true) {
-      setRecetteOpen(false);
+      setRecipeOpen(false);
     } else {
-      setRecetteOpen(true);
+      setRecipeOpen(true);
     }
   }, [activateClick]);
 
   const handleTitleClick = () => {
-    setRecetteOpen(!isRecetteOpen);
+    setRecipeOpen(!isRecipeOpen);
   };
 
   const title = () => {
     if (activateClick) {
       return (
         <h2 className="curseurMain" onClick={handleTitleClick}>
-          {highlight(recette.titre)} {optionalButton}
+          {highlight(recipe.titre)} {optionalButton}
         </h2>
       );
     } else {
       return (
         <h2>
           {" "}
-          {highlight(recette.titre)} {optionalButton}
+          {highlight(recipe.titre)} {optionalButton}
         </h2>
       );
     }
   };
   const isRecipeUnsure = Boolean(
-    recette.unsure_ingredients && recette.unsure_ingredients.length !== 0
+    recipe.unsure_ingredients && recipe.unsure_ingredients.length !== 0
   );
 
   return (
-    <article className={isRecipeUnsure ? "Recette unsure" : "Recette"}>
+    <article className={isRecipeUnsure ? "Recipe unsure" : "Recipe"}>
       {title()}
-      <div className={isRecetteOpen ? null : "hidden"}>
+      <div className={isRecipeOpen ? null : "hidden"}>
         <IngredientsList
-          ingredients={recette.ingredients}
-          priorityIngredients={recette.priority_ingredients}
-          unsureIngredients={recette.unsure_ingredients}
+          ingredients={recipe.ingredients}
+          priorityIngredients={recipe.priority_ingredients}
+          unsureIngredients={recipe.unsure_ingredients}
           highlight={highlight}
         />
-        <p>{highlight(recette.description)}</p>
+        <p>{highlight(recipe.description)}</p>
       </div>
     </article>
   );
 }
 
-Recette.propTypes = {
-  recette: PropTypes.shape({
+Recipe.propTypes = {
+  recipe: PropTypes.shape({
     id: PropTypes.number.isRequired,
     categories: PropTypes.arrayOf(PropTypes.string).isRequired,
     titre: PropTypes.string.isRequired,
@@ -87,8 +87,8 @@ Recette.propTypes = {
   highlight: PropTypes.func,
 };
 
-Recette.defaultProps = {
+Recipe.defaultProps = {
   highlight: (texte) => texte,
 };
 
-export default Recette;
+export default Recipe;

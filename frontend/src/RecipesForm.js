@@ -3,8 +3,8 @@ import { useForm } from "react-hook-form";
 import InputSuggestions from "./InputSuggestions";
 import PropTypes from "prop-types";
 
-function RecettesForm({
-  onSubmitRecette,
+function RecipesForm({
+  onSubmitRecipe,
   possibleIngredients,
   totalCategories,
   totalUnits,
@@ -24,7 +24,7 @@ function RecettesForm({
       return;
     }
     data.ingredients = ingredients.slice();
-    onSubmitRecette(data);
+    onSubmitRecipe(data);
     reset();
     setIngredients([]);
     resetIngredient();
@@ -115,7 +115,7 @@ function RecettesForm({
   };
 
   const validateTime = () => {
-    const hoursAndMinutes = getValues().tempsRecette.split(":");
+    const hoursAndMinutes = getValues().recipeTime.split(":");
     const hours = parseInt(hoursAndMinutes[0], 10);
     const minutes = hoursAndMinutes[1] ? parseInt(hoursAndMinutes[1], 10) : 0;
     const time = hours + minutes / 60;
@@ -125,19 +125,19 @@ function RecettesForm({
   };
 
   return (
-    <form id="formRecette" onSubmit={handleSubmit(onSubmitForm)}>
+    <form id="formRecipe" onSubmit={handleSubmit(onSubmitForm)}>
       <fieldset>
         <legend>Ajouter une recette dans mon catalogue :</legend>
         <p>
-          <label htmlFor="titreRecette"> Titre de la recette : </label>
+          <label htmlFor="recipeTitle"> Titre de la recette : </label>
           <input
             type="text"
-            name="titreRecette"
-            id="titreRecette"
+            name="recipeTitle"
+            id="recipeTitle"
             defaultValue=""
             ref={register({ required: true })}
           />
-          {errors.titreRecette && <span>Ce champ est obligatoire</span>}
+          {errors.recipeTitle && <span>Ce champ est obligatoire</span>}
         </p>
         <div>
           Catégories :
@@ -162,19 +162,19 @@ function RecettesForm({
           )}
         </div>
         <p>
-          <label htmlFor="tempsRecette"> Temps total de la recette : </label>
+          <label htmlFor="recipeTime"> Temps total de la recette : </label>
           <input
             type="time"
-            id="tempsRecette"
-            name="tempsRecette"
+            id="recipeTime"
+            name="recipeTime"
             ref={register({
               required: "Ce champ est obligatoire",
               validate: validateTime,
             })}
           />
-          {errors.tempsRecette && errors.tempsRecette.message}
+          {errors.recipeTime && errors.recipeTime.message}
         </p>
-        <fieldset id="FormIngredientRecette">
+        <fieldset id="FormIngredientRecipe">
           <legend> Ingrédients : </legend>
           <p>
             <label htmlFor="ingredient"> Nom : </label>
@@ -237,14 +237,14 @@ function RecettesForm({
           </ul>
         </fieldset>
         <div id="description">
-          <label htmlFor="descriptionRecette">Corps de la recette : </label>
+          <label htmlFor="recipeDescription">Corps de la recette : </label>
           <textarea
-            id="descriptionRecette"
-            name="descriptionRecette"
+            id="recipeDescription"
+            name="recipeDescription"
             spellCheck="true"
             ref={register({ required: true })}
           ></textarea>
-          {errors.descriptionRecette && <span>Ce champ est obligatoire</span>}
+          {errors.recipeDescription && <span>Ce champ est obligatoire</span>}
         </div>
         <p>
           <input type="submit" value="Confirmer" />
@@ -254,13 +254,13 @@ function RecettesForm({
   );
 }
 
-RecettesForm.propTypes = {
+RecipesForm.propTypes = {
   /**
    * Cette fonction est exécutée au moment du submit de de la recette,
    * lorsque la validité de tous les éléments entrés a été vérifiée,
    * et permet de les récupérer.
    */
-  onSubmitRecette: PropTypes.func.isRequired,
+  onSubmitRecipe: PropTypes.func.isRequired,
   /**
    * Il s'agit ici des ingrédients autorisés, c'est-à-dire ceux entrés
    * dans le catalogue des ingrédients.
@@ -274,4 +274,4 @@ RecettesForm.propTypes = {
   totalUnits: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
-export default RecettesForm;
+export default RecipesForm;

@@ -2,19 +2,19 @@ fieldset {
   border: 0;
 }
 
-#CatalogueIngredients > form {
+#CatalogIngredients > form {
   margin-bottom: 8%;
 }
 
-#CatalogueIngredients ul {
+#CatalogIngredients ul {
   padding-inline-start: 23px;
 }
 
-#CatalogueIngredients li {
+#CatalogIngredients li {
   padding-bottom: 1%;
 }
 
-#CatalogueIngredients button {
+#CatalogIngredients button {
   margin-left: 2%;
 }
 
@@ -23,11 +23,11 @@ fieldset {
   flex-wrap: wrap;
 }
 
-#AjoutIngredientCatalogue fieldset {
+#AddCatalogIngredient fieldset {
   padding-block-end: 0%;
 }
 
-#AjoutIngredientCatalogue legend {
+#AddCatalogIngredient legend {
   margin-bottom: 3%;
   text-decoration: underline;
 }
@@ -46,17 +46,17 @@ fieldset {
   margin-top: 3%;
 }
 
-#ComponentCatalogueIngredients h1 {
+#ComponentCatalogIngredients h1 {
   margin-top: 80px;
 }
 
-#AjoutIngredientCatalogue {
+#AddCatalogIngredient {
   border: 1px solid;
   padding: 1% 0%;
 }
 
 @media (min-width: 948px) {
-  #ComponentCatalogueIngredients {
+  #ComponentCatalogIngredients {
     display: grid;
     grid-template-columns: minmax(420px, 500px) minmax(300px, 530px);
     grid-template-areas:
@@ -66,17 +66,17 @@ fieldset {
     row-gap: 70px;
   }
 
-  #ComponentCatalogueIngredients h1 {
+  #ComponentCatalogIngredients h1 {
     grid-area: title;
     margin-left: 10px;
   }
 
-  #AjoutIngredientCatalogue {
+  #AddCatalogIngredient {
     grid-area: ajout;
     margin-left: 10px;
   }
 
-  #CatalogueIngredients {
+  #CatalogIngredients {
     grid-area: catalogue;
     margin-right: 10px;
     margin-left: 30%;
@@ -84,7 +84,7 @@ fieldset {
 }
 
 @media (max-width: 947px) {
-  #ComponentCatalogueIngredients {
+  #ComponentCatalogIngredients {
     display: grid;
     grid-template-columns: minmax(0px, 460px);
     grid-template-areas:
@@ -95,7 +95,7 @@ fieldset {
     gap: 80px;
   }
 
-  #ComponentCatalogueIngredients h1 {
+  #ComponentCatalogIngredients h1 {
     padding: 0%;
     margin-bottom: 0;
   }

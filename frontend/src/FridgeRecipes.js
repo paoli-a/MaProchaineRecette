@@ -1,18 +1,18 @@
 import React, { useState, useMemo } from "react";
-import "./RecettesAffichage.css";
-import Recette from "./Recette";
-import RecettesToolbar from "./RecettesToolbar";
+import "./FridgeRecipes.css";
+import Recipe from "./Recipe";
+import RecipesToolbar from "./RecipesToolbar";
 import Highlighter from "react-highlight-words";
 import PropTypes from "prop-types";
 
-function RecettesAffichage({ recettes }) {
+function FridgeRecipes({ recipes }) {
   const [categories, setCategories] = useState([]);
   const [searchResults, setSearchResults] = useState("");
 
   const categoriesPossibles = () => {
     const categories = {};
-    for (let recette of recettes) {
-      for (let categorie of recette.categories)
+    for (let recipe of recipes) {
+      for (let categorie of recipe.categories)
         if (categorie in categories) {
           categories[categorie] += 1;
         } else {
@@ -38,45 +38,43 @@ function RecettesAffichage({ recettes }) {
     return removeStopwords(resultWithoutPunctuation.split(" "));
   }, [searchResults]);
 
-  const recettesFiltrees = useMemo(() => {
-    const filtreurUtilCategories = function (recette) {
+  const filteredRecipes = useMemo(() => {
+    const filterUtilCategories = function (recipe) {
       for (let categorie of categories) {
-        if (recette.categories.includes(categorie)) {
+        if (recipe.categories.includes(categorie)) {
           return true;
         }
       }
       return false;
     };
 
-    const filtreurRecettesCategories = (recettesAFiltrer) => {
+    const filterRecipesCategories = (recipesToFilter) => {
       if (categories.length === 0) {
-        return recettesAFiltrer;
+        return recipesToFilter;
       } else {
-        return recettesAFiltrer.filter(filtreurUtilCategories);
+        return recipesToFilter.filter(filterUtilCategories);
       }
     };
 
-    const lowerResults = (recette) => {
-      const ingredientsListLower = recette.ingredients.map(
-        (ingredientInfos) => {
-          return ingredientInfos.ingredient.toLowerCase();
-        }
-      );
+    const lowerResults = (recipe) => {
+      const ingredientsListLower = recipe.ingredients.map((ingredientInfos) => {
+        return ingredientInfos.ingredient.toLowerCase();
+      });
       const resultsLower = {
-        titreRecette: recette.titre.toLowerCase(),
-        description: recette.description.toLowerCase(),
+        recipeTitle: recipe.titre.toLowerCase(),
+        description: recipe.description.toLowerCase(),
         ingredientsList: ingredientsListLower,
       };
       return resultsLower;
     };
 
-    const filtreurUtilSearch = function (recette) {
-      const { titreRecette, description, ingredientsList } = lowerResults(
-        recette
+    const filterUtilSearch = function (recipe) {
+      const { recipeTitle, description, ingredientsList } = lowerResults(
+        recipe
       );
       for (let mot of searchedWords) {
         if (mot.length > 1) {
-          if (titreRecette.includes(mot) || description.includes(mot)) {
+          if (recipeTitle.includes(mot) || description.includes(mot)) {
             return true;
           } else {
             for (let ingredient of ingredientsList) {
@@ -90,16 +88,16 @@ function RecettesAffichage({ recettes }) {
       return false;
     };
 
-    const filtreurRecettesSearch = function (recettesAFiltrer) {
+    const filterRecipesSearch = function (recipesToFilter) {
       if (searchResults.length === 0) {
-        return recettesAFiltrer;
+        return recipesToFilter;
       } else {
-        return recettesAFiltrer.filter(filtreurUtilSearch);
+        return recipesToFilter.filter(filterUtilSearch);
       }
     };
 
-    return filtreurRecettesSearch(filtreurRecettesCategories(recettes));
-  }, [recettes, categories, searchedWords, searchResults]);
+    return filterRecipesSearch(filterRecipesCategories(recipes));
+  }, [recipes, categories, searchedWords, searchResults]);
 
   const handleHighlight = (texte) => {
     return (
@@ -111,11 +109,11 @@ function RecettesAffichage({ recettes }) {
     );
   };
 
-  const recettesAffichees = recettesFiltrees.map((maRecette) => {
+  const displayedRecipes = filteredRecipes.map((myRecipe) => {
     return (
-      <Recette
-        key={maRecette.id}
-        recette={maRecette}
+      <Recipe
+        key={myRecipe.id}
+        recipe={myRecipe}
         highlight={searchResults ? handleHighlight : undefined}
       />
     );
@@ -130,20 +128,20 @@ function RecettesAffichage({ recettes }) {
   };
 
   return (
-    <section id="RecettesFrigo">
-      <h1>Mes prochaines recettes</h1>
-      <RecettesToolbar
+    <section id="FridgeRecipes">
+      <h1>Mes prochaines recipes</h1>
+      <RecipesToolbar
         onChangeCategories={handleChangeCategories}
         onChangeSearch={handleChangeSearch}
         categories={categoriesPossibles()}
       />
-      <div id="RecettesAffichage">{recettesAffichees}</div>
+      <div id="FridgeRecipes">{displayedRecipes}</div>
     </section>
   );
 }
 
-RecettesAffichage.propTypes = {
-  recettes: PropTypes.arrayOf(
+FridgeRecipes.propTypes = {
+  recipes: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number.isRequired,
       categories: PropTypes.arrayOf(PropTypes.string).isRequired,
@@ -161,4 +159,4 @@ RecettesAffichage.propTypes = {
   ).isRequired,
 };
 
-export default RecettesAffichage;
+export default FridgeRecipes;

@@ -1,11 +1,11 @@
 import React from "react";
 import { render } from "@testing-library/react";
-import Recette from "./Recette";
+import Recipe from "./Recipe";
 
-let recette;
+let recipe;
 
 beforeEach(() => {
-  recette = {
+  recipe = {
     id: 1,
     categories: ["Plat"],
     titre: "Salade de pommes de terre radis",
@@ -29,16 +29,16 @@ beforeEach(() => {
 });
 
 it("renders title element on the document", () => {
-  const { getByText } = render(<Recette recette={recette} />);
-  const titreRecette = getByText("Salade de pommes de terre radis");
-  expect(titreRecette).toBeInTheDocument();
+  const { getByText } = render(<Recipe recipe={recipe} />);
+  const recipeTitle = getByText("Salade de pommes de terre radis");
+  expect(recipeTitle).toBeInTheDocument();
 });
 
 it("renders description element on the document", () => {
-  const { getByText } = render(<Recette recette={recette} />);
-  const descriptionRecette = getByText(
+  const { getByText } = render(<Recipe recipe={recipe} />);
+  const recipeDescription = getByText(
     "Eplucher et couper les patates en rondelles et les cuire à l'eau.",
     { exact: false }
   );
-  expect(descriptionRecette).toBeInTheDocument();
+  expect(recipeDescription).toBeInTheDocument();
 });
