@@ -53,15 +53,12 @@ function RecipesToolbar({ onChangeCategories, onChangeSearch, categories }) {
           <button
             className={isPannelOpen ? "dropdown-open" : "dropdown-closed"}
             aria-expanded="false"
-            aria-controls="panneau-depliant"
+            aria-controls="dropdown-panel"
             onClick={handlePannelClick}
           >
             Catégories
           </button>
-          <form
-            id="panneau-depliant"
-            className={isPannelOpen ? null : "hidden"}
-          >
+          <form id="dropdown-panel" className={isPannelOpen ? null : "hidden"}>
             <ul>{categoriesCheckbox}</ul>
           </form>
         </div>

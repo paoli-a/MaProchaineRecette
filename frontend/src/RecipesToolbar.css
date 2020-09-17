@@ -7,11 +7,11 @@
   display: flex;
 }
 
-#panneau-depliant li {
+#dropdown-panel li {
   list-style: none;
 }
 
-#panneau-depliant ul {
+#dropdown-panel ul {
   padding: 0;
 }
 

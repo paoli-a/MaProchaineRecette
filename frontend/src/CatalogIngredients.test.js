@@ -27,7 +27,7 @@ const handlePossibleIngredients = (ingredients) => {
   catalogIngredients = ingredients;
 };
 
-const rerenderCatalogue = (rerender) => {
+const rerenderCatalog = (rerender) => {
   rerender(
     <CatalogIngredients
       possibleIngredients={catalogIngredients}
@@ -49,7 +49,7 @@ it("removes the correct ingredient when clicking on remove button", async () => 
   const button = within(ingredient).getByText("X");
   fireEvent.click(button);
   await waitFor(() => expect(axios.delete).toHaveBeenCalledTimes(1));
-  rerenderCatalogue(rerender);
+  rerenderCatalog(rerender);
   const listItems = getAllByRole("listitem");
   expect(ingredient).not.toBeInTheDocument();
   expect(listItems).toHaveLength(1);
@@ -69,7 +69,7 @@ was not successful on backend side`, async () => {
   const button = within(ingredient).getByText("X");
   fireEvent.click(button);
   await waitFor(() => expect(axios.delete).toHaveBeenCalledTimes(1));
-  rerenderCatalogue(rerender);
+  rerenderCatalog(rerender);
   const listItems = getAllByRole("listitem");
   expect(ingredient).toBeInTheDocument();
   expect(listItems).toHaveLength(2);
@@ -87,12 +87,12 @@ it(`adds the correct ingredient when filling the form and clicking
   );
   const axiosPostResponse = { data: { name: "Chocolat" } };
   axios.post.mockResolvedValue(axiosPostResponse);
-  const inputNom = getByLabelText("Nom de l'ingrédient à ajouter :");
+  const inputName = getByLabelText("Nom de l'ingrédient à ajouter :");
   const submitButton = getByText("Envoyer");
-  fireEvent.change(inputNom, { target: { value: "Chocolat" } });
+  fireEvent.change(inputName, { target: { value: "Chocolat" } });
   fireEvent.click(submitButton);
   await waitFor(() => expect(axios.post).toHaveBeenCalledTimes(1));
-  rerenderCatalogue(rerender);
+  rerenderCatalog(rerender);
   const ingredient = getByText("Chocolat", { exact: false });
   const listItems = getAllByRole("listitem");
   expect(listItems).toHaveLength(3);
@@ -115,12 +115,12 @@ was not successful on backend side`, async () => {
   );
   const axiosPostResponse = {};
   axios.post.mockRejectedValue(axiosPostResponse);
-  const inputNom = getByLabelText("Nom de l'ingrédient à ajouter :");
+  const inputName = getByLabelText("Nom de l'ingrédient à ajouter :");
   const submitButton = getByText("Envoyer");
-  fireEvent.change(inputNom, { target: { value: "Chocolat" } });
+  fireEvent.change(inputName, { target: { value: "Chocolat" } });
   fireEvent.click(submitButton);
   await waitFor(() => expect(axios.post).toHaveBeenCalledTimes(1));
-  rerenderCatalogue(rerender);
+  rerenderCatalog(rerender);
   const ingredient = queryByText("Chocolat", { exact: false });
   const listItems = getAllByRole("listitem");
   expect(listItems).toHaveLength(2);

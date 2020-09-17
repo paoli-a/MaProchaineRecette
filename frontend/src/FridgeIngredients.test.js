@@ -332,12 +332,12 @@ was not successful on backend side`, async () => {
       },
     };
     axios.post.mockResolvedValue(axiosPostResponse);
-    const inputNom = getByLabelText("Nom de l'ingrédient :");
+    const inputName = getByLabelText("Nom de l'ingrédient :");
     const inputAmount = getByLabelText("Quantité :");
     const inputDate = getByLabelText("Date de péremption :");
     const selectedUnit = getByLabelText("Unité");
     const submitButton = getByText("Confirmer");
-    fireEvent.change(inputNom, { target: { value: "Carottes" } });
+    fireEvent.change(inputName, { target: { value: "Carottes" } });
     fireEvent.change(inputAmount, { target: { value: 27 } });
     fireEvent.change(inputDate, { target: { value: "2100-04-03" } });
     fireEvent.change(selectedUnit, { target: { value: "kg" } });
@@ -381,12 +381,12 @@ was not successful on backend side`, async () => {
     );
     const axiosPostResponse = {};
     axios.post.mockRejectedValue(axiosPostResponse);
-    const inputNom = getByLabelText("Nom de l'ingrédient :");
+    const inputName = getByLabelText("Nom de l'ingrédient :");
     const inputAmount = getByLabelText("Quantité :");
     const inputDate = getByLabelText("Date de péremption :");
     const selectedUnit = getByLabelText("Unité");
     const submitButton = getByText("Confirmer");
-    fireEvent.change(inputNom, { target: { value: "Poires" } });
+    fireEvent.change(inputName, { target: { value: "Poires" } });
     fireEvent.change(inputAmount, { target: { value: 100 } });
     fireEvent.change(inputDate, { target: { value: "2100-04-03" } });
     fireEvent.change(selectedUnit, { target: { value: "kg" } });
@@ -416,13 +416,13 @@ was not successful on backend side`, async () => {
       },
     };
     axios.post.mockResolvedValue(axiosPostResponse);
-    const inputNom = getByLabelText("Nom de l'ingrédient :");
+    const inputName = getByLabelText("Nom de l'ingrédient :");
     const inputAmount = getByLabelText("Quantité :");
     const inputDate = getByLabelText("Date de péremption :");
     const selectedUnit = getByLabelText("Unité");
     const submitButton = getByText("Confirmer");
     if (!missingFields.includes("name")) {
-      fireEvent.change(inputNom, { target: { value: value[0] } });
+      fireEvent.change(inputName, { target: { value: value[0] } });
     }
     if (!missingFields.includes("quantité")) {
       fireEvent.change(inputAmount, { target: { value: value[1] } });

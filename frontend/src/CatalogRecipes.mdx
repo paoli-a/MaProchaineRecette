@@ -73,13 +73,13 @@ permettra d'afficher au fur et à mesure les recettes correspondantes.
         name: "Sucre",
       },
     ];
-    const categoriesCatalogue = ["Entrée", "Plat", "Dessert", "Gouter"];
+    const catalogCategories = ["Entrée", "Plat", "Dessert", "Gouter"];
     const units = ["kg", "g", "cl", "pièce(s)"];
     return (
       <CatalogRecipes
         totalRecipes={recipes}
         possibleIngredients={catalogIngredients}
-        totalCategories={categoriesCatalogue}
+        totalCategories={catalogCategories}
         totalUnits={units}
       />
     );

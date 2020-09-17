@@ -15,7 +15,7 @@ require("mutationobserver-shim");
 jest.mock("axios");
 let recipes;
 let catalogIngredients;
-let categoriesCatalogue;
+let catalogCategories;
 let units;
 
 beforeEach(() => {
@@ -133,7 +133,7 @@ beforeEach(() => {
     },
   ];
 
-  categoriesCatalogue = ["Entrée", "Plat", "Dessert", "Gouter"];
+  catalogCategories = ["Entrée", "Plat", "Dessert", "Gouter"];
   units = ["kg", "g", "cl", "pièce(s)"];
 });
 
@@ -147,7 +147,7 @@ describe("initial display is correct", () => {
       <CatalogRecipes
         totalRecipes={recipes}
         possibleIngredients={catalogIngredients}
-        totalCategories={categoriesCatalogue}
+        totalCategories={catalogCategories}
         totalUnits={units}
       />
     );
@@ -162,7 +162,7 @@ describe("initial display is correct", () => {
       <CatalogRecipes
         totalRecipes={recipes}
         possibleIngredients={catalogIngredients}
-        totalCategories={categoriesCatalogue}
+        totalCategories={catalogCategories}
         totalUnits={units}
       />
     );
@@ -178,7 +178,7 @@ describe("initial display is correct", () => {
       <CatalogRecipes
         totalRecipes={recipes}
         possibleIngredients={catalogIngredients}
-        totalCategories={categoriesCatalogue}
+        totalCategories={catalogCategories}
         totalUnits={units}
       />
     );
@@ -195,7 +195,7 @@ describe("the adding recipe functionality works properly", () => {
       <CatalogRecipes
         totalRecipes={recipes}
         possibleIngredients={catalogIngredients}
-        totalCategories={categoriesCatalogue}
+        totalCategories={catalogCategories}
         totalUnits={units}
       />
     );
@@ -229,7 +229,7 @@ describe("the adding recipe functionality works properly", () => {
       <CatalogRecipes
         totalRecipes={recipes}
         possibleIngredients={catalogIngredients}
-        totalCategories={categoriesCatalogue}
+        totalCategories={catalogCategories}
         totalUnits={units}
       />
     );
@@ -243,7 +243,7 @@ describe("the adding recipe functionality works properly", () => {
       <CatalogRecipes
         totalRecipes={recipes}
         possibleIngredients={catalogIngredients}
-        totalCategories={categoriesCatalogue}
+        totalCategories={catalogCategories}
         totalUnits={units}
       />
     );
@@ -257,7 +257,7 @@ describe("the adding recipe functionality works properly", () => {
       <CatalogRecipes
         totalRecipes={recipes}
         possibleIngredients={catalogIngredients}
-        totalCategories={categoriesCatalogue}
+        totalCategories={catalogCategories}
         totalUnits={units}
       />
     );
@@ -277,7 +277,7 @@ describe("the adding recipe functionality works properly", () => {
         <CatalogRecipes
           totalRecipes={recipes}
           possibleIngredients={catalogIngredients}
-          totalCategories={categoriesCatalogue}
+          totalCategories={catalogCategories}
           totalUnits={units}
         />
       );
@@ -292,7 +292,7 @@ describe("the adding recipe functionality works properly", () => {
         <CatalogRecipes
           totalRecipes={recipes}
           possibleIngredients={catalogIngredients}
-          totalCategories={categoriesCatalogue}
+          totalCategories={catalogCategories}
           totalUnits={units}
         />
       );
@@ -309,7 +309,7 @@ describe("the adding recipe functionality works properly", () => {
         <CatalogRecipes
           totalRecipes={recipes}
           possibleIngredients={catalogIngredients}
-          totalCategories={categoriesCatalogue}
+          totalCategories={catalogCategories}
           totalUnits={units}
         />
       );
@@ -323,7 +323,7 @@ describe("the adding recipe functionality works properly", () => {
         <CatalogRecipes
           totalRecipes={recipes}
           possibleIngredients={catalogIngredients}
-          totalCategories={categoriesCatalogue}
+          totalCategories={catalogCategories}
           totalUnits={units}
         />
       );
@@ -343,7 +343,7 @@ describe("the adding recipe functionality works properly", () => {
         <CatalogRecipes
           totalRecipes={recipes}
           possibleIngredients={catalogIngredients}
-          totalCategories={categoriesCatalogue}
+          totalCategories={catalogCategories}
           totalUnits={units}
         />
       );
@@ -364,7 +364,7 @@ describe("the adding recipe functionality works properly", () => {
         <CatalogRecipes
           totalRecipes={recipes}
           possibleIngredients={catalogIngredients}
-          totalCategories={categoriesCatalogue}
+          totalCategories={catalogCategories}
           totalUnits={units}
         />
       );
@@ -448,7 +448,7 @@ was not successful on backend side`, async () => {
       <CatalogRecipes
         totalRecipes={recipes}
         possibleIngredients={catalogIngredients}
-        totalCategories={categoriesCatalogue}
+        totalCategories={catalogCategories}
         totalUnits={units}
       />
     );
@@ -485,7 +485,7 @@ describe("the removing recipe functionality works properly", () => {
       <CatalogRecipes
         totalRecipes={recipes}
         possibleIngredients={catalogIngredients}
-        totalCategories={categoriesCatalogue}
+        totalCategories={catalogCategories}
         totalUnits={units}
       />
     );
@@ -510,7 +510,7 @@ was not successful on backend side`, async () => {
       <CatalogRecipes
         totalRecipes={recipes}
         possibleIngredients={catalogIngredients}
-        totalCategories={categoriesCatalogue}
+        totalCategories={catalogCategories}
         totalUnits={units}
       />
     );
@@ -541,7 +541,7 @@ describe("the search bar functionality works properly", () => {
       <CatalogRecipes
         totalRecipes={recipes}
         possibleIngredients={catalogIngredients}
-        totalCategories={categoriesCatalogue}
+        totalCategories={catalogCategories}
         totalUnits={units}
       />
     );
@@ -561,7 +561,7 @@ describe("the search bar functionality works properly", () => {
       <CatalogRecipes
         totalRecipes={recipes}
         possibleIngredients={catalogIngredients}
-        totalCategories={categoriesCatalogue}
+        totalCategories={catalogCategories}
         totalUnits={units}
       />
     );

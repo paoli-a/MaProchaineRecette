@@ -22,34 +22,34 @@ fieldset {
   border: 0;
 }
 
-#formFrigo p {
+#fridgeForm p {
   display: flex;
   flex-wrap: wrap;
 }
 
-#formFrigo p > span {
+#fridgeForm p > span {
   flex: 1;
   display: flex;
 }
 
-#formFrigo p > span > input {
+#fridgeForm p > span > input {
   flex: 3;
 }
 
-#formFrigo p > span > select {
+#fridgeForm p > span > select {
   flex: 1;
 }
 
-#formFrigo label {
+#fridgeForm label {
   margin-right: 5%;
   margin-bottom: 2%;
 }
 
-#formFrigo p > input:not([type="submit"]) {
+#fridgeForm p > input:not([type="submit"]) {
   flex: 1;
 }
 
-#formFrigo input[type="submit"] {
+#fridgeForm input[type="submit"] {
   margin-left: auto;
   margin-top: 3%;
 }

@@ -16,7 +16,7 @@ function FridgeIngredientsForm({ onSubmit, possibleIngredients, totalUnits }) {
   } = useForm({ defaultValues: { ingredientName: "" } });
   const { ingredientName } = watch();
 
-  const validateNomIngredient = () => {
+  const validateIngredientName = () => {
     const name = getValues().ingredientName;
     let authorized = false;
     for (const ingredientPossible of possibleIngredients) {
@@ -41,12 +41,12 @@ function FridgeIngredientsForm({ onSubmit, possibleIngredients, totalUnits }) {
     register({ name: "ingredientName" });
   }, [register]);
 
-  const handleNomIngredient = (value) => {
+  const handleIngredientName = (value) => {
     setValue("ingredientName", value);
   };
 
   const onSubmitWrapper = (data) => {
-    const ingredientError = validateNomIngredient();
+    const ingredientError = validateIngredientName();
     if (ingredientError) {
       setError("ingredientName", "notMatch", ingredientError);
       return;
@@ -72,7 +72,7 @@ function FridgeIngredientsForm({ onSubmit, possibleIngredients, totalUnits }) {
   };
 
   return (
-    <form id="formFrigo" onSubmit={handleSubmit(onSubmitWrapper)}>
+    <form id="fridgeForm" onSubmit={handleSubmit(onSubmitWrapper)}>
       <fieldset>
         <legend>Ajouter un ingredient frigo :</legend>
         <p>
@@ -81,7 +81,7 @@ function FridgeIngredientsForm({ onSubmit, possibleIngredients, totalUnits }) {
             elements={possibleIngredients}
             id="ingredientName"
             getElementText={(ingredient) => ingredient.name}
-            onChangeValue={handleNomIngredient}
+            onChangeValue={handleIngredientName}
             value={ingredientName}
             name="ingredient"
             type="text"

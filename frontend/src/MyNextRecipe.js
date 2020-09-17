@@ -12,7 +12,7 @@ function MyNextRecipe() {
   const [catalogIngredients, setCatalogIngredients] = useState([]);
   const [catalogRecipes, setCatalogRecipes] = useState([]);
   const [fridgeIngredients, setFridgeIngredients] = useState([]);
-  const [categoriesCatalogue, setCategoriesCatalogue] = useState([]);
+  const [catalogCategories, setCatalogCategories] = useState([]);
   const [units, setUnits] = useState([]);
   const [feasibleRecipes, setFeasibleRecipes] = useState([]);
   const [fetchError, setFetchError] = useState("");
@@ -23,7 +23,7 @@ function MyNextRecipe() {
 
   useEffect(() => {
     axios
-      .get("/catalogues/ingredients/")
+      .get("/catalogs/ingredients/")
       .then(({ data }) => {
         setCatalogIngredients(data);
       })
@@ -33,7 +33,7 @@ function MyNextRecipe() {
         )
       );
     axios
-      .get("/catalogues/recipes/")
+      .get("/catalogs/recipes/")
       .then(({ data }) => {
         setCatalogRecipes(data);
       })
@@ -43,15 +43,15 @@ function MyNextRecipe() {
         )
       );
     axios
-      .get("/frigo/ingredients/")
+      .get("/fridge/ingredients/")
       .then(({ data }) => {
-        const newData = data.map((ingredientFrigo) => {
+        const newData = data.map((fridgeIngredient) => {
           return {
-            id: ingredientFrigo.id,
-            name: ingredientFrigo.ingredient,
-            expirationDate: new Date(ingredientFrigo.expiration_date),
-            amount: ingredientFrigo.amount,
-            unit: ingredientFrigo.unit,
+            id: fridgeIngredient.id,
+            name: fridgeIngredient.ingredient,
+            expirationDate: new Date(fridgeIngredient.expiration_date),
+            amount: fridgeIngredient.amount,
+            unit: fridgeIngredient.unit,
           };
         });
         setFridgeIngredients(newData);
@@ -62,9 +62,9 @@ function MyNextRecipe() {
         )
       );
     axios
-      .get("/catalogues/categories/")
+      .get("/catalogs/categories/")
       .then(({ data }) => {
-        setCategoriesCatalogue(data);
+        setCatalogCategories(data);
       })
       .catch(() =>
         setFetchError(
@@ -82,7 +82,7 @@ function MyNextRecipe() {
         )
       );
     axios
-      .get("/frigo/recipes/")
+      .get("/fridge/recipes/")
       .then(({ data }) => {
         setFeasibleRecipes(data);
       })
@@ -112,7 +112,7 @@ function MyNextRecipe() {
           <CatalogRecipes
             totalRecipes={catalogRecipes}
             possibleIngredients={catalogIngredients}
-            totalCategories={categoriesCatalogue}
+            totalCategories={catalogCategories}
             totalUnits={units}
           />
         </Route>

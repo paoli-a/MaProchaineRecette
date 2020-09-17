@@ -32,7 +32,7 @@ Toutes les props supplémentaires seront transférées à la balise interne inpu
         name: "Framboises",
       },
     ];
-    const [ingredientName, setNomIngredient] = React.useState("");
+    const [ingredientName, setIngredientName] = React.useState("");
     return (
       <form>
         <label htmlFor="ingredientName">Nom de l'ingrédient : </label>
@@ -40,7 +40,7 @@ Toutes les props supplémentaires seront transférées à la balise interne inpu
           elements={possibleIngredients}
           id="ingredientName"
           getElementText={(ingredient) => ingredient.name}
-          onChangeValue={(value) => setNomIngredient(value)}
+          onChangeValue={(value) => setIngredientName(value)}
           value={ingredientName}
           name="ingredient"
           type="text"
