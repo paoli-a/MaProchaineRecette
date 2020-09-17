@@ -12,7 +12,7 @@ class IngredientFrigoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = IngredientFrigo
-        fields = ["id", "ingredient", "expiration_date", "quantite", "unit"]
+        fields = ["id", "ingredient", "expiration_date", "amount", "unit"]
 
     def create(self, validated_data):
         """Create the fridge ingredient and solve the bug when the ingredient is merged.

@@ -12,7 +12,7 @@ function RecettesForm({
   const { register, handleSubmit, errors, reset, watch, getValues } = useForm();
   const [ingredients, setIngredients] = useState([]);
   const [ingredientName, setIngredientName] = useState("");
-  const [ingredientQuantite, setIngredientQuantite] = useState("");
+  const [ingredientAmount, setIngredientAmount] = useState("");
   const [ingredientUnit, setIngredientUnit] = useState("");
   const [ingredientError, setIngredientError] = useState("");
 
@@ -32,7 +32,7 @@ function RecettesForm({
 
   const resetIngredient = () => {
     setIngredientName("");
-    setIngredientQuantite("");
+    setIngredientAmount("");
     setIngredientUnit("");
     setIngredientError("");
   };
@@ -40,7 +40,7 @@ function RecettesForm({
   class UnauthorizedIngredient extends Error {}
 
   const validateNewIngredient = () => {
-    if (!ingredientName || !ingredientQuantite || !ingredientUnit) {
+    if (!ingredientName || !ingredientAmount || !ingredientUnit) {
       throw new Error(
         "Tous les champs concernant l'ingrédient doivent être remplis"
       );
@@ -62,7 +62,7 @@ function RecettesForm({
         throw new Error("Cet ingrédient a déjà été ajouté");
       }
     }
-    if (ingredientQuantite <= 0) {
+    if (ingredientAmount <= 0) {
       throw new Error("La quantité doit être supérieure à 0");
     }
   };
@@ -74,7 +74,7 @@ function RecettesForm({
       const newIngredients = ingredients.slice();
       newIngredients.push({
         ingredient: ingredientName,
-        quantite: ingredientQuantite,
+        amount: ingredientAmount,
         unit: ingredientUnit,
       });
       setIngredients(newIngredients);
@@ -189,15 +189,15 @@ function RecettesForm({
             />
           </p>
           <p>
-            <label htmlFor="ingredientQuantite"> Quantité nécessaire : </label>
+            <label htmlFor="ingredientAmount"> Quantité nécessaire : </label>
             <span>
               <input
                 type="number"
-                name="ingredientQuantite"
-                id="ingredientQuantite"
+                name="ingredientAmount"
+                id="ingredientAmount"
                 min="0"
-                onChange={(e) => setIngredientQuantite(e.target.value)}
-                value={ingredientQuantite}
+                onChange={(e) => setIngredientAmount(e.target.value)}
+                value={ingredientAmount}
               />
               <select
                 name="unit"
@@ -224,7 +224,7 @@ function RecettesForm({
             {ingredients.map((ingredient) => {
               return (
                 <li key={ingredient.ingredient}>
-                  {ingredient.ingredient} : {ingredient.quantite}{" "}
+                  {ingredient.ingredient} : {ingredient.amount}{" "}
                   {ingredient.unit}
                   <button
                     onClick={() => handleSupprIngredient(ingredient.ingredient)}

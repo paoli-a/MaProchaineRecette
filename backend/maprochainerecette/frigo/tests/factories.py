@@ -16,7 +16,7 @@ def ingredientFrigo():
 
 class IngredientFrigoFactory(factory.django.DjangoModelFactory):
     ingredient = factory.SubFactory(IngredientFactory)
-    quantite = factory.fuzzy.FuzzyDecimal(0)
+    amount = factory.fuzzy.FuzzyDecimal(0)
     expiration_date = factory.fuzzy.FuzzyDate(datetime.date(2020, 1, 1))
     unit = factory.SubFactory(UnitFactory)
 

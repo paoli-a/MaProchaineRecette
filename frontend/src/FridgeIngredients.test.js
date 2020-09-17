@@ -38,14 +38,14 @@ beforeEach(() => {
       id: 1,
       name: "épinard",
       expirationDate: new Date(2100, 4, 15),
-      quantite: "60",
+      amount: "60",
       unit: "g",
     },
     {
       id: 2,
       name: "céleri rave",
       expirationDate: new Date(2100, 3, 13),
-      quantite: "1",
+      amount: "1",
       unit: "kg",
     },
   ];
@@ -213,7 +213,7 @@ was not successful on backend side`, async () => {
     expect(ingredient.textContent).toContain(expectedDate.toLocaleDateString());
   });
 
-  it(`does not add the ingredient if no quantity was provided`, async () => {
+  it(`does not add the ingredient if no amount was provided`, async () => {
     await checkMissingInput("quantité");
   });
 
@@ -261,7 +261,7 @@ was not successful on backend side`, async () => {
     expect(ingredient).not.toBeInTheDocument();
   });
 
-  it(`does not add the ingredient if quantity is negative or null`, async () => {
+  it(`does not add the ingredient if amount is negative or null`, async () => {
     const { getByLabelText, getByText, queryByText } = render(
       <FridgeIngredients
         ingredients={fridgeIngredients}
@@ -327,18 +327,18 @@ was not successful on backend side`, async () => {
         id: 3,
         ingredient: "Carottes",
         expiration_date: "2100-04-03",
-        quantite: 28.15,
+        amount: 28.15,
         unit: "kg",
       },
     };
     axios.post.mockResolvedValue(axiosPostResponse);
     const inputNom = getByLabelText("Nom de l'ingrédient :");
-    const inputQuantite = getByLabelText("Quantité :");
+    const inputAmount = getByLabelText("Quantité :");
     const inputDate = getByLabelText("Date de péremption :");
     const selectedUnit = getByLabelText("Unité");
     const submitButton = getByText("Confirmer");
     fireEvent.change(inputNom, { target: { value: "Carottes" } });
-    fireEvent.change(inputQuantite, { target: { value: 27 } });
+    fireEvent.change(inputAmount, { target: { value: 27 } });
     fireEvent.change(inputDate, { target: { value: "2100-04-03" } });
     fireEvent.change(selectedUnit, { target: { value: "kg" } });
     await act(async () => {
@@ -382,12 +382,12 @@ was not successful on backend side`, async () => {
     const axiosPostResponse = {};
     axios.post.mockRejectedValue(axiosPostResponse);
     const inputNom = getByLabelText("Nom de l'ingrédient :");
-    const inputQuantite = getByLabelText("Quantité :");
+    const inputAmount = getByLabelText("Quantité :");
     const inputDate = getByLabelText("Date de péremption :");
     const selectedUnit = getByLabelText("Unité");
     const submitButton = getByText("Confirmer");
     fireEvent.change(inputNom, { target: { value: "Poires" } });
-    fireEvent.change(inputQuantite, { target: { value: 100 } });
+    fireEvent.change(inputAmount, { target: { value: 100 } });
     fireEvent.change(inputDate, { target: { value: "2100-04-03" } });
     fireEvent.change(selectedUnit, { target: { value: "kg" } });
     await act(async () => {
@@ -411,13 +411,13 @@ was not successful on backend side`, async () => {
         id: 3,
         ingredient: value[0],
         expiration_date: value[2],
-        quantite: value[1] + "",
+        amount: value[1] + "",
         unit: value[3],
       },
     };
     axios.post.mockResolvedValue(axiosPostResponse);
     const inputNom = getByLabelText("Nom de l'ingrédient :");
-    const inputQuantite = getByLabelText("Quantité :");
+    const inputAmount = getByLabelText("Quantité :");
     const inputDate = getByLabelText("Date de péremption :");
     const selectedUnit = getByLabelText("Unité");
     const submitButton = getByText("Confirmer");
@@ -425,7 +425,7 @@ was not successful on backend side`, async () => {
       fireEvent.change(inputNom, { target: { value: value[0] } });
     }
     if (!missingFields.includes("quantité")) {
-      fireEvent.change(inputQuantite, { target: { value: value[1] } });
+      fireEvent.change(inputAmount, { target: { value: value[1] } });
     }
     if (!missingFields.includes("date")) {
       fireEvent.change(inputDate, { target: { value: value[2] } });

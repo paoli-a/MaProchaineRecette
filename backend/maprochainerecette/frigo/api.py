@@ -73,24 +73,24 @@ class RecettesFrigo(APIView):
 
     @staticmethod
     def _build_fridge_ingredients_data():
-        # Quantites are converted into the unit that has the ratio equal to 1
+        # Amounts are converted into the unit that has the ratio equal to 1
         # For each ingredient and unit type, we keep only the erliest date
         data: Dict[str, Dict[str, Dict[str, Any]]] = {}
-        # {name : {unit_type: {quantity or date: ingredient quantity or date}}}
+        # {name : {unit_type: {amount or date: ingredient amount or date}}}
         for fridge_ingredient in IngredientFrigo.objects.all():
             name = fridge_ingredient.ingredient.name
             unit_type = fridge_ingredient.unit.type.name
             date = fridge_ingredient.expiration_date
-            converted_quantity = fridge_ingredient.quantite * fridge_ingredient.unit.rapport
+            converted_amount = fridge_ingredient.amount * fridge_ingredient.unit.rapport
             if name not in data:
                 data[name] = {unit_type: {
-                    "quantity": converted_quantity, "date": date}}
+                    "amount": converted_amount, "date": date}}
             else:
                 if unit_type not in data[name]:
                     data[name][unit_type] = {
-                        "quantity": converted_quantity, "date": date}
+                        "amount": converted_amount, "date": date}
                 else:
-                    data[name][unit_type]["quantity"] += converted_quantity
+                    data[name][unit_type]["amount"] += converted_amount
                     data[name][unit_type]["date"] = min(
                         data[name][unit_type]["date"], date)
         return data
@@ -99,21 +99,21 @@ class RecettesFrigo(APIView):
     def _check_recipe_ingredient_against_fridge(recipe_ingredient, fridge_ingredients):
         name = recipe_ingredient.ingredient.name
         unit_type = recipe_ingredient.unit.type.name
-        converted_quantity = recipe_ingredient.quantite * recipe_ingredient.unit.rapport
+        converted_amount = recipe_ingredient.amount * recipe_ingredient.unit.rapport
         ingredient_available = True
         ingredient_unsure = False
         ingredient_date = None
         if name in fridge_ingredients:
-            enough_quantity_of_same_unit_type = (unit_type in fridge_ingredients[name] and
-                                                 fridge_ingredients[name][unit_type]["quantity"] >= converted_quantity)
+            enough_amount_of_same_unit_type = (unit_type in fridge_ingredients[name] and
+                                                 fridge_ingredients[name][unit_type]["amount"] >= converted_amount)
             other_unit_type = set(
                 fridge_ingredients[name].keys()).difference({unit_type})
-            if enough_quantity_of_same_unit_type:
+            if enough_amount_of_same_unit_type:
                 ingredient_date = fridge_ingredients[name][unit_type]["date"]
             elif other_unit_type:
                 ingredient_unsure = True
                 ingredient_date = min(
-                    quantity_date["date"] for quantity_date in fridge_ingredients[name].values())
+                    amount_date["date"] for amount_date in fridge_ingredients[name].values())
             else:
                 ingredient_available = False
         else:

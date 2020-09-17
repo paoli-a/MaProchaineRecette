@@ -42,47 +42,47 @@ beforeEach(() => {
       ingredients: [
         {
           ingredient: "pommes de terre",
-          quantite: "1",
+          amount: "1",
           unit: "kg",
         },
         {
           ingredient: "oeufs",
-          quantite: "3",
+          amount: "3",
           unit: "pièce(s)",
         },
         {
           ingredient: "vinaigre non balsamique",
-          quantite: "1",
+          amount: "1",
           unit: "cas",
         },
         {
           ingredient: "radis",
-          quantite: "2",
+          amount: "2",
           unit: "bottes",
         },
         {
           ingredient: "oignons bottes",
-          quantite: "2",
+          amount: "2",
           unit: "pièce(s)",
         },
         {
           ingredient: "yaourt grec",
-          quantite: "1",
+          amount: "1",
           unit: "pièce(s)",
         },
         {
           ingredient: "mayonnaise",
-          quantite: "1",
+          amount: "1",
           unit: "cas",
         },
         {
           ingredient: "moutarde",
-          quantite: "0.5",
+          amount: "0.5",
           unit: "cas",
         },
         {
           ingredient: "ail",
-          quantite: "1",
+          amount: "1",
           unit: "gousse",
         },
       ],
@@ -98,32 +98,32 @@ beforeEach(() => {
       ingredients: [
         {
           ingredient: "saumon fumé",
-          quantite: "200",
+          amount: "200",
           unit: "g",
         },
         {
           ingredient: "citon vert",
-          quantite: "0.5",
+          amount: "0.5",
           unit: "pièce(s)",
         },
         {
           ingredient: "vinaigre balsamique",
-          quantite: "2",
+          amount: "2",
           unit: "cas",
         },
         {
           ingredient: "huile d'olive",
-          quantite: "2",
+          amount: "2",
           unit: "cas",
         },
         {
           ingredient: "échalotte",
-          quantite: "1",
+          amount: "1",
           unit: "pièce(s)",
         },
         {
           ingredient: "herbes fraiches",
-          quantite: "1",
+          amount: "1",
           unit: "pièce(s)",
         },
       ],
@@ -287,7 +287,7 @@ describe("the adding recipe functionality works properly", () => {
       expect(ingredient).toHaveLength(1);
     });
 
-    it(`does not add the ingredient if quantity is negative or null`, () => {
+    it(`does not add the ingredient if amount is negative or null`, () => {
       const { getByLabelText, getByText, queryByText } = render(
         <RecettesCatalogue
           totalRecettes={recettes}
@@ -390,8 +390,8 @@ describe("the adding recipe functionality works properly", () => {
         categories: ["Entrée"],
         duree: customFields["duree"] || "00:10:00",
         ingredients: [
-          { ingredient: "Poires", quantite: "1", unit: "kg" },
-          { ingredient: "Beurre", quantite: "30", unit: "g" },
+          { ingredient: "Poires", amount: "1", unit: "kg" },
+          { ingredient: "Beurre", amount: "30", unit: "g" },
         ],
         description: "Épluchez et épépinez les poires. Coupez-les en dés.",
       },
@@ -433,11 +433,11 @@ describe("the adding recipe functionality works properly", () => {
 
   function addIngredient(getByLabelText, getByText, value) {
     const inputIngredientName = getByLabelText("Nom :");
-    const inputQuantite = getByLabelText("Quantité nécessaire :");
+    const inputAmount = getByLabelText("Quantité nécessaire :");
     const selectedUnit = getByLabelText("Unité");
     const addButton = getByText("Ajouter");
     fireEvent.change(inputIngredientName, { target: { value: value[0] } });
-    fireEvent.change(inputQuantite, { target: { value: value[1] } });
+    fireEvent.change(inputAmount, { target: { value: value[1] } });
     fireEvent.change(selectedUnit, { target: { value: value[2] } });
     fireEvent.click(addButton);
   }

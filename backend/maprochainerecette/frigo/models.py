@@ -9,7 +9,7 @@ from catalogues.models import Ingredient
 
 class IngredientFrigo(TimeStampedModel):
     ingredient = models.ForeignKey(Ingredient, on_delete=models.PROTECT)
-    quantite = models.DecimalField(max_digits=10, decimal_places=2)
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
     unit = models.ForeignKey(Unit, on_delete=models.PROTECT)
     expiration_date = models.DateField("Date de péremption")
 
@@ -36,15 +36,15 @@ class IngredientFrigo(TimeStampedModel):
 
     def _update_mergeable_with_new_ingredient(self, mergeable):
         if mergeable.unit.rapport > self.unit.rapport:
-            quantite = self._compute_quantite(mergeable, self)
+            amount = self._compute_amount(mergeable, self)
         else:
-            quantite = self._compute_quantite(self, mergeable)
+            amount = self._compute_amount(self, mergeable)
             mergeable.unit = self.unit
-        mergeable.quantite = quantite
+        mergeable.amount = amount
         mergeable.save()
 
     @staticmethod
-    def _compute_quantite(big_element, small_element):
+    def _compute_amount(big_element, small_element):
         rapport = Decimal(small_element.unit.rapport) / \
             Decimal(big_element.unit.rapport)
-        return Decimal(big_element.quantite) + Decimal(small_element.quantite) * rapport
+        return Decimal(big_element.amount) + Decimal(small_element.amount) * rapport

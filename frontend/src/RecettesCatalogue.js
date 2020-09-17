@@ -130,7 +130,7 @@ RecettesCatalogue.propTypes = {
       ingredients: PropTypes.arrayOf(
         PropTypes.shape({
           ingredient: PropTypes.string.isRequired,
-          quantite: PropTypes.string.isRequired,
+          amount: PropTypes.string.isRequired,
           unit: PropTypes.string.isRequired,
         }).isRequired
       ),

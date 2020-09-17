@@ -55,8 +55,8 @@ function FridgeIngredientsForm({ onSubmit, possibleIngredients, totalUnits }) {
     reset();
   };
 
-  const validateQuantite = () => {
-    if (getValues().quantiteIngredient <= 0) {
+  const validateAmount = () => {
+    if (getValues().ingredientAmount <= 0) {
       return "La quantité doit être supérieure à 0";
     } else return undefined;
   };
@@ -89,19 +89,19 @@ function FridgeIngredientsForm({ onSubmit, possibleIngredients, totalUnits }) {
           {errors.ingredientName && errors.ingredientName.message}
         </p>
         <p>
-          <label htmlFor="quantiteIngredient">Quantité : </label>
+          <label htmlFor="ingredientAmount">Quantité : </label>
           <span>
             <input
               type="number"
-              name="quantiteIngredient"
-              id="quantiteIngredient"
+              name="ingredientAmount"
+              id="ingredientAmount"
               defaultValue=""
               ref={register({
                 required: "Ce champ est obligatoire",
-                validate: validateQuantite,
+                validate: validateAmount,
               })}
             />
-            {errors.quantiteIngredient && errors.quantiteIngredient.message}
+            {errors.ingredientAmount && errors.ingredientAmount.message}
             <select
               name="unit"
               defaultValue=""

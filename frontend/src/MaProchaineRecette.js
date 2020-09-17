@@ -50,7 +50,7 @@ function MaProchaineRecette() {
             id: ingredientFrigo.id,
             name: ingredientFrigo.ingredient,
             expirationDate: new Date(ingredientFrigo.expiration_date),
-            quantite: ingredientFrigo.quantite,
+            amount: ingredientFrigo.amount,
             unit: ingredientFrigo.unit,
           };
         });

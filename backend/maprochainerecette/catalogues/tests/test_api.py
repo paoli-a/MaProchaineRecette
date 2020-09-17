@@ -118,7 +118,7 @@ def test_recettes_list_has_correct_fields(recette):
     assertContains(response, recette.duree)
     assert len(recette_data["ingredients"]) == 10
     assert set(recette_data["ingredients"][0].keys(
-    )) == {"ingredient", "quantite", "unit"}
+    )) == {"ingredient", "amount", "unit"}
     assert recette_data["ingredients"][0]["ingredient"] == recette.ingredients.first(
     ).ingredient.name
     assert recette_data["ingredients"][0]["unit"] == recette.ingredients.first(
@@ -141,7 +141,7 @@ def test_adding_recette_deserializes_correctly_all_fields():
     assert recette_added.duree == datetime.timedelta(seconds=180)
     assert recette_added.ingredients.count() == 1
     assert recette_added.ingredients.first().ingredient.name == "deuxième ingrédient"
-    assert recette_added.ingredients.first().quantite == Decimal('10.00')
+    assert recette_added.ingredients.first().amount == Decimal('10.00')
     assert recette_added.ingredients.first().unit.abbreviation == "kg"
     assert recette_added.categories.count() == 1
     assert recette_added.categories.first().name == "dessert"
@@ -159,7 +159,7 @@ def _add_recette():
                     "duree": "00:03:00",
                     "ingredients": [{
                         "ingredient": "deuxième ingrédient",
-                        "quantite": "10.0",
+                        "amount": "10.0",
                         "unit": "kg"
                     }],
                     "categories": ["dessert"]}

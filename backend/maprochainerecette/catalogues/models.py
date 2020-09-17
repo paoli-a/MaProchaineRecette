@@ -24,7 +24,7 @@ class Recette(TimeStampedModel):
 
 class IngredientRecette(TimeStampedModel):
     ingredient = models.ForeignKey(Ingredient, on_delete=models.PROTECT)
-    quantite = models.DecimalField(max_digits=10, decimal_places=2)
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
     unit = models.ForeignKey(Unit, on_delete=models.PROTECT)
 
     def __str__(self) -> str:

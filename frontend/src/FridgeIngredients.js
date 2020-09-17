@@ -33,7 +33,7 @@ function FridgeIngredients({ ingredients, possibleIngredients, totalUnits }) {
     const newIngredient = {
       ingredient: data.ingredientName,
       expiration_date: data.expirationDate,
-      quantite: data.quantiteIngredient + "",
+      amount: data.ingredientAmount + "",
       unit: data.unit,
     };
     axios
@@ -43,7 +43,7 @@ function FridgeIngredients({ ingredients, possibleIngredients, totalUnits }) {
           id: data.id,
           name: data.ingredient,
           expirationDate: new Date(data.expiration_date),
-          quantite: data.quantite,
+          amount: data.amount,
           unit: data.unit,
         };
         const ingredientsListUpdated = ingredientsList.slice();
@@ -70,7 +70,7 @@ function FridgeIngredients({ ingredients, possibleIngredients, totalUnits }) {
     return (
       <React.Fragment key={ingredient.id}>
         <li key={ingredient.id}>
-          - {ingredient.name} : {ingredient.quantite} {ingredient.unit}.
+          - {ingredient.name} : {ingredient.amount} {ingredient.unit}.
           Expiration : {formatedDate}.
           <button onClick={() => handleSupprClick(ingredient.id)}>
             Supprimer
@@ -109,7 +109,7 @@ FridgeIngredients.propTypes = {
       id: PropTypes.number.isRequired,
       name: PropTypes.string.isRequired,
       expirationDate: PropTypes.instanceOf(Date),
-      quantite: PropTypes.string.isRequired,
+      amount: PropTypes.string.isRequired,
       unit: PropTypes.string.isRequired,
     })
   ).isRequired,

@@ -73,7 +73,7 @@ class RecetteFactory(factory.django.DjangoModelFactory):
 
 class IngredientRecetteFactory(factory.django.DjangoModelFactory):
     ingredient = factory.SubFactory(IngredientFactory)
-    quantite = factory.fuzzy.FuzzyDecimal(0)
+    amount = factory.fuzzy.FuzzyDecimal(0)
     unit = factory.SubFactory(UnitFactory)
 
     class Meta:
