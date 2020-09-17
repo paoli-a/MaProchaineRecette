@@ -32,7 +32,7 @@ function FridgeIngredients({ ingredients, possibleIngredients, totalUnits }) {
   const handleSubmit = (data) => {
     const newIngredient = {
       ingredient: data.ingredientName,
-      date_peremption: data.datePeremption,
+      expiration_date: data.expirationDate,
       quantite: data.quantiteIngredient + "",
       unit: data.unit,
     };
@@ -42,7 +42,7 @@ function FridgeIngredients({ ingredients, possibleIngredients, totalUnits }) {
         const newData = {
           id: data.id,
           name: data.ingredient,
-          datePeremption: new Date(data.date_peremption),
+          expirationDate: new Date(data.expiration_date),
           quantite: data.quantite,
           unit: data.unit,
         };
@@ -66,7 +66,7 @@ function FridgeIngredients({ ingredients, possibleIngredients, totalUnits }) {
   }
 
   const ingredientElement = ingredientsList.map((ingredient) => {
-    const formatedDate = ingredient.datePeremption.toLocaleDateString();
+    const formatedDate = ingredient.expirationDate.toLocaleDateString();
     return (
       <React.Fragment key={ingredient.id}>
         <li key={ingredient.id}>
@@ -108,7 +108,7 @@ FridgeIngredients.propTypes = {
     PropTypes.shape({
       id: PropTypes.number.isRequired,
       name: PropTypes.string.isRequired,
-      datePeremption: PropTypes.instanceOf(Date),
+      expirationDate: PropTypes.instanceOf(Date),
       quantite: PropTypes.string.isRequired,
       unit: PropTypes.string.isRequired,
     })

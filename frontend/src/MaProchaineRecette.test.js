@@ -69,7 +69,7 @@ beforeEach(() => {
     {
       id: 1,
       ingredient: "épinard",
-      date_peremption: "2020-04-15",
+      expiration_date: "2020-04-15",
       quantite: "60",
       unit: "g",
     },

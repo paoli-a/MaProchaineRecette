@@ -11,7 +11,7 @@ class IngredientFrigo(TimeStampedModel):
     ingredient = models.ForeignKey(Ingredient, on_delete=models.PROTECT)
     quantite = models.DecimalField(max_digits=10, decimal_places=2)
     unit = models.ForeignKey(Unit, on_delete=models.PROTECT)
-    date_peremption = models.DateField("Date de péremption")
+    expiration_date = models.DateField("Date de péremption")
 
     def __str__(self) -> str:
         return self.ingredient.name
@@ -25,7 +25,7 @@ class IngredientFrigo(TimeStampedModel):
         """
         if not self.pk:
             mergeable = IngredientFrigo.objects.filter(ingredient=self.ingredient,
-                                                       date_peremption=self.date_peremption,
+                                                       expiration_date=self.expiration_date,
                                                        unit__type=self.unit.type).first()
             if mergeable:
                 self._update_mergeable_with_new_ingredient(mergeable)

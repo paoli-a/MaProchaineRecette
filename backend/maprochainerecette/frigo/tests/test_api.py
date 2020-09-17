@@ -47,8 +47,8 @@ def test_ingredientsFrigo_list_has_correct_fields(ingredientFrigo):
     ingredientFrigo_data = response.data[0]
     assert ingredientFrigo_data["id"] == ingredientFrigo.id
     assert ingredientFrigo_data["ingredient"] == ingredientFrigo.ingredient.name
-    assert ingredientFrigo_data["date_peremption"] == str(
-        ingredientFrigo.date_peremption)
+    assert ingredientFrigo_data["expiration_date"] == str(
+        ingredientFrigo.expiration_date)
     assert ingredientFrigo_data["quantite"] == str(ingredientFrigo.quantite)
     assert ingredientFrigo_data["unit"] == ingredientFrigo.unit.abbreviation
 
@@ -59,7 +59,7 @@ def test_adding_ingredientFrigo():
     request_data = {'ingredient': "premier ingrédient",
                     'quantite': "10.00",
                     'unit': "g",
-                    'date_peremption': "2020-07-20"
+                    'expiration_date': "2020-07-20"
                     }
     url = _get_ingredientsFrigo_list_absolute_url()
     request_post = APIRequestFactory().post(url, request_data, format='json')
@@ -75,7 +75,7 @@ def test_adding_ingredientFrigo_deserializes_correctly_all_fields():
     UnitFactory(abbreviation="g")
     request_data = {'ingredient': "deuxieme ingrédient",
                     'quantite': Decimal('10.00'),
-                    'date_peremption': datetime.date(2020, 7, 20),
+                    'expiration_date': datetime.date(2020, 7, 20),
                     'unit': "g"
                     }
     url = _get_ingredientsFrigo_list_absolute_url()
@@ -86,7 +86,7 @@ def test_adding_ingredientFrigo_deserializes_correctly_all_fields():
     ingredient = IngredientFrigo.objects.first()
     assert isinstance(ingredient.id, int)
     assert ingredient.quantite == Decimal('10.00')
-    assert ingredient.date_peremption == datetime.date(2020, 7, 20)
+    assert ingredient.expiration_date == datetime.date(2020, 7, 20)
     assert ingredient.ingredient.name == "deuxieme ingrédient"
     assert ingredient.unit.abbreviation == "g"
 
@@ -98,7 +98,7 @@ def test_adding_mergeable_ingredientFrigo_returns_correct_data():
     UnitFactory(abbreviation="kg", rapport=1000, type=unit_type)
     request_data = {'ingredient': "deuxieme ingrédient",
                     'quantite': '10.00',
-                    'date_peremption': "2020-07-20",
+                    'expiration_date': "2020-07-20",
                     'unit': "g"
                     }
     url = _get_ingredientsFrigo_list_absolute_url()
@@ -107,11 +107,11 @@ def test_adding_mergeable_ingredientFrigo_returns_correct_data():
         {'post': 'create'})(request_post)
     assert response_post.status_code == 201
     expected_response = {'id': 1, 'ingredient': 'deuxieme ingrédient',
-                         'date_peremption': '2020-07-20', 'quantite': '10.00', 'unit': 'g'}
+                         'expiration_date': '2020-07-20', 'quantite': '10.00', 'unit': 'g'}
     assert response_post.data == expected_response
     request_data_mergeable = {'ingredient': "deuxieme ingrédient",
                               'quantite': '0.10',
-                              'date_peremption': "2020-07-20",
+                              'expiration_date': "2020-07-20",
                               'unit': "kg"
                               }
     url = _get_ingredientsFrigo_list_absolute_url()
@@ -120,7 +120,7 @@ def test_adding_mergeable_ingredientFrigo_returns_correct_data():
         {'post': 'create'})(request_post)
     assert response_post.status_code == 201
     expected_response = {'id': 1, 'ingredient': 'deuxieme ingrédient',
-                         'date_peremption': '2020-07-20', 'quantite': '0.11', 'unit': 'kg'}
+                         'expiration_date': '2020-07-20', 'quantite': '0.11', 'unit': 'kg'}
     assert response_post.data == expected_response
 
 

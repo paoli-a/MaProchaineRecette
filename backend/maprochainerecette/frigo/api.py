@@ -80,7 +80,7 @@ class RecettesFrigo(APIView):
         for fridge_ingredient in IngredientFrigo.objects.all():
             name = fridge_ingredient.ingredient.name
             unit_type = fridge_ingredient.unit.type.name
-            date = fridge_ingredient.date_peremption
+            date = fridge_ingredient.expiration_date
             converted_quantity = fridge_ingredient.quantite * fridge_ingredient.unit.rapport
             if name not in data:
                 data[name] = {unit_type: {

@@ -12,7 +12,7 @@ class IngredientFrigoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = IngredientFrigo
-        fields = ["id", "ingredient", "date_peremption", "quantite", "unit"]
+        fields = ["id", "ingredient", "expiration_date", "quantite", "unit"]
 
     def create(self, validated_data):
         """Create the fridge ingredient and solve the bug when the ingredient is merged.
@@ -26,7 +26,7 @@ class IngredientFrigoSerializer(serializers.ModelSerializer):
         if ingredient.id is None:
             ingredient = IngredientFrigo.objects.filter(
                 ingredient=ingredient.ingredient,
-                date_peremption=ingredient.date_peremption,
+                expiration_date=ingredient.expiration_date,
                 unit__type=ingredient.unit.type).first()
         return ingredient
 

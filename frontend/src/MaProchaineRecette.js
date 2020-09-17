@@ -49,7 +49,7 @@ function MaProchaineRecette() {
           return {
             id: ingredientFrigo.id,
             name: ingredientFrigo.ingredient,
-            datePeremption: new Date(ingredientFrigo.date_peremption),
+            expirationDate: new Date(ingredientFrigo.expiration_date),
             quantite: ingredientFrigo.quantite,
             unit: ingredientFrigo.unit,
           };

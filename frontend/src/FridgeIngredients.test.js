@@ -37,14 +37,14 @@ beforeEach(() => {
     {
       id: 1,
       name: "épinard",
-      datePeremption: new Date(2100, 4, 15),
+      expirationDate: new Date(2100, 4, 15),
       quantite: "60",
       unit: "g",
     },
     {
       id: 2,
       name: "céleri rave",
-      datePeremption: new Date(2100, 3, 13),
+      expirationDate: new Date(2100, 3, 13),
       quantite: "1",
       unit: "kg",
     },
@@ -78,7 +78,7 @@ describe("correct display of an ingredient", () => {
       />
     );
     const ingredient2 = getByText("céleri rave", { exact: false });
-    const expectedDate = fridgeIngredients[1].datePeremption.toLocaleDateString();
+    const expectedDate = fridgeIngredients[1].expirationDate.toLocaleDateString();
     expect(ingredient2.textContent).toContain(expectedDate);
   });
 
@@ -326,7 +326,7 @@ was not successful on backend side`, async () => {
       data: {
         id: 3,
         ingredient: "Carottes",
-        date_peremption: "2100-04-03",
+        expiration_date: "2100-04-03",
         quantite: 28.15,
         unit: "kg",
       },
@@ -410,7 +410,7 @@ was not successful on backend side`, async () => {
       data: {
         id: 3,
         ingredient: value[0],
-        date_peremption: value[2],
+        expiration_date: value[2],
         quantite: value[1] + "",
         unit: value[3],
       },

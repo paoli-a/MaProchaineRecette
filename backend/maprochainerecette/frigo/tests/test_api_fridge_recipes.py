@@ -87,9 +87,9 @@ def test_get_fridge_recipes_returns_recipes_for_which_ingredients_are_splitted()
     carottes, tomates, _, gramme, _ = _dataset_for_fridge_recipes_tests()
     navet = IngredientFactory(name="Navet")
     IngredientFrigoFactory(ingredient=navet, quantite=60,
-                           unit=gramme, date_peremption=datetime.date(2030, 1, 1))
+                           unit=gramme, expiration_date=datetime.date(2030, 1, 1))
     IngredientFrigoFactory(ingredient=navet, quantite=40,
-                           unit=gramme, date_peremption=datetime.date(2030, 2, 2))
+                           unit=gramme, expiration_date=datetime.date(2030, 2, 2))
     ingredients_recettes1 = [IngredientRecetteFactory(ingredient=carottes, quantite=500, unit=gramme),
                              IngredientRecetteFactory(
                                  ingredient=tomates, quantite=50, unit=gramme),
@@ -112,9 +112,9 @@ def test_get_fridge_recipes_returns_recipes_for_which_an_ingredient_has_differen
     kg = UnitFactory(abbreviation="kg", rapport=1000, type=masse)
     navet = IngredientFactory(name="Navet")
     IngredientFrigoFactory(ingredient=navet, quantite=2,
-                           unit=kg, date_peremption=datetime.date(2030, 1, 1))
+                           unit=kg, expiration_date=datetime.date(2030, 1, 1))
     IngredientFrigoFactory(ingredient=navet, quantite=400,
-                           unit=gramme, date_peremption=datetime.date(2030, 2, 2))
+                           unit=gramme, expiration_date=datetime.date(2030, 2, 2))
     ingredients_recettes1 = [IngredientRecetteFactory(ingredient=carottes, quantite=500, unit=gramme),
                              IngredientRecetteFactory(
                                  ingredient=tomates, quantite=50, unit=gramme),
@@ -166,7 +166,7 @@ def test_get_fridge_recipes_returns_correctly_ordered_recipes():
     carottes, tomates, oignons, gramme, _ = _dataset_for_fridge_recipes_tests()
     navet = IngredientFactory(name="Navet")
     IngredientFrigoFactory(ingredient=navet, quantite=100,
-                           unit=gramme, date_peremption=datetime.date(2132, 1, 1))
+                           unit=gramme, expiration_date=datetime.date(2132, 1, 1))
     ingredients_recettes1 = [IngredientRecetteFactory(ingredient=oignons, quantite=50, unit=gramme),
                              IngredientRecetteFactory(ingredient=navet, quantite=50, unit=gramme)]
     RecetteFactory(ingredients=ingredients_recettes1, titre="Recette 1")
@@ -242,9 +242,9 @@ def _dataset_for_fridge_recipes_tests():
     tomates = IngredientFactory(name="Tomates")
     oignons = IngredientFactory(name="Oignons")
     IngredientFrigoFactory(ingredient=carottes, quantite=500,
-                           unit=gramme, date_peremption=datetime.date(2130, 1, 1))
+                           unit=gramme, expiration_date=datetime.date(2130, 1, 1))
     IngredientFrigoFactory(ingredient=tomates, quantite=50,
-                           unit=gramme, date_peremption=datetime.date(2130, 2, 2))
+                           unit=gramme, expiration_date=datetime.date(2130, 2, 2))
     IngredientFrigoFactory(ingredient=oignons, quantite=60,
-                           unit=gramme, date_peremption=datetime.date(2131, 1, 1))
+                           unit=gramme, expiration_date=datetime.date(2131, 1, 1))
     return carottes, tomates, oignons, gramme, masse

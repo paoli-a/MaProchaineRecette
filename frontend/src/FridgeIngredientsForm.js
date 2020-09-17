@@ -64,7 +64,7 @@ function FridgeIngredientsForm({ onSubmit, possibleIngredients, totalUnits }) {
   const validateDate = () => {
     const currentDate = new Date();
     currentDate.setHours(0, 0, 0, 0);
-    const inputDate = new Date(getValues().datePeremption);
+    const inputDate = new Date(getValues().expirationDate);
     inputDate.setHours(0, 0, 0, 0);
     if (currentDate.getTime() > inputDate.getTime()) {
       return "L'ingrédient est déjà perimé";
@@ -121,17 +121,17 @@ function FridgeIngredientsForm({ onSubmit, possibleIngredients, totalUnits }) {
           </span>
         </p>
         <p>
-          <label htmlFor="datePeremption">Date de péremption : </label>
+          <label htmlFor="expirationDate">Date de péremption : </label>
           <input
             type="date"
-            name="datePeremption"
-            id="datePeremption"
+            name="expirationDate"
+            id="expirationDate"
             ref={register({
               required: "Ce champ est obligatoire",
               validate: validateDate,
             })}
           />
-          {errors.datePeremption && errors.datePeremption.message}
+          {errors.expirationDate && errors.expirationDate.message}
         </p>
         <p>
           <input type="submit" value="Confirmer" />
