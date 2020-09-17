@@ -4,14 +4,14 @@ from django.db import models
 from model_utils.models import TimeStampedModel
 
 from units.models import Unit
-from catalogues.models import Ingredient
+from catalogs.models import Ingredient
 
 
-class IngredientFrigo(TimeStampedModel):
+class FridgeIngredient(TimeStampedModel):
     ingredient = models.ForeignKey(Ingredient, on_delete=models.PROTECT)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     unit = models.ForeignKey(Unit, on_delete=models.PROTECT)
-    expiration_date = models.DateField("Date de péremption")
+    expiration_date = models.DateField("Expiration date")
 
     def __str__(self) -> str:
         return self.ingredient.name
@@ -24,15 +24,15 @@ class IngredientFrigo(TimeStampedModel):
 
         """
         if not self.pk:
-            mergeable = IngredientFrigo.objects.filter(ingredient=self.ingredient,
+            mergeable = FridgeIngredient.objects.filter(ingredient=self.ingredient,
                                                        expiration_date=self.expiration_date,
                                                        unit__type=self.unit.type).first()
             if mergeable:
                 self._update_mergeable_with_new_ingredient(mergeable)
             else:
-                super(IngredientFrigo, self).save(*args, **kwargs)
+                super(FridgeIngredient, self).save(*args, **kwargs)
         else:
-            super(IngredientFrigo, self).save(*args, **kwargs)
+            super(FridgeIngredient, self).save(*args, **kwargs)
 
     def _update_mergeable_with_new_ingredient(self, mergeable):
         if mergeable.unit.rapport > self.unit.rapport:

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from catalogues.models import Ingredient, Recette, IngredientRecette, Categorie
+from catalogs.models import Ingredient, Recipe, RecipeIngredient, Category
 from units.models import Unit
 
 
@@ -10,45 +10,45 @@ class IngredientSerializer(serializers.ModelSerializer):
         fields = ["name"]
 
 
-class CategorieSerializer(serializers.ModelSerializer):
+class CategorySerializer(serializers.ModelSerializer):
     class Meta:
-        model = Categorie
+        model = Category
         fields = ["name"]
 
     def to_representation(self, value) -> str:
         return value.name
 
 
-class IngredientRecetteSerializer(serializers.ModelSerializer):
+class RecipeIngredientSerializer(serializers.ModelSerializer):
     unit = serializers.SlugRelatedField(
         queryset=Unit.objects.all(), slug_field="abbreviation")
     ingredient = serializers.SlugRelatedField(
         queryset=Ingredient.objects.all(), slug_field="name")
 
     class Meta:
-        model = IngredientRecette
+        model = RecipeIngredient
         fields = ["ingredient", "amount",
                   "unit"]
 
 
-class RecetteSerializer(serializers.ModelSerializer):
-    ingredients = IngredientRecetteSerializer(many=True)
+class RecipeSerializer(serializers.ModelSerializer):
+    ingredients = RecipeIngredientSerializer(many=True)
     categories = serializers.SlugRelatedField(many=True,
-                                              queryset=Categorie.objects.all(), slug_field="name")
+                                              queryset=Category.objects.all(), slug_field="name")
 
     class Meta:
-        model = Recette
-        fields = ["id", "titre", "description",
-                  "duree", "ingredients", "categories"]
+        model = Recipe
+        fields = ["id", "title", "description",
+                  "duration", "ingredients", "categories"]
 
     def create(self, validated_data):
         ingredients_data = validated_data.pop('ingredients')
         categories_data = validated_data.pop('categories')
-        recette = Recette.objects.create(**validated_data)
+        recipe = Recipe.objects.create(**validated_data)
         for categorie_data in categories_data:
-            recette.categories.add(categorie_data)
+            recipe.categories.add(categorie_data)
         for ingredient_data in ingredients_data:
-            ingredient = IngredientRecette.objects.create(
+            ingredient = RecipeIngredient.objects.create(
                 **ingredient_data)
-            recette.ingredients.add(ingredient)
-        return recette
+            recipe.ingredients.add(ingredient)
+        return recipe

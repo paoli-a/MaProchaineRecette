@@ -1,7 +1,7 @@
 from rest_framework import viewsets, permissions, authentication
 
-from catalogues.models import Ingredient, Recette, Categorie
-from catalogues.serializers import IngredientSerializer, RecetteSerializer, CategorieSerializer
+from catalogs.models import Ingredient, Recipe, Category
+from catalogs.serializers import IngredientSerializer, RecipeSerializer, CategorySerializer
 
 
 class IngredientViewSet(viewsets.ModelViewSet):
@@ -16,23 +16,23 @@ class IngredientViewSet(viewsets.ModelViewSet):
     lookup_field = 'name'
 
 
-class RecetteViewSet(viewsets.ModelViewSet):
-    queryset = Recette.objects.all()
+class RecipeViewSet(viewsets.ModelViewSet):
+    queryset = Recipe.objects.all()
     permission_classes = [
         permissions.AllowAny
     ]
     authentication_classes = [
         authentication.TokenAuthentication
     ]
-    serializer_class = RecetteSerializer
+    serializer_class = RecipeSerializer
 
 
-class CategorieViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = Categorie.objects.all()
+class CategoryViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Category.objects.all()
     permission_classes = [
         permissions.AllowAny
     ]
     authentication_classes = [
         authentication.TokenAuthentication
     ]
-    serializer_class = CategorieSerializer
+    serializer_class = CategorySerializer

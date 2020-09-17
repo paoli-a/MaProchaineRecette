@@ -1,17 +1,17 @@
 from rest_framework import serializers
-from frigo.models import IngredientFrigo
-from catalogues.models import Ingredient, Unit, Recette, Categorie
-from catalogues.serializers import IngredientRecetteSerializer
+from fridge.models import FridgeIngredient
+from catalogs.models import Ingredient, Unit, Recipe, Category
+from catalogs.serializers import RecipeIngredientSerializer
 
 
-class IngredientFrigoSerializer(serializers.ModelSerializer):
+class FridgeIngredientSerializer(serializers.ModelSerializer):
     ingredient = serializers.SlugRelatedField(
         queryset=Ingredient.objects.all(), slug_field="name")
     unit = serializers.SlugRelatedField(
         queryset=Unit.objects.all(), slug_field="abbreviation")
 
     class Meta:
-        model = IngredientFrigo
+        model = FridgeIngredient
         fields = ["id", "ingredient", "expiration_date", "amount", "unit"]
 
     def create(self, validated_data):
@@ -22,19 +22,19 @@ class IngredientFrigoSerializer(serializers.ModelSerializer):
         To solve that, we look for the updated ingredient and return it.
 
         """
-        ingredient = IngredientFrigo.objects.create(**validated_data)
+        ingredient = FridgeIngredient.objects.create(**validated_data)
         if ingredient.id is None:
-            ingredient = IngredientFrigo.objects.filter(
+            ingredient = FridgeIngredient.objects.filter(
                 ingredient=ingredient.ingredient,
                 expiration_date=ingredient.expiration_date,
                 unit__type=ingredient.unit.type).first()
         return ingredient
 
 
-class RecetteFrigoSerializer(serializers.ModelSerializer):
-    ingredients = IngredientRecetteSerializer(many=True)
+class RecipeFridgeSerializer(serializers.ModelSerializer):
+    ingredients = RecipeIngredientSerializer(many=True)
     categories = serializers.SlugRelatedField(many=True,
-                                              queryset=Categorie.objects.all(), slug_field="name")
+                                              queryset=Category.objects.all(), slug_field="name")
     unsure_ingredients = serializers.SerializerMethodField()
     priority_ingredients = serializers.SerializerMethodField()
 
@@ -49,7 +49,7 @@ class RecetteFrigoSerializer(serializers.ModelSerializer):
         return None
 
     class Meta:
-        model = Recette
-        fields = ["id", "titre", "description",
-                  "duree", "ingredients", "categories",
+        model = Recipe
+        fields = ["id", "title", "description",
+                  "duration", "ingredients", "categories",
                   "priority_ingredients", "unsure_ingredients"]

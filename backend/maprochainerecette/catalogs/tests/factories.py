@@ -5,7 +5,7 @@ import factory
 import factory.fuzzy
 import pytest
 
-from catalogues.models import Ingredient, Recette, Categorie, IngredientRecette
+from catalogs.models import Ingredient, Recipe, Category, RecipeIngredient
 from units.tests.factories import UnitFactory
 
 
@@ -22,12 +22,12 @@ class IngredientFactory(factory.django.DjangoModelFactory):
 
 
 @pytest.fixture
-def recette():
+def recipe():
     ingredients, categories = [], []
     for _ in range(10):
-        ingredients.append(IngredientRecetteFactory())
+        ingredients.append(RecipeIngredientFactory())
         categories.append(CategoryFactory())
-    return RecetteFactory(ingredients=ingredients, categories=categories)
+    return RecipeFactory(ingredients=ingredients, categories=categories)
 
 
 class FuzzyDuration(factory.fuzzy.BaseFuzzyAttribute):
@@ -46,10 +46,10 @@ class FuzzyDuration(factory.fuzzy.BaseFuzzyAttribute):
         )
 
 
-class RecetteFactory(factory.django.DjangoModelFactory):
-    titre = factory.fuzzy.FuzzyText()
+class RecipeFactory(factory.django.DjangoModelFactory):
+    title = factory.fuzzy.FuzzyText()
     description = factory.fuzzy.FuzzyText()
-    duree = FuzzyDuration()
+    duration = FuzzyDuration()
 
     @factory.post_generation
     def ingredients(self, create, extracted, **kwargs):
@@ -68,20 +68,20 @@ class RecetteFactory(factory.django.DjangoModelFactory):
                 self.categories.add(categorie)
 
     class Meta:
-        model = Recette
+        model = Recipe
 
 
-class IngredientRecetteFactory(factory.django.DjangoModelFactory):
+class RecipeIngredientFactory(factory.django.DjangoModelFactory):
     ingredient = factory.SubFactory(IngredientFactory)
     amount = factory.fuzzy.FuzzyDecimal(0)
     unit = factory.SubFactory(UnitFactory)
 
     class Meta:
-        model = IngredientRecette
+        model = RecipeIngredient
 
 
 class CategoryFactory(factory.django.DjangoModelFactory):
     name = factory.fuzzy.FuzzyText()
 
     class Meta:
-        model = Categorie
+        model = Category

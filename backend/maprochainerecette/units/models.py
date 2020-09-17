@@ -3,7 +3,7 @@ from model_utils.models import TimeStampedModel
 
 
 class Unit(TimeStampedModel):
-    name = models.CharField("Nom de l'unité", max_length=255, unique=True)
+    name = models.CharField("Unit name", max_length=255, unique=True)
     abbreviation = models.CharField(
         "Abbréviation", max_length=255, unique=True)
     rapport = models.DecimalField(max_digits=20, decimal_places=10)
@@ -15,4 +15,4 @@ class Unit(TimeStampedModel):
 
 class UnitType(TimeStampedModel):
     name = models.CharField(
-        "Nature de l'unité (masse, volume ...)", max_length=255, unique=True)
+        "Unit nature (mass, volume ...)", max_length=255, unique=True)

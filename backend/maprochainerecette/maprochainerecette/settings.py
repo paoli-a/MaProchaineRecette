@@ -41,8 +41,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'django_extensions',
     # local apps
-    'catalogues',
-    'frigo',
+    'catalogs',
+    'fridge',
     'units'
 ]
 

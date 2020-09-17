@@ -8,52 +8,52 @@ from pytest_django.asserts import (
 )
 from rest_framework.test import APIRequestFactory
 
-from frigo.api import IngredientFrigoViewSet
-from frigo.models import IngredientFrigo
-from frigo.tests.factories import (
-    IngredientFrigoFactory,
-    ingredientFrigo,
+from fridge.api import FridgeIngredientViewSet
+from fridge.models import FridgeIngredient
+from fridge.tests.factories import (
+    FridgeIngredientFactory,
+    fridgeIngredient,
 )
-from catalogues.tests.factories import IngredientFactory
+from catalogs.tests.factories import IngredientFactory
 from units.tests.factories import UnitFactory, UnitTypeFactory
 
 
 pytestmark = pytest.mark.django_db
 
 
-def test_ingredientFrigo_list_contains_2_ingredients():
-    ingredient1 = IngredientFrigoFactory()
-    ingredient2 = IngredientFrigoFactory()
-    url = _get_ingredientsFrigo_list_absolute_url()
+def test_fridgeIngredient_list_contains_2_ingredients():
+    ingredient1 = FridgeIngredientFactory()
+    ingredient2 = FridgeIngredientFactory()
+    url = _get_fridgeIngredients_list_absolute_url()
     request = APIRequestFactory().get(url)
-    response = IngredientFrigoViewSet.as_view({'get': 'list'})(request)
+    response = FridgeIngredientViewSet.as_view({'get': 'list'})(request)
     assert response.status_code == 200
     assertContains(response, ingredient1.ingredient)
     assertContains(response, ingredient2.ingredient)
 
 
-def _get_ingredientsFrigo_list_absolute_url():
-    view = IngredientFrigoViewSet()
-    view.basename = "ingredients_frigo"
+def _get_fridgeIngredients_list_absolute_url():
+    view = FridgeIngredientViewSet()
+    view.basename = "ingredients_fridge"
     view.request = None
     return view.reverse_action("list")
 
 
-def test_ingredientsFrigo_list_has_correct_fields(ingredientFrigo):
-    url = _get_ingredientsFrigo_list_absolute_url()
+def test_fridgeIngredients_list_has_correct_fields(fridgeIngredient):
+    url = _get_fridgeIngredients_list_absolute_url()
     request = APIRequestFactory().get(url)
-    response = IngredientFrigoViewSet.as_view({'get': 'list'})(request)
+    response = FridgeIngredientViewSet.as_view({'get': 'list'})(request)
     assert len(response.data) == 1
-    ingredientFrigo_data = response.data[0]
-    assert ingredientFrigo_data["id"] == ingredientFrigo.id
-    assert ingredientFrigo_data["ingredient"] == ingredientFrigo.ingredient.name
-    assert ingredientFrigo_data["expiration_date"] == str(
-        ingredientFrigo.expiration_date)
-    assert ingredientFrigo_data["amount"] == str(ingredientFrigo.amount)
-    assert ingredientFrigo_data["unit"] == ingredientFrigo.unit.abbreviation
+    fridgeIngredient_data = response.data[0]
+    assert fridgeIngredient_data["id"] == fridgeIngredient.id
+    assert fridgeIngredient_data["ingredient"] == fridgeIngredient.ingredient.name
+    assert fridgeIngredient_data["expiration_date"] == str(
+        fridgeIngredient.expiration_date)
+    assert fridgeIngredient_data["amount"] == str(fridgeIngredient.amount)
+    assert fridgeIngredient_data["unit"] == fridgeIngredient.unit.abbreviation
 
 
-def test_adding_ingredientFrigo():
+def test_adding_fridgeIngredient():
     IngredientFactory(name="premier ingrédient")
     UnitFactory(abbreviation="g")
     request_data = {'ingredient': "premier ingrédient",
@@ -61,16 +61,16 @@ def test_adding_ingredientFrigo():
                     'unit': "g",
                     'expiration_date': "2020-07-20"
                     }
-    url = _get_ingredientsFrigo_list_absolute_url()
+    url = _get_fridgeIngredients_list_absolute_url()
     request_post = APIRequestFactory().post(url, request_data, format='json')
-    assert IngredientFrigo.objects.count() == 0
-    response_post = IngredientFrigoViewSet.as_view(
+    assert FridgeIngredient.objects.count() == 0
+    response_post = FridgeIngredientViewSet.as_view(
         {'post': 'create'})(request_post)
     assert response_post.status_code == 201
-    assert IngredientFrigo.objects.count() == 1
+    assert FridgeIngredient.objects.count() == 1
 
 
-def test_adding_ingredientFrigo_deserializes_correctly_all_fields():
+def test_adding_fridgeIngredient_deserializes_correctly_all_fields():
     IngredientFactory(name="deuxieme ingrédient")
     UnitFactory(abbreviation="g")
     request_data = {'ingredient': "deuxieme ingrédient",
@@ -78,12 +78,12 @@ def test_adding_ingredientFrigo_deserializes_correctly_all_fields():
                     'expiration_date': datetime.date(2020, 7, 20),
                     'unit': "g"
                     }
-    url = _get_ingredientsFrigo_list_absolute_url()
+    url = _get_fridgeIngredients_list_absolute_url()
     request_post = APIRequestFactory().post(url, request_data)
-    response_post = IngredientFrigoViewSet.as_view(
+    response_post = FridgeIngredientViewSet.as_view(
         {'post': 'create'})(request_post)
     assert response_post.status_code == 201
-    ingredient = IngredientFrigo.objects.first()
+    ingredient = FridgeIngredient.objects.first()
     assert isinstance(ingredient.id, int)
     assert ingredient.amount == Decimal('10.00')
     assert ingredient.expiration_date == datetime.date(2020, 7, 20)
@@ -91,7 +91,7 @@ def test_adding_ingredientFrigo_deserializes_correctly_all_fields():
     assert ingredient.unit.abbreviation == "g"
 
 
-def test_adding_mergeable_ingredientFrigo_returns_correct_data():
+def test_adding_mergeable_fridgeIngredient_returns_correct_data():
     IngredientFactory(name="deuxieme ingrédient")
     unit_type = UnitTypeFactory(name="masse")
     UnitFactory(abbreviation="g", rapport=1, type=unit_type)
@@ -101,9 +101,9 @@ def test_adding_mergeable_ingredientFrigo_returns_correct_data():
                     'expiration_date': "2020-07-20",
                     'unit': "g"
                     }
-    url = _get_ingredientsFrigo_list_absolute_url()
+    url = _get_fridgeIngredients_list_absolute_url()
     request_post = APIRequestFactory().post(url, request_data)
-    response_post = IngredientFrigoViewSet.as_view(
+    response_post = FridgeIngredientViewSet.as_view(
         {'post': 'create'})(request_post)
     assert response_post.status_code == 201
     expected_response = {'id': 1, 'ingredient': 'deuxieme ingrédient',
@@ -114,9 +114,9 @@ def test_adding_mergeable_ingredientFrigo_returns_correct_data():
                               'expiration_date': "2020-07-20",
                               'unit': "kg"
                               }
-    url = _get_ingredientsFrigo_list_absolute_url()
+    url = _get_fridgeIngredients_list_absolute_url()
     request_post = APIRequestFactory().post(url, request_data_mergeable)
-    response_post = IngredientFrigoViewSet.as_view(
+    response_post = FridgeIngredientViewSet.as_view(
         {'post': 'create'})(request_post)
     assert response_post.status_code == 201
     expected_response = {'id': 1, 'ingredient': 'deuxieme ingrédient',
@@ -124,20 +124,20 @@ def test_adding_mergeable_ingredientFrigo_returns_correct_data():
     assert response_post.data == expected_response
 
 
-def test_delete_ingredientFrigo(ingredientFrigo):
-    detail_url = _get_ingredientsFrigo_detail_absolute_url(
-        ingredientFrigo.ingredient)
+def test_delete_fridgeIngredient(fridgeIngredient):
+    detail_url = _get_fridgeIngredients_detail_absolute_url(
+        fridgeIngredient.ingredient)
     request_delete = APIRequestFactory().delete(
         detail_url)
-    assert IngredientFrigo.objects.count() == 1
-    response_delete = IngredientFrigoViewSet.as_view(
-        {'delete': 'destroy'})(request_delete, pk=ingredientFrigo.id)
+    assert FridgeIngredient.objects.count() == 1
+    response_delete = FridgeIngredientViewSet.as_view(
+        {'delete': 'destroy'})(request_delete, pk=fridgeIngredient.id)
     assert response_delete.status_code == 204
-    assert IngredientFrigo.objects.count() == 0
+    assert FridgeIngredient.objects.count() == 0
 
 
-def _get_ingredientsFrigo_detail_absolute_url(id):
-    view = IngredientFrigoViewSet()
-    view.basename = "ingredients_frigo"
+def _get_fridgeIngredients_detail_absolute_url(id):
+    view = FridgeIngredientViewSet()
+    view.basename = "ingredients_fridge"
     view.request = None
     return view.reverse_action("detail", args=[id])

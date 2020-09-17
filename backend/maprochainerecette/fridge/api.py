@@ -5,24 +5,24 @@ from rest_framework import viewsets, permissions, authentication
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-from frigo.models import IngredientFrigo
-from catalogues.models import Recette
-from frigo.serializers import IngredientFrigoSerializer, RecetteFrigoSerializer
+from fridge.models import FridgeIngredient
+from catalogs.models import Recipe
+from fridge.serializers import FridgeIngredientSerializer, RecipeFridgeSerializer
 
 
-class IngredientFrigoViewSet(viewsets.ModelViewSet):
+class FridgeIngredientViewSet(viewsets.ModelViewSet):
     """Provides a CRUD API for fridge ingredients."""
-    queryset = IngredientFrigo.objects.all()
+    queryset = FridgeIngredient.objects.all()
     permission_classes = [
         permissions.AllowAny
     ]
     authentication_classes = [
         authentication.TokenAuthentication
     ]
-    serializer_class = IngredientFrigoSerializer
+    serializer_class = FridgeIngredientSerializer
 
 
-class RecettesFrigo(APIView):
+class FridgeRecipes(APIView):
     authentication_classes = [authentication.TokenAuthentication]
     permission_classes = [permissions.AllowAny]
 
@@ -43,7 +43,7 @@ class RecettesFrigo(APIView):
 
         """
         fridge_ingredients = self._build_fridge_ingredients_data()
-        recipes = Recette.objects.all()
+        recipes = Recipe.objects.all()
         feasible_recipes = []
         unsure_ingredients: Dict[int, list] = {}
         priority_ingredients: Dict[int, Dict[str, Any]] = {}
@@ -66,7 +66,7 @@ class RecettesFrigo(APIView):
                 feasible_recipes.append(recipe)
         feasible_recipes = self._sort_recipes(
             feasible_recipes, priority_ingredients)
-        serializer = RecetteFrigoSerializer(feasible_recipes, many=True, context={
+        serializer = RecipeFridgeSerializer(feasible_recipes, many=True, context={
                                             "unsure_ingredients": unsure_ingredients,
                                             "priority_ingredients": priority_ingredients})
         return Response(serializer.data)
@@ -77,7 +77,7 @@ class RecettesFrigo(APIView):
         # For each ingredient and unit type, we keep only the erliest date
         data: Dict[str, Dict[str, Dict[str, Any]]] = {}
         # {name : {unit_type: {amount or date: ingredient amount or date}}}
-        for fridge_ingredient in IngredientFrigo.objects.all():
+        for fridge_ingredient in FridgeIngredient.objects.all():
             name = fridge_ingredient.ingredient.name
             unit_type = fridge_ingredient.unit.type.name
             date = fridge_ingredient.expiration_date
