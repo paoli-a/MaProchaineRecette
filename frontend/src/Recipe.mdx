@@ -1,0 +1,149 @@
+---
+name: Recipe
+menu: Components
+---
+
+# Recipes
+
+import Recipe from "./Recipe";
+import { Playground, Props } from "docz";
+import Highlighter from "react-highlight-words";
+import "./index.css";
+
+> Ce composant permet d'afficher une recette.
+
+> De manière optionnelle on peut faire en sorte :
+
+- d'afficher un bouton à côté du titre d'une recette, par exemple pour pouvoir la supprimer
+- de n'afficher que le titre et de faire apparaître la totalité de la recette quand on clique sur ce titre.
+
+## Props
+
+<Props of={Recipe} />
+
+## Exemples d'utilisation
+
+<Playground>
+  {() => {
+    const recipe = {
+      id: 1,
+      categories: ["Plat", "Entrée"],
+      title: "Salade de pommes de terre radis",
+      ingredients: [
+        { ingredient: "pommes de terre", amount: "1", unit: "kg" },
+        { ingredient: "oeufs", amount: "3", unit: "pièce(s)" },
+        { ingredient: "vinaigre non balsamique", amount: "1", unit: "cas" },
+        { ingredient: "radis", amount: "2", unit: "botte(s)" },
+        { ingredient: "oignons bottes", amount: "2", unit: "pièce(s)" },
+        { ingredient: "yaourt grec", amount: "1", unit: "pièce(s)" },
+        { ingredient: "mayonnaise", amount: "1", unit: "cas" },
+        { ingredient: "moutarde", amount: "0.5", unit: "cas" },
+        { ingredient: "ail", amount: "1", unit: "gousse(s)" },
+      ],
+      duration: "35 min",
+      description:
+        "Eplucher et couper les patates en rondelles et les cuire à l'eau. Cuire les oeufs durs. Couper les radis en rondelles. Emincer les échalottes et les oignons. Couper les oeufs durs. Mettre le tout dans un saladier et rajouter le vinaigre. Mélanger. Préparer la sauce :  mélanger le yaourt, la mayonnaise, la moutarde, la gousse d'ail rapée. Assaisoner.",
+    };
+    const highlight = (texte) => texte;
+    return <Recipe recipe={recipe} highlight={highlight} />;
+  }}
+</Playground>
+
+### Exemple avec le highlight
+
+<Playground>
+  {() => {
+    const recipe = {
+      id: 1,
+      categories: ["Plat", "Entrée"],
+      title: "Salade de pommes de terre radis",
+      ingredients: [
+        { ingredient: "pommes de terre", amount: "1", unit: "kg" },
+        { ingredient: "oeufs", amount: "3", unit: "pièce(s)" },
+        { ingredient: "vinaigre non balsamique", amount: "1", unit: "cas" },
+        { ingredient: "radis", amount: "2", unit: "botte(s)" },
+        { ingredient: "oignons bottes", amount: "2", unit: "pièce(s)" },
+        { ingredient: "yaourt grec", amount: "1", unit: "pièce(s)" },
+        { ingredient: "mayonnaise", amount: "1", unit: "cas" },
+        { ingredient: "moutarde", amount: "0.5", unit: "cas" },
+        { ingredient: "ail", amount: "1", unit: "gousse(s)" },
+      ],
+      duration: "35 min",
+      description:
+        "Eplucher et couper les patates en rondelles et les cuire à l'eau. Cuire les oeufs durs. Couper les radis en rondelles. Emincer les échalottes et les oignons. Couper les oeufs durs. Mettre le tout dans un saladier et rajouter le vinaigre. Mélanger. Préparer la sauce :  mélanger le yaourt, la mayonnaise, la moutarde, la gousse d'ail rapée. Assaisoner.",
+    };
+    const highlight = (texte) => {
+      return (
+        <Highlighter
+          highlightClassName="searchHighlight"
+          searchWords={["salade", "Epl", "radis"]}
+          textToHighlight={texte}
+        />
+      );
+    };
+    return <Recipe recipe={recipe} highlight={highlight} />;
+  }}
+</Playground>
+
+### Exemple avec le bouton au niveau du titre
+
+<Playground>
+  {() => {
+    const recipe = {
+      id: 1,
+      categories: ["Plat", "Entrée"],
+      title: "Salade de pommes de terre radis",
+      ingredients: [
+        { ingredient: "pommes de terre", amount: "1", unit: "kg" },
+        { ingredient: "oeufs", amount: "3", unit: "pièce(s)" },
+        { ingredient: "vinaigre non balsamique", amount: "1", unit: "cas" },
+        { ingredient: "radis", amount: "2", unit: "botte(s)" },
+        { ingredient: "oignons bottes", amount: "2", unit: "pièce(s)" },
+        { ingredient: "yaourt grec", amount: "1", unit: "pièce(s)" },
+        { ingredient: "mayonnaise", amount: "1", unit: "cas" },
+        { ingredient: "moutarde", amount: "0.5", unit: "cas" },
+        { ingredient: "ail", amount: "1", unit: "gousse(s)" },
+      ],
+      duration: "35 min",
+      description:
+        "Eplucher et couper les patates en rondelles et les cuire à l'eau. Cuire les oeufs durs. Couper les radis en rondelles. Emincer les échalottes et les oignons. Couper les oeufs durs. Mettre le tout dans un saladier et rajouter le vinaigre. Mélanger. Préparer la sauce :  mélanger le yaourt, la mayonnaise, la moutarde, la gousse d'ail rapée. Assaisoner.",
+    };
+    const highlight = (texte) => texte;
+    const button = (
+      <button onClick={() => handleSupprClick(recipe.id)}>X</button>
+    );
+    return (
+      <Recipe recipe={recipe} highlight={highlight} optionalButton={button} />
+    );
+  }}
+</Playground>
+
+### Exemple avec l'affichage au clique sur le titre
+
+<Playground>
+  {() => {
+    const recipe = {
+      id: 1,
+      categories: ["Plat", "Entrée"],
+      title: "Salade de pommes de terre radis",
+      ingredients: [
+        { ingredient: "pommes de terre", amount: "1", unit: "kg" },
+        { ingredient: "oeufs", amount: "3", unit: "pièce(s)" },
+        { ingredient: "vinaigre non balsamique", amount: "1", unit: "cas" },
+        { ingredient: "radis", amount: "2", unit: "botte(s)" },
+        { ingredient: "oignons bottes", amount: "2", unit: "pièce(s)" },
+        { ingredient: "yaourt grec", amount: "1", unit: "pièce(s)" },
+        { ingredient: "mayonnaise", amount: "1", unit: "cas" },
+        { ingredient: "moutarde", amount: "0.5", unit: "cas" },
+        { ingredient: "ail", amount: "1", unit: "gousse(s)" },
+      ],
+      duration: "35 min",
+      description:
+        "Eplucher et couper les patates en rondelles et les cuire à l'eau. Cuire les oeufs durs. Couper les radis en rondelles. Emincer les échalottes et les oignons. Couper les oeufs durs. Mettre le tout dans un saladier et rajouter le vinaigre. Mélanger. Préparer la sauce :  mélanger le yaourt, la mayonnaise, la moutarde, la gousse d'ail rapée. Assaisoner.",
+    };
+    const highlight = (texte) => texte;
+    return (
+      <Recipe recipe={recipe} highlight={highlight} activateClick={true} />
+    );
+  }}
+</Playground>

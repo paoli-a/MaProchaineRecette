@@ -5,38 +5,33 @@ menu: Components
 
 # IngredientsList
 
-import IngredientsList from "./IngredientsList"
-import { Playground, Props } from 'docz'
+import IngredientsList from "./IngredientsList";
+import { Playground, Props } from "docz";
 import Highlighter from "react-highlight-words";
 
 > Ce composant permet d'afficher la liste des ingrédients nécessaires avec leur quantité correspondante pour une recette donnée.
 
 ## Props
-<Props of={IngredientsList} />
 
+<Props of={IngredientsList} />
 
 ## Exemples d'utilisation
 
 <Playground>
   {() => {
     const ingredients = [
-      { ingredient: "pommes de terre", quantite: "1", unite: "kg" },
-      { ingredient: "oeufs", quantite: "3", unite: "pièce(s)" },
-      { ingredient: "vinaigre non balsamique", quantite: "1", unite: "cas" },
-      { ingredient: "radis", quantite: "2", unite: "botte(s)" },
-      { ingredient: "oignons bottes", quantite: "2", unite: "pièce(s)" },
-      { ingredient: "yaourt grec", quantite: "1", unite: "pièce(s)" },
-      { ingredient: "mayonnaise", quantite: "1", unite: "cas" },
-      { ingredient: "moutarde", quantite: "0.5", unite: "cas" },
-      { ingredient: "ail", quantite: "1", unite: "gousse(s)" },
+      { ingredient: "pommes de terre", amount: "1", unit: "kg" },
+      { ingredient: "oeufs", amount: "3", unit: "pièce(s)" },
+      { ingredient: "vinaigre non balsamique", amount: "1", unit: "cas" },
+      { ingredient: "radis", amount: "2", unit: "botte(s)" },
+      { ingredient: "oignons bottes", amount: "2", unit: "pièce(s)" },
+      { ingredient: "yaourt grec", amount: "1", unit: "pièce(s)" },
+      { ingredient: "mayonnaise", amount: "1", unit: "cas" },
+      { ingredient: "moutarde", amount: "0.5", unit: "cas" },
+      { ingredient: "ail", amount: "1", unit: "gousse(s)" },
     ];
-    const highlight= (texte) => texte;
-    return (
-      <IngredientsList
-        ingredients={ingredients}
-        highlight={highlight}
-      />
-    )
+    const highlight = (texte) => texte;
+    return <IngredientsList ingredients={ingredients} highlight={highlight} />;
   }}
 </Playground>
 
@@ -45,15 +40,15 @@ import Highlighter from "react-highlight-words";
 <Playground>
   {() => {
     const ingredients = [
-      { ingredient: "pommes de terre", quantite: "1", unite: "kg" },
-      { ingredient: "oeufs", quantite: "3", unite: "pièce(s)" },
-      { ingredient: "vinaigre non balsamique", quantite: "1", unite: "cas" },
-      { ingredient: "radis", quantite: "2", unite: "botte(s)" },
-      { ingredient: "oignons bottes", quantite: "2", unite: "pièce(s)" },
-      { ingredient: "yaourt grec", quantite: "1", unite: "pièce(s)" },
-      { ingredient: "mayonnaise", quantite: "1", unite: "cas" },
-      { ingredient: "moutarde", quantite: "0.5", unite: "cas" },
-      { ingredient: "ail", quantite: "1", unite: "gousse(s)" },
+      { ingredient: "pommes de terre", amount: "1", unit: "kg" },
+      { ingredient: "oeufs", amount: "3", unit: "pièce(s)" },
+      { ingredient: "vinaigre non balsamique", amount: "1", unit: "cas" },
+      { ingredient: "radis", amount: "2", unit: "botte(s)" },
+      { ingredient: "oignons bottes", amount: "2", unit: "pièce(s)" },
+      { ingredient: "yaourt grec", amount: "1", unit: "pièce(s)" },
+      { ingredient: "mayonnaise", amount: "1", unit: "cas" },
+      { ingredient: "moutarde", amount: "0.5", unit: "cas" },
+      { ingredient: "ail", amount: "1", unit: "gousse(s)" },
     ];
     const highlight = (texte) => {
       return (
@@ -64,30 +59,24 @@ import Highlighter from "react-highlight-words";
         />
       );
     };
-    return (
-      <IngredientsList
-        ingredients={ingredients}
-        highlight={highlight}
-      />
-    )
+    return <IngredientsList ingredients={ingredients} highlight={highlight} />;
   }}
 </Playground>
-
 
 ### Exemple avec un ingrédient prioritaire et des ingrédients non surs.
 
 <Playground>
   {() => {
     const ingredients = [
-      { ingredient: "pommes de terre", quantite: "1", unite: "kg" },
-      { ingredient: "oeufs", quantite: "3", unite: "pièce(s)" },
-      { ingredient: "vinaigre non balsamique", quantite: "1", unite: "cas" },
-      { ingredient: "radis", quantite: "2", unite: "botte(s)" },
-      { ingredient: "oignons bottes", quantite: "2", unite: "pièce(s)" },
-      { ingredient: "yaourt grec", quantite: "1", unite: "pièce(s)" },
-      { ingredient: "mayonnaise", quantite: "1", unite: "cas" },
-      { ingredient: "moutarde", quantite: "0.5", unite: "cas" },
-      { ingredient: "ail", quantite: "1", unite: "gousse(s)" },
+      { ingredient: "pommes de terre", amount: "1", unit: "kg" },
+      { ingredient: "oeufs", amount: "3", unit: "pièce(s)" },
+      { ingredient: "vinaigre non balsamique", amount: "1", unit: "cas" },
+      { ingredient: "radis", amount: "2", unit: "botte(s)" },
+      { ingredient: "oignons bottes", amount: "2", unit: "pièce(s)" },
+      { ingredient: "yaourt grec", amount: "1", unit: "pièce(s)" },
+      { ingredient: "mayonnaise", amount: "1", unit: "cas" },
+      { ingredient: "moutarde", amount: "0.5", unit: "cas" },
+      { ingredient: "ail", amount: "1", unit: "gousse(s)" },
     ];
     priorityIngredients = ["mayonnaise"];
     unsureIngredients = ["radis", "ail"];
@@ -97,6 +86,6 @@ import Highlighter from "react-highlight-words";
         priorityIngredients={priorityIngredients}
         unsureIngredients={unsureIngredients}
       />
-    )
+    );
   }}
 </Playground>

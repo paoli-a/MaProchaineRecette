@@ -1,0 +1,102 @@
+fieldset {
+  border: 0;
+}
+
+#CatalogIngredients > form {
+  margin-bottom: 8%;
+}
+
+#CatalogIngredients ul {
+  padding-inline-start: 23px;
+}
+
+#CatalogIngredients li {
+  padding-bottom: 1%;
+}
+
+#CatalogIngredients button {
+  margin-left: 2%;
+}
+
+#ingredientForm p {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+#AddCatalogIngredient fieldset {
+  padding-block-end: 0%;
+}
+
+#AddCatalogIngredient legend {
+  margin-bottom: 3%;
+  text-decoration: underline;
+}
+
+#ingredientForm label {
+  margin-right: 5%;
+  margin-bottom: 2%;
+}
+
+#ingredientForm p > input:not([type="submit"]) {
+  flex: 1;
+}
+
+#ingredientForm input[type="submit"] {
+  margin-left: auto;
+  margin-top: 3%;
+}
+
+#ComponentCatalogIngredients h1 {
+  margin-top: 80px;
+}
+
+#AddCatalogIngredient {
+  border: 1px solid;
+  padding: 1% 0%;
+}
+
+@media (min-width: 948px) {
+  #ComponentCatalogIngredients {
+    display: grid;
+    grid-template-columns: minmax(420px, 500px) minmax(300px, 530px);
+    grid-template-areas:
+      "title title"
+      "ajout catalogue";
+    justify-content: center;
+    row-gap: 70px;
+  }
+
+  #ComponentCatalogIngredients h1 {
+    grid-area: title;
+    margin-left: 10px;
+  }
+
+  #AddCatalogIngredient {
+    grid-area: ajout;
+    margin-left: 10px;
+  }
+
+  #CatalogIngredients {
+    grid-area: catalogue;
+    margin-right: 10px;
+    margin-left: 30%;
+  }
+}
+
+@media (max-width: 947px) {
+  #ComponentCatalogIngredients {
+    display: grid;
+    grid-template-columns: minmax(0px, 460px);
+    grid-template-areas:
+      "title"
+      "ajout"
+      "catalogue";
+    justify-content: center;
+    gap: 80px;
+  }
+
+  #ComponentCatalogIngredients h1 {
+    padding: 0%;
+    margin-bottom: 0;
+  }
+}

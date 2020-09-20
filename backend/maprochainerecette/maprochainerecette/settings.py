@@ -41,9 +41,9 @@ INSTALLED_APPS = [
     'rest_framework',
     'django_extensions',
     # local apps
-    'catalogues',
-    'frigo',
-    'unites'
+    'catalogs',
+    'fridge',
+    'units'
 ]
 
 MIDDLEWARE = [

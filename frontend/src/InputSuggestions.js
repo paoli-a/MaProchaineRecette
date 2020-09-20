@@ -61,7 +61,7 @@ InputSuggestions.propTypes = {
    */
   elements: PropTypes.arrayOf(
     PropTypes.shape({
-      nom: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
     })
   ).isRequired,
   id: PropTypes.string.isRequired,
