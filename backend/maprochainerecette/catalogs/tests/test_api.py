@@ -8,8 +8,14 @@ from pytest_django.asserts import assertContains, assertNotContains
 from rest_framework.test import APIRequestFactory
 from units.tests.factories import UnitFactory, UnitTypeFactory
 
-from .factories import (CategoryFactory, IngredientFactory, RecipeFactory,
-                        RecipeIngredientFactory, ingredient, recipe)
+from .factories import (
+    CategoryFactory,
+    IngredientFactory,
+    RecipeFactory,
+    RecipeIngredientFactory,
+    ingredient,
+    recipe,
+)
 
 pytestmark = pytest.mark.django_db
 

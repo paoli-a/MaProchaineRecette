@@ -1,8 +1,11 @@
 import datetime
 
 import pytest
-from catalogs.tests.factories import (IngredientFactory, RecipeFactory,
-                                      RecipeIngredientFactory)
+from catalogs.tests.factories import (
+    IngredientFactory,
+    RecipeFactory,
+    RecipeIngredientFactory,
+)
 from django.urls import reverse
 from fridge.api import FridgeRecipes
 from fridge.tests.factories import FridgeIngredientFactory

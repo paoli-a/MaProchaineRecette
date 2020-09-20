@@ -3,8 +3,7 @@ from typing import Any, Dict
 
 from catalogs.models import Recipe
 from fridge.models import FridgeIngredient
-from fridge.serializers import (FridgeIngredientSerializer,
-                                RecipeFridgeSerializer)
+from fridge.serializers import FridgeIngredientSerializer, RecipeFridgeSerializer
 from rest_framework import authentication, permissions, viewsets
 from rest_framework.response import Response
 from rest_framework.views import APIView

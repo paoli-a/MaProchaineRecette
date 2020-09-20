@@ -1,6 +1,9 @@
 from catalogs.models import Category, Ingredient, Recipe
-from catalogs.serializers import (CategorySerializer, IngredientSerializer,
-                                  RecipeSerializer)
+from catalogs.serializers import (
+    CategorySerializer,
+    IngredientSerializer,
+    RecipeSerializer,
+)
 from rest_framework import authentication, permissions, viewsets
 
 
