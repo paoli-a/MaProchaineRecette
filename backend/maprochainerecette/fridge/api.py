@@ -29,16 +29,16 @@ class FridgeRecipes(APIView):
     def get(self, request):
         """View to list feasible recipes according to fridge ingredients.
 
-        Recipes are sorted according to the expiration date of the most 
+        Recipes are sorted according to the expiration date of the most
         priority ingredient of each recipe.
 
         If an ingredient needed by a recipe is present in the fridge but
-        with a unit that is not convertible in the unit of the recipe's 
+        with a unit that is not convertible in the unit of the recipe's
         ingredient, the recipe is returned with a field called unsure_ingredient
         that contains the name of these ingredients.
 
-        An additional field called priority_ingredients contains the name 
-        of the most priority ingredient (ie: the ingredient that will expire 
+        An additional field called priority_ingredients contains the name
+        of the most priority ingredient (ie: the ingredient that will expire
         the sooner.) of the recipe.
 
         """

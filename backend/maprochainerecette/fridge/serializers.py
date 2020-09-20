@@ -17,7 +17,7 @@ class FridgeIngredientSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         """Create the fridge ingredient and solve the bug when the ingredient is merged.
 
-        When the ingredient is merged (ie. an old instance is updated), the model 
+        When the ingredient is merged (ie. an old instance is updated), the model
         returns a badly formed object.
         To solve that, we look for the updated ingredient and return it.
 
