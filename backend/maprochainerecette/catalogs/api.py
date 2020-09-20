@@ -1,11 +1,7 @@
-from rest_framework import viewsets, permissions, authentication
-
-from catalogs.models import Ingredient, Recipe, Category
-from catalogs.serializers import (
-    IngredientSerializer,
-    RecipeSerializer,
-    CategorySerializer,
-)
+from catalogs.models import Category, Ingredient, Recipe
+from catalogs.serializers import (CategorySerializer, IngredientSerializer,
+                                  RecipeSerializer)
+from rest_framework import authentication, permissions, viewsets
 
 
 class IngredientViewSet(viewsets.ModelViewSet):

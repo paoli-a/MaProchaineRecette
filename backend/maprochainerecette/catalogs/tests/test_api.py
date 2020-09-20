@@ -2,20 +2,14 @@ import datetime
 from decimal import Decimal
 
 import pytest
+from catalogs.api import CategoryViewSet, IngredientViewSet, RecipeViewSet
+from catalogs.models import Ingredient, Recipe
 from pytest_django.asserts import assertContains, assertNotContains
 from rest_framework.test import APIRequestFactory
-
-from catalogs.api import IngredientViewSet, RecipeViewSet, CategoryViewSet
-from catalogs.models import Recipe, Ingredient
-from .factories import (
-    IngredientFactory,
-    ingredient,
-    RecipeFactory,
-    recipe,
-    RecipeIngredientFactory,
-    CategoryFactory,
-)
 from units.tests.factories import UnitFactory, UnitTypeFactory
+
+from .factories import (CategoryFactory, IngredientFactory, RecipeFactory,
+                        RecipeIngredientFactory, ingredient, recipe)
 
 pytestmark = pytest.mark.django_db
 

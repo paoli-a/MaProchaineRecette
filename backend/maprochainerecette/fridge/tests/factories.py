@@ -3,9 +3,8 @@ import datetime
 import factory
 import factory.fuzzy
 import pytest
-
-from fridge.models import FridgeIngredient
 from catalogs.tests.factories import IngredientFactory
+from fridge.models import FridgeIngredient
 from units.tests.factories import UnitFactory
 
 

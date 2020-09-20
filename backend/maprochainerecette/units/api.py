@@ -1,5 +1,4 @@
-from rest_framework import viewsets, permissions, authentication
-
+from rest_framework import authentication, permissions, viewsets
 from units.models import Unit
 from units.serializers import UnitSerializer
 

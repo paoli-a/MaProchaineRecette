@@ -1,10 +1,9 @@
 from decimal import Decimal
 
+from catalogs.models import Ingredient
 from django.db import models
 from model_utils.models import TimeStampedModel
-
 from units.models import Unit
-from catalogs.models import Ingredient
 
 
 class FridgeIngredient(TimeStampedModel):

@@ -1,19 +1,14 @@
 import datetime
 
 import pytest
-from pytest_django.asserts import assertContains, assertNotContains
-from rest_framework.test import APIRequestFactory
+from catalogs.tests.factories import (IngredientFactory, RecipeFactory,
+                                      RecipeIngredientFactory)
 from django.urls import reverse
-
 from fridge.api import FridgeRecipes
 from fridge.tests.factories import FridgeIngredientFactory
-from catalogs.tests.factories import (
-    IngredientFactory,
-    RecipeFactory,
-    RecipeIngredientFactory,
-)
+from pytest_django.asserts import assertContains, assertNotContains
+from rest_framework.test import APIRequestFactory
 from units.tests.factories import UnitFactory, UnitTypeFactory
-
 
 pytestmark = pytest.mark.django_db
 

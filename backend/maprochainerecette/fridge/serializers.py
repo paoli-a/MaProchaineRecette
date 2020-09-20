@@ -1,7 +1,7 @@
-from rest_framework import serializers
-from fridge.models import FridgeIngredient
-from catalogs.models import Ingredient, Unit, Recipe, Category
+from catalogs.models import Category, Ingredient, Recipe, Unit
 from catalogs.serializers import RecipeIngredientSerializer
+from fridge.models import FridgeIngredient
+from rest_framework import serializers
 
 
 class FridgeIngredientSerializer(serializers.ModelSerializer):

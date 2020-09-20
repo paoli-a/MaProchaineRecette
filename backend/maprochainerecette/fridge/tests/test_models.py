@@ -1,12 +1,11 @@
 import datetime
 
 import pytest
-
-from units.tests.factories import UnitTypeFactory, UnitFactory
 from catalogs.tests.factories import IngredientFactory
 from fridge.models import FridgeIngredient
-from .factories import FridgeIngredientFactory
+from units.tests.factories import UnitFactory, UnitTypeFactory
 
+from .factories import FridgeIngredientFactory
 
 pytestmark = pytest.mark.django_db
 

@@ -1,11 +1,10 @@
-from datetime import timedelta
 import random
+from datetime import timedelta
 
 import factory
 import factory.fuzzy
 import pytest
-
-from catalogs.models import Ingredient, Recipe, Category, RecipeIngredient
+from catalogs.models import Category, Ingredient, Recipe, RecipeIngredient
 from units.tests.factories import UnitFactory
 
 

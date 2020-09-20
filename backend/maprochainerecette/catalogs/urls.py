@@ -1,7 +1,5 @@
+from catalogs.api import CategoryViewSet, IngredientViewSet, RecipeViewSet
 from rest_framework import routers
-
-from catalogs.api import IngredientViewSet, RecipeViewSet, CategoryViewSet
-
 
 router = routers.DefaultRouter()
 router.register("ingredients", IngredientViewSet, "ingredients")

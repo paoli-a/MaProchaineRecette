@@ -1,5 +1,5 @@
+from catalogs.models import Category, Ingredient, Recipe, RecipeIngredient
 from rest_framework import serializers
-from catalogs.models import Ingredient, Recipe, RecipeIngredient, Category
 from units.models import Unit
 
 

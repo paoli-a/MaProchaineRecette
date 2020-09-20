@@ -1,11 +1,8 @@
 import pytest
 from pytest_django.asserts import assertContains
-
 from rest_framework.test import APIRequestFactory
-
 from units.api import UnitViewSet
 from units.tests.factories import UnitFactory
-
 
 pytestmark = pytest.mark.django_db
 

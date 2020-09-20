@@ -1,19 +1,14 @@
-from decimal import Decimal
 import datetime
+from decimal import Decimal
 
 import pytest
-from pytest_django.asserts import assertContains, assertNotContains
-from rest_framework.test import APIRequestFactory
-
+from catalogs.tests.factories import IngredientFactory
 from fridge.api import FridgeIngredientViewSet
 from fridge.models import FridgeIngredient
-from fridge.tests.factories import (
-    FridgeIngredientFactory,
-    fridgeIngredient,
-)
-from catalogs.tests.factories import IngredientFactory
+from fridge.tests.factories import FridgeIngredientFactory, fridgeIngredient
+from pytest_django.asserts import assertContains, assertNotContains
+from rest_framework.test import APIRequestFactory
 from units.tests.factories import UnitFactory, UnitTypeFactory
-
 
 pytestmark = pytest.mark.django_db
 
