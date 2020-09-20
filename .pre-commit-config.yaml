@@ -1,0 +1,66 @@
+exclude: "backend/docs|backend/venv|frontend/node_modules|backend/migrations|.git|.tox"
+default_stages: [commit]
+fail_fast: true
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v3.2.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+
+  - repo: https://github.com/psf/black
+    rev: 19.10b0
+    hooks:
+      - id: black
+
+  - repo: https://github.com/timothycrosley/isort
+    rev: 5.4.2
+    hooks:
+      - id: isort
+
+  - repo: https://gitlab.com/pycqa/flake8
+    rev: 3.8.3
+    hooks:
+      - id: flake8
+        args: ["--config=backend/setup.cfg", "--max-complexity=10"]
+        additional_dependencies:
+          [
+            flake8-isort,
+            flake8-django,
+            flake8-pytest,
+            flake8-pytest-style,
+            flake8-bandit,
+            flake8-comprehensions,
+            flake8-docstrings,
+            flake8-string-format,
+            flake8-bugbear,
+            flake8-debugger,
+            flake8-eradicate,
+            flake8-broken-line,
+            flake8-rst-docstrings,
+            pep8-naming,
+            darglint,
+            mccabe,
+          ]
+
+  - repo: https://github.com/prettier/prettier
+    rev: 2.1.1
+    hooks:
+      - id: prettier
+        args: ["--ignore-path=frontend/.prettierignore"]
+
+  - repo: https://github.com/pre-commit/mirrors-eslint
+    rev: v6.8.0
+    hooks:
+      - id: eslint
+        additional_dependencies:
+          [
+            eslint@6.8.0,
+            eslint-plugin-flowtype,
+            eslint-plugin-import,
+            eslint-plugin-jsx-a11y,
+            eslint-plugin-react,
+            eslint-plugin-react-hooks,
+          ]
