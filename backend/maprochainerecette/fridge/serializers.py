@@ -6,9 +6,11 @@ from catalogs.serializers import RecipeIngredientSerializer
 
 class FridgeIngredientSerializer(serializers.ModelSerializer):
     ingredient = serializers.SlugRelatedField(
-        queryset=Ingredient.objects.all(), slug_field="name")
+        queryset=Ingredient.objects.all(), slug_field="name"
+    )
     unit = serializers.SlugRelatedField(
-        queryset=Unit.objects.all(), slug_field="abbreviation")
+        queryset=Unit.objects.all(), slug_field="abbreviation"
+    )
 
     class Meta:
         model = FridgeIngredient
@@ -27,14 +29,16 @@ class FridgeIngredientSerializer(serializers.ModelSerializer):
             ingredient = FridgeIngredient.objects.filter(
                 ingredient=ingredient.ingredient,
                 expiration_date=ingredient.expiration_date,
-                unit__type=ingredient.unit.type).first()
+                unit__type=ingredient.unit.type,
+            ).first()
         return ingredient
 
 
 class RecipeFridgeSerializer(serializers.ModelSerializer):
     ingredients = RecipeIngredientSerializer(many=True)
-    categories = serializers.SlugRelatedField(many=True,
-                                              queryset=Category.objects.all(), slug_field="name")
+    categories = serializers.SlugRelatedField(
+        many=True, queryset=Category.objects.all(), slug_field="name"
+    )
     unsure_ingredients = serializers.SerializerMethodField()
     priority_ingredients = serializers.SerializerMethodField()
 
@@ -50,6 +54,13 @@ class RecipeFridgeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Recipe
-        fields = ["id", "title", "description",
-                  "duration", "ingredients", "categories",
-                  "priority_ingredients", "unsure_ingredients"]
+        fields = [
+            "id",
+            "title",
+            "description",
+            "duration",
+            "ingredients",
+            "categories",
+            "priority_ingredients",
+            "unsure_ingredients",
+        ]

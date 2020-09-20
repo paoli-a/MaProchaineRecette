@@ -10,9 +10,5 @@ router.register("ingredients", FridgeIngredientViewSet, "ingredients_fridge")
 urlpatterns = router.urls
 
 urlpatterns += [
-    path(
-        route="recipes/",
-        view=FridgeRecipes.as_view(),
-        name="recipes_fridge_list"
-    ),
+    path(route="recipes/", view=FridgeRecipes.as_view(), name="recipes_fridge_list"),
 ]

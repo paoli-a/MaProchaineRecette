@@ -40,10 +40,7 @@ class FuzzyDuration(factory.fuzzy.BaseFuzzyAttribute):
             A value that will fit with DurationField
 
         """
-        return timedelta(
-            minutes=random.randint(0, 59),
-            hours=random.randint(0, 23)
-        )
+        return timedelta(minutes=random.randint(0, 59), hours=random.randint(0, 23))
 
 
 class RecipeFactory(factory.django.DjangoModelFactory):
