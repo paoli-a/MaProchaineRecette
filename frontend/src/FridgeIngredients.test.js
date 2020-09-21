@@ -5,7 +5,6 @@ import {
   within,
   act,
   waitFor,
-  queryByText,
 } from "@testing-library/react";
 import FridgeIngredients from "./FridgeIngredients";
 import axios from "axios";

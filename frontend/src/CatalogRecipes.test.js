@@ -5,7 +5,6 @@ import {
   act,
   within,
   waitFor,
-  getByLabelText,
 } from "@testing-library/react";
 import CatalogRecipes from "./CatalogRecipes";
 import axios from "axios";
