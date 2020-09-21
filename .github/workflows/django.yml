@@ -7,13 +7,31 @@ on:
     branches: [master]
 
 jobs:
-  build:
+  flake8:
     runs-on: ubuntu-latest
-
     strategy:
       matrix:
         python-version: [3.8]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install pipenv
+        run: pip install pipenv
+      - name: Install dependencies
+        run: pipenv install --dev
+        working-directory: ./backend
+      - name: Run linter
+        run: flake8 backend/ --config=backend/setup.cfg --max-complexity 10
 
+  pytest:
+    needs: flake8
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8]
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python ${{ matrix.python-version }}
