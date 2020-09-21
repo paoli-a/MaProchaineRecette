@@ -29,6 +29,7 @@ jobs:
           CI: true
 
   jest:
+    needs: eslint
     runs-on: ubuntu-latest
     strategy:
       matrix:
