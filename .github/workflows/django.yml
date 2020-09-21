@@ -28,7 +28,6 @@ jobs:
         working-directory: ./backend
 
   pytest:
-    needs: flake8
     runs-on: ubuntu-latest
     strategy:
       matrix:
