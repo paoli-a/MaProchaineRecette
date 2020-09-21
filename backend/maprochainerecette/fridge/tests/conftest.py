@@ -1,7 +1,8 @@
 import pytest
+
 from .factories import FridgeIngredientFactory
 
 
-@pytest.fixture
+@pytest.fixture()
 def fridge_ingredient():
     return FridgeIngredientFactory()

@@ -1,9 +1,10 @@
 import pytest
+
 from .factories import (
-    IngredientFactory,
-    RecipeIngredientFactory,
     CategoryFactory,
+    IngredientFactory,
     RecipeFactory,
+    RecipeIngredientFactory,
 )
 
 
