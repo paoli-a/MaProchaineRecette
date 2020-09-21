@@ -4,6 +4,14 @@
 
 Le frontend utilise React et est basé sur Create React App.
 
+## Tests de qualité de code
+
+Pour lancer les tests de qualité de code il suffit de taper la commande suivante depuis le dossier `frontend/`, après avoir [procédé à l'installation](../README.md#frontend) :
+
+```bash
+yarn lint
+```
+
 ## Tests unitaires
 
 Pour lancer les tests unitaires il suffit de taper la commande suivante au niveau du dossier `frontend/`, après avoir [procédé à l'installation](../README.md#frontend) :
