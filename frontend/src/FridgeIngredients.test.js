@@ -272,7 +272,12 @@ was not successful on backend side`, async () => {
     await addIngredient(getByLabelText, getByText, values);
     let kiwi = queryByText(/kiwi/);
     expect(kiwi).not.toBeInTheDocument();
-    addIngredient(getByLabelText, getByText, ["kiwi", 0, "2100-04-03", "g"]);
+    await addIngredient(getByLabelText, getByText, [
+      "kiwi",
+      0,
+      "2100-04-03",
+      "g",
+    ]);
     kiwi = queryByText(/kiwi/);
     expect(kiwi).not.toBeInTheDocument();
   });
@@ -291,7 +296,7 @@ was not successful on backend side`, async () => {
     expect(kiwi).not.toBeInTheDocument();
   });
 
-  it(`does not add the ingredient if the ingredient is not in catalogIngredients`, () => {
+  it(`does not add the ingredient if the ingredient is not in catalogIngredients`, async () => {
     const { getByLabelText, getByText, queryByText } = render(
       <FridgeIngredients
         ingredients={fridgeIngredients}
@@ -299,7 +304,12 @@ was not successful on backend side`, async () => {
         totalUnits={units}
       />
     );
-    addIngredient(getByLabelText, getByText, ["Poireaux", 50, "g"]);
+    await addIngredient(getByLabelText, getByText, [
+      "Poireaux",
+      50,
+      "2100-04-03",
+      "g",
+    ]);
     const poireaux = queryByText(/Poireaux : /);
     expect(poireaux).not.toBeInTheDocument();
   });
@@ -319,7 +329,7 @@ was not successful on backend side`, async () => {
       "2100-04-03",
       "g",
     ]);
-    let carottes = getByText(/Carottes : /);
+    let carottes = getByText(/Carottes/);
     expect(carottes).toBeInTheDocument();
     const axiosPostResponse = {
       data: {

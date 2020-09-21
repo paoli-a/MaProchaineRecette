@@ -4,18 +4,19 @@
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.5.0",
-    "@testing-library/react": "^10.0.2",
-    "@testing-library/user-event": "^10.0.2",
-    "axios": "^0.19.2",
+    "@testing-library/react": "^11.0.4",
+    "@testing-library/user-event": "^12.1.5",
+    "axios": "^0.20.0",
     "docz": "^2.3.1",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-highlight-words": "^0.16.0",
-    "react-hook-form": "^5.5.1",
+    "react-hook-form": "^6.8.3",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "3.4.1",
-    "stopword": "^1.0.1"
+    "react-scripts": "3.4.3",
+    "stopword": "^1.0.1",
+    "webpack-dev-server": "3.11.0"
   },
   "resolutions": {
     "docz*/**/webpack-dev-server": "3.10.3"
@@ -43,9 +44,9 @@
     ]
   },
   "devDependencies": {
-    "prettier": "^2.0.5",
     "eslint-config-prettier": "^6.11.0",
-    "mutationobserver-shim": "^0.3.5"
+    "mutationobserver-shim": "^0.3.5",
+    "prettier": "^2.0.5"
   },
   "proxy": "http://localhost:8000"
 }
