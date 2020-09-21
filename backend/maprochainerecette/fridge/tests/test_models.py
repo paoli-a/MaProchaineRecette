@@ -14,7 +14,7 @@ def test_adding_ingredients_that_can_be_merged_merges_them_into_one():
     """Two ingredients that have the same name, date of expiration and unit type
     should be merged into one instance, which should have its amount equal to
     the sum of the two previous quantities.
-    """
+    """  # noqa: D400 D205
     type_mass = UnitTypeFactory(name="masse")
     unit_kg = UnitFactory(type=type_mass, abbreviation="kg", rapport=1000)
     unit_g = UnitFactory(type=type_mass, abbreviation="g", rapport=1)

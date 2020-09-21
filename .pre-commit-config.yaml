@@ -41,7 +41,6 @@ repos:
             flake8-broken-line,
             flake8-rst-docstrings,
             pep8-naming,
-            darglint,
             mccabe,
           ]
 

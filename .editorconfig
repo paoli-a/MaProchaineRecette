@@ -15,7 +15,6 @@ indent_size = 4
 [*.py]
 line_length = 88
 multi_line_output = 3
-default_section = THIRDPARTY
 recursive = true
 skip_glob = **/migrations/*.py
 include_trailing_comma = true

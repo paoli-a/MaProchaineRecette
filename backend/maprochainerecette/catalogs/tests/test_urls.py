@@ -1,8 +1,6 @@
 import pytest
 from django.urls import resolve
 
-from .factories import ingredient, recipe
-
 pytestmark = pytest.mark.django_db
 
 

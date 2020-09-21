@@ -4,7 +4,7 @@ from decimal import Decimal
 import pytest
 from catalogs.api import CategoryViewSet, IngredientViewSet, RecipeViewSet
 from catalogs.models import Ingredient, Recipe
-from pytest_django.asserts import assertContains, assertNotContains
+from pytest_django.asserts import assertContains
 from rest_framework.test import APIRequestFactory
 from units.tests.factories import UnitFactory, UnitTypeFactory
 
@@ -13,8 +13,6 @@ from .factories import (
     IngredientFactory,
     RecipeFactory,
     RecipeIngredientFactory,
-    ingredient,
-    recipe,
 )
 
 pytestmark = pytest.mark.django_db

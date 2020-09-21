@@ -85,7 +85,7 @@ def test_get_fridge_recipes_returns_recipes_for_which_ingredients_are_splitted()
     """When a recipe has one of its ingredients in the fridge with different
     expiration dates, the recipe should still be returned if the summed
     quantities are enough.
-    """
+    """  # noqa: D400, D205
     carottes, tomates, _, gramme, _ = _dataset_for_fridge_recipes_tests()
     navet = IngredientFactory(name="Navet")
     FridgeIngredientFactory(
@@ -155,7 +155,7 @@ def test_get_fridge_recipes_returns_recipes_that_have_unsure_ingredients():
     """Unsure ingredients are ingredients that have a unit type different from
     the recipe's ingredient unit type. The conversion between two different unit
     types has not been implemented yet, so the feasibility of the recipe is not sure.
-    """
+    """  # noqa: D400, D205
     carottes, tomates, _, gramme, _ = _dataset_for_fridge_recipes_tests()
     pieces_type = UnitTypeFactory(name="pièce(s)")
     pieces = UnitFactory(abbreviation="pièce(s)", rapport=1, type=pieces_type)
@@ -182,8 +182,7 @@ def test_get_fridge_recipes_returns_recipes_that_have_unsure_ingredients():
 
 
 def test_get_fridge_recipes_returns_correctly_ordered_recipes():
-    """Recipes must be ordered according to the expiration date of the most prioritary ingredient.
-    """
+    """Recipes must be ordered according to the expiration date of the most prioritary ingredient."""
     carottes, tomates, oignons, gramme, _ = _dataset_for_fridge_recipes_tests()
     navet = IngredientFactory(name="Navet")
     FridgeIngredientFactory(

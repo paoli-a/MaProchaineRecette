@@ -2,15 +2,9 @@ import datetime
 
 import factory
 import factory.fuzzy
-import pytest
 from catalogs.tests.factories import IngredientFactory
 from fridge.models import FridgeIngredient
 from units.tests.factories import UnitFactory
-
-
-@pytest.fixture
-def fridgeIngredient():
-    return FridgeIngredientFactory()
 
 
 class FridgeIngredientFactory(factory.django.DjangoModelFactory):

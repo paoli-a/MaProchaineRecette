@@ -1,4 +1,3 @@
-import datetime
 from typing import Any, Dict
 
 from catalogs.models import Recipe
@@ -133,7 +132,7 @@ class FridgeRecipes(APIView):
     def _build_priority_ingredients_field(
         recipe_id, ingredient_name, ingredient_date, priority_ingredients
     ):
-        if not recipe_id in priority_ingredients:
+        if recipe_id not in priority_ingredients:
             priority_ingredients[recipe_id] = {
                 "date": ingredient_date,
                 "name": ingredient_name,
