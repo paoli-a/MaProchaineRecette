@@ -24,7 +24,7 @@ jobs:
         run: pipenv install --dev
         working-directory: ./backend
       - name: Run linter
-        run: flake8 backend/ --config=backend/setup.cfg --max-complexity 10
+        run: pipenv run flake8 backend/ --config=backend/setup.cfg --max-complexity 10
 
   pytest:
     needs: flake8
