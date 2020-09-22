@@ -11,8 +11,24 @@ factory-boy = "*"
 pylint-pytest = "*"
 pytest-django = "*"
 flake8 = "*"
+flake8-isort = "*"
 flake8-django = "*"
+flake8-pytest = "*"
+flake8-pytest-style = "*"
+flake8-bandit = "*"
+flake8-comprehensions = "*"
+flake8-docstrings = "*"
+flake8-string-format = "*"
+flake8-bugbear = "*"
+flake8-debugger = "*"
+flake8-eradicate = "*"
+flake8-broken-line = "*"
+flake8-rst-docstrings = "*"
+pep8-naming = "*"
+mccabe = "*"
+black = "*"
 django-extensions = "*"
+pre-commit = "*"
 
 [packages]
 django = "*"
@@ -21,3 +37,6 @@ django-model-utils = "*"
 
 [requires]
 python_version = "3.8"
+
+[pipenv]
+allow_prereleases = true

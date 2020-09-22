@@ -18,6 +18,16 @@ pipenv run python manage.py migrate
 
 Et répondez aux questions. Il vous sera demandé de créer un superutilisateur pour Django. Ce compte vous permettra d'accéder à l'interface d'admin de Django à l'adresse `http://127.0.0.1:8000/admin/` lorsque le serveur sera lancé.
 
+## Tests de qualité de code
+
+Plusieurs tests de qualité de code sont disponibles avec flake8 et ses plugins.
+
+Pour les lancer il suffit de taper la commande suivante depuis le dossier `backend/`, après avoir [procédé à l'installation](../README.md#backend) :
+
+```bash
+pipenv run flake8 --config=setup.cfg --max-complexity 10
+```
+
 ## Tests unitaires
 
 Pour lancer les tests unitaires il suffit de taper la commande suivante au niveau du dossier `backend/maprochainerecette/`, après avoir [procédé à l'installation](../README.md#backend) :

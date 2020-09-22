@@ -4,6 +4,14 @@
 
 The frontend uses React and was built with Create React App.
 
+## Code quality checks
+
+To run the code quality checks please run the following command from the folder `frontend/`, after [having installed the frontend](../README_en.md#frontend):
+
+```bash
+yarn lint
+```
+
 ## Unit tests
 
 To run the unit tests please run the following command from the folder `frontend/`, after [having installed the frontend](../README_en.md#frontend):

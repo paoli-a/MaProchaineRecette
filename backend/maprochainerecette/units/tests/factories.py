@@ -1,6 +1,5 @@
 import factory
 import factory.fuzzy
-
 from units.models import Unit, UnitType
 
 

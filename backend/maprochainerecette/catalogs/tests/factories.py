@@ -1,17 +1,10 @@
-from datetime import timedelta
 import random
+from datetime import timedelta
 
 import factory
 import factory.fuzzy
-import pytest
-
-from catalogs.models import Ingredient, Recipe, Category, RecipeIngredient
+from catalogs.models import Category, Ingredient, Recipe, RecipeIngredient
 from units.tests.factories import UnitFactory
-
-
-@pytest.fixture
-def ingredient():
-    return IngredientFactory()
 
 
 class IngredientFactory(factory.django.DjangoModelFactory):
@@ -21,28 +14,18 @@ class IngredientFactory(factory.django.DjangoModelFactory):
         model = Ingredient
 
 
-@pytest.fixture
-def recipe():
-    ingredients, categories = [], []
-    for _ in range(10):
-        ingredients.append(RecipeIngredientFactory())
-        categories.append(CategoryFactory())
-    return RecipeFactory(ingredients=ingredients, categories=categories)
-
-
 class FuzzyDuration(factory.fuzzy.BaseFuzzyAttribute):
     """Custom fuzzy factory for generating timedelta."""
 
     def fuzz(self) -> timedelta:
-        """ Generate fuzzy value for DurationField.
+        """Generate fuzzy value for DurationField.
 
         Returns:
             A value that will fit with DurationField
 
         """
         return timedelta(
-            minutes=random.randint(0, 59),
-            hours=random.randint(0, 23)
+            minutes=random.randint(0, 59), hours=random.randint(0, 23)  # noqa: S311
         )
 
 

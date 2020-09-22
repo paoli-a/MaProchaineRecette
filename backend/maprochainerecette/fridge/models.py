@@ -1,10 +1,9 @@
 from decimal import Decimal
 
+from catalogs.models import Ingredient
 from django.db import models
 from model_utils.models import TimeStampedModel
-
 from units.models import Unit
-from catalogs.models import Ingredient
 
 
 class FridgeIngredient(TimeStampedModel):
@@ -24,9 +23,11 @@ class FridgeIngredient(TimeStampedModel):
 
         """
         if not self.pk:
-            mergeable = FridgeIngredient.objects.filter(ingredient=self.ingredient,
-                                                       expiration_date=self.expiration_date,
-                                                       unit__type=self.unit.type).first()
+            mergeable = FridgeIngredient.objects.filter(
+                ingredient=self.ingredient,
+                expiration_date=self.expiration_date,
+                unit__type=self.unit.type,
+            ).first()
             if mergeable:
                 self._update_mergeable_with_new_ingredient(mergeable)
             else:
@@ -45,6 +46,7 @@ class FridgeIngredient(TimeStampedModel):
 
     @staticmethod
     def _compute_amount(big_element, small_element):
-        rapport = Decimal(small_element.unit.rapport) / \
-            Decimal(big_element.unit.rapport)
+        rapport = Decimal(small_element.unit.rapport) / Decimal(
+            big_element.unit.rapport
+        )
         return Decimal(big_element.amount) + Decimal(small_element.amount) * rapport

@@ -1,14 +1,16 @@
-from rest_framework import serializers
-from fridge.models import FridgeIngredient
-from catalogs.models import Ingredient, Unit, Recipe, Category
+from catalogs.models import Category, Ingredient, Recipe, Unit
 from catalogs.serializers import RecipeIngredientSerializer
+from fridge.models import FridgeIngredient
+from rest_framework import serializers
 
 
 class FridgeIngredientSerializer(serializers.ModelSerializer):
     ingredient = serializers.SlugRelatedField(
-        queryset=Ingredient.objects.all(), slug_field="name")
+        queryset=Ingredient.objects.all(), slug_field="name"
+    )
     unit = serializers.SlugRelatedField(
-        queryset=Unit.objects.all(), slug_field="abbreviation")
+        queryset=Unit.objects.all(), slug_field="abbreviation"
+    )
 
     class Meta:
         model = FridgeIngredient
@@ -17,7 +19,7 @@ class FridgeIngredientSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         """Create the fridge ingredient and solve the bug when the ingredient is merged.
 
-        When the ingredient is merged (ie. an old instance is updated), the model 
+        When the ingredient is merged (ie. an old instance is updated), the model
         returns a badly formed object.
         To solve that, we look for the updated ingredient and return it.
 
@@ -27,14 +29,16 @@ class FridgeIngredientSerializer(serializers.ModelSerializer):
             ingredient = FridgeIngredient.objects.filter(
                 ingredient=ingredient.ingredient,
                 expiration_date=ingredient.expiration_date,
-                unit__type=ingredient.unit.type).first()
+                unit__type=ingredient.unit.type,
+            ).first()
         return ingredient
 
 
 class RecipeFridgeSerializer(serializers.ModelSerializer):
     ingredients = RecipeIngredientSerializer(many=True)
-    categories = serializers.SlugRelatedField(many=True,
-                                              queryset=Category.objects.all(), slug_field="name")
+    categories = serializers.SlugRelatedField(
+        many=True, queryset=Category.objects.all(), slug_field="name"
+    )
     unsure_ingredients = serializers.SerializerMethodField()
     priority_ingredients = serializers.SerializerMethodField()
 
@@ -50,6 +54,13 @@ class RecipeFridgeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Recipe
-        fields = ["id", "title", "description",
-                  "duration", "ingredients", "categories",
-                  "priority_ingredients", "unsure_ingredients"]
+        fields = [
+            "id",
+            "title",
+            "description",
+            "duration",
+            "ingredients",
+            "categories",
+            "priority_ingredients",
+            "unsure_ingredients",
+        ]

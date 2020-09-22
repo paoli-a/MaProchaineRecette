@@ -136,7 +136,7 @@ const navigateTo = (linkText, getByRole) => {
 };
 
 describe("renders correctly", () => {
-  it(`renders only feasible recipes and fridge ingredients when clicking on that 
+  it(`renders only feasible recipes and fridge ingredients when clicking on that
   nav link`, async () => {
     const { getByRole, getByText, queryByText } = render(<MyNextRecipe />);
     await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(FETCH_CALLS));
@@ -205,7 +205,7 @@ describe("fetches correctly", () => {
     expect(salade).toBeInTheDocument();
   });
 
-  it(`fetches and displays categories of the catalog when clicking on catalog recipes 
+  it(`fetches and displays categories of the catalog when clicking on catalog recipes
   nav link`, async () => {
     const { getByRole, getByText } = render(<MyNextRecipe />);
     await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(FETCH_CALLS));
@@ -214,7 +214,7 @@ describe("fetches correctly", () => {
     expect(entree).toBeInTheDocument();
   });
 
-  it(`fetches and displays units when clicking on catalog recipes 
+  it(`fetches and displays units when clicking on catalog recipes
   nav link`, async () => {
     const { getByRole, getByText } = render(<MyNextRecipe />);
     await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(FETCH_CALLS));
