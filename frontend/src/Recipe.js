@@ -18,10 +18,20 @@ function Recipe({ recipe, optionalButton, activateClick, highlight }) {
     setRecipeOpen(!isRecipeOpen);
   };
 
+  const handleTitleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      handleTitleClick();
+    }
+  };
+
   const title = () => {
     if (activateClick) {
       return (
-        <h2 className="curseurMain" onClick={handleTitleClick}>
+        <h2
+          className="curseurMain"
+          onClick={handleTitleClick}
+          onKeyPress={handleTitleKeyPress}
+        >
           {highlight(recipe.title)} {optionalButton}
         </h2>
       );

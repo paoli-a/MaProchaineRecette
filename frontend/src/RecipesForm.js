@@ -203,6 +203,7 @@ function RecipesForm({
                 name="unit"
                 aria-label="Unité"
                 onChange={(e) => setIngredientUnit(e.target.value)}
+                onBlur={(e) => setIngredientUnit(e.target.value)}
                 value={ingredientUnit}
               >
                 <option value="">...</option>
