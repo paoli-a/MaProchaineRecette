@@ -22,10 +22,20 @@ Et répondez aux questions. Il vous sera demandé de créer un superutilisateur 
 
 Plusieurs tests de qualité de code sont disponibles avec flake8 et ses plugins.
 
-Pour les lancer il suffit de taper la commande suivante depuis le dossier `backend/`, après avoir [procédé à l'installation](../README.md#backend) :
+Pour les lancer il suffit de taper la commande suivante depuis le dossier `backend/maprochainerecette/`, après avoir [procédé à l'installation](../README.md#backend) :
 
 ```bash
 pipenv run flake8 --config=setup.cfg --max-complexity 10
+```
+
+### Analyse statique
+
+L'analyse statique du code est faite avec `mypy`:
+
+Pour la lancer il suffit de taper la commande suivante depuis le dossier `backend/maprochainerecette/`, après avoir [procédé à l'installation](../README.md#backend) :
+
+```bash
+pipenv run mypy --config=setup.cfg .
 ```
 
 ## Tests unitaires

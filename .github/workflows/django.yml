@@ -25,7 +25,10 @@ jobs:
         working-directory: ./backend
       - name: Run flake8
         run: pipenv run flake8 --config=setup.cfg --max-complexity 10
-        working-directory: ./backend
+        working-directory: ./backend/maprochainerecette
+      - name: Run mypy
+        run: pipenv run mypy --config=setup.cfg .
+        working-directory: ./backend/maprochainerecette
       - name: Run unit tests
         run: pipenv run pytest
         working-directory: ./backend/maprochainerecette
