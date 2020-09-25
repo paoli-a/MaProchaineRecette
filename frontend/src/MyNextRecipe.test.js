@@ -141,7 +141,7 @@ describe("renders correctly", () => {
     const { getByRole, getByText, queryByText } = render(<MyNextRecipe />);
     await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(FETCH_CALLS));
     navigateTo("Ma prochaine recette", getByRole);
-    const nextRecipes = getByText("Mes prochaines recipes");
+    const nextRecipes = getByText("Mes prochaines recettes");
     const fridge = getByText("Voici les ingrédients du frigo !");
     const allMyRecipes = queryByText("Catalogue de toutes mes recettes");
     const allMyIngredients = queryByText("Catalogue de tous mes ingrédients");
@@ -155,7 +155,7 @@ describe("renders correctly", () => {
     const { getByRole, queryByText, getByText } = render(<MyNextRecipe />);
     await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(FETCH_CALLS));
     navigateTo("Catalogue des ingrédients", getByRole);
-    const nextRecipes = queryByText("Mes prochaines recipes");
+    const nextRecipes = queryByText("Mes prochaines recettes");
     const fridge = queryByText("Voici les ingrédients du frigo !");
     const allMyRecipes = queryByText("Catalogue de toutes mes recettes");
     const allMyIngredients = getByText("Catalogue de tous mes ingrédients");
@@ -169,7 +169,7 @@ describe("renders correctly", () => {
     const { getByRole, queryByText, getByText } = render(<MyNextRecipe />);
     await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(FETCH_CALLS));
     navigateTo("Catalogue des recettes", getByRole);
-    const nextRecipes = queryByText("Mes prochaines recipes");
+    const nextRecipes = queryByText("Mes prochaines recettes");
     const fridge = queryByText("Voici les ingrédients du frigo !");
     const allMyRecipes = getByText("Catalogue de toutes mes recettes");
     const allMyIngredients = queryByText("Catalogue de tous mes ingrédients");

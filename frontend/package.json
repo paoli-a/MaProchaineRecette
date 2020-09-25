@@ -44,8 +44,11 @@
     ]
   },
   "devDependencies": {
+    "codeceptjs": "^3.0",
     "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-codeceptjs": "^1.3.0",
     "mutationobserver-shim": "^0.3.5",
+    "playwright": "^1.4.1",
     "prettier": "^2.0.5"
   },
   "proxy": "http://localhost:8000"

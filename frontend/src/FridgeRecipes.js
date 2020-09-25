@@ -129,7 +129,7 @@ function FridgeRecipes({ recipes }) {
 
   return (
     <section id="FridgeRecipes">
-      <h1>Mes prochaines recipes</h1>
+      <h1>Mes prochaines recettes</h1>
       <RecipesToolbar
         onChangeCategories={handleChangeCategories}
         onChangeSearch={handleChangeSearch}
