@@ -29,6 +29,8 @@ mccabe = "*"
 black = "*"
 django-extensions = "*"
 pre-commit = "*"
+mypy = "*"
+django-stubs = "*"
 
 [packages]
 django = "*"
