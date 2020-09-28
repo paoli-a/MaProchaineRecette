@@ -8,7 +8,6 @@ import {
 } from "@testing-library/react";
 import axios from "axios";
 import MyNextRecipe from "./MyNextRecipe";
-import { addIngredient } from "./CatalogRecipes.test";
 
 require("mutationobserver-shim");
 
