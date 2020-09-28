@@ -24,3 +24,6 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# ed to end tests
+end_to_end/output

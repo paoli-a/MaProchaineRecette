@@ -18,7 +18,7 @@ function CatalogIngredients({
       name: dataForm.ingredientName,
     };
     axios
-      .post("/catalogs/ingredients/", ingredientToSend)
+      .post("/api/catalogs/ingredients/", ingredientToSend)
       .then(({ data }) => {
         const newIngredient = { name: data.name };
         const ingredientsListUpdated = possibleIngredients.slice();
@@ -35,7 +35,7 @@ function CatalogIngredients({
 
   const handleSupprClick = (name) => {
     axios
-      .delete(`/catalogs/ingredients/${name}/`)
+      .delete(`/api/catalogs/ingredients/${name}/`)
       .then(() => {
         const ingredientsListUpdated = possibleIngredients.slice();
         const index = ingredientsListUpdated.findIndex((ingredient) => {

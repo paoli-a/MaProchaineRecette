@@ -95,27 +95,27 @@ beforeEach(() => {
 
 function mockAxiosGet(rejectedElement) {
   axios.get.mockImplementation((url) => {
-    if (url === "/catalogs/ingredients/") {
+    if (url === "/api/catalogs/ingredients/") {
       return rejectedElement === "ingredients"
         ? Promise.reject(new Error(""))
         : Promise.resolve(axiosResponseIngredients);
-    } else if (url === "/catalogs/recipes/") {
+    } else if (url === "/api/catalogs/recipes/") {
       return rejectedElement === "recipes"
         ? Promise.reject(new Error(""))
         : Promise.resolve(axiosResponseRecipes);
-    } else if (url === "/fridge/ingredients/") {
+    } else if (url === "/api/fridge/ingredients/") {
       return rejectedElement === "fridge"
         ? Promise.reject(new Error(""))
         : Promise.resolve(axiosResponseFridgeIngredients);
-    } else if (url === "/fridge/recipes/") {
+    } else if (url === "/api/fridge/recipes/") {
       return rejectedElement === "feasibleRecipes"
         ? Promise.reject(new Error(""))
         : Promise.resolve(axiosResponseFridgeRecipes);
-    } else if (url === "/catalogs/categories/") {
+    } else if (url === "/api/catalogs/categories/") {
       return rejectedElement === "categories"
         ? Promise.reject(new Error(""))
         : Promise.resolve(axiosResponseCategories);
-    } else if (url === "/units/") {
+    } else if (url === "/api/units/") {
       return rejectedElement === "units"
         ? Promise.reject(new Error(""))
         : Promise.resolve(axiosResponseUnits);

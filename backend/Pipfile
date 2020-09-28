@@ -36,6 +36,7 @@ django-stubs = "*"
 django = "*"
 djangorestframework = "*"
 django-model-utils = "*"
+django-environ = "*"
 
 [requires]
 python_version = "3.8"

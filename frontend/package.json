@@ -8,6 +8,7 @@
     "@testing-library/user-event": "^12.1.6",
     "axios": "^0.20.0",
     "docz": "^2.3.1",
+    "http-proxy-middleware": "^1.0.5",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
@@ -26,7 +27,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "lint": "eslint src",
-    "eject": "react-scripts eject",
+    "end_to_end": "npx codeceptjs run --steps",
     "docz:dev": "docz dev",
     "docz:build": "docz build",
     "docz:serve": "docz build && docz serve"
@@ -50,6 +51,5 @@
     "mutationobserver-shim": "^0.3.5",
     "playwright": "^1.4.1",
     "prettier": "^2.0.5"
-  },
-  "proxy": "http://localhost:8000"
+  }
 }
