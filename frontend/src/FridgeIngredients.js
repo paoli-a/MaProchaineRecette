@@ -3,7 +3,12 @@ import FridgeIngredientsForm from "./FridgeIngredientsForm";
 import PropTypes from "prop-types";
 import axios from "axios";
 
-function FridgeIngredients({ ingredients, possibleIngredients, totalUnits }) {
+function FridgeIngredients({
+  ingredients,
+  possibleIngredients,
+  totalUnits,
+  feasibleRecipesUpdate,
+}) {
   const [ingredientsList, setIngredient] = useState(ingredients);
   const [postError, setPostError] = useState("");
   const [deleteError, setDeleteError] = useState({});
@@ -19,6 +24,7 @@ function FridgeIngredients({ ingredients, possibleIngredients, totalUnits }) {
         const ingredientsListUpdated = ingredientsList.slice();
         eliminateIngredientWithId(ingredientsListUpdated, id);
         setIngredient(ingredientsListUpdated);
+        feasibleRecipesUpdate();
       })
       .catch(() => {
         setDeleteError({
@@ -50,6 +56,7 @@ function FridgeIngredients({ ingredients, possibleIngredients, totalUnits }) {
         eliminateIngredientWithId(ingredientsListUpdated, data.id);
         ingredientsListUpdated.push(newData);
         setIngredient(ingredientsListUpdated);
+        feasibleRecipesUpdate();
       })
       .catch(() => {
         setPostError("L'ajout de l'ingrédient a échoué.");
@@ -114,6 +121,7 @@ FridgeIngredients.propTypes = {
     })
   ).isRequired,
   totalUnits: PropTypes.arrayOf(PropTypes.string).isRequired,
+  feasibleRecipesUpdate: PropTypes.func.isRequired,
 };
 
 export default FridgeIngredients;

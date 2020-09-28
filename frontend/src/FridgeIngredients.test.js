@@ -62,6 +62,7 @@ describe("correct display of an ingredient", () => {
         ingredients={fridgeIngredients}
         possibleIngredients={catalogIngredients}
         totalUnits={units}
+        feasibleRecipesUpdate={() => undefined}
       />
     );
     const ingredient1 = getByText("épinard", { exact: false });
@@ -74,6 +75,7 @@ describe("correct display of an ingredient", () => {
         ingredients={fridgeIngredients}
         possibleIngredients={catalogIngredients}
         totalUnits={units}
+        feasibleRecipesUpdate={() => undefined}
       />
     );
     const ingredient2 = getByText("céleri rave", { exact: false });
@@ -87,6 +89,7 @@ describe("correct display of an ingredient", () => {
         ingredients={fridgeIngredients}
         possibleIngredients={catalogIngredients}
         totalUnits={units}
+        feasibleRecipesUpdate={() => undefined}
       />
     );
     const ingredient1 = getByText("épinard", { exact: false });
@@ -99,6 +102,7 @@ describe("correct display of an ingredient", () => {
         ingredients={fridgeIngredients}
         possibleIngredients={catalogIngredients}
         totalUnits={units}
+        feasibleRecipesUpdate={() => undefined}
       />
     );
     const ingredient1 = getByText("épinard", { exact: false });
@@ -111,6 +115,7 @@ describe("correct display of an ingredient", () => {
         ingredients={fridgeIngredients}
         possibleIngredients={catalogIngredients}
         totalUnits={units}
+        feasibleRecipesUpdate={() => undefined}
       />
     );
     const listItems = getAllByRole("listitem");
@@ -123,6 +128,7 @@ describe("correct display of an ingredient", () => {
         ingredients={[]}
         possibleIngredients={catalogIngredients}
         totalUnits={units}
+        feasibleRecipesUpdate={() => undefined}
       />
     );
     rerender(
@@ -130,6 +136,7 @@ describe("correct display of an ingredient", () => {
         ingredients={fridgeIngredients}
         possibleIngredients={catalogIngredients}
         totalUnits={units}
+        feasibleRecipesUpdate={() => undefined}
       />
     );
     const ingredient1 = getByText("épinard", { exact: false });
@@ -143,6 +150,7 @@ it("displays provided units", () => {
       ingredients={fridgeIngredients}
       possibleIngredients={catalogIngredients}
       totalUnits={units}
+      feasibleRecipesUpdate={() => undefined}
     />
   );
   const unitSelect = getByLabelText("Unité");
@@ -159,6 +167,7 @@ describe("functionalities work properly", () => {
         ingredients={fridgeIngredients}
         possibleIngredients={catalogIngredients}
         totalUnits={units}
+        feasibleRecipesUpdate={() => undefined}
       />
     );
     const axiosDeleteResponse = { data: "" };
@@ -179,6 +188,7 @@ was not successful on backend side`, async () => {
         ingredients={fridgeIngredients}
         possibleIngredients={catalogIngredients}
         totalUnits={units}
+        feasibleRecipesUpdate={() => undefined}
       />
     );
     const axiosDeleteResponse = { data: "" };
@@ -200,6 +210,7 @@ was not successful on backend side`, async () => {
         ingredients={fridgeIngredients}
         possibleIngredients={catalogIngredients}
         totalUnits={units}
+        feasibleRecipesUpdate={() => undefined}
       />
     );
     const values = ["Carottes", 1, "2100-04-03", "kg"];
@@ -230,6 +241,7 @@ was not successful on backend side`, async () => {
         ingredients={fridgeIngredients}
         possibleIngredients={catalogIngredients}
         totalUnits={units}
+        feasibleRecipesUpdate={() => undefined}
       />
     );
     await addIngredient(
@@ -248,6 +260,7 @@ was not successful on backend side`, async () => {
         ingredients={fridgeIngredients}
         possibleIngredients={catalogIngredients}
         totalUnits={units}
+        feasibleRecipesUpdate={() => undefined}
       />
     );
     await addIngredient(
@@ -266,6 +279,7 @@ was not successful on backend side`, async () => {
         ingredients={fridgeIngredients}
         possibleIngredients={catalogIngredients}
         totalUnits={units}
+        feasibleRecipesUpdate={() => undefined}
       />
     );
     const values = ["kiwi", -1, "2100-04-03", "kg"];
@@ -288,6 +302,7 @@ was not successful on backend side`, async () => {
         ingredients={fridgeIngredients}
         possibleIngredients={catalogIngredients}
         totalUnits={units}
+        feasibleRecipesUpdate={() => undefined}
       />
     );
     const values = ["kiwi", 5, "2019-04-03", "g"];
@@ -302,6 +317,7 @@ was not successful on backend side`, async () => {
         ingredients={fridgeIngredients}
         possibleIngredients={catalogIngredients}
         totalUnits={units}
+        feasibleRecipesUpdate={() => undefined}
       />
     );
     await addIngredient(getByLabelText, getByText, [
@@ -321,6 +337,7 @@ was not successful on backend side`, async () => {
         ingredients={fridgeIngredients}
         possibleIngredients={catalogIngredients}
         totalUnits={units}
+        feasibleRecipesUpdate={() => undefined}
       />
     );
     await addIngredient(getByLabelText, getByText, [
@@ -367,6 +384,7 @@ was not successful on backend side`, async () => {
         ingredients={fridgeIngredients}
         possibleIngredients={catalogIngredients}
         totalUnits={units}
+        feasibleRecipesUpdate={() => undefined}
       />
     );
     const inputIngredientName = getByLabelText("Nom de l'ingrédient :");
@@ -386,6 +404,7 @@ was not successful on backend side`, async () => {
         ingredients={fridgeIngredients}
         possibleIngredients={catalogIngredients}
         totalUnits={units}
+        feasibleRecipesUpdate={() => undefined}
       />
     );
     const axiosPostResponse = {};
