@@ -21,6 +21,19 @@ function MyNextRecipe() {
     setCatalogIngredients(ingredients);
   };
 
+  const fetchesFeasibleRecipes = () => {
+    axios
+      .get("/fridge/recipes/")
+      .then(({ data }) => {
+        setFeasibleRecipes(data);
+      })
+      .catch(() =>
+        setFetchError(
+          "Il y a eu une erreur vis-à-vis du serveur, veuillez reharger la page ou réessayer ultérieurement."
+        )
+      );
+  };
+
   useEffect(() => {
     axios
       .get("/catalogs/ingredients/")
@@ -81,16 +94,7 @@ function MyNextRecipe() {
           "Il y a eu une erreur vis-à-vis du serveur, veuillez reharger la page ou réessayer ultérieurement."
         )
       );
-    axios
-      .get("/fridge/recipes/")
-      .then(({ data }) => {
-        setFeasibleRecipes(data);
-      })
-      .catch(() =>
-        setFetchError(
-          "Il y a eu une erreur vis-à-vis du serveur, veuillez reharger la page ou réessayer ultérieurement."
-        )
-      );
+    fetchesFeasibleRecipes();
   }, []);
 
   return (
@@ -114,6 +118,7 @@ function MyNextRecipe() {
             possibleIngredients={catalogIngredients}
             totalCategories={catalogCategories}
             totalUnits={units}
+            feasibleRecipesUpdate={fetchesFeasibleRecipes}
           />
         </Route>
         <Route path="/ingredients">
@@ -128,6 +133,7 @@ function MyNextRecipe() {
               ingredients={fridgeIngredients}
               possibleIngredients={catalogIngredients}
               totalUnits={units}
+              feasibleRecipesUpdate={fetchesFeasibleRecipes}
             />
             <FridgeRecipes recipes={feasibleRecipes} />
           </main>

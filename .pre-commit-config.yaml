@@ -51,7 +51,7 @@ repos:
         args: ["--ignore-path=frontend/.prettierignore"]
 
   - repo: https://github.com/pre-commit/mirrors-eslint
-    rev: v7.9.0
+    rev: v7.10.0
     hooks:
       - id: eslint
         additional_dependencies:
