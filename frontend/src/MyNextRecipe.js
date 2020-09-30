@@ -3,8 +3,8 @@ import { BrowserRouter as Router, Route, NavLink } from "react-router-dom";
 import axios from "axios";
 import FridgeRecipes from "./FridgeRecipes";
 import FridgeIngredients from "./FridgeIngredients";
-import CatalogIngredients from "./CatalogIngredients";
-import CatalogRecipes from "./CatalogRecipes";
+import CatalogIngredients from "./Catalogs/CatalogIngredients";
+import CatalogRecipes from "./Catalogs/CatalogRecipes";
 import "./MyNextRecipe.css";
 import "./Nav.css";
 
