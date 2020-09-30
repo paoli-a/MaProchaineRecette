@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import InputSuggestions from "./InputSuggestions";
+import InputSuggestions from "../InputSuggestions";
 import PropTypes from "prop-types";
 
 function FridgeIngredientsForm({ onSubmit, possibleIngredients, totalUnits }) {

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, NavLink } from "react-router-dom";
 import axios from "axios";
-import FridgeRecipes from "./FridgeRecipes";
-import FridgeIngredients from "./FridgeIngredients";
+import FridgeRecipes from "./Fridge/FridgeRecipes";
+import FridgeIngredients from "./Fridge/FridgeIngredients";
 import CatalogIngredients from "./Catalogs/CatalogIngredients";
 import CatalogRecipes from "./Catalogs/CatalogRecipes";
 import "./MyNextRecipe.css";

@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from "react";
 import "./FridgeRecipes.css";
-import Recipe from "./Recipe";
-import RecipesToolbar from "./RecipesToolbar";
+import Recipe from "../Recipe";
+import RecipesToolbar from "../RecipesToolbar";
 import Highlighter from "react-highlight-words";
 import PropTypes from "prop-types";
 
