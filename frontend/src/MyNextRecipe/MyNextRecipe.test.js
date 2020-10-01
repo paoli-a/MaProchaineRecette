@@ -1,5 +1,11 @@
 import React from "react";
-import { render, fireEvent, within, waitFor } from "@testing-library/react";
+import {
+  act,
+  render,
+  fireEvent,
+  within,
+  waitFor,
+} from "@testing-library/react";
 import axios from "axios";
 import MyNextRecipe from "./MyNextRecipe";
 
@@ -68,10 +74,17 @@ beforeEach(() => {
   fridgeIngredients = [
     {
       id: 1,
-      ingredient: "épinard",
-      expiration_date: "2020-04-15",
+      ingredient: "Epinards",
+      expiration_date: "2050-04-15",
       amount: "60",
       unit: "g",
+    },
+    {
+      id: 2,
+      ingredient: "Pommes de terre",
+      expiration_date: "2050-04-15",
+      amount: "1",
+      unit: "kg",
     },
   ];
   catalogIngredients = [
@@ -80,6 +93,9 @@ beforeEach(() => {
     },
     {
       name: "Sucre",
+    },
+    {
+      name: "Epinards",
     },
   ];
   catalogCategories = ["Entrée", "Plat", "Dessert"];
@@ -155,7 +171,7 @@ describe("renders correctly", () => {
     const { getByRole, queryByText, getByText } = render(<MyNextRecipe />);
     await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(FETCH_CALLS));
     navigateTo("Catalogue des ingrédients", getByRole);
-    const nextRecipes = queryByText("Mes prochaines recipes");
+    const nextRecipes = queryByText("Mes prochaines recettes");
     const fridge = queryByText("Voici les ingrédients du frigo !");
     const allMyRecipes = queryByText("Catalogue de toutes mes recettes");
     const allMyIngredients = getByText("Catalogue de tous mes ingrédients");
@@ -169,7 +185,7 @@ describe("renders correctly", () => {
     const { getByRole, queryByText, getByText } = render(<MyNextRecipe />);
     await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(FETCH_CALLS));
     navigateTo("Catalogue des recettes", getByRole);
-    const nextRecipes = queryByText("Mes prochaines recipes");
+    const nextRecipes = queryByText("Mes prochaines recettes");
     const fridge = queryByText("Voici les ingrédients du frigo !");
     const allMyRecipes = getByText("Catalogue de toutes mes recettes");
     const allMyIngredients = queryByText("Catalogue de tous mes ingrédients");
@@ -185,7 +201,7 @@ describe("fetches correctly", () => {
     const { getByText, getByRole } = render(<MyNextRecipe />);
     await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(FETCH_CALLS));
     navigateTo("Ma prochaine recette", getByRole);
-    const epinard = getByText(/épinard/);
+    const epinard = getByText(/Epinards/);
     expect(epinard).toBeInTheDocument();
   });
 
@@ -296,7 +312,7 @@ describe("displays correct error message on bad fetch", () => {
   });
 });
 
-describe("Handle correctly new catalogIngredient", () => {
+describe("Handle correctly new catalog ingredient", () => {
   it(`takes into account newly entered ingredient in catalogIngredients by giving suggestions when an ingredient name is being entered in FridgeIngredients`, async () => {
     const myNextRecipe = render(<MyNextRecipe />);
     await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(FETCH_CALLS));
@@ -331,5 +347,96 @@ describe("Handle correctly new catalogIngredient", () => {
     fireEvent.change(inputCatalogName, { target: { value: name } });
     fireEvent.click(submitButtonCatalog);
     await waitFor(() => expect(axios.post).toHaveBeenCalledTimes(1));
+  }
+});
+
+describe("Handle correctly new catalog recipes", () => {
+  it("refetches feasible recipes when a new catalog recipe is added", async () => {
+    const { getByLabelText, queryByText, getByText, getByRole } = render(
+      <MyNextRecipe />
+    );
+    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(FETCH_CALLS));
+    let recipeToAdd = queryByText("Plats d'épinards", { exact: false });
+    expect(recipeToAdd).not.toBeInTheDocument();
+    await addRecipe(getByLabelText, getByRole, getByText);
+    await waitFor(() => expect(axios.post).toHaveBeenCalledTimes(1));
+    navigateTo("Ma prochaine recette", getByRole);
+    await waitFor(() =>
+      expect(axios.get).toHaveBeenCalledTimes(FETCH_CALLS + 1)
+    );
+    recipeToAdd = getByText("Plat d'épinards", { exact: false });
+    expect(recipeToAdd).toBeInTheDocument();
+  });
+
+  function addIngredient(getByLabelText, getByText, value) {
+    const inputIngredientName = getByLabelText("Nom :");
+    const inputAmount = getByLabelText("Quantité nécessaire :");
+    const selectedUnit = getByLabelText("Unité");
+    const addButton = getByText("Ajouter");
+    fireEvent.change(inputIngredientName, { target: { value: value[0] } });
+    fireEvent.change(inputAmount, { target: { value: value[1] } });
+    fireEvent.change(selectedUnit, { target: { value: value[2] } });
+    fireEvent.click(addButton);
+  }
+
+  async function addRecipe(getByLabelText, getByRole, getByText) {
+    navigateTo("Catalogue des recettes", getByRole);
+    const axiosPostResponse = {
+      data: {
+        id: 6,
+        title: "Plat d'épinards",
+        categories: ["Plat"],
+        duration: "00:10:00",
+        ingredients: [{ ingredient: "Epinards", amount: "50", unit: "g" }],
+        description: "Coupez les épinards et cuisez-les dans de l'eau.",
+      },
+    };
+    axios.post.mockResolvedValue(axiosPostResponse);
+    const inputTitle = getByLabelText("Titre de la recette :");
+    const plat = getByLabelText("Plat");
+    const inputDuration = getByLabelText("Temps total de la recette :");
+    const inputDescription = getByLabelText("Corps de la recette :");
+    const submitButton = getByText("Confirmer");
+    fireEvent.change(inputTitle, { target: { value: "Plat d'épinards" } });
+    fireEvent.click(plat);
+    fireEvent.change(inputDuration, { target: { value: "00:10" } });
+    addIngredient(getByLabelText, getByText, ["Epinards", "50", "g"]);
+    fireEvent.change(inputDescription, {
+      target: {
+        value: "Coupez les épinards et cuisez-les dans de l'eau.",
+      },
+    });
+    await act(async () => {
+      fireEvent.click(submitButton);
+    });
+    axiosResponseFridgeRecipes = axiosResponseFridgeRecipes.data.push(
+      axiosPostResponse.data
+    );
+    axios.get.mockResolvedValue(axiosResponseFridgeRecipes);
+  }
+});
+
+describe("Handle correctly new fridge ingredients", () => {
+  it("refetches feasible recipes when a fridge ingredient is removed", async () => {
+    const { queryByText, getByText } = render(<MyNextRecipe />);
+    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(FETCH_CALLS));
+    let recipe = getByText("Salade de pommes de terre", { exact: false });
+    expect(recipe).toBeInTheDocument();
+    axios.get.mockResolvedValue({ data: [] });
+    await deleteFridgeIngredient(getByText);
+    await waitFor(() =>
+      expect(axios.get).toHaveBeenCalledTimes(FETCH_CALLS + 1)
+    );
+    recipe = queryByText("Salade de pommes de terre", { exact: false });
+    expect(recipe).not.toBeInTheDocument();
+  });
+
+  async function deleteFridgeIngredient(getByText) {
+    const axiosDeleteResponse = { data: "" };
+    axios.delete.mockResolvedValue(axiosDeleteResponse);
+    const ingredient = getByText(/Pommes de terre/);
+    const button = within(ingredient).getByText("Supprimer");
+    fireEvent.click(button);
+    await waitFor(() => expect(axios.delete).toHaveBeenCalledTimes(1));
   }
 });
