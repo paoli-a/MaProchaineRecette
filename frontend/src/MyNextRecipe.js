@@ -85,7 +85,7 @@ function MyNextRecipe() {
         )
       );
     axios
-      .get("/api/units/")
+      .get("/api/units/units/")
       .then(({ data }) => {
         setUnits(data);
       })

@@ -2,18 +2,12 @@ const execSync = require("child_process").execSync;
 
 module.exports = {
   start: function () {
-    execute(
-      "cd ../backend/maprochainerecette && DATABASE_URL=sqlite:///end_to_end_db.sqlite3 pipenv run python manage.py flush --noinput",
-      true
-    );
-    execute(
-      "cd ../backend/maprochainerecette && DATABASE_URL=sqlite:///end_to_end_db.sqlite3 pipenv run python manage.py makemigrations",
-      true
-    );
-    execute(
-      "cd ../backend/maprochainerecette && DATABASE_URL=sqlite:///end_to_end_db.sqlite3 pipenv run python manage.py migrate",
-      true
-    );
+    const databaseFile = "sqlite:///end_to_end_db.sqlite3";
+    const backendPath = "../backend/maprochainerecette";
+    const djangoEnv = `cd ${backendPath} && DATABASE_URL=${databaseFile}`;
+    execute(`${djangoEnv} pipenv run python manage.py flush --noinput`, true);
+    execute(`${djangoEnv} pipenv run python manage.py makemigrations`, true);
+    execute(`${djangoEnv} pipenv run python manage.py migrate`, true);
     execute("node_modules/.bin/pm2 start pm2_backend.json", false);
     execute("node_modules/.bin/pm2 start pm2_frontend.json", true);
   },

@@ -45,12 +45,14 @@
     ]
   },
   "devDependencies": {
-    "codeceptjs": "^3.0",
+    "codeceptjs": "^3.0.0-rc.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-codeceptjs": "^1.3.0",
+    "faker": "^5.1.0",
     "mutationobserver-shim": "^0.3.5",
     "playwright": "^1.4.1",
     "pm2": "^4.4.1",
-    "prettier": "^2.0.5"
+    "prettier": "^2.0.5",
+    "rosie": "^2.0.1"
   }
 }

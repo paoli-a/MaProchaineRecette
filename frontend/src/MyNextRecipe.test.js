@@ -131,7 +131,7 @@ function mockAxiosGet(rejectedElement) {
       return rejectedElement === "categories"
         ? Promise.reject(new Error(""))
         : Promise.resolve(axiosResponseCategories);
-    } else if (url === "/api/units/") {
+    } else if (url === "/api/units/units/") {
       return rejectedElement === "units"
         ? Promise.reject(new Error(""))
         : Promise.resolve(axiosResponseUnits);
