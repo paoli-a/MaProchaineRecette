@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import RecipesForm from "./RecipesForm";
-import Recipe from "./Recipe";
-import useFilterSearch from "./useFilterSearch";
+import RecipesForm from "../Recipe/RecipesForm";
+import Recipe from "../Recipe/Recipe";
+import useFilterSearch from "../useFilterSearch";
 import "./CatalogRecipes.css";
 import PropTypes from "prop-types";
 import axios from "axios";
