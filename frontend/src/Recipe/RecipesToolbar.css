@@ -25,11 +25,11 @@
 }
 
 .dropdown-closed {
-  background-image: url(images/fleche_dropdown_bas.png);
+  background-image: url(../images/fleche_dropdown_bas.png);
 }
 
 .dropdown-open {
-  background-image: url(images/fleche_dropdown_haut.png);
+  background-image: url(../images/fleche_dropdown_haut.png);
 }
 
 #search {
@@ -48,7 +48,7 @@
   cursor: pointer;
   width: 65px;
   height: 25px;
-  background-image: url("images/loupe.png");
+  background-image: url("../images/loupe.png");
   background-repeat: no-repeat;
   background-position: center;
   background-color: rgb(248, 248, 248);
@@ -58,7 +58,7 @@
 
 #search button:hover {
   background-color: rgb(240, 240, 240);
-  background-image: url("images/loupe_dark.png");
+  background-image: url("../images/loupe_dark.png");
 }
 
 .dropdown-container li {

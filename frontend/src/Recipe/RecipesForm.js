@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import InputSuggestions from "./InputSuggestions";
+import InputSuggestions from "../InputSuggestions/InputSuggestions";
 import PropTypes from "prop-types";
 
 function RecipesForm({

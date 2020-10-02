@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useForm } from "react-hook-form";
-import useFilterSearch from "./useFilterSearch";
+import useFilterSearch from "../useFilterSearch";
 import "./CatalogIngredients.css";
 import PropTypes from "prop-types";
 
