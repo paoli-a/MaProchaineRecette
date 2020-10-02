@@ -22,25 +22,9 @@ exports.config = {
         Accept: "application/json",
       },
       factories: {
-        catalogRecipe: {
-          uri: "/catalogs/recipes/",
-          factory: "./end_to_end/factories/catalogRecipe",
-        },
         catalogIngredient: {
           uri: "/catalogs/ingredients/",
           factory: "./end_to_end/factories/catalogIngredient",
-        },
-        catalogCategory: {
-          uri: "/catalogs/categories/",
-          factory: "./end_to_end/factories/catalogCategory",
-        },
-        unit: {
-          uri: "/units/units/",
-          factory: "./end_to_end/factories/unit",
-        },
-        unitType: {
-          uri: "/units/types/",
-          factory: "./end_to_end/factories/unitType",
         },
       },
     },

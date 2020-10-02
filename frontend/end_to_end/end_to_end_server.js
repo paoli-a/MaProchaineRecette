@@ -7,7 +7,10 @@ module.exports = {
     const djangoEnv = `cd ${backendPath} && DATABASE_URL=${databaseFile}`;
     execute(`${djangoEnv} pipenv run python manage.py flush --noinput`, true);
     execute(`${djangoEnv} pipenv run python manage.py makemigrations`, true);
-    execute(`${djangoEnv} pipenv run python manage.py migrate`, true);
+    execute(
+      `${djangoEnv} pipenv run python manage.py migrate --run-syncdb`,
+      true
+    );
     execute("node_modules/.bin/pm2 start pm2_backend.json", false);
     execute("node_modules/.bin/pm2 start pm2_frontend.json", true);
   },

@@ -22,7 +22,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
     serializer_class = RecipeSerializer
 
 
-class CategoryViewSet(viewsets.ModelViewSet):
+class CategoryViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Category.objects.all()
     permission_classes = [permissions.AllowAny]
     authentication_classes = [authentication.TokenAuthentication]
