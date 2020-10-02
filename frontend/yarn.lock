@@ -1253,6 +1253,15 @@
     lodash.mergewith "^4.6.2"
     webdriverio "^5.15.2"
 
+"@codeceptjs/configure@^0.5.2":
+  version "0.5.2"
+  resolved "https://registry.yarnpkg.com/@codeceptjs/configure/-/configure-0.5.2.tgz#eabe395ad5c4c6d1f581353dcc05258bd8d187a8"
+  integrity sha512-XNnrdur8EWhHFLs00jpv1qOMl6z8MET/RaJsKunHdQiGeIcDMxFHSA+ysWqTnBl9PlWkVcZsDFSQ98Wwm3pGJg==
+  dependencies:
+    lodash.merge "^4.6.2"
+    lodash.mergewith "^4.6.2"
+    webdriverio "^5.15.2"
+
 "@codeceptjs/helper@^1.0.1":
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/@codeceptjs/helper/-/helper-1.0.1.tgz#11bd5b3cecfda4864923fbe744b40366b7b8b0f7"

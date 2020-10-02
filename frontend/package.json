@@ -45,6 +45,7 @@
     ]
   },
   "devDependencies": {
+    "@codeceptjs/configure": "^0.5.2",
     "codeceptjs": "^3.0.0-rc.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-codeceptjs": "^1.3.0",
