@@ -1,8 +1,6 @@
 const { setHeadlessWhen } = require("@codeceptjs/configure");
 
-// turn on headless mode when running with HEADLESS=true environment variable
-// export HEADLESS=true && npx codeceptjs run
-setHeadlessWhen(process.env.HEADLESS);
+setHeadlessWhen(process.env.CI);
 
 var server = require("./end_to_end/end_to_end_server");
 
