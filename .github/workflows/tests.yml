@@ -1,0 +1,90 @@
+name: Tests
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  backend_tests:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install pipenv
+        run: pip install pipenv
+      - name: Install dependencies
+        run: pipenv install --dev
+        working-directory: ./backend
+      - name: Run flake8
+        run: pipenv run flake8 --config=setup.cfg --max-complexity 10
+        working-directory: ./backend/maprochainerecette
+      - name: Run mypy
+        run: pipenv run mypy --config=setup.cfg .
+        working-directory: ./backend/maprochainerecette
+      - name: Run unit tests
+        run: pipenv run pytest
+        working-directory: ./backend/maprochainerecette
+
+  frontend_tests:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [14.x]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Install dependencies
+        run: yarn install
+        working-directory: ./frontend
+      - name: Run eslint
+        run: yarn lint
+        working-directory: ./frontend
+        env:
+          CI: true
+      - name: Run unit tests
+        run: yarn test
+        working-directory: ./frontend
+        env:
+          CI: true
+
+  end_to_end_tests:
+    needs: [backend_tests, frontend_tests]
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [14.x]
+        python-version: [3.8]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Install dependencies
+        run: yarn install
+        working-directory: ./frontend
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install pipenv
+        run: pip install pipenv
+      - name: Install dependencies
+        run: pipenv install
+        working-directory: ./backend
+      - name: Run end to end tests
+        run: yarn end_to_end
+        working-directory: ./frontend
+        env:
+          CI: true

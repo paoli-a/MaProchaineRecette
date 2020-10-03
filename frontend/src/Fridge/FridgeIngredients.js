@@ -19,7 +19,7 @@ function FridgeIngredients({
 
   const handleSupprClick = (id) => {
     axios
-      .delete(`/fridge/ingredients/${id}/`)
+      .delete(`/api/fridge/ingredients/${id}/`)
       .then(() => {
         const ingredientsListUpdated = ingredientsList.slice();
         eliminateIngredientWithId(ingredientsListUpdated, id);
@@ -43,7 +43,7 @@ function FridgeIngredients({
       unit: data.unit,
     };
     axios
-      .post("/fridge/ingredients/", newIngredient)
+      .post("/api/fridge/ingredients/", newIngredient)
       .then(({ data }) => {
         const newData = {
           id: data.id,

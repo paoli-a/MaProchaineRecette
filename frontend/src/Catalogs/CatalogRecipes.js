@@ -24,7 +24,7 @@ function CatalogRecipes({
 
   const handleSupprClick = (id) => {
     axios
-      .delete(`/catalogs/recipes/${id}/`)
+      .delete(`/api/catalogs/recipes/${id}/`)
       .then(() => {
         const updatedRecipes = recipesList.slice();
         const index = updatedRecipes.findIndex((recipe) => {
@@ -53,7 +53,7 @@ function CatalogRecipes({
       description: data.recipeDescription,
     };
     axios
-      .post("/catalogs/recipes/", recipeToSend)
+      .post("/api/catalogs/recipes/", recipeToSend)
       .then(({ data }) => {
         const newRecipe = data;
         const updatedRecipes = recipesList.slice();

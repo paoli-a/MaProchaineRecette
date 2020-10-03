@@ -23,7 +23,7 @@ function MyNextRecipe() {
 
   const fetchesFeasibleRecipes = () => {
     axios
-      .get("/fridge/recipes/")
+      .get("/api/fridge/recipes/")
       .then(({ data }) => {
         setFeasibleRecipes(data);
       })
@@ -36,7 +36,7 @@ function MyNextRecipe() {
 
   useEffect(() => {
     axios
-      .get("/catalogs/ingredients/")
+      .get("/api/catalogs/ingredients/")
       .then(({ data }) => {
         setCatalogIngredients(data);
       })
@@ -46,7 +46,7 @@ function MyNextRecipe() {
         )
       );
     axios
-      .get("/catalogs/recipes/")
+      .get("/api/catalogs/recipes/")
       .then(({ data }) => {
         setCatalogRecipes(data);
       })
@@ -56,7 +56,7 @@ function MyNextRecipe() {
         )
       );
     axios
-      .get("/fridge/ingredients/")
+      .get("/api/fridge/ingredients/")
       .then(({ data }) => {
         const newData = data.map((fridgeIngredient) => {
           return {
@@ -75,7 +75,7 @@ function MyNextRecipe() {
         )
       );
     axios
-      .get("/catalogs/categories/")
+      .get("/api/catalogs/categories/")
       .then(({ data }) => {
         setCatalogCategories(data);
       })
@@ -85,7 +85,7 @@ function MyNextRecipe() {
         )
       );
     axios
-      .get("/units/")
+      .get("/api/units/units/")
       .then(({ data }) => {
         setUnits(data);
       })
@@ -94,6 +94,7 @@ function MyNextRecipe() {
           "Il y a eu une erreur vis-à-vis du serveur, veuillez reharger la page ou réessayer ultérieurement."
         )
       );
+
     fetchesFeasibleRecipes();
   }, []);
 
