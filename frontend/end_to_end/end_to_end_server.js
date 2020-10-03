@@ -14,7 +14,6 @@ module.exports = {
     execute("node_modules/.bin/pm2 start pm2_backend.json", false);
     execute("node_modules/.bin/pm2 start pm2_frontend.json", true);
   },
-
   stop: function () {
     execute("node_modules/.bin/pm2 stop frontend", false);
     execute("node_modules/.bin/pm2 stop backend", true);

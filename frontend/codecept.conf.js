@@ -13,6 +13,13 @@ exports.config = {
       show: true,
       browser: "chromium",
     },
+    REST: {
+      endpoint: "http://localhost:3501/api/",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    },
     ApiDataFactory: {
       endpoint: "http://localhost:3501/api/",
       headers: {
@@ -23,6 +30,8 @@ exports.config = {
         catalogIngredient: {
           uri: "/catalogs/ingredients/",
           factory: "./end_to_end/factories/catalogIngredient",
+          delete: { delete: "/catalogs/ingredients/{id}/" },
+          fetchId: (data) => data.name,
         },
       },
     },

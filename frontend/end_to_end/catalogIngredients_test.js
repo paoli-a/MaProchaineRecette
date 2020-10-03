@@ -1,3 +1,5 @@
+const execSync = require("child_process").execSync;
+
 Feature("Catalog ingredients");
 
 Before(({ I }) => {
@@ -19,6 +21,7 @@ Scenario("Add new ingredient", ({ I }) => {
     I.see("Carottes");
     I.see("Navets");
   });
+  I.sendDeleteRequest("catalogs/ingredients/Navets/");
 });
 
 Scenario("Remove ingredient", ({ I }) => {
