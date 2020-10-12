@@ -140,6 +140,23 @@ afterEach(() => {
   jest.clearAllMocks();
 });
 
+const handleNewRecipe = (recipesUpdated) => {
+  recipes = recipesUpdated;
+};
+
+const rerenderCatalog = (rerender) => {
+  rerender(
+    <CatalogRecipes
+      totalRecipes={recipes}
+      possibleIngredients={catalogIngredients}
+      totalCategories={catalogCategories}
+      totalUnits={units}
+      feasibleRecipesUpdate={() => undefined}
+      updateRecipe={handleNewRecipe}
+    />
+  );
+};
+
 describe("initial display is correct", () => {
   it("displays provided categories", () => {
     const { getByText } = render(
@@ -149,6 +166,7 @@ describe("initial display is correct", () => {
         totalCategories={catalogCategories}
         totalUnits={units}
         feasibleRecipesUpdate={() => undefined}
+        updateRecipe={handleNewRecipe}
       />
     );
     const entree = getByText(/Entrée/);
@@ -165,6 +183,7 @@ describe("initial display is correct", () => {
         totalCategories={catalogCategories}
         totalUnits={units}
         feasibleRecipesUpdate={() => undefined}
+        updateRecipe={handleNewRecipe}
       />
     );
     const unitSelect = getByLabelText("Unité");
@@ -182,6 +201,7 @@ describe("initial display is correct", () => {
         totalCategories={catalogCategories}
         totalUnits={units}
         feasibleRecipesUpdate={() => undefined}
+        updateRecipe={handleNewRecipe}
       />
     );
     const salade = getByText(/Salade de pommes de terre radis/);
@@ -193,16 +213,18 @@ describe("initial display is correct", () => {
 
 describe("the adding recipe functionality works properly", () => {
   it("adds the correct recipe when filling the form and clicking on submit", async () => {
-    const { getByLabelText, getByText } = render(
+    const { getByLabelText, getByText, rerender } = render(
       <CatalogRecipes
         totalRecipes={recipes}
         possibleIngredients={catalogIngredients}
         totalCategories={catalogCategories}
         totalUnits={units}
         feasibleRecipesUpdate={() => undefined}
+        updateRecipe={handleNewRecipe}
       />
     );
     await addRecipe(getByLabelText, getByText);
+    rerenderCatalog(rerender);
     const recipe = getByText("Crumble aux poires", { exact: false });
     const poires = getByText(/Poires :/);
     const beurre = getByText(/Beurre :/);
@@ -235,6 +257,7 @@ describe("the adding recipe functionality works properly", () => {
         totalCategories={catalogCategories}
         totalUnits={units}
         feasibleRecipesUpdate={() => undefined}
+        updateRecipe={handleNewRecipe}
       />
     );
     await addRecipe(getByLabelText, getByText, [inputName]);
@@ -250,6 +273,7 @@ describe("the adding recipe functionality works properly", () => {
         totalCategories={catalogCategories}
         totalUnits={units}
         feasibleRecipesUpdate={() => undefined}
+        updateRecipe={handleNewRecipe}
       />
     );
     await addRecipe(getByLabelText, getByText, ["title"]);
@@ -265,6 +289,7 @@ describe("the adding recipe functionality works properly", () => {
         totalCategories={catalogCategories}
         totalUnits={units}
         feasibleRecipesUpdate={() => undefined}
+        updateRecipe={handleNewRecipe}
       />
     );
     await addRecipe(getByLabelText, getByText, [], { duration: "00:00" });
@@ -286,6 +311,7 @@ describe("the adding recipe functionality works properly", () => {
           totalCategories={catalogCategories}
           totalUnits={units}
           feasibleRecipesUpdate={() => undefined}
+          updateRecipe={handleNewRecipe}
         />
       );
       addIngredient(getByLabelText, getByText, ["Fraises", "5", "g"]);
@@ -302,6 +328,7 @@ describe("the adding recipe functionality works properly", () => {
           totalCategories={catalogCategories}
           totalUnits={units}
           feasibleRecipesUpdate={() => undefined}
+          updateRecipe={handleNewRecipe}
         />
       );
       addIngredient(getByLabelText, getByText, ["Fraises", "-1", "g"]);
@@ -320,6 +347,7 @@ describe("the adding recipe functionality works properly", () => {
           totalCategories={catalogCategories}
           totalUnits={units}
           feasibleRecipesUpdate={() => undefined}
+          updateRecipe={handleNewRecipe}
         />
       );
       addIngredient(getByLabelText, getByText, ["Poireaux", "50", "g"]);
@@ -335,6 +363,7 @@ describe("the adding recipe functionality works properly", () => {
           totalCategories={catalogCategories}
           totalUnits={units}
           feasibleRecipesUpdate={() => undefined}
+          updateRecipe={handleNewRecipe}
         />
       );
       const inputIngredientName = getByLabelText("Nom :");
@@ -349,17 +378,19 @@ describe("the adding recipe functionality works properly", () => {
 
     it(`removes ingredient on the form when clicking on the
       remove button`, async () => {
-      const { getByLabelText, getByText } = render(
+      const { getByLabelText, getByText, rerender } = render(
         <CatalogRecipes
           totalRecipes={recipes}
           possibleIngredients={catalogIngredients}
           totalCategories={catalogCategories}
           totalUnits={units}
           feasibleRecipesUpdate={() => undefined}
+          updateRecipe={handleNewRecipe}
         />
       );
       addIngredient(getByLabelText, getByText, ["Poires", "1", "kg"]);
       addIngredient(getByLabelText, getByText, ["Beurre", "30", "g"]);
+      rerenderCatalog(rerender);
       const poires = getByText(/Poires : /);
       const beurre = getByText(/Beurre : /);
       const removeButton = within(poires).getByText("X");
@@ -378,6 +409,7 @@ describe("the adding recipe functionality works properly", () => {
           totalCategories={catalogCategories}
           totalUnits={units}
           feasibleRecipesUpdate={() => undefined}
+          updateRecipe={handleNewRecipe}
         />
       );
       addIngredient(getByLabelText, getByText, ["Poires", "1", "kg"]);
@@ -463,6 +495,7 @@ was not successful on backend side`, async () => {
         totalCategories={catalogCategories}
         totalUnits={units}
         feasibleRecipesUpdate={() => undefined}
+        updateRecipe={handleNewRecipe}
       />
     );
     const axiosPostResponse = {};
@@ -494,13 +527,14 @@ was not successful on backend side`, async () => {
 
 describe("the removing recipe functionality works properly", () => {
   it("removes the recipe when clicking on the button", async () => {
-    const { getByText } = render(
+    const { getByText, rerender } = render(
       <CatalogRecipes
         totalRecipes={recipes}
         possibleIngredients={catalogIngredients}
         totalCategories={catalogCategories}
         totalUnits={units}
         feasibleRecipesUpdate={() => undefined}
+        updateRecipe={handleNewRecipe}
       />
     );
     const axiosDeleteResponse = { data: "" };
@@ -514,6 +548,7 @@ describe("the removing recipe functionality works properly", () => {
     const button = within(recipeRemoved).getByText("X");
     fireEvent.click(button);
     await waitFor(() => expect(axios.delete).toHaveBeenCalledTimes(1));
+    rerenderCatalog(rerender);
     expect(recipeRemoved).not.toBeInTheDocument();
     expect(recipe).toBeInTheDocument();
   });
@@ -527,6 +562,7 @@ was not successful on backend side`, async () => {
         totalCategories={catalogCategories}
         totalUnits={units}
         feasibleRecipesUpdate={() => undefined}
+        updateRecipe={handleNewRecipe}
       />
     );
     const axiosDeleteResponse = { data: "" };
@@ -559,6 +595,7 @@ describe("the search bar functionality works properly", () => {
         totalCategories={catalogCategories}
         totalUnits={units}
         feasibleRecipesUpdate={() => undefined}
+        updateRecipe={handleNewRecipe}
       />
     );
     const searchBar = getByPlaceholderText("Recherche par titre...");
@@ -580,6 +617,7 @@ describe("the search bar functionality works properly", () => {
         totalCategories={catalogCategories}
         totalUnits={units}
         feasibleRecipesUpdate={() => undefined}
+        updateRecipe={handleNewRecipe}
       />
     );
     const searchBar = getByPlaceholderText("Recherche par titre...");
