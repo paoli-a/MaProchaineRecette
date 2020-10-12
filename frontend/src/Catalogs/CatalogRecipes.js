@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import RecipesForm from "../Recipe/RecipesForm";
 import Recipe from "../Recipe/Recipe";
 import useFilterSearch from "../useFilterSearch";
@@ -12,27 +12,23 @@ function CatalogRecipes({
   totalCategories,
   totalUnits,
   feasibleRecipesUpdate,
+  updateRecipe,
 }) {
-  const [recipesList, setRecipes] = useState(totalRecipes);
   const [searchResults, setSearchResults] = useState("");
   const [deleteError, setDeleteError] = useState({});
   const [postError, setPostError] = useState("");
-
-  useEffect(() => {
-    setRecipes(totalRecipes);
-  }, [totalRecipes]);
 
   const handleSupprClick = (id) => {
     axios
       .delete(`/api/catalogs/recipes/${id}/`)
       .then(() => {
-        const updatedRecipes = recipesList.slice();
+        const updatedRecipes = totalRecipes.slice();
         const index = updatedRecipes.findIndex((recipe) => {
           return recipe.id === id;
         });
         updatedRecipes.splice(index, 1);
-        setRecipes(updatedRecipes);
         feasibleRecipesUpdate();
+        updateRecipe(updatedRecipes);
       })
       .catch(() => {
         setDeleteError({
@@ -56,12 +52,12 @@ function CatalogRecipes({
       .post("/api/catalogs/recipes/", recipeToSend)
       .then(({ data }) => {
         const newRecipe = data;
-        const updatedRecipes = recipesList.slice();
+        const updatedRecipes = totalRecipes.slice();
         updatedRecipes.push(newRecipe);
-        setRecipes(updatedRecipes);
         feasibleRecipesUpdate();
+        updateRecipe(updatedRecipes);
       })
-      .catch((e) => {
+      .catch(() => {
         setPostError("L'ajout de recette a échoué.");
       });
   };
@@ -71,7 +67,7 @@ function CatalogRecipes({
   };
 
   const filteredRecipes = useFilterSearch({
-    elementsToFilter: recipesList,
+    elementsToFilter: totalRecipes,
     searchResults: searchResults,
     getSearchElement: (recipe) => recipe.title,
   });
@@ -153,6 +149,7 @@ CatalogRecipes.propTypes = {
   totalCategories: PropTypes.arrayOf(PropTypes.string).isRequired,
   totalUnits: PropTypes.arrayOf(PropTypes.string).isRequired,
   feasibleRecipesUpdate: PropTypes.func.isRequired,
+  updateRecipe: PropTypes.func.isRequired,
 };
 
 export default CatalogRecipes;

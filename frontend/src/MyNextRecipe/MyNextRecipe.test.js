@@ -368,6 +368,17 @@ describe("Handle correctly new catalog recipes", () => {
     expect(recipeToAdd).toBeInTheDocument();
   });
 
+  it(`rerenders and displays all the catalog recipes even the newly entered when we navigate between tabs`, async () => {
+    const { getByRole, getByText, getByLabelText } = render(<MyNextRecipe />);
+    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(FETCH_CALLS));
+    await addRecipe(getByLabelText, getByRole, getByText);
+    await waitFor(() => expect(axios.post).toHaveBeenCalledTimes(1));
+    navigateTo("Ma prochaine recette", getByRole);
+    navigateTo("Catalogue des recettes", getByRole);
+    const newRecipe = getByText("Plat d'épinards", { exact: false });
+    expect(newRecipe).toBeInTheDocument();
+  });
+
   function addIngredient(getByLabelText, getByText, value) {
     const inputIngredientName = getByLabelText("Nom :");
     const inputAmount = getByLabelText("Quantité nécessaire :");
@@ -418,8 +429,9 @@ describe("Handle correctly new catalog recipes", () => {
 
 describe("Handle correctly new fridge ingredients", () => {
   it("refetches feasible recipes when a fridge ingredient is removed", async () => {
-    const { queryByText, getByText } = render(<MyNextRecipe />);
+    const { queryByText, getByText, getByRole } = render(<MyNextRecipe />);
     await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(FETCH_CALLS));
+    navigateTo("Ma prochaine recette", getByRole);
     let recipe = getByText("Salade de pommes de terre", { exact: false });
     expect(recipe).toBeInTheDocument();
     axios.get.mockResolvedValue({ data: [] });
