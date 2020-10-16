@@ -3,6 +3,13 @@ import "./RecipesToolbar.css";
 import { useForm } from "react-hook-form";
 import PropTypes from "prop-types";
 
+/**
+ * Ce composant permet d'afficher les outils de filtrage des recettes:
+ * - la sélection des catégories
+ * - la barre de recherche
+ *
+ * @component
+ */
 function RecipesToolbar({ onChangeCategories, onChangeSearch, categories }) {
   const {
     register: registerCategories,

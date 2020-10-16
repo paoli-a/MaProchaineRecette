@@ -8,6 +8,14 @@ import CatalogRecipes from "../Catalogs/CatalogRecipes";
 import "./MyNextRecipe.css";
 import "./Nav.css";
 
+/**
+ * Ce composant est le composant principal. Il permet d'afficher le menu, avec les trois pages :
+ * - les ingrédients du frigo et les recettes possibles en fonction de ceux-ci
+ * - le catalogue d'ingrédients
+ * - le catalogue des recettes
+ *
+ * @component
+ */
 function MyNextRecipe() {
   const [catalogIngredients, setCatalogIngredients] = useState([]);
   const [catalogRecipes, setCatalogRecipes] = useState([]);

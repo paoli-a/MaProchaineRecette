@@ -5,6 +5,13 @@ import RecipesToolbar from "../Recipe/RecipesToolbar";
 import Highlighter from "react-highlight-words";
 import PropTypes from "prop-types";
 
+/**
+ * Ce composant permet d'afficher les recettes. Il donne la possibilité
+ * de trier les recettes par catégories mais aussi de faire une recherche
+ * "filtrante" sur le titre, la description ou le nom d'un ingrédient.
+ *
+ * @component
+ */
 function FridgeRecipes({ recipes }) {
   const [categories, setCategories] = useState([]);
   const [searchResults, setSearchResults] = useState("");

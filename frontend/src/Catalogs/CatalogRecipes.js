@@ -6,6 +6,13 @@ import "./CatalogRecipes.css";
 import PropTypes from "prop-types";
 import axios from "axios";
 
+/**
+ * Ce composant permet d'afficher les recettes du catalogue, d'en ajouter
+ * et d'en supprimer. Une recherche peut etre faite sur le nom des recettes et
+ * permettra d'afficher au fur et à mesure les recettes correspondantes.
+ *
+ * @component
+ */
 function CatalogRecipes({
   totalRecipes,
   possibleIngredients,

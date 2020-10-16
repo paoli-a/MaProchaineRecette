@@ -2,6 +2,12 @@ import React from "react";
 import PropTypes from "prop-types";
 import "./IngredientsList.css";
 
+/**
+ * Ce composant permet d'afficher la liste des ingrédients nécessaires avec leur
+ * quantité correspondante pour une recette donnée.
+ *
+ * @component
+ */
 function IngredientsList({
   ingredients,
   priorityIngredients,
