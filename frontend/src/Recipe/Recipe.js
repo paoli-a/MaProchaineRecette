@@ -3,6 +3,15 @@ import IngredientsList from "./IngredientsList";
 import "./Recipe.css";
 import PropTypes from "prop-types";
 
+/**
+ * Ce composant permet d'afficher une recette.
+ *
+ * De manière optionnelle on peut faire en sorte :
+ * - d'afficher un bouton à côté du titre d'une recette, par exemple pour pouvoir la supprimer
+ * - de n'afficher que le titre et de faire apparaître la totalité de la recette quand on clique sur ce titre.
+ *
+ * @component
+ */
 function Recipe({ recipe, optionalButton, activateClick, highlight }) {
   const [isRecipeOpen, setRecipeOpen] = useState();
 

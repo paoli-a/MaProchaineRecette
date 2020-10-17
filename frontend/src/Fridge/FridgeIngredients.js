@@ -3,6 +3,13 @@ import FridgeIngredientsForm from "./FridgeIngredientsForm";
 import PropTypes from "prop-types";
 import axios from "axios";
 
+/**
+ * Ce composant permet d'afficher les ingrédients du frigo, d'en ajouter
+ * et d'en supprimer. Seul des noms d'ingrédients déjà présents dans le catalogue
+ * des ingrédients sont acceptés.
+ *
+ * @component
+ */
 function FridgeIngredients({
   ingredients,
   possibleIngredients,
