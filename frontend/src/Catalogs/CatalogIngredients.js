@@ -5,6 +5,13 @@ import useFilterSearch from "../useFilterSearch";
 import "./CatalogIngredients.css";
 import PropTypes from "prop-types";
 
+/**
+ * Ce composant permet d'afficher les ingrédients du catalogue, d'en ajouter
+ * et d'en supprimer. Une recherche peut etre faite sur le nom des ingrédients et
+ * permettra d'afficher au fur et à mesure les ingrédients correspondants.
+ *
+ * @component
+ */
 function CatalogIngredients({
   possibleIngredients,
   updatePossibleIngredients,

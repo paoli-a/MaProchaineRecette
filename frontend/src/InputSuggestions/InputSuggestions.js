@@ -1,6 +1,12 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 
+/**
+ * Ce composant est un input permettant d'afficher une liste de suggestions personnalisée.
+ * Toutes les props supplémentaires seront transférées à la balise interne input.
+ *
+ * @component
+ */
 function InputSuggestions({
   elements,
   id,
