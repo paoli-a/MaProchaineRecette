@@ -55,6 +55,22 @@ afterEach(() => {
   jest.clearAllMocks();
 });
 
+const handleFridgeIngredient = (ingredientsUpdated) => {
+  fridgeIngredients = ingredientsUpdated;
+};
+
+const rerenderIngredients = (rerender) => {
+  rerender(
+    <FridgeIngredients
+      ingredients={fridgeIngredients}
+      possibleIngredients={catalogIngredients}
+      totalUnits={units}
+      feasibleRecipesUpdate={() => undefined}
+      updateFridgeIngredients={handleFridgeIngredient}
+    />
+  );
+};
+
 describe("correct display of an ingredient", () => {
   it("renders names of ingredients", () => {
     const { getByText } = render(
@@ -63,6 +79,7 @@ describe("correct display of an ingredient", () => {
         possibleIngredients={catalogIngredients}
         totalUnits={units}
         feasibleRecipesUpdate={() => undefined}
+        updateFridgeIngredients={handleFridgeIngredient}
       />
     );
     const ingredient1 = getByText("épinard", { exact: false });
@@ -76,6 +93,7 @@ describe("correct display of an ingredient", () => {
         possibleIngredients={catalogIngredients}
         totalUnits={units}
         feasibleRecipesUpdate={() => undefined}
+        updateFridgeIngredients={handleFridgeIngredient}
       />
     );
     const ingredient2 = getByText("céleri rave", { exact: false });
@@ -90,6 +108,7 @@ describe("correct display of an ingredient", () => {
         possibleIngredients={catalogIngredients}
         totalUnits={units}
         feasibleRecipesUpdate={() => undefined}
+        updateFridgeIngredients={handleFridgeIngredient}
       />
     );
     const ingredient1 = getByText("épinard", { exact: false });
@@ -103,6 +122,7 @@ describe("correct display of an ingredient", () => {
         possibleIngredients={catalogIngredients}
         totalUnits={units}
         feasibleRecipesUpdate={() => undefined}
+        updateFridgeIngredients={handleFridgeIngredient}
       />
     );
     const ingredient1 = getByText("épinard", { exact: false });
@@ -116,6 +136,7 @@ describe("correct display of an ingredient", () => {
         possibleIngredients={catalogIngredients}
         totalUnits={units}
         feasibleRecipesUpdate={() => undefined}
+        updateFridgeIngredients={handleFridgeIngredient}
       />
     );
     const listItems = getAllByRole("listitem");
@@ -129,6 +150,7 @@ describe("correct display of an ingredient", () => {
         possibleIngredients={catalogIngredients}
         totalUnits={units}
         feasibleRecipesUpdate={() => undefined}
+        updateFridgeIngredients={handleFridgeIngredient}
       />
     );
     rerender(
@@ -137,6 +159,7 @@ describe("correct display of an ingredient", () => {
         possibleIngredients={catalogIngredients}
         totalUnits={units}
         feasibleRecipesUpdate={() => undefined}
+        updateFridgeIngredients={handleFridgeIngredient}
       />
     );
     const ingredient1 = getByText("épinard", { exact: false });
@@ -151,6 +174,7 @@ it("displays provided units", () => {
       possibleIngredients={catalogIngredients}
       totalUnits={units}
       feasibleRecipesUpdate={() => undefined}
+      updateFridgeIngredients={handleFridgeIngredient}
     />
   );
   const unitSelect = getByLabelText("Unité");
@@ -162,20 +186,23 @@ it("displays provided units", () => {
 
 describe("functionalities work properly", () => {
   it("removes the correct ingredient when clicking on remove button", async () => {
-    const { getByText, getAllByRole } = render(
+    const { getByText, getAllByRole, rerender, queryByText } = render(
       <FridgeIngredients
         ingredients={fridgeIngredients}
         possibleIngredients={catalogIngredients}
         totalUnits={units}
         feasibleRecipesUpdate={() => undefined}
+        updateFridgeIngredients={handleFridgeIngredient}
       />
     );
     const axiosDeleteResponse = { data: "" };
     axios.delete.mockResolvedValue(axiosDeleteResponse);
-    const ingredient = getByText("épinard", { exact: false });
+    let ingredient = getByText("épinard", { exact: false });
     const button = within(ingredient).getByText("Supprimer");
     fireEvent.click(button);
     await waitFor(() => expect(axios.delete).toHaveBeenCalledTimes(1));
+    rerenderIngredients(rerender);
+    ingredient = queryByText("épinard", { exact: false });
     const listItems = getAllByRole("listitem");
     expect(ingredient).not.toBeInTheDocument();
     expect(listItems).toHaveLength(1);
@@ -189,6 +216,7 @@ was not successful on backend side`, async () => {
         possibleIngredients={catalogIngredients}
         totalUnits={units}
         feasibleRecipesUpdate={() => undefined}
+        updateFridgeIngredients={handleFridgeIngredient}
       />
     );
     const axiosDeleteResponse = { data: "" };
@@ -205,16 +233,18 @@ was not successful on backend side`, async () => {
   });
 
   it("adds the correct ingredient when filling the form and clicking on submit", async () => {
-    const { getByLabelText, getByText, getAllByRole } = render(
+    const { getByLabelText, getByText, getAllByRole, rerender } = render(
       <FridgeIngredients
         ingredients={fridgeIngredients}
         possibleIngredients={catalogIngredients}
         totalUnits={units}
         feasibleRecipesUpdate={() => undefined}
+        updateFridgeIngredients={handleFridgeIngredient}
       />
     );
     const values = ["Carottes", 1, "2100-04-03", "kg"];
     await addIngredient(getByLabelText, getByText, values);
+    rerenderIngredients(rerender);
     const ingredient = getByText("Carottes", { exact: false });
     const listItems = getAllByRole("listitem");
     const expectedDate = new Date("2100-04-03");
@@ -242,6 +272,7 @@ was not successful on backend side`, async () => {
         possibleIngredients={catalogIngredients}
         totalUnits={units}
         feasibleRecipesUpdate={() => undefined}
+        updateFridgeIngredients={handleFridgeIngredient}
       />
     );
     await addIngredient(
@@ -261,6 +292,7 @@ was not successful on backend side`, async () => {
         possibleIngredients={catalogIngredients}
         totalUnits={units}
         feasibleRecipesUpdate={() => undefined}
+        updateFridgeIngredients={handleFridgeIngredient}
       />
     );
     await addIngredient(
@@ -280,6 +312,7 @@ was not successful on backend side`, async () => {
         possibleIngredients={catalogIngredients}
         totalUnits={units}
         feasibleRecipesUpdate={() => undefined}
+        updateFridgeIngredients={handleFridgeIngredient}
       />
     );
     const values = ["kiwi", -1, "2100-04-03", "kg"];
@@ -303,6 +336,7 @@ was not successful on backend side`, async () => {
         possibleIngredients={catalogIngredients}
         totalUnits={units}
         feasibleRecipesUpdate={() => undefined}
+        updateFridgeIngredients={handleFridgeIngredient}
       />
     );
     const values = ["kiwi", 5, "2019-04-03", "g"];
@@ -318,6 +352,7 @@ was not successful on backend side`, async () => {
         possibleIngredients={catalogIngredients}
         totalUnits={units}
         feasibleRecipesUpdate={() => undefined}
+        updateFridgeIngredients={handleFridgeIngredient}
       />
     );
     await addIngredient(getByLabelText, getByText, [
@@ -332,12 +367,13 @@ was not successful on backend side`, async () => {
 
   it(`adds the ingredient returned by the backend and removes the ingredient that
    have the same id if there is one`, async () => {
-    const { getByLabelText, getByText, queryByText } = render(
+    const { getByLabelText, getByText, queryByText, rerender } = render(
       <FridgeIngredients
         ingredients={fridgeIngredients}
         possibleIngredients={catalogIngredients}
         totalUnits={units}
         feasibleRecipesUpdate={() => undefined}
+        updateFridgeIngredients={handleFridgeIngredient}
       />
     );
     await addIngredient(getByLabelText, getByText, [
@@ -346,6 +382,7 @@ was not successful on backend side`, async () => {
       "2100-04-03",
       "g",
     ]);
+    rerenderIngredients(rerender);
     let carottes = getByText(/Carottes/);
     expect(carottes).toBeInTheDocument();
     const axiosPostResponse = {
@@ -353,7 +390,7 @@ was not successful on backend side`, async () => {
         id: 3,
         ingredient: "Carottes",
         expiration_date: "2100-04-03",
-        amount: 28.15,
+        amount: "28.15",
         unit: "kg",
       },
     };
@@ -364,13 +401,14 @@ was not successful on backend side`, async () => {
     const selectedUnit = getByLabelText("Unité");
     const submitButton = getByText("Confirmer");
     fireEvent.change(inputName, { target: { value: "Carottes" } });
-    fireEvent.change(inputAmount, { target: { value: 27 } });
+    fireEvent.change(inputAmount, { target: { value: "27" } });
     fireEvent.change(inputDate, { target: { value: "2100-04-03" } });
     fireEvent.change(selectedUnit, { target: { value: "kg" } });
     await act(async () => {
       fireEvent.click(submitButton);
     });
     await waitFor(() => expect(axios.post).toHaveBeenCalledTimes(2));
+    rerenderIngredients(rerender);
     carottes = getByText(/Carottes : /);
     expect(carottes).toBeInTheDocument();
     expect(queryByText(/53/)).not.toBeInTheDocument();
@@ -385,6 +423,7 @@ was not successful on backend side`, async () => {
         possibleIngredients={catalogIngredients}
         totalUnits={units}
         feasibleRecipesUpdate={() => undefined}
+        updateFridgeIngredients={handleFridgeIngredient}
       />
     );
     const inputIngredientName = getByLabelText("Nom de l'ingrédient :");
@@ -405,6 +444,7 @@ was not successful on backend side`, async () => {
         possibleIngredients={catalogIngredients}
         totalUnits={units}
         feasibleRecipesUpdate={() => undefined}
+        updateFridgeIngredients={handleFridgeIngredient}
       />
     );
     const axiosPostResponse = {};

@@ -97,6 +97,9 @@ beforeEach(() => {
     {
       name: "Epinards",
     },
+    {
+      name: "Kiwi",
+    },
   ];
   catalogCategories = ["Entrée", "Plat", "Dessert"];
   units = ["kg", "g", "cl", "pièce(s)"];
@@ -442,6 +445,46 @@ describe("Handle correctly new fridge ingredients", () => {
     recipe = queryByText("Salade de pommes de terre", { exact: false });
     expect(recipe).not.toBeInTheDocument();
   });
+
+  it(`rerenders and displays all the fridge ingredients even the newly entered when we navigate between tabs`, async () => {
+    const { getByRole, getByText, getByLabelText } = render(<MyNextRecipe />);
+    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(FETCH_CALLS));
+    await addFridgeIngredient(getByLabelText, getByText);
+    await waitFor(() => expect(axios.post).toHaveBeenCalledTimes(1));
+    navigateTo("Catalogue des recettes", getByRole);
+    navigateTo("Ma prochaine recette", getByRole);
+    const newIngredient = getByText("Kiwi", { exact: false });
+    expect(newIngredient).toBeInTheDocument();
+  });
+
+  async function addFridgeIngredient(getByLabelText, getByText) {
+    const axiosPostResponse = {
+      data: {
+        id: 4,
+        ingredient: "Kiwi",
+        expiration_date: "2100-04-03",
+        amount: "1",
+        unit: "g",
+      },
+    };
+    axios.post.mockResolvedValue(axiosPostResponse);
+    const inputName = getByLabelText("Nom de l'ingrédient :");
+    const inputAmount = getByLabelText("Quantité :");
+    const inputDate = getByLabelText("Date de péremption :");
+    const selectedUnit = getByLabelText("Unité");
+    const submitButton = getByText("Confirmer");
+    fireEvent.change(inputName, { target: { value: "Kiwi" } });
+    fireEvent.change(inputAmount, { target: { value: "1" } });
+    fireEvent.change(inputDate, { target: { value: "2100-04-03" } });
+    fireEvent.change(selectedUnit, { target: { value: "g" } });
+    await act(async () => {
+      fireEvent.click(submitButton);
+    });
+    axiosResponseFridgeIngredients = axiosResponseFridgeIngredients.data.push(
+      axiosPostResponse.data
+    );
+    axios.get.mockResolvedValue(axiosResponseFridgeIngredients);
+  }
 
   async function deleteFridgeIngredient(getByText) {
     const axiosDeleteResponse = { data: "" };

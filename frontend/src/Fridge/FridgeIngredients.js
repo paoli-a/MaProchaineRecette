@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import FridgeIngredientsForm from "./FridgeIngredientsForm";
 import PropTypes from "prop-types";
 import axios from "axios";
@@ -8,23 +8,19 @@ function FridgeIngredients({
   possibleIngredients,
   totalUnits,
   feasibleRecipesUpdate,
+  updateFridgeIngredients,
 }) {
-  const [ingredientsList, setIngredient] = useState(ingredients);
   const [postError, setPostError] = useState("");
   const [deleteError, setDeleteError] = useState({});
-
-  useEffect(() => {
-    setIngredient(ingredients);
-  }, [ingredients]);
 
   const handleSupprClick = (id) => {
     axios
       .delete(`/api/fridge/ingredients/${id}/`)
       .then(() => {
-        const ingredientsListUpdated = ingredientsList.slice();
+        const ingredientsListUpdated = ingredients.slice();
         eliminateIngredientWithId(ingredientsListUpdated, id);
-        setIngredient(ingredientsListUpdated);
         feasibleRecipesUpdate();
+        updateFridgeIngredients(ingredientsListUpdated);
       })
       .catch(() => {
         setDeleteError({
@@ -52,11 +48,11 @@ function FridgeIngredients({
           amount: data.amount,
           unit: data.unit,
         };
-        const ingredientsListUpdated = ingredientsList.slice();
+        const ingredientsListUpdated = ingredients.slice();
         eliminateIngredientWithId(ingredientsListUpdated, data.id);
         ingredientsListUpdated.push(newData);
-        setIngredient(ingredientsListUpdated);
         feasibleRecipesUpdate();
+        updateFridgeIngredients(ingredientsListUpdated);
       })
       .catch(() => {
         setPostError("L'ajout de l'ingrédient a échoué.");
@@ -72,7 +68,7 @@ function FridgeIngredients({
     }
   }
 
-  const ingredientElement = ingredientsList.map((ingredient) => {
+  const ingredientElement = ingredients.map((ingredient) => {
     const formatedDate = ingredient.expirationDate.toLocaleDateString();
     return (
       <React.Fragment key={ingredient.id}>
@@ -122,6 +118,7 @@ FridgeIngredients.propTypes = {
   ).isRequired,
   totalUnits: PropTypes.arrayOf(PropTypes.string).isRequired,
   feasibleRecipesUpdate: PropTypes.func.isRequired,
+  updateFridgeIngredients: PropTypes.func.isRequired,
 };
 
 export default FridgeIngredients;

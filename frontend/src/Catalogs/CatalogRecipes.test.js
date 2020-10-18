@@ -152,7 +152,7 @@ const rerenderCatalog = (rerender) => {
       totalCategories={catalogCategories}
       totalUnits={units}
       feasibleRecipesUpdate={() => undefined}
-      updateRecipe={handleNewRecipe}
+      updateRecipes={handleNewRecipe}
     />
   );
 };
@@ -166,7 +166,7 @@ describe("initial display is correct", () => {
         totalCategories={catalogCategories}
         totalUnits={units}
         feasibleRecipesUpdate={() => undefined}
-        updateRecipe={handleNewRecipe}
+        updateRecipes={handleNewRecipe}
       />
     );
     const entree = getByText(/Entrée/);
@@ -183,7 +183,7 @@ describe("initial display is correct", () => {
         totalCategories={catalogCategories}
         totalUnits={units}
         feasibleRecipesUpdate={() => undefined}
-        updateRecipe={handleNewRecipe}
+        updateRecipes={handleNewRecipe}
       />
     );
     const unitSelect = getByLabelText("Unité");
@@ -201,7 +201,7 @@ describe("initial display is correct", () => {
         totalCategories={catalogCategories}
         totalUnits={units}
         feasibleRecipesUpdate={() => undefined}
-        updateRecipe={handleNewRecipe}
+        updateRecipes={handleNewRecipe}
       />
     );
     const salade = getByText(/Salade de pommes de terre radis/);
@@ -220,7 +220,7 @@ describe("the adding recipe functionality works properly", () => {
         totalCategories={catalogCategories}
         totalUnits={units}
         feasibleRecipesUpdate={() => undefined}
-        updateRecipe={handleNewRecipe}
+        updateRecipes={handleNewRecipe}
       />
     );
     await addRecipe(getByLabelText, getByText);
@@ -257,7 +257,7 @@ describe("the adding recipe functionality works properly", () => {
         totalCategories={catalogCategories}
         totalUnits={units}
         feasibleRecipesUpdate={() => undefined}
-        updateRecipe={handleNewRecipe}
+        updateRecipes={handleNewRecipe}
       />
     );
     await addRecipe(getByLabelText, getByText, [inputName]);
@@ -273,7 +273,7 @@ describe("the adding recipe functionality works properly", () => {
         totalCategories={catalogCategories}
         totalUnits={units}
         feasibleRecipesUpdate={() => undefined}
-        updateRecipe={handleNewRecipe}
+        updateRecipes={handleNewRecipe}
       />
     );
     await addRecipe(getByLabelText, getByText, ["title"]);
@@ -289,7 +289,7 @@ describe("the adding recipe functionality works properly", () => {
         totalCategories={catalogCategories}
         totalUnits={units}
         feasibleRecipesUpdate={() => undefined}
-        updateRecipe={handleNewRecipe}
+        updateRecipes={handleNewRecipe}
       />
     );
     await addRecipe(getByLabelText, getByText, [], { duration: "00:00" });
@@ -311,7 +311,7 @@ describe("the adding recipe functionality works properly", () => {
           totalCategories={catalogCategories}
           totalUnits={units}
           feasibleRecipesUpdate={() => undefined}
-          updateRecipe={handleNewRecipe}
+          updateRecipes={handleNewRecipe}
         />
       );
       addIngredient(getByLabelText, getByText, ["Fraises", "5", "g"]);
@@ -328,7 +328,7 @@ describe("the adding recipe functionality works properly", () => {
           totalCategories={catalogCategories}
           totalUnits={units}
           feasibleRecipesUpdate={() => undefined}
-          updateRecipe={handleNewRecipe}
+          updateRecipes={handleNewRecipe}
         />
       );
       addIngredient(getByLabelText, getByText, ["Fraises", "-1", "g"]);
@@ -347,7 +347,7 @@ describe("the adding recipe functionality works properly", () => {
           totalCategories={catalogCategories}
           totalUnits={units}
           feasibleRecipesUpdate={() => undefined}
-          updateRecipe={handleNewRecipe}
+          updateRecipes={handleNewRecipe}
         />
       );
       addIngredient(getByLabelText, getByText, ["Poireaux", "50", "g"]);
@@ -363,7 +363,7 @@ describe("the adding recipe functionality works properly", () => {
           totalCategories={catalogCategories}
           totalUnits={units}
           feasibleRecipesUpdate={() => undefined}
-          updateRecipe={handleNewRecipe}
+          updateRecipes={handleNewRecipe}
         />
       );
       const inputIngredientName = getByLabelText("Nom :");
@@ -385,7 +385,7 @@ describe("the adding recipe functionality works properly", () => {
           totalCategories={catalogCategories}
           totalUnits={units}
           feasibleRecipesUpdate={() => undefined}
-          updateRecipe={handleNewRecipe}
+          updateRecipes={handleNewRecipe}
         />
       );
       addIngredient(getByLabelText, getByText, ["Poires", "1", "kg"]);
@@ -409,7 +409,7 @@ describe("the adding recipe functionality works properly", () => {
           totalCategories={catalogCategories}
           totalUnits={units}
           feasibleRecipesUpdate={() => undefined}
-          updateRecipe={handleNewRecipe}
+          updateRecipes={handleNewRecipe}
         />
       );
       addIngredient(getByLabelText, getByText, ["Poires", "1", "kg"]);
@@ -495,7 +495,7 @@ was not successful on backend side`, async () => {
         totalCategories={catalogCategories}
         totalUnits={units}
         feasibleRecipesUpdate={() => undefined}
-        updateRecipe={handleNewRecipe}
+        updateRecipes={handleNewRecipe}
       />
     );
     const axiosPostResponse = {};
@@ -534,7 +534,7 @@ describe("the removing recipe functionality works properly", () => {
         totalCategories={catalogCategories}
         totalUnits={units}
         feasibleRecipesUpdate={() => undefined}
-        updateRecipe={handleNewRecipe}
+        updateRecipes={handleNewRecipe}
       />
     );
     const axiosDeleteResponse = { data: "" };
@@ -562,7 +562,7 @@ was not successful on backend side`, async () => {
         totalCategories={catalogCategories}
         totalUnits={units}
         feasibleRecipesUpdate={() => undefined}
-        updateRecipe={handleNewRecipe}
+        updateRecipes={handleNewRecipe}
       />
     );
     const axiosDeleteResponse = { data: "" };
@@ -595,7 +595,7 @@ describe("the search bar functionality works properly", () => {
         totalCategories={catalogCategories}
         totalUnits={units}
         feasibleRecipesUpdate={() => undefined}
-        updateRecipe={handleNewRecipe}
+        updateRecipes={handleNewRecipe}
       />
     );
     const searchBar = getByPlaceholderText("Recherche par titre...");
@@ -617,7 +617,7 @@ describe("the search bar functionality works properly", () => {
         totalCategories={catalogCategories}
         totalUnits={units}
         feasibleRecipesUpdate={() => undefined}
-        updateRecipe={handleNewRecipe}
+        updateRecipes={handleNewRecipe}
       />
     );
     const searchBar = getByPlaceholderText("Recherche par titre...");
