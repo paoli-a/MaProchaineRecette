@@ -19,7 +19,7 @@ function CatalogRecipes({
   totalCategories,
   totalUnits,
   feasibleRecipesUpdate,
-  updateRecipe,
+  updateRecipes,
 }) {
   const [searchResults, setSearchResults] = useState("");
   const [deleteError, setDeleteError] = useState({});
@@ -35,7 +35,7 @@ function CatalogRecipes({
         });
         updatedRecipes.splice(index, 1);
         feasibleRecipesUpdate();
-        updateRecipe(updatedRecipes);
+        updateRecipes(updatedRecipes);
       })
       .catch(() => {
         setDeleteError({
@@ -62,7 +62,7 @@ function CatalogRecipes({
         const updatedRecipes = totalRecipes.slice();
         updatedRecipes.push(newRecipe);
         feasibleRecipesUpdate();
-        updateRecipe(updatedRecipes);
+        updateRecipes(updatedRecipes);
       })
       .catch(() => {
         setPostError("L'ajout de recette a échoué.");
@@ -156,7 +156,7 @@ CatalogRecipes.propTypes = {
   totalCategories: PropTypes.arrayOf(PropTypes.string).isRequired,
   totalUnits: PropTypes.arrayOf(PropTypes.string).isRequired,
   feasibleRecipesUpdate: PropTypes.func.isRequired,
-  updateRecipe: PropTypes.func.isRequired,
+  updateRecipes: PropTypes.func.isRequired,
 };
 
 export default CatalogRecipes;

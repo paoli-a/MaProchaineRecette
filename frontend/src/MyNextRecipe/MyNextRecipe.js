@@ -33,6 +33,10 @@ function MyNextRecipe() {
     setCatalogRecipes(recipes);
   };
 
+  const handleFridgeIngredient = (fridgeIngredients) => {
+    setFridgeIngredients(fridgeIngredients);
+  };
+
   const fetchesFeasibleRecipes = () => {
     axios
       .get("/api/fridge/recipes/")
@@ -132,7 +136,7 @@ function MyNextRecipe() {
             totalCategories={catalogCategories}
             totalUnits={units}
             feasibleRecipesUpdate={fetchesFeasibleRecipes}
-            updateRecipe={handleNewRecipe}
+            updateRecipes={handleNewRecipe}
           />
         </Route>
         <Route path="/ingredients">
@@ -148,6 +152,7 @@ function MyNextRecipe() {
               possibleIngredients={catalogIngredients}
               totalUnits={units}
               feasibleRecipesUpdate={fetchesFeasibleRecipes}
+              updateFridgeIngredients={handleFridgeIngredient}
             />
             <FridgeRecipes recipes={feasibleRecipes} />
           </main>
