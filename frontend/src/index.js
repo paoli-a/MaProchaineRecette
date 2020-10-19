@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import "./index.css";
+import "./sass/main.scss";
 import MyNextRecipe from "./MyNextRecipe/MyNextRecipe";
 import * as serviceWorker from "./serviceWorker";
 
