@@ -1,9 +1,18 @@
-fieldset {
-  border: 0;
+#ComponentCatalogIngredients h1 {
+  margin-top: 80px;
 }
 
-#CatalogIngredients > form {
-  margin-bottom: 8%;
+#AddCatalogIngredient {
+  border: 1px solid;
+  padding: 1% 0%;
+}
+
+#AddCatalogIngredient fieldset {
+  padding-block-end: 0%;
+}
+
+#CatalogIngredients .form {
+  margin-bottom: 60px;
 }
 
 #CatalogIngredients ul {
@@ -16,43 +25,6 @@ fieldset {
 
 #CatalogIngredients button {
   margin-left: 2%;
-}
-
-#ingredientForm p {
-  display: flex;
-  flex-wrap: wrap;
-}
-
-#AddCatalogIngredient fieldset {
-  padding-block-end: 0%;
-}
-
-#AddCatalogIngredient legend {
-  margin-bottom: 3%;
-  text-decoration: underline;
-}
-
-#ingredientForm label {
-  margin-right: 5%;
-  margin-bottom: 2%;
-}
-
-#ingredientForm p > input:not([type="submit"]) {
-  flex: 1;
-}
-
-#ingredientForm input[type="submit"] {
-  margin-left: auto;
-  margin-top: 3%;
-}
-
-#ComponentCatalogIngredients h1 {
-  margin-top: 80px;
-}
-
-#AddCatalogIngredient {
-  border: 1px solid;
-  padding: 1% 0%;
 }
 
 @media (min-width: 948px) {

@@ -82,7 +82,10 @@ function FridgeIngredients({
         <li key={ingredient.id}>
           - {ingredient.name} : {ingredient.amount} {ingredient.unit}.
           Expiration : {formatedDate}.
-          <button onClick={() => handleSupprClick(ingredient.id)}>
+          <button
+            className="button"
+            onClick={() => handleSupprClick(ingredient.id)}
+          >
             Supprimer
           </button>
         </li>

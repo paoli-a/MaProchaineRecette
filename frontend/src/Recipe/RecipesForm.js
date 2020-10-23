@@ -125,7 +125,11 @@ function RecipesForm({
   };
 
   return (
-    <form id="formRecipe" onSubmit={handleSubmit(onSubmitForm)}>
+    <form
+      className="form"
+      id="formRecipe"
+      onSubmit={handleSubmit(onSubmitForm)}
+    >
       <fieldset>
         <legend>Ajouter une recette dans mon catalogue :</legend>
         <p>
@@ -174,7 +178,7 @@ function RecipesForm({
           />
           {errors.recipeTime && errors.recipeTime.message}
         </p>
-        <fieldset id="FormIngredientRecipe">
+        <fieldset id="FormIngredientRecipe" className="form">
           <legend> Ingrédients : </legend>
           <p>
             <label htmlFor="ingredient"> Nom : </label>
@@ -217,7 +221,9 @@ function RecipesForm({
             </span>
           </p>
           <p>
-            <button onClick={handleAddIngredient}>Ajouter</button>
+            <button className="button" onClick={handleAddIngredient}>
+              Ajouter
+            </button>
             {ingredientError && <span>{ingredientError}</span>}
           </p>
           <ul>
@@ -227,6 +233,7 @@ function RecipesForm({
                   {ingredient.ingredient} : {ingredient.amount}{" "}
                   {ingredient.unit}
                   <button
+                    className="button"
                     onClick={() => handleSupprIngredient(ingredient.ingredient)}
                   >
                     X
@@ -236,7 +243,7 @@ function RecipesForm({
             })}
           </ul>
         </fieldset>
-        <div id="description">
+        <div className="textareacontainer">
           <label htmlFor="recipeDescription">Corps de la recette : </label>
           <textarea
             id="recipeDescription"
@@ -247,7 +254,7 @@ function RecipesForm({
           {errors.recipeDescription && <span>Ce champ est obligatoire</span>}
         </div>
         <p>
-          <input type="submit" value="Confirmer" />
+          <input className="button" type="submit" value="Confirmer" />
         </p>
       </fieldset>
     </form>

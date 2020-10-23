@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import useFilterSearch from "../useFilterSearch";
-import "./CatalogIngredients.css";
 import PropTypes from "prop-types";
 
 /**
@@ -76,7 +75,12 @@ function CatalogIngredients({
       <React.Fragment key={ingredient.name}>
         <li key={ingredient.name}>
           {ingredient.name}
-          <button onClick={() => handleSupprClick(ingredient.name)}>X</button>
+          <button
+            className="button"
+            onClick={() => handleSupprClick(ingredient.name)}
+          >
+            X
+          </button>
         </li>
         {deleteError.name === ingredient.name && (
           <span>{deleteError.message}</span>
@@ -91,7 +95,11 @@ function CatalogIngredients({
       <section id="AddCatalogIngredient">
         <fieldset>
           <legend>Ajouter un ingredient dans le catalogue :</legend>
-          <form id="ingredientForm" onSubmit={handleSubmit(onSubmitWrapper)}>
+          <form
+            className="form"
+            id="ingredientForm"
+            onSubmit={handleSubmit(onSubmitWrapper)}
+          >
             <p>
               <label htmlFor="ingredientName">
                 {" "}
@@ -114,13 +122,13 @@ function CatalogIngredients({
               )}
             </p>
             <p>
-              <input type="submit" value="Envoyer" />
+              <input className="button" type="submit" value="Envoyer" />
             </p>
           </form>
         </fieldset>
       </section>
       <section id="CatalogIngredients">
-        <form>
+        <form className="form" id="search">
           <input
             type="search"
             id="catalogIngredientsSearch"
