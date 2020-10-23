@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import RecipesForm from "../Recipe/RecipesForm";
 import Recipe from "../Recipe/Recipe";
 import useFilterSearch from "../useFilterSearch";
-import "./CatalogRecipes.css";
 import PropTypes from "prop-types";
 import axios from "axios";
 
@@ -81,7 +80,9 @@ function CatalogRecipes({
 
   const allMyRecipes = filteredRecipes.map((myRecipe) => {
     const button = (
-      <button onClick={() => handleSupprClick(myRecipe.id)}>X</button>
+      <button className="button" onClick={() => handleSupprClick(myRecipe.id)}>
+        X
+      </button>
     );
     return (
       <React.Fragment key={myRecipe.id}>
@@ -109,7 +110,7 @@ function CatalogRecipes({
         {postError && <span>{postError}</span>}
       </section>
       <section id="DisplayCatalogRecipe">
-        <form>
+        <form className="form" id="search">
           <input
             type="search"
             id="catalogRecipeSearch"

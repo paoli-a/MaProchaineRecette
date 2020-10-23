@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import "./RecipesToolbar.css";
 import { useForm } from "react-hook-form";
 import PropTypes from "prop-types";
 
@@ -83,7 +82,7 @@ function RecipesToolbar({ onChangeCategories, onChangeSearch, categories }) {
             size="30"
             ref={registerSearch}
           />
-          <button data-testid="search-button"></button>
+          <button className="button" data-testid="search-button"></button>
         </form>
       </div>
     </fieldset>

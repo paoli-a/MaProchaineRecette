@@ -1,10 +1,13 @@
-#fridgeIngredients h2 {
-  margin-bottom: 14%;
+#fridgeIngredients {
+  border: 1px solid;
+  padding: 0 2%;
+  margin: 5.5% 4%;
+  align-self: start;
+  box-sizing: border-box;
 }
 
-#fridgeIngredients legend {
-  margin-bottom: 3%;
-  text-decoration: underline;
+#fridgeIngredients h2 {
+  margin-bottom: 14%;
 }
 
 #fridgeIngredients ul {
@@ -18,57 +21,18 @@
   align-items: flex-start;
 }
 
-fieldset {
-  border: 0;
+#FridgeRecipes {
+  margin-left: 20px;
 }
 
-#fridgeForm p {
-  display: flex;
-  flex-wrap: wrap;
-}
-
-#fridgeForm p > span {
-  flex: 1;
-  display: flex;
-}
-
-#fridgeForm p > span > input {
-  flex: 3;
-}
-
-#fridgeForm p > span > select {
-  flex: 1;
-}
-
-#fridgeForm label {
-  margin-right: 5%;
-  margin-bottom: 2%;
-}
-
-#fridgeForm p > input:not([type="submit"]) {
-  flex: 1;
-}
-
-#fridgeForm input[type="submit"] {
-  margin-left: auto;
-  margin-top: 3%;
+#FridgeRecipes h1 {
+  margin-bottom: 6%;
+  padding-bottom: 30px;
 }
 
 #MyNextRecipes {
   display: grid;
   margin-top: 80px;
-}
-
-#fridgeIngredients {
-  border: 1px solid;
-  padding: 0 2%;
-  margin: 5.5% 4%;
-  align-self: start;
-  box-sizing: border-box;
-}
-
-#FridgeRecipes h1 {
-  margin-bottom: 6%;
 }
 
 @media (min-width: 948px) {

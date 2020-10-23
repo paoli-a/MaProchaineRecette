@@ -72,7 +72,11 @@ function FridgeIngredientsForm({ onSubmit, possibleIngredients, totalUnits }) {
   };
 
   return (
-    <form id="fridgeForm" onSubmit={handleSubmit(onSubmitWrapper)}>
+    <form
+      className="form"
+      id="fridgeForm"
+      onSubmit={handleSubmit(onSubmitWrapper)}
+    >
       <fieldset>
         <legend>Ajouter un ingredient frigo :</legend>
         <p>
@@ -134,7 +138,7 @@ function FridgeIngredientsForm({ onSubmit, possibleIngredients, totalUnits }) {
           {errors.expirationDate && errors.expirationDate.message}
         </p>
         <p>
-          <input type="submit" value="Confirmer" />
+          <input className="button" type="submit" value="Confirmer" />
         </p>
       </fieldset>
     </form>

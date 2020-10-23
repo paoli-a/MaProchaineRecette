@@ -5,8 +5,6 @@ import FridgeRecipes from "../Fridge/FridgeRecipes";
 import FridgeIngredients from "../Fridge/FridgeIngredients";
 import CatalogIngredients from "../Catalogs/CatalogIngredients";
 import CatalogRecipes from "../Catalogs/CatalogRecipes";
-import "./MyNextRecipe.css";
-import "./Nav.css";
 
 /**
  * Ce composant est le composant principal. Il permet d'afficher le menu, avec les trois pages :
