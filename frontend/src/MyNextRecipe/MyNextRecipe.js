@@ -115,14 +115,27 @@ function MyNextRecipe() {
   return (
     <Router>
       <div>
-        <nav>
-          <NavLink activeClassName="currentTab" exact={true} to="/">
+        <nav className="nav">
+          <NavLink
+            className="nav__link"
+            activeClassName="nav__link--active"
+            exact={true}
+            to="/"
+          >
             Ma prochaine recette
           </NavLink>
-          <NavLink activeClassName="currentTab" to="/recipes">
+          <NavLink
+            className="nav__link"
+            activeClassName="nav__link--active"
+            to="/recipes"
+          >
             Catalogue des recettes
           </NavLink>
-          <NavLink activeClassName="currentTab" to="/ingredients">
+          <NavLink
+            className="nav__link"
+            activeClassName="nav__link--active"
+            to="/ingredients"
+          >
             Catalogue des ingrédients
           </NavLink>
         </nav>
