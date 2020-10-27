@@ -79,8 +79,10 @@ function FridgeIngredientsForm({ onSubmit, possibleIngredients, totalUnits }) {
     >
       <fieldset>
         <legend>Ajouter un ingredient frigo :</legend>
-        <p>
-          <label htmlFor="ingredientName">Nom de l'ingrédient : </label>
+        <p className="form__paragraph">
+          <label className="form__label" htmlFor="ingredientName">
+            Nom de l'ingrédient :{" "}
+          </label>
           <InputSuggestions
             elements={possibleIngredients}
             id="ingredientName"
@@ -92,10 +94,13 @@ function FridgeIngredientsForm({ onSubmit, possibleIngredients, totalUnits }) {
           />
           {errors.ingredientName && errors.ingredientName.message}
         </p>
-        <p>
-          <label htmlFor="ingredientAmount">Quantité : </label>
-          <span>
+        <p className="form__paragraph">
+          <label className="form__label" htmlFor="ingredientAmount">
+            Quantité :{" "}
+          </label>
+          <span className="form__combined-container">
             <input
+              className="form__combined-input"
               type="number"
               name="ingredientAmount"
               id="ingredientAmount"
@@ -107,6 +112,7 @@ function FridgeIngredientsForm({ onSubmit, possibleIngredients, totalUnits }) {
             />
             {errors.ingredientAmount && errors.ingredientAmount.message}
             <select
+              className="form__combined-select"
               name="unit"
               defaultValue=""
               ref={register({ required: true })}
@@ -124,9 +130,12 @@ function FridgeIngredientsForm({ onSubmit, possibleIngredients, totalUnits }) {
             {errors.unit && <span>Ce champ est obligatoire</span>}
           </span>
         </p>
-        <p>
-          <label htmlFor="expirationDate">Date de péremption : </label>
+        <p className="form__paragraph">
+          <label className="form__label" htmlFor="expirationDate">
+            Date de péremption :{" "}
+          </label>
           <input
+            className="form__input"
             type="date"
             name="expirationDate"
             id="expirationDate"
@@ -137,8 +146,12 @@ function FridgeIngredientsForm({ onSubmit, possibleIngredients, totalUnits }) {
           />
           {errors.expirationDate && errors.expirationDate.message}
         </p>
-        <p>
-          <input className="button" type="submit" value="Confirmer" />
+        <p className="form__paragraph">
+          <input
+            className="button form__submit"
+            type="submit"
+            value="Confirmer"
+          />
         </p>
       </fieldset>
     </form>

@@ -132,9 +132,13 @@ function RecipesForm({
     >
       <fieldset>
         <legend>Ajouter une recette dans mon catalogue :</legend>
-        <p>
-          <label htmlFor="recipeTitle"> Titre de la recette : </label>
+        <p className="form__paragraph">
+          <label className="form__label" htmlFor="recipeTitle">
+            {" "}
+            Titre de la recette :{" "}
+          </label>
           <input
+            className="form__paragraph-input"
             type="text"
             name="recipeTitle"
             id="recipeTitle"
@@ -165,9 +169,13 @@ function RecipesForm({
             <span>Au moins une catégorie doit être sélectionnée</span>
           )}
         </div>
-        <p>
-          <label htmlFor="recipeTime"> Temps total de la recette : </label>
+        <p className="form__paragraph">
+          <label className="form__label" htmlFor="recipeTime">
+            {" "}
+            Temps total de la recette :{" "}
+          </label>
           <input
+            className="form__paragraph-input"
             type="time"
             id="recipeTime"
             name="recipeTime"
@@ -180,8 +188,11 @@ function RecipesForm({
         </p>
         <fieldset id="FormIngredientRecipe" className="form">
           <legend> Ingrédients : </legend>
-          <p>
-            <label htmlFor="ingredient"> Nom : </label>
+          <p className="form__paragraph">
+            <label className="form__label" htmlFor="ingredient">
+              {" "}
+              Nom :{" "}
+            </label>
             <InputSuggestions
               elements={possibleIngredients}
               id="ingredient"
@@ -192,10 +203,14 @@ function RecipesForm({
               type="text"
             />
           </p>
-          <p>
-            <label htmlFor="ingredientAmount"> Quantité nécessaire : </label>
-            <span>
+          <p className="form__paragraph">
+            <label className="form__label" htmlFor="ingredientAmount">
+              {" "}
+              Quantité nécessaire :{" "}
+            </label>
+            <span className="form__combined-container">
               <input
+                className="form__combined-input"
                 type="number"
                 name="ingredientAmount"
                 id="ingredientAmount"
@@ -204,6 +219,7 @@ function RecipesForm({
                 value={ingredientAmount}
               />
               <select
+                className="form__combined-select"
                 name="unit"
                 aria-label="Unité"
                 onChange={(e) => setIngredientUnit(e.target.value)}
@@ -220,7 +236,7 @@ function RecipesForm({
               </select>
             </span>
           </p>
-          <p>
+          <p className="form__paragraph">
             <button className="button" onClick={handleAddIngredient}>
               Ajouter
             </button>
@@ -243,9 +259,12 @@ function RecipesForm({
             })}
           </ul>
         </fieldset>
-        <div className="textareacontainer">
-          <label htmlFor="recipeDescription">Corps de la recette : </label>
+        <div className="form__textarea-container">
+          <label className="form__label" htmlFor="recipeDescription">
+            Corps de la recette :{" "}
+          </label>
           <textarea
+            className="form__textarea"
             id="recipeDescription"
             name="recipeDescription"
             spellCheck="true"
@@ -253,8 +272,12 @@ function RecipesForm({
           ></textarea>
           {errors.recipeDescription && <span>Ce champ est obligatoire</span>}
         </div>
-        <p>
-          <input className="button" type="submit" value="Confirmer" />
+        <p className="form__paragraph">
+          <input
+            className="button form__submit"
+            type="submit"
+            value="Confirmer"
+          />
         </p>
       </fieldset>
     </form>

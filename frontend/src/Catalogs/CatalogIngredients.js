@@ -100,12 +100,13 @@ function CatalogIngredients({
             id="ingredientForm"
             onSubmit={handleSubmit(onSubmitWrapper)}
           >
-            <p>
-              <label htmlFor="ingredientName">
+            <p className="form__paragraph">
+              <label className="form__label" htmlFor="ingredientName">
                 {" "}
                 Nom de l'ingrédient à ajouter :{" "}
               </label>
               <input
+                className="form__input"
                 type="text"
                 name="ingredientName"
                 id="ingredientName"
@@ -121,8 +122,12 @@ function CatalogIngredients({
                 <span>{errors.ingredientName.types.message}</span>
               )}
             </p>
-            <p>
-              <input className="button" type="submit" value="Envoyer" />
+            <p className="form__paragraph">
+              <input
+                className="button form__submit"
+                type="submit"
+                value="Envoyer"
+              />
             </p>
           </form>
         </fieldset>
@@ -130,6 +135,7 @@ function CatalogIngredients({
       <section id="CatalogIngredients">
         <form className="form" id="search">
           <input
+            className="form__input"
             type="search"
             id="catalogIngredientsSearch"
             value={searchResults}
