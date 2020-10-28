@@ -53,8 +53,8 @@ function RecipesToolbar({ onChangeCategories, onChangeSearch, categories }) {
   });
 
   return (
-    <fieldset className="dropdown-container">
-      <div>
+    <fieldset className="toolbar">
+      <div className="toolbar__container">
         <div>
           <button
             className={isPannelOpen ? "dropdown-open" : "dropdown-closed"}
@@ -71,18 +71,21 @@ function RecipesToolbar({ onChangeCategories, onChangeSearch, categories }) {
         <form
           role="search"
           onSubmit={handleSubmitSearch(handleSearch)}
-          id="search"
+          className="searchbox"
         >
           <input
+            className="searchbox__input"
             type="search"
-            id="mySearch"
             name="q"
             placeholder="Recherche..."
             spellCheck="true"
             size="30"
             ref={registerSearch}
           />
-          <button className="button" data-testid="search-button"></button>
+          <button
+            className=" searchbox__button button"
+            data-testid="search-button"
+          ></button>
         </form>
       </div>
     </fieldset>
