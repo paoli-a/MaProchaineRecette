@@ -6,8 +6,7 @@
   background-color: rgb(248, 248, 248);
   color: rgb(86, 85, 87);
   font-size: 13px;
-}
-
-.button:hover {
-  background-color: rgba(110, 109, 110, 0.2);
+  &:hover {
+    background-color: rgba(110, 109, 110, 0.2);
+  }
 }

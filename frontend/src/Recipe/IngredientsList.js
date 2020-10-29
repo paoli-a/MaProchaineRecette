@@ -49,7 +49,7 @@ function IngredientsList({
     );
   }
 
-  return <ul>{ingredientsList}</ul>;
+  return <ul className="Recipe__ingredients-container">{ingredientsList}</ul>;
 }
 
 IngredientsList.propTypes = {

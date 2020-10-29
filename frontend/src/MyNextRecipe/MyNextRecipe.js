@@ -118,7 +118,7 @@ function MyNextRecipe() {
         <nav className="nav">
           <NavLink
             className="nav__link"
-            activeClassName="nav__link--active"
+            activeClassName="nav__link active"
             exact={true}
             to="/"
           >
@@ -126,14 +126,14 @@ function MyNextRecipe() {
           </NavLink>
           <NavLink
             className="nav__link"
-            activeClassName="nav__link--active"
+            activeClassName="nav__link active"
             to="/recipes"
           >
             Catalogue des recettes
           </NavLink>
           <NavLink
             className="nav__link"
-            activeClassName="nav__link--active"
+            activeClassName="nav__link active"
             to="/ingredients"
           >
             Catalogue des ingrédients

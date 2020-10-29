@@ -1,6 +1,10 @@
-.curseurMain:hover,
-.curseurMain:focus {
-  font-size: 153%;
-  text-shadow: 0px 4px 4px rgb(200, 200, 200);
-  cursor: pointer;
+.collapsible-with-title {
+  &__title {
+    &:hover,
+    &:focus {
+      font-size: 153%;
+      text-shadow: 0px 4px 4px rgb(200, 200, 200);
+      cursor: pointer;
+    }
+  }
 }

@@ -30,6 +30,15 @@
   padding-bottom: 30px;
 }
 
+#FridgeRecipes .Recipe {
+  border: 3px RGBa(235, 117, 105, 0.6) ridge;
+  margin: 15px 0;
+}
+
+#FridgeRecipes .Recipe.unsure {
+  border: 3px #ddd ridge;
+}
+
 #MyNextRecipes {
   display: grid;
   margin-top: 80px;
