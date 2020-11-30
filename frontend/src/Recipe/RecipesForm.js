@@ -125,11 +125,7 @@ function RecipesForm({
   };
 
   return (
-    <form
-      className="form"
-      id="formRecipe"
-      onSubmit={handleSubmit(onSubmitForm)}
-    >
+    <form className="form form-recipe" onSubmit={handleSubmit(onSubmitForm)}>
       <fieldset>
         <legend>Ajouter une recette dans mon catalogue :</legend>
         <p className="form__paragraph">
@@ -186,7 +182,7 @@ function RecipesForm({
           />
           {errors.recipeTime && errors.recipeTime.message}
         </p>
-        <fieldset id="FormIngredientRecipe" className="form">
+        <fieldset className="form form-ingredient-recipe">
           <legend> Ingrédients : </legend>
           <p className="form__paragraph">
             <label className="form__label" htmlFor="ingredient">

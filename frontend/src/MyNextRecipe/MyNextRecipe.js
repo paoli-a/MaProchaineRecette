@@ -157,7 +157,7 @@ function MyNextRecipe() {
           />
         </Route>
         <Route path="/" exact>
-          <main id="MyNextRecipes">
+          <main className="my-next-recipes">
             <FridgeIngredients
               ingredients={fridgeIngredients}
               possibleIngredients={catalogIngredients}

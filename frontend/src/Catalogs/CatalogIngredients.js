@@ -73,7 +73,7 @@ function CatalogIngredients({
   const ingredientsToDisplay = filteredIngredients.map((ingredient) => {
     return (
       <React.Fragment key={ingredient.name}>
-        <li key={ingredient.name}>
+        <li className="catalog-ingredients__ingredient" key={ingredient.name}>
           {ingredient.name}
           <button
             className="button"
@@ -90,16 +90,14 @@ function CatalogIngredients({
   });
 
   return (
-    <main id="ComponentCatalogIngredients">
-      <h1>Catalogue de tous mes ingrédients</h1>
-      <section id="AddCatalogIngredient">
-        <fieldset>
+    <main className="component-catalog-ingredients">
+      <h1 className="component-catalog-ingredients__title-h1">
+        Catalogue de tous mes ingrédients
+      </h1>
+      <section className="add-catalog-ingredient">
+        <fieldset className="add-catalog-ingredient__form-container">
           <legend>Ajouter un ingredient dans le catalogue :</legend>
-          <form
-            className="form"
-            id="ingredientForm"
-            onSubmit={handleSubmit(onSubmitWrapper)}
-          >
+          <form className="form" onSubmit={handleSubmit(onSubmitWrapper)}>
             <p className="form__paragraph">
               <label className="form__label" htmlFor="ingredientName">
                 {" "}
@@ -132,12 +130,11 @@ function CatalogIngredients({
           </form>
         </fieldset>
       </section>
-      <section id="CatalogIngredients">
-        <form className="form" id="search">
+      <section className="catalog-ingredients">
+        <form className="searchbox">
           <input
-            className="form__input"
+            className="searchbox__input"
             type="search"
-            id="catalogIngredientsSearch"
             value={searchResults}
             placeholder="Recherche..."
             spellCheck="true"
@@ -145,7 +142,9 @@ function CatalogIngredients({
             onChange={handleChangeSearch}
           />
         </form>
-        <ul>{ingredientsToDisplay}</ul>
+        <ul className="catalog-ingredients__ingredients-container">
+          {ingredientsToDisplay}
+        </ul>
       </section>
     </main>
   );

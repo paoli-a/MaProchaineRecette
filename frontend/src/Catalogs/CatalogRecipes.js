@@ -98,9 +98,11 @@ function CatalogRecipes({
   });
 
   return (
-    <main id="ComponentCatalogRecipe">
-      <h1>Catalogue de toutes mes recettes</h1>
-      <section id="AddRecipe">
+    <main className="component-catalog-recipe">
+      <h1 className="component-catalog-recipe__title">
+        Catalogue de toutes mes recettes
+      </h1>
+      <section className="add-recipe">
         <RecipesForm
           onSubmitRecipe={handleSubmit}
           possibleIngredients={possibleIngredients}
@@ -109,11 +111,11 @@ function CatalogRecipes({
         />
         {postError && <span>{postError}</span>}
       </section>
-      <section id="DisplayCatalogRecipe">
-        <form className="form" id="search">
+      <section className="display-catalog-recipe">
+        <form className="searchbox">
           <input
             type="search"
-            id="catalogRecipeSearch"
+            className="searchbox__input"
             name="q"
             value={searchResults}
             placeholder="Recherche par titre..."

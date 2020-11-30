@@ -72,11 +72,7 @@ function FridgeIngredientsForm({ onSubmit, possibleIngredients, totalUnits }) {
   };
 
   return (
-    <form
-      className="form"
-      id="fridgeForm"
-      onSubmit={handleSubmit(onSubmitWrapper)}
-    >
+    <form className="form" onSubmit={handleSubmit(onSubmitWrapper)}>
       <fieldset>
         <legend>Ajouter un ingredient frigo :</legend>
         <p className="form__paragraph">

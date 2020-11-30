@@ -1,69 +1,63 @@
-#fridgeIngredients {
+.fridge-ingredients {
   border: 1px solid;
   padding: 0 2%;
   margin: 5.5% 4%;
   align-self: start;
   box-sizing: border-box;
+  &__title-h2 {
+    margin-bottom: 14%;
+  }
+  &__list {
+    margin-top: 12%;
+    padding-inline-start: 2%;
+  }
+  &__ingredient {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
 }
 
-#fridgeIngredients h2 {
-  margin-bottom: 14%;
-}
-
-#fridgeIngredients ul {
-  margin-top: 12%;
-  padding-inline-start: 2%;
-}
-
-#fridgeIngredients li {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-}
-
-#FridgeRecipes {
+.fridge-recipes {
   margin-left: 20px;
+  &__title {
+    margin-bottom: 6%;
+    padding-bottom: 30px;
+  }
+  .Recipe {
+    border: 3px RGBa(235, 117, 105, 0.6) ridge;
+    margin: 15px 0;
+  }
+  .Recipe.unsure {
+    border: 3px #ddd ridge;
+  }
 }
 
-#FridgeRecipes h1 {
-  margin-bottom: 6%;
-  padding-bottom: 30px;
-}
-
-#FridgeRecipes .Recipe {
-  border: 3px RGBa(235, 117, 105, 0.6) ridge;
-  margin: 15px 0;
-}
-
-#FridgeRecipes .Recipe.unsure {
-  border: 3px #ddd ridge;
-}
-
-#MyNextRecipes {
+.my-next-recipes {
   display: grid;
   margin-top: 80px;
 }
 
 @media (min-width: 948px) {
-  #MyNextRecipes {
+  .my-next-recipes {
     grid-template-columns: 0.5fr minmax(420px, 540px) minmax(440px, 900px) 1fr;
     grid-template-areas: ". ingredients recipes .";
   }
 
-  #fridgeIngredients {
+  .fridge-ingredients {
     grid-area: ingredients;
     margin-left: 10px;
     margin-right: 20%;
   }
 
-  #FridgeRecipes {
+  .fridge-recipes {
     grid-area: recipes;
     margin-right: 10px;
   }
 }
 
 @media (max-width: 947px) {
-  #MyNextRecipes {
+  .my-next-recipes {
     grid-template-columns: minmax(0px, 460px);
     grid-template-areas:
       "ingredients"

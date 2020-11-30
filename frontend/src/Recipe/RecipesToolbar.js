@@ -75,7 +75,6 @@ function RecipesToolbar({ onChangeCategories, onChangeSearch, categories }) {
             Catégories
           </button>
           <form
-            id="collapsible-panel"
             className={
               isPannelOpen
                 ? "collapsible-with-button__panel"

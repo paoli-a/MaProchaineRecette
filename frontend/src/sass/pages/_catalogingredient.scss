@@ -1,34 +1,34 @@
-#ComponentCatalogIngredients h1 {
-  margin-top: 80px;
+.component-catalog-ingredients {
+  &__title-h1 {
+    margin-top: 80px;
+  }
 }
 
-#AddCatalogIngredient {
+.add-catalog-ingredient {
   border: 1px solid;
   padding: 1% 0%;
+  &__form-container {
+    padding-block-end: 0%;
+  }
 }
 
-#AddCatalogIngredient fieldset {
-  padding-block-end: 0%;
-}
-
-#CatalogIngredients .form {
-  margin-bottom: 60px;
-}
-
-#CatalogIngredients ul {
-  padding-inline-start: 23px;
-}
-
-#CatalogIngredients li {
-  padding-bottom: 1%;
-}
-
-#CatalogIngredients button {
-  margin-left: 2%;
+.catalog-ingredients {
+  .searchbox {
+    margin-bottom: 50px;
+  }
+  &__ingredients-container {
+    padding-inline-start: 23px;
+  }
+  &__ingredient {
+    padding-bottom: 1%;
+    .button {
+      margin-left: 2%;
+    }
+  }
 }
 
 @media (min-width: 948px) {
-  #ComponentCatalogIngredients {
+  .component-catalog-ingredients {
     display: grid;
     grid-template-columns: minmax(420px, 500px) minmax(300px, 530px);
     grid-template-areas:
@@ -36,19 +36,18 @@
       "ajout catalogue";
     justify-content: center;
     row-gap: 70px;
+    &__title {
+      grid-area: title;
+      margin-left: 10px;
+    }
   }
 
-  #ComponentCatalogIngredients h1 {
-    grid-area: title;
-    margin-left: 10px;
-  }
-
-  #AddCatalogIngredient {
+  .add-catalog-ingredient {
     grid-area: ajout;
     margin-left: 10px;
   }
 
-  #CatalogIngredients {
+  .catalog-ingredients {
     grid-area: catalogue;
     margin-right: 10px;
     margin-left: 30%;
@@ -56,7 +55,7 @@
 }
 
 @media (max-width: 947px) {
-  #ComponentCatalogIngredients {
+  .component-catalog-ingredients {
     display: grid;
     grid-template-columns: minmax(0px, 460px);
     grid-template-areas:
@@ -65,10 +64,9 @@
       "catalogue";
     justify-content: center;
     gap: 80px;
-  }
-
-  #ComponentCatalogIngredients h1 {
-    padding: 0%;
-    margin-bottom: 0;
+    &__title {
+      padding: 0%;
+      margin-bottom: 0;
+    }
   }
 }
