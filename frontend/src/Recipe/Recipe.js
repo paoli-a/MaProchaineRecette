@@ -26,21 +26,12 @@ function Recipe({ recipe, optionalButton, activateClick, highlight }) {
     setRecipeOpen(!isRecipeOpen);
   };
 
-  const handleTitleKeyPress = (event) => {
-    if (event.key === "Enter") {
-      handleTitleClick();
-    }
-  };
-
   const title = () => {
     if (activateClick) {
       return (
         <h2>
-          <button
-            className="collapsible-with-title"
-            onClick={handleTitleClick}
-            onKeyPress={handleTitleKeyPress}
-          >
+          <button className="collapsible-with-title" onClick={handleTitleClick}>
+            {" "}
             {highlight(recipe.title)}
           </button>{" "}
           {optionalButton}

@@ -80,7 +80,11 @@ function CatalogRecipes({
 
   const allMyRecipes = filteredRecipes.map((myRecipe) => {
     const button = (
-      <button className="button" onClick={() => handleSupprClick(myRecipe.id)}>
+      <button
+        className="button"
+        onClick={() => handleSupprClick(myRecipe.id)}
+        aria-label="Supprimer la recette"
+      >
         X
       </button>
     );
