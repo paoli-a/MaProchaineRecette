@@ -37,8 +37,12 @@ function RecipesToolbar({ onChangeCategories, onChangeSearch, categories }) {
   const categoriesKeys = Object.keys(categories);
   const categoriesCheckbox = categoriesKeys.map((category) => {
     return (
-      <li key={category}>
+      <li
+        className="collapsible-with-button__list-container collapsible-checkbox"
+        key={category}
+      >
         <input
+          className="collapsible-with-button__list-container collapsible-checkbox__input"
           type="checkbox"
           value={category}
           name={category}
@@ -47,42 +51,59 @@ function RecipesToolbar({ onChangeCategories, onChangeSearch, categories }) {
           onClick={handleCheckbox}
         />
         {category}
-        <span>{categories[category]}</span>
+        <span className="collapsible-with-button__list-container collapsible-checkbox__span">
+          {categories[category]}
+        </span>
       </li>
     );
   });
 
   return (
-    <fieldset className="dropdown-container">
-      <div>
-        <div>
+    <fieldset className="toolbar">
+      <div className="toolbar__container">
+        <div className="collapsible-with-button">
           <button
-            className={isPannelOpen ? "dropdown-open" : "dropdown-closed"}
+            className={
+              isPannelOpen
+                ? "collapsible-with-button__button open"
+                : "collapsible-with-button__button closed"
+            }
             aria-expanded="false"
-            aria-controls="dropdown-panel"
+            aria-controls="collapsible-panel"
             onClick={handlePannelClick}
           >
             Catégories
           </button>
-          <form id="dropdown-panel" className={isPannelOpen ? null : "hidden"}>
-            <ul>{categoriesCheckbox}</ul>
+          <form
+            className={
+              isPannelOpen
+                ? "collapsible-with-button__panel"
+                : "collapsible-with-button__panel hidden"
+            }
+          >
+            <ul className="collapsible-with-button__list-container">
+              {categoriesCheckbox}
+            </ul>
           </form>
         </div>
         <form
           role="search"
           onSubmit={handleSubmitSearch(handleSearch)}
-          id="search"
+          className="searchbox"
         >
           <input
+            className="searchbox__input"
             type="search"
-            id="mySearch"
             name="q"
             placeholder="Recherche..."
             spellCheck="true"
             size="30"
             ref={registerSearch}
           />
-          <button className="button" data-testid="search-button"></button>
+          <button
+            className=" searchbox__button button"
+            data-testid="search-button"
+          ></button>
         </form>
       </div>
     </fieldset>

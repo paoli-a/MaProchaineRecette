@@ -1,45 +1,36 @@
 .form {
   margin-bottom: 7%;
-}
-
-.form label {
-  margin-right: 5%;
-  margin-bottom: 2%;
-}
-
-.form p {
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.form textarea {
-  flex: 1;
-}
-
-.form p span {
-  flex: 1;
-  display: flex;
-}
-
-.form p span input {
-  flex: 3;
-}
-
-.form span select {
-  flex: 1;
-}
-
-.form p > input:not([type="submit"]) {
-  flex: 1;
-}
-
-.form input[type="submit"] {
-  margin-left: auto;
-  margin-top: 3%;
-}
-
-.form .textareacontainer {
-  display: flex;
-  flex-direction: column;
-  margin-top: 5%;
+  &__label {
+    margin-right: 5%;
+    margin-bottom: 2%;
+  }
+  &__paragraph {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  &__combined-container {
+    flex: 1;
+    display: flex;
+  }
+  &__combined-input {
+    flex: 3;
+  }
+  &__combined-select {
+    flex: 1;
+  }
+  &__input {
+    flex: 1;
+  }
+  &__submit {
+    margin-left: auto;
+    margin-top: 3%;
+  }
+  &__textarea-container {
+    display: flex;
+    flex-direction: column;
+    margin-top: 5%;
+  }
+  &__textarea {
+    flex: 1;
+  }
 }

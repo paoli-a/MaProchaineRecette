@@ -17,7 +17,7 @@ Scenario("Add new ingredient", ({ I }) => {
   I.click("Catalogue des ingrédients");
   I.fillField("Nom de l'ingrédient à ajouter :", "Navets");
   I.click("Envoyer");
-  within("#CatalogIngredients", () => {
+  within(".catalog-ingredients", () => {
     I.see("Carottes");
     I.see("Navets");
   });

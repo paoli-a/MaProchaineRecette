@@ -79,7 +79,7 @@ function FridgeIngredients({
     const formatedDate = ingredient.expirationDate.toLocaleDateString();
     return (
       <React.Fragment key={ingredient.id}>
-        <li key={ingredient.id}>
+        <li className="fridge-ingredients__ingredient" key={ingredient.id}>
           - {ingredient.name} : {ingredient.amount} {ingredient.unit}.
           Expiration : {formatedDate}.
           <button
@@ -95,15 +95,17 @@ function FridgeIngredients({
   });
 
   return (
-    <section id="fridgeIngredients">
-      <h2>Voici les ingrédients du frigo !</h2>
+    <section className="fridge-ingredients">
+      <h2 className="fridge-ingredients__title-h2">
+        Voici les ingrédients du frigo !
+      </h2>
       <FridgeIngredientsForm
         onSubmit={handleSubmit}
         possibleIngredients={possibleIngredients}
         totalUnits={totalUnits}
       />
       {postError && <span>{postError}</span>}
-      <ul>{ingredientElement}</ul>
+      <ul className="fridge-ingredients__list">{ingredientElement}</ul>
     </section>
   );
 }
