@@ -1,13 +1,11 @@
-.dropdown-container {
+.toolbar {
   border: 0;
   margin-bottom: 5%;
-}
-
-.dropdown-container > div {
-  display: flex;
-}
-
-.dropdown-container #search {
-  display: flex;
-  margin-left: auto;
+  &__container {
+    display: flex;
+    .searchbox {
+      display: flex;
+      margin-left: auto;
+    }
+  }
 }

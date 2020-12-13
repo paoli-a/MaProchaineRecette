@@ -29,8 +29,11 @@ function Recipe({ recipe, optionalButton, activateClick, highlight }) {
   const title = () => {
     if (activateClick) {
       return (
-        <h2>
-          <button className="collapsible-with-title" onClick={handleTitleClick}>
+        <h2 className="Recipe__title">
+          <button
+            className="collapsible-with-title__button"
+            onClick={handleTitleClick}
+          >
             {" "}
             {highlight(recipe.title)}
           </button>{" "}
@@ -39,7 +42,7 @@ function Recipe({ recipe, optionalButton, activateClick, highlight }) {
       );
     } else {
       return (
-        <h2>
+        <h2 className="Recipe__title">
           {" "}
           {highlight(recipe.title)} {optionalButton}
         </h2>
@@ -51,16 +54,28 @@ function Recipe({ recipe, optionalButton, activateClick, highlight }) {
   );
 
   return (
-    <article className={isRecipeUnsure ? "Recipe unsure" : "Recipe"}>
+    <article
+      className={
+        isRecipeUnsure
+          ? "Recipe unsure collapsible-with-title"
+          : "Recipe collapsible-with-title"
+      }
+    >
       {title()}
-      <div className={isRecipeOpen ? null : "hidden"}>
+      <div
+        className={
+          isRecipeOpen
+            ? "collapsible-with-title__content"
+            : "collapsible-with-title__content hidden"
+        }
+      >
         <IngredientsList
           ingredients={recipe.ingredients}
           priorityIngredients={recipe.priority_ingredients}
           unsureIngredients={recipe.unsure_ingredients}
           highlight={highlight}
         />
-        <p>{highlight(recipe.description)}</p>
+        <p className="Recipe__description">{highlight(recipe.description)}</p>
       </div>
     </article>
   );

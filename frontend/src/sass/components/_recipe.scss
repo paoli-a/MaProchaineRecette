@@ -1,28 +1,15 @@
 .Recipe {
   padding: 15px 20px 15px 20px;
-}
-
-.Recipe h2 {
-  margin-top: 0;
-}
-
-.Recipe ul {
-  padding-top: 10px;
-}
-
-.Recipe p {
-  padding-top: 15px;
-}
-
-em.unsure-ingredient {
-  color: #888;
-}
-
-#FridgeRecipes .Recipe {
-  border: 3px RGBa(235, 117, 105, 0.6) ridge;
-  margin: 15px 0;
-}
-
-#FridgeRecipes .Recipe.unsure {
-  border: 3px #ddd ridge;
+  &__title {
+    margin-top: 0;
+  }
+  &__ingredients-container {
+    padding-top: 10px;
+    .unsure-ingredient {
+      color: #888;
+    }
+  }
+  &__description {
+    padding-top: 15px;
+  }
 }
