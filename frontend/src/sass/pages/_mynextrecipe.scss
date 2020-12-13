@@ -1,0 +1,65 @@
+#fridgeIngredients {
+  border: 1px solid;
+  padding: 0 2%;
+  margin: 5.5% 4%;
+  align-self: start;
+  box-sizing: border-box;
+}
+
+#fridgeIngredients h2 {
+  margin-bottom: 14%;
+}
+
+#fridgeIngredients ul {
+  margin-top: 12%;
+  padding-inline-start: 2%;
+}
+
+#fridgeIngredients li {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+#FridgeRecipes {
+  margin-left: 20px;
+}
+
+#FridgeRecipes h1 {
+  margin-bottom: 6%;
+  padding-bottom: 30px;
+}
+
+#MyNextRecipes {
+  display: grid;
+  margin-top: 80px;
+}
+
+@media (min-width: 948px) {
+  #MyNextRecipes {
+    grid-template-columns: 0.5fr minmax(420px, 540px) minmax(440px, 900px) 1fr;
+    grid-template-areas: ". ingredients recipes .";
+  }
+
+  #fridgeIngredients {
+    grid-area: ingredients;
+    margin-left: 10px;
+    margin-right: 20%;
+  }
+
+  #FridgeRecipes {
+    grid-area: recipes;
+    margin-right: 10px;
+  }
+}
+
+@media (max-width: 947px) {
+  #MyNextRecipes {
+    grid-template-columns: minmax(0px, 460px);
+    grid-template-areas:
+      "ingredients"
+      "recipes";
+    justify-content: center;
+    gap: 60px;
+  }
+}

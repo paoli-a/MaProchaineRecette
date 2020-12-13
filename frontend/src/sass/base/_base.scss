@@ -1,0 +1,32 @@
+body {
+  margin: 0;
+  font-family: "Roboto", "Noto", sans-serif;
+  font-size: 16px;
+}
+
+h2 {
+  font-size: 20px;
+}
+
+h1,
+h2 {
+  font-family: Georgia, serif;
+}
+
+fieldset {
+  border: 0;
+}
+
+fieldset legend {
+  margin-bottom: 3%;
+  text-decoration: underline;
+}
+
+select {
+  border: 1px solid #d3d3d3;
+  background-color: rgb(248, 248, 248);
+}
+
+.hidden {
+  display: none;
+}

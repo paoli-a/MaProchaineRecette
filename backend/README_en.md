@@ -20,12 +20,22 @@ And answer the questions. You will be asked to create a superuser for Django. Th
 
 ## Code quality checks
 
-Several code quality checks are performed with flake8 and its plugins.
+Several code quality checks are performed with `flake8` and its plugins.
 
-To run them please run the following command from the folder `backend/`, after [having installed the backend](../README_en.md#backend):
+To run them please run the following command from the folder `backend/maprochainerecette/`, after [having installed the backend](../README_en.md#backend):
 
 ```bash
 pipenv run flake8 --config=setup.cfg --max-complexity 10
+```
+
+### Static check
+
+Static check of the code is performed with `mypy`:
+
+To run them please run the following command from the folder `backend/maprochainerecette/`, after [having installed the backend](../README_en.md#backend):
+
+```bash
+pipenv run mypy --config=setup.cfg .
 ```
 
 ## Unit tests

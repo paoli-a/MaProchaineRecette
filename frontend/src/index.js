@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import "./index.css";
-import MyNextRecipe from "./MyNextRecipe";
+import "./sass/main.scss";
+import MyNextRecipe from "./MyNextRecipe/MyNextRecipe";
 import * as serviceWorker from "./serviceWorker";
 
 ReactDOM.render(<MyNextRecipe />, document.getElementById("root"));

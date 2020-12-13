@@ -27,13 +27,16 @@ flake8-rst-docstrings = "*"
 pep8-naming = "*"
 mccabe = "*"
 black = "*"
-django-extensions = "*"
 pre-commit = "*"
+mypy = "*"
+django-stubs = "*"
 
 [packages]
 django = "*"
 djangorestframework = "*"
 django-model-utils = "*"
+django-environ = "*"
+django-extensions = "*"
 
 [requires]
 python_version = "3.8"

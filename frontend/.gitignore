@@ -24,3 +24,10 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# end to end tests
+/end_to_end/output
+
+# docs
+/docs
+/.cache

@@ -24,7 +24,11 @@ repos:
     rev: 3.8.3
     hooks:
       - id: flake8
-        args: ["--config=backend/setup.cfg", "--max-complexity=10"]
+        args:
+          [
+            "--config=backend/maprochainerecette/setup.cfg",
+            "--max-complexity=10",
+          ]
         additional_dependencies:
           [
             flake8-isort,
@@ -51,7 +55,7 @@ repos:
         args: ["--ignore-path=frontend/.prettierignore"]
 
   - repo: https://github.com/pre-commit/mirrors-eslint
-    rev: v7.9.0
+    rev: v7.10.0
     hooks:
       - id: eslint
         additional_dependencies:

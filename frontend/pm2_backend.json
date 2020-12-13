@@ -1,0 +1,20 @@
+{
+  "apps": [
+    {
+      "name": "backend",
+      "cwd": "../backend/maprochainerecette/",
+      "script": "manage.py",
+      "args": ["runserver", "127.0.0.1:3501"],
+      "env": {
+        "DATABASE_URL": "sqlite:///../../backend/maprochainerecette/end_to_end_db.sqlite3"
+      },
+      "exec_mode": "fork",
+      "instances": "1",
+      "wait_ready": true,
+      "autorestart": false,
+      "max_restarts": 5,
+      "interpreter": "pipenv",
+      "interpreter_args": "run python"
+    }
+  ]
+}
