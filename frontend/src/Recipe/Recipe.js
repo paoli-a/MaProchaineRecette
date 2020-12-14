@@ -29,11 +29,15 @@ function Recipe({ recipe, optionalButton, activateClick, highlight }) {
   const title = () => {
     if (activateClick) {
       return (
-        <h2
-          className="Recipe__title collapsible-with-title__title"
-          onClick={handleTitleClick}
-        >
-          {highlight(recipe.title)} {optionalButton}
+        <h2 className="Recipe__title">
+          <button
+            className="collapsible-with-title__button"
+            onClick={handleTitleClick}
+          >
+            {" "}
+            {highlight(recipe.title)}
+          </button>{" "}
+          {optionalButton}
         </h2>
       );
     } else {

@@ -527,7 +527,7 @@ was not successful on backend side`, async () => {
 
 describe("the removing recipe functionality works properly", () => {
   it("removes the recipe when clicking on the button", async () => {
-    const { getByText, rerender } = render(
+    const { getByText, rerender, getAllByLabelText } = render(
       <CatalogRecipes
         totalRecipes={recipes}
         possibleIngredients={catalogIngredients}
@@ -545,7 +545,7 @@ describe("the removing recipe functionality works properly", () => {
     const recipe = getByText("Salade de pommes de terre radis", {
       exact: false,
     });
-    const button = within(recipeRemoved).getByText("X");
+    const button = getAllByLabelText("Supprimer la recette")[1];
     fireEvent.click(button);
     await waitFor(() => expect(axios.delete).toHaveBeenCalledTimes(1));
     rerenderCatalog(rerender);
@@ -555,7 +555,7 @@ describe("the removing recipe functionality works properly", () => {
 
   it(`displays an error message and keeps the recipe if the recipe removal
 was not successful on backend side`, async () => {
-    const { getByText } = render(
+    const { getByText, getAllByLabelText } = render(
       <CatalogRecipes
         totalRecipes={recipes}
         possibleIngredients={catalogIngredients}
@@ -573,7 +573,7 @@ was not successful on backend side`, async () => {
     const recipe = getByText("Salade de pommes de terre radis", {
       exact: false,
     });
-    const button = within(recipeToRemoved).getByText("X");
+    const button = getAllByLabelText("Supprimer la recette")[1];
     fireEvent.click(button);
     await waitFor(() => expect(axios.delete).toHaveBeenCalledTimes(1));
     expect(recipe).toBeInTheDocument();

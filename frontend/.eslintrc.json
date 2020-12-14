@@ -1,3 +1,9 @@
 {
-  "extends": ["react-app", "prettier", "plugin:codeceptjs/recommended"]
+  "extends": [
+    "react-app",
+    "prettier",
+    "plugin:codeceptjs/recommended",
+    "plugin:jsx-a11y/recommended"
+  ],
+  "plugins": ["jsx-a11y"]
 }
