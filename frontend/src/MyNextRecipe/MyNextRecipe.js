@@ -5,6 +5,7 @@ import FridgeRecipes from "../Fridge/FridgeRecipes";
 import FridgeIngredients from "../Fridge/FridgeIngredients";
 import CatalogIngredients from "../Catalogs/CatalogIngredients";
 import CatalogRecipes from "../Catalogs/CatalogRecipes";
+import Page from "./Page";
 
 /**
  * Ce composant est le composant principal. Il permet d'afficher le menu, avec les trois pages :
@@ -141,32 +142,38 @@ function MyNextRecipe() {
         </nav>
         {fetchError && <span>{fetchError}</span>}
         <Route path="/recipes">
-          <CatalogRecipes
-            totalRecipes={catalogRecipes}
-            possibleIngredients={catalogIngredients}
-            totalCategories={catalogCategories}
-            totalUnits={units}
-            feasibleRecipesUpdate={fetchesFeasibleRecipes}
-            updateRecipes={handleNewRecipe}
-          />
-        </Route>
-        <Route path="/ingredients">
-          <CatalogIngredients
-            possibleIngredients={catalogIngredients}
-            updatePossibleIngredients={handlePossibleIngredients}
-          />
-        </Route>
-        <Route path="/" exact>
-          <main className="my-next-recipes">
-            <FridgeIngredients
-              ingredients={fridgeIngredients}
+          <Page title="Catalogue des recettes">
+            <CatalogRecipes
+              totalRecipes={catalogRecipes}
               possibleIngredients={catalogIngredients}
+              totalCategories={catalogCategories}
               totalUnits={units}
               feasibleRecipesUpdate={fetchesFeasibleRecipes}
-              updateFridgeIngredients={handleFridgeIngredient}
+              updateRecipes={handleNewRecipe}
             />
-            <FridgeRecipes recipes={feasibleRecipes} />
-          </main>
+          </Page>
+        </Route>
+        <Route path="/ingredients">
+          <Page title="Catalogue des ingrédients">
+            <CatalogIngredients
+              possibleIngredients={catalogIngredients}
+              updatePossibleIngredients={handlePossibleIngredients}
+            />
+          </Page>
+        </Route>
+        <Route path="/" exact>
+          <Page title="Ma prochaine recette">
+            <main className="my-next-recipes">
+              <FridgeIngredients
+                ingredients={fridgeIngredients}
+                possibleIngredients={catalogIngredients}
+                totalUnits={units}
+                feasibleRecipesUpdate={fetchesFeasibleRecipes}
+                updateFridgeIngredients={handleFridgeIngredient}
+              />
+              <FridgeRecipes recipes={feasibleRecipes} />
+            </main>
+          </Page>
         </Route>
       </div>
     </Router>

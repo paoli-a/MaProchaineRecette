@@ -155,47 +155,78 @@ const navigateTo = (linkText, getByRole) => {
 };
 
 describe("renders correctly", () => {
-  it(`renders only feasible recipes and fridge ingredients when clicking on that
+  describe("renders correctly pages", () => {
+    it(`renders only feasible recipes and fridge ingredients when clicking on that
   nav link`, async () => {
-    const { getByRole, getByText, queryByText } = render(<MyNextRecipe />);
-    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(FETCH_CALLS));
-    navigateTo("Ma prochaine recette", getByRole);
-    const nextRecipes = getByText("Mes prochaines recettes");
-    const fridge = getByText("Voici les ingrédients du frigo !");
-    const allMyRecipes = queryByText("Catalogue de toutes mes recettes");
-    const allMyIngredients = queryByText("Catalogue de tous mes ingrédients");
-    expect(nextRecipes).toBeInTheDocument();
-    expect(fridge).toBeInTheDocument();
-    expect(allMyRecipes).not.toBeInTheDocument();
-    expect(allMyIngredients).not.toBeInTheDocument();
+      const { getByRole, getByText, queryByText } = render(<MyNextRecipe />);
+      await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(FETCH_CALLS));
+      navigateTo("Ma prochaine recette", getByRole);
+      const nextRecipes = getByText("Mes prochaines recettes");
+      const fridge = getByText("Voici les ingrédients du frigo !");
+      const allMyRecipes = queryByText("Catalogue de toutes mes recettes");
+      const allMyIngredients = queryByText("Catalogue de tous mes ingrédients");
+      expect(nextRecipes).toBeInTheDocument();
+      expect(fridge).toBeInTheDocument();
+      expect(allMyRecipes).not.toBeInTheDocument();
+      expect(allMyIngredients).not.toBeInTheDocument();
+    });
+
+    it("renders only ingredients of the catalog when clicking on that nav link", async () => {
+      const { getByRole, queryByText, getByText } = render(<MyNextRecipe />);
+      await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(FETCH_CALLS));
+      navigateTo("Catalogue des ingrédients", getByRole);
+      const nextRecipes = queryByText("Mes prochaines recettes");
+      const fridge = queryByText("Voici les ingrédients du frigo !");
+      const allMyRecipes = queryByText("Catalogue de toutes mes recettes");
+      const allMyIngredients = getByText("Catalogue de tous mes ingrédients");
+      expect(nextRecipes).not.toBeInTheDocument();
+      expect(fridge).not.toBeInTheDocument();
+      expect(allMyRecipes).not.toBeInTheDocument();
+      expect(allMyIngredients).toBeInTheDocument();
+    });
+
+    it("renders only recipes of the catalog when clicking on that nav link", async () => {
+      const { getByRole, queryByText, getByText } = render(<MyNextRecipe />);
+      await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(FETCH_CALLS));
+      navigateTo("Catalogue des recettes", getByRole);
+      const nextRecipes = queryByText("Mes prochaines recettes");
+      const fridge = queryByText("Voici les ingrédients du frigo !");
+      const allMyRecipes = getByText("Catalogue de toutes mes recettes");
+      const allMyIngredients = queryByText("Catalogue de tous mes ingrédients");
+      expect(nextRecipes).not.toBeInTheDocument();
+      expect(fridge).not.toBeInTheDocument();
+      expect(allMyRecipes).toBeInTheDocument();
+      expect(allMyIngredients).not.toBeInTheDocument();
+    });
   });
 
-  it("renders only ingredients of the catalog when clicking on that nav link", async () => {
-    const { getByRole, queryByText, getByText } = render(<MyNextRecipe />);
-    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(FETCH_CALLS));
-    navigateTo("Catalogue des ingrédients", getByRole);
-    const nextRecipes = queryByText("Mes prochaines recettes");
-    const fridge = queryByText("Voici les ingrédients du frigo !");
-    const allMyRecipes = queryByText("Catalogue de toutes mes recettes");
-    const allMyIngredients = getByText("Catalogue de tous mes ingrédients");
-    expect(nextRecipes).not.toBeInTheDocument();
-    expect(fridge).not.toBeInTheDocument();
-    expect(allMyRecipes).not.toBeInTheDocument();
-    expect(allMyIngredients).toBeInTheDocument();
-  });
+  describe("renders correctly document title", () => {
+    it(`renders correct title when click on my next recipe page`, async () => {
+      const { getByRole } = render(<MyNextRecipe />);
+      await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(FETCH_CALLS));
+      navigateTo("Ma prochaine recette", getByRole);
+      await waitFor(() =>
+        expect(document.title).toEqual("Ma prochaine recette")
+      );
+    });
 
-  it("renders only recipes of the catalog when clicking on that nav link", async () => {
-    const { getByRole, queryByText, getByText } = render(<MyNextRecipe />);
-    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(FETCH_CALLS));
-    navigateTo("Catalogue des recettes", getByRole);
-    const nextRecipes = queryByText("Mes prochaines recettes");
-    const fridge = queryByText("Voici les ingrédients du frigo !");
-    const allMyRecipes = getByText("Catalogue de toutes mes recettes");
-    const allMyIngredients = queryByText("Catalogue de tous mes ingrédients");
-    expect(nextRecipes).not.toBeInTheDocument();
-    expect(fridge).not.toBeInTheDocument();
-    expect(allMyRecipes).toBeInTheDocument();
-    expect(allMyIngredients).not.toBeInTheDocument();
+    it(`renders correct title when click on recipes' catalog page`, async () => {
+      const { getByRole } = render(<MyNextRecipe />);
+      await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(FETCH_CALLS));
+      navigateTo("Catalogue des ingrédients", getByRole);
+      await waitFor(() =>
+        expect(document.title).toEqual("Catalogue des ingrédients")
+      );
+    });
+
+    it(`renders correct title when click on ingredients' gatalog page`, async () => {
+      const { getByRole } = render(<MyNextRecipe />);
+      await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(FETCH_CALLS));
+      navigateTo("Catalogue des recettes", getByRole);
+      await waitFor(() =>
+        expect(document.title).toEqual("Catalogue des recettes")
+      );
+    });
   });
 });
 
