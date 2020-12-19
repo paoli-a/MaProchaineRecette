@@ -16,7 +16,7 @@
     "react-hook-form": "^6.8.4",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.3",
-    "stopword": "^1.0.1",
+    "stopword": "^1.0.6",
     "webpack-dev-server": "3.11.0"
   },
   "resolutions": {
