@@ -226,11 +226,11 @@
         },
         "flake8-comprehensions": {
             "hashes": [
-                "sha256:44eaae9894aa15f86e0c86df1e218e7917494fab6f96d28f96a029c460f17d92",
-                "sha256:d5751acc0f7364794c71d06f113f4686d6e2e26146a50fa93130b9f200fe160d"
+                "sha256:6d80dfafda0d85633f88ea5bc7de949485f71f1e28db7af7719563fe5f62dcb1",
+                "sha256:e734bf03806bb562886d9bf635d23a65a1a995c251b67d7e007a7b608af9bd22"
             ],
             "index": "pypi",
-            "version": "==3.2.3"
+            "version": "==3.3.1"
         },
         "flake8-debugger": {
             "hashes": [
