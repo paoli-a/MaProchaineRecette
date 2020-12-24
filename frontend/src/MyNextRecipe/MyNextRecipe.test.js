@@ -210,7 +210,7 @@ describe("renders correctly", () => {
       );
     });
 
-    it(`renders correct title when click on recipes' catalog page`, async () => {
+    it(`renders correct title when click on ingredients catalog page`, async () => {
       const { getByRole } = render(<MyNextRecipe />);
       await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(FETCH_CALLS));
       navigateTo("Catalogue des ingrédients", getByRole);
@@ -219,7 +219,7 @@ describe("renders correctly", () => {
       );
     });
 
-    it(`renders correct title when click on ingredients' catalog page`, async () => {
+    it(`renders correct title when click on recipes catalog page`, async () => {
       const { getByRole } = render(<MyNextRecipe />);
       await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(FETCH_CALLS));
       navigateTo("Catalogue des recettes", getByRole);
