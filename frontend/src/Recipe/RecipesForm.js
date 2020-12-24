@@ -174,6 +174,7 @@ function RecipesForm({
           <input
             className="form__paragraph-input"
             type="time"
+            step="60"
             id="recipeTime"
             name="recipeTime"
             ref={register({
