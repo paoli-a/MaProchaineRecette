@@ -90,6 +90,7 @@ jobs:
           CI: true
       - name: Archive end to end screenshots
         uses: actions/upload-artifact@v2
+        if: failure()
         with:
           name: end-to-end-output
           path: frontend/end_to_end/output/
