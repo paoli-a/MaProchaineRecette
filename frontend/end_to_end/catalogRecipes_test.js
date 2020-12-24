@@ -8,8 +8,10 @@ AfterSuite(({ I }) => {
   I.runDjangoCommand("deleterecipes");
 });
 
+let marinade;
+
 Before(({ I }) => {
-  I.have("catalogRecipe", {
+  marinade = {
     title: "Marinade de saumon fumé",
     description:
       "Emincez le saumon, l'échalotte et le persil. Ajoutez le vinaigre, l'huile, le citron et un peu de poivre. Mélangez et laissez mariner toute la nuit.",
@@ -47,7 +49,8 @@ Before(({ I }) => {
         unit: "pièce(s)",
       },
     ],
-  });
+  };
+  I.have("catalogRecipe", marinade);
 });
 
 Scenario("See existing recipe", ({ I }) => {
@@ -56,23 +59,34 @@ Scenario("See existing recipe", ({ I }) => {
   I.see("Marinade de saumon fumé");
 });
 
-/*
-Scenario("Add new ingredient", ({ I }) => {
+Scenario("Add new recipe", ({ I }) => {
   I.amOnPage("/");
-  I.click("Catalogue des ingrédients");
-  I.fillField("Nom de l'ingrédient à ajouter :", "Navets");
-  I.click("Envoyer");
-  within(".catalog-ingredients", () => {
-    I.see("Carottes");
-    I.see("Navets");
+  I.click("Catalogue des recettes");
+  I.fillField("Titre de la recette :", "Salade légère");
+  I.checkOption("Entrée");
+  I.fillField("Temps total de la recette :", "00:10");
+  I.fillField("Nom :", "échalotte");
+  I.fillField("Quantité nécessaire :", "1");
+  I.selectOption("Unité", "pièce(s)");
+  I.click("Ajouter");
+  I.fillField("Nom :", "herbes fraiches");
+  I.fillField("Quantité nécessaire :", "1");
+  I.selectOption("Unité", "pièce(s)");
+  I.click("Ajouter");
+  I.fillField("Corps de la recette :", "Mélanger les ingrédients.");
+  I.click("Confirmer");
+  within(".display-catalog-recipe", () => {
+    I.see("Marinade");
+    I.see("Salade légère");
   });
-  I.sendDeleteRequest("catalogs/ingredients/Navets/");
+  I.click("X");
+  I.click("X");
 });
 
-Scenario("Remove ingredient", ({ I }) => {
+Scenario("Remove recipe", ({ I }) => {
   I.amOnPage("/");
-  I.click("Catalogue des ingrédients");
+  I.click("Catalogue des recettes");
+  I.see("Marinade");
   I.click("X");
-  I.dontSee("Carottes");
+  I.dontSee("Marinade");
 });
-*/

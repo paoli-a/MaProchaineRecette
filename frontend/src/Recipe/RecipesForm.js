@@ -155,8 +155,9 @@ function RecipesForm({
                     name={`categories[${index}]`}
                     aria-label={category}
                     ref={register({ validate: validateCategories })}
+                    id={`category-${index}`}
                   />
-                  {category}
+                  <label htmlFor={`category-${index}`}>{category}</label>
                 </li>
               );
             })}
