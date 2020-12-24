@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import PropTypes from "prop-types";
 
 /**
- * Composant qui permet de changer le titre du document
+ * Changes document title
  *
  * @component
  */
