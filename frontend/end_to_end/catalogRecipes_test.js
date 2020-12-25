@@ -64,7 +64,7 @@ Scenario("Add new recipe", ({ I }) => {
   I.click("Catalogue des recettes");
   I.fillField("Titre de la recette :", "Salade légère");
   I.checkOption("Entrée");
-  I.fillField("Temps total de la recette :", "0100");
+  I.fillField("Temps total de la recette :", "001000");
   I.fillField("Nom :", "échalotte");
   I.fillField("Quantité nécessaire :", "1");
   I.selectOption("Unité", "pièce(s)");
