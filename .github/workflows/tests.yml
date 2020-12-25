@@ -83,7 +83,6 @@ jobs:
       - name: Install dependencies
         run: pipenv install
         working-directory: ./backend
-      - uses: microsoft/playwright-github-action@v1
       - name: Run end to end tests
         run: yarn end_to_end
         working-directory: ./frontend
