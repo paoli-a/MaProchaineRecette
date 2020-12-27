@@ -39,6 +39,12 @@ exports.config = {
           delete: { delete: "/catalogs/recipes/{id}/" },
           fetchId: (data) => data.id,
         },
+        fridgeIngredient: {
+          uri: "/fridge/ingredients/",
+          factory: "./end_to_end/factories/fridgeIngredient",
+          delete: { delete: "/fridge/ingredients/{id}/" },
+          fetchId: (data) => data.id,
+        },
       },
     },
     DjangoHelper: {

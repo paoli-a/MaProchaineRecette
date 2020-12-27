@@ -1,4 +1,4 @@
-Feature("Catalog ingredients");
+Feature("Catalog recipes");
 
 BeforeSuite(({ I }) => {
   I.runDjangoCommand("createrecipesfortest");
