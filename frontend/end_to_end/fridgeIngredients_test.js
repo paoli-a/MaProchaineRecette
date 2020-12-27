@@ -41,4 +41,4 @@ Scenario("Remove fridge ingredient", ({ I }) => {
   I.see("échalotte");
   I.click("Supprimer");
   I.dontSee("échalotte");
-});
+}).retry(2);
