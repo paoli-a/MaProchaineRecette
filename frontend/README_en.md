@@ -24,7 +24,7 @@ yarn test
 
 End to end tests let us test a small number of functionnalities implying the frontend, the backend, and a real chromium browser on which the user activity is simulated.
 
-The tests are launched from `frontend/` repository and use (CodeceptJS)[https://codecept.io/].
+The tests are launched from `frontend/` repository and use [CodeceptJS](https://codecept.io/).
 
 To run the tests, please run the following command:
 

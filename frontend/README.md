@@ -24,7 +24,7 @@ yarn test
 
 Les tests de bout en bout permettent de tester un nombre réduit de fonctionnalités en lançant à la fois le frontend, le backend, et un vrai navigateur chromium sur lequel l'action de l'utilisateur est simulée.
 
-Les tests sont lancés depuis le répertoire `frontend/` et utilisent la librairie (CodeceptJS)[https://codecept.io/].
+Les tests sont lancés depuis le répertoire `frontend/` et utilisent la librairie [CodeceptJS](https://codecept.io/).
 
 Pour les lancer, il faut taper la commande :
 
