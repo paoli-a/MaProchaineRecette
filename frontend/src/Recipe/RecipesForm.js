@@ -155,8 +155,9 @@ function RecipesForm({
                     name={`categories[${index}]`}
                     aria-label={category}
                     ref={register({ validate: validateCategories })}
+                    id={`category-${index}`}
                   />
-                  {category}
+                  <label htmlFor={`category-${index}`}>{category}</label>
                 </li>
               );
             })}
@@ -173,6 +174,7 @@ function RecipesForm({
           <input
             className="form__paragraph-input"
             type="time"
+            step="60"
             id="recipeTime"
             name="recipeTime"
             ref={register({

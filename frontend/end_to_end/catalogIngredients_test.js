@@ -1,5 +1,3 @@
-const execSync = require("child_process").execSync;
-
 Feature("Catalog ingredients");
 
 Before(({ I }) => {
