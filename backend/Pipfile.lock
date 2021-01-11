@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "2e970a4a590c45b710e8c492ebd46287b4d6566d62d0bba9dcd13340d156c3a5"
+            "sha256": "020bc23a633b7588a9fe2ccc3c18e806a234df2a31377cafdb7926b80f5f70e1"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -181,10 +181,10 @@
         },
         "faker": {
             "hashes": [
-                "sha256:1fcb415562ee6e2395b041e85fa6901d4708d30b84d54015226fa754ed0822c3",
-                "sha256:e8beccb398ee9b8cc1a91d9295121d66512b6753b4846eb1e7370545d46b3311"
+                "sha256:bd56ab94b9ae45df3cdb6ef3ca3c2be2617e6a640699deb74394143d220faf04",
+                "sha256:d70983d5e623976e9e8987e9a39e8d55378e66049f393db35ea9a37b3190085f"
             ],
-            "version": "==5.0.1"
+            "version": "==5.4.0"
         },
         "filelock": {
             "hashes": [
@@ -333,10 +333,10 @@
         },
         "identify": {
             "hashes": [
-                "sha256:7aef7a5104d6254c162990e54a203cdc0fd202046b6c415bd5d636472f6565c4",
-                "sha256:b2c71bf9f5c482c389cef816f3a15f1c9d7429ad70f497d4a2e522442d80c6de"
+                "sha256:18994e850ba50c37bcaed4832be8b354d6a06c8fb31f54e0e7ece76d32f69bc8",
+                "sha256:892473bf12e655884132a3a32aca737a3cbefaa34a850ff52d501773a45837bc"
             ],
-            "version": "==1.5.11"
+            "version": "==1.5.12"
         },
         "iniconfig": {
             "hashes": [
@@ -502,11 +502,11 @@
         },
         "pylint-django": {
             "hashes": [
-                "sha256:957635db537509f7304627845270119f45dad8c708050209646b639fce97d763",
-                "sha256:f635dbfa72e14158d107b594bec75f006ec8280af79c6e51b825e9d2cfdee7f6"
+                "sha256:355dddb25ef07dbdb77a818b0860ada722aab654c24da34aab916ec26d6390ba",
+                "sha256:f8d77f7da47a7019cda5cb669c214f03033208f9e945094661299d2637c0da06"
             ],
             "index": "pypi",
-            "version": "==2.4.1"
+            "version": "==2.4.2"
         },
         "pylint-plugin-utils": {
             "hashes": [
@@ -730,10 +730,10 @@
         },
         "virtualenv": {
             "hashes": [
-                "sha256:54b05fc737ea9c9ee9f8340f579e5da5b09fb64fd010ab5757eb90268616907c",
-                "sha256:b7a8ec323ee02fb2312f098b6b4c9de99559b462775bc8fe3627a73706603c1b"
+                "sha256:205a7577275dd0d9223c730dd498e21a8910600085c3dee97412b041fc4b853b",
+                "sha256:7992b8de87e544a4ab55afc2240bf8388c4e3b5765d03784dad384bfdf9097ee"
             ],
-            "version": "==20.2.2"
+            "version": "==20.3.0"
         },
         "wrapt": {
             "hashes": [
