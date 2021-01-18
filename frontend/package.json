@@ -13,7 +13,7 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-highlight-words": "^0.16.0",
-    "react-hook-form": "^6.14.1",
+    "react-hook-form": "^6.14.2",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.1",
     "stopword": "^1.0.6"
