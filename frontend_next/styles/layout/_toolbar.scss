@@ -1,0 +1,11 @@
+.toolbar {
+  border: 0;
+  margin-bottom: 5%;
+  &__container {
+    display: flex;
+    .searchbox {
+      display: flex;
+      margin-left: auto;
+    }
+  }
+}

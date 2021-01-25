@@ -1,0 +1,11 @@
+# artifacts:
+build
+coverage
+.next
+out
+
+# Ignore all HTML files:
+*.html
+
+# dependencies
+node_modules

@@ -1,0 +1,26 @@
+.collapsible-with-button {
+  &__button {
+    cursor: pointer;
+    height: 25px;
+    background-repeat: no-repeat;
+    background-position: 95% 45%;
+    padding: 0px 25px 3px 10px;
+    background-size: 14px 14px;
+    &.open {
+      background-image: url(../../public/images/fleche_dropdown_haut.png);
+    }
+    &.closed {
+      background-image: url(../../public/images/fleche_dropdown_bas.png);
+    }
+  }
+  &__list-container {
+    padding: 0;
+    .collapsible-checkbox {
+      display: flex;
+      list-style: none;
+      &__span {
+        margin-left: auto;
+      }
+    }
+  }
+}

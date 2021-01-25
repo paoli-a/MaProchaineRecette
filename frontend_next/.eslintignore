@@ -1,0 +1,8 @@
+# artifacts:
+build
+coverage
+.next
+out
+
+# dependencies
+node_modules
