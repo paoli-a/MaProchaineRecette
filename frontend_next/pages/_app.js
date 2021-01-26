@@ -1,38 +1,39 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import axios from "axios";
 import "../styles/main.scss";
 
 function MyApp({ Component, pageProps, props }) {
-  const [catalogIngredients, setCatalogIngredients] = useState([]);
-  const [fridgeIngredients, setFridgeIngredients] = useState([]);
-  const [catalogRecipes, setCatalogRecipes] = useState([]);
-  const [catalogCategories, setCatalogCategories] = useState([]);
-  const [units, setUnits] = useState([]);
-  const [feasibleRecipes, setFeasibleRecipes] = useState([]);
-  const [fetchError, setFetchError] = useState("");
-
-  useEffect(() => {
-    if (props.firstTime) {
-      setCatalogIngredients(props.initialCatalogIngredients);
-      const initialFridgeIngredients = props.initialFridgeIngredients.map(
-        (fridgeIngredient) => {
-          return {
-            id: fridgeIngredient.id,
-            name: fridgeIngredient.ingredient,
-            expirationDate: new Date(fridgeIngredient.expiration_date),
-            amount: fridgeIngredient.amount,
-            unit: fridgeIngredient.unit,
-          };
-        }
-      );
-      setFridgeIngredients(initialFridgeIngredients);
-      setCatalogRecipes(props.initialCatalogRecipes);
-      setCatalogCategories(props.initialCatalogCategories);
-      setUnits(props.initialUnits);
-      setFeasibleRecipes(props.initialFeasibleRecipes);
-      setFetchError(props.initialFetchError);
+  const [catalogIngredients, setCatalogIngredients] = useState(
+    props && props.firstTime ? props.initialCatalogIngredients : []
+  );
+  const [fridgeIngredients, setFridgeIngredients] = useState(() => {
+    if (props && props.firstTime) {
+      return props.initialFridgeIngredients.map((fridgeIngredient) => {
+        return {
+          id: fridgeIngredient.id,
+          name: fridgeIngredient.ingredient,
+          expirationDate: new Date(fridgeIngredient.expiration_date),
+          amount: fridgeIngredient.amount,
+          unit: fridgeIngredient.unit,
+        };
+      });
+    } else {
+      return [];
     }
-  }, [props.firstTime]); // eslint-disable-line react-hooks/exhaustive-deps
+  });
+  const [catalogRecipes, setCatalogRecipes] = useState(
+    props && props.firstTime ? props.initialCatalogRecipes : []
+  );
+  const [catalogCategories] = useState(
+    props && props.firstTime ? props.initialCatalogCategories : []
+  );
+  const [units] = useState(props && props.firstTime ? props.initialUnits : []);
+  const [feasibleRecipes, setFeasibleRecipes] = useState(
+    props && props.firstTime ? props.initialFeasibleRecipes : []
+  );
+  const [fetchError, setFetchError] = useState(
+    props && props.firstTime ? props.initialFetchError : ""
+  );
 
   const refetchFeasibleRecipes = () => {
     axios

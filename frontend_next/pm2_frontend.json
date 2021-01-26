@@ -1,0 +1,17 @@
+{
+  "apps": [
+    {
+      "name": "frontend",
+      "script": "node_modules/next/dist/bin/next",
+      "args": ["start", "-p", "3502"],
+      "env": {
+        "REACT_APP_PROXY_HOST": "http://localhost:3501"
+      },
+      "exec_mode": "fork",
+      "instances": "1",
+      "wait_ready": true,
+      "autorestart": false,
+      "max_restarts": 5
+    }
+  ]
+}

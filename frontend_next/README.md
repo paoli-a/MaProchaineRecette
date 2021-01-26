@@ -1,34 +1,52 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Frontend
 
-## Getting Started
+[english version](README_en.md)
 
-First, run the development server:
+Le frontend utilise React et est basé sur Create React App.
+
+## Tests de qualité de code
+
+Pour lancer les tests de qualité de code il faut taper la commande suivante depuis le dossier `frontend/`, après avoir [procédé à l'installation](../README.md#frontend) :
 
 ```bash
-npm run dev
-# or
-yarn dev
+yarn lint
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Tests unitaires
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+Pour lancer les tests unitaires il faut taper la commande suivante au niveau du dossier `frontend/`, après avoir [procédé à l'installation](../README.md#frontend) :
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+```bash
+yarn test
+```
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+## Tests de bout en bout
 
-## Learn More
+Les tests de bout en bout permettent de tester un nombre réduit de fonctionnalités en lançant à la fois le frontend, le backend, et un vrai navigateur chromium sur lequel l'action de l'utilisateur est simulée.
 
-To learn more about Next.js, take a look at the following resources:
+Les tests sont lancés depuis le répertoire `frontend/` et utilisent la librairie [CodeceptJS](https://codecept.io/).
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Pour les lancer, il faut taper la commande :
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+```bash
+yarn end_to_end
+```
 
-## Deploy on Vercel
+Un backend tournera sur le port 3501, et le frontend sur le port 3502, et une nouvelle base de données sera créée pour l'occasion de ces tests dans `backend/end_to_end_db.sqlite3`.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/import?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Le navigateur sera lancé en mode graphique et visible tout le long des tests. Pour lancer les tests en mode headless on peut ajouter la variable d'environnement `CI` :
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+```bash
+CI=1 yarn end_to_end
+```
+
+## Documentation
+
+La documentation du projet utilise [jsdoc](https://github.com/jsdoc/jsdoc).
+Pour générer la documentation, il faut taper la commande :
+
+```bash
+yarn docs
+```
+
+La documentation sera alors disponible sous forme html dans le répertoire `frontend/docs/`.

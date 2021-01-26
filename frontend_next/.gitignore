@@ -8,6 +8,13 @@
 # testing
 /coverage
 
+# end to end tests
+/end_to_end/output
+
+# docs
+/docs
+/.cache
+
 # next.js
 /.next/
 /out/
