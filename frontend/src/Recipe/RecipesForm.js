@@ -82,10 +82,10 @@ function RecipesForm({
     } catch (error) {
       if (error instanceof UnauthorizedIngredient) {
         const message = (
-          <React.Fragment>
+          <>
             {error.message}
             <a href="/#">ici</a>.
-          </React.Fragment>
+          </>
         );
         setIngredientError(message);
       } else {
@@ -133,15 +133,25 @@ function RecipesForm({
             {" "}
             Titre de la recette :{" "}
           </label>
-          <input
-            className="form__paragraph-input"
-            type="text"
-            name="recipeTitle"
-            id="recipeTitle"
-            defaultValue=""
-            ref={register({ required: true })}
-          />
-          {errors.recipeTitle && <span>Ce champ est obligatoire</span>}
+          <div className="container-error">
+            <input
+              className={
+                errors.recipeTitle ? "form__input field-error" : "form__input"
+              }
+              type="text"
+              name="recipeTitle"
+              id="recipeTitle"
+              defaultValue=""
+              ref={register({ required: true })}
+              aria-invalid={errors.ingredientName ? "true" : "false"}
+              aria-required="true"
+            />
+            {errors.recipeTitle && (
+              <p className="form__error-message" role="alert">
+                Ce champ est obligatoire
+              </p>
+            )}
+          </div>
         </p>
         <div>
           Catégories :
@@ -155,6 +165,7 @@ function RecipesForm({
                     name={`categories[${index}]`}
                     aria-label={category}
                     ref={register({ validate: validateCategories })}
+                    aria-invalid={errors.categories ? "true" : "false"}
                   />
                   {category}
                 </li>
@@ -162,7 +173,9 @@ function RecipesForm({
             })}
           </ul>
           {errors.categories && (
-            <span>Au moins une catégorie doit être sélectionnée</span>
+            <p className="form__error-message" role="alert">
+              Au moins une catégorie doit être sélectionnée
+            </p>
           )}
         </div>
         <p className="form__paragraph">
@@ -170,17 +183,27 @@ function RecipesForm({
             {" "}
             Temps total de la recette :{" "}
           </label>
-          <input
-            className="form__paragraph-input"
-            type="time"
-            id="recipeTime"
-            name="recipeTime"
-            ref={register({
-              required: "Ce champ est obligatoire",
-              validate: validateTime,
-            })}
-          />
-          {errors.recipeTime && errors.recipeTime.message}
+          <div className="container-error">
+            <input
+              className={
+                errors.recipeTime ? "form__input field-error" : "form__-input"
+              }
+              type="time"
+              id="recipeTime"
+              name="recipeTime"
+              ref={register({
+                required: "Ce champ est obligatoire",
+                validate: validateTime,
+              })}
+              aria-invalid={errors.recipeTime ? "true" : "false"}
+              aria-required="true"
+            />
+            {errors.recipeTime && (
+              <p className="form__error-message" role="alert">
+                {errors.recipeTime.message}
+              </p>
+            )}
+          </div>
         </p>
         <fieldset className="form form-ingredient-recipe">
           <legend> Ingrédients : </legend>
@@ -190,6 +213,7 @@ function RecipesForm({
               Nom :{" "}
             </label>
             <InputSuggestions
+              className="form__input"
               elements={possibleIngredients}
               id="ingredient"
               getElementText={(ingredient) => ingredient.name}
@@ -197,6 +221,7 @@ function RecipesForm({
               value={ingredientName}
               name="ingredient"
               type="text"
+              aria-required="true"
             />
           </p>
           <p className="form__paragraph">
@@ -213,6 +238,7 @@ function RecipesForm({
                 min="0"
                 onChange={(e) => setIngredientAmount(e.target.value)}
                 value={ingredientAmount}
+                aria-required="true"
               />
               <select
                 className="form__combined-select"
@@ -221,6 +247,7 @@ function RecipesForm({
                 onChange={(e) => setIngredientUnit(e.target.value)}
                 onBlur={(e) => setIngredientUnit(e.target.value)}
                 value={ingredientUnit}
+                aria-required="true"
               >
                 <option value="">...</option>
                 {totalUnits.map((unit) => {
@@ -237,7 +264,7 @@ function RecipesForm({
             <button className="button" onClick={handleAddIngredient}>
               Ajouter
             </button>
-            {ingredientError && <span>{ingredientError}</span>}
+            {ingredientError && <p role="alert">{ingredientError}</p>}
           </p>
           <ul>
             {ingredients.map((ingredient) => {
@@ -261,13 +288,23 @@ function RecipesForm({
             Corps de la recette :{" "}
           </label>
           <textarea
-            className="form__textarea"
+            className={
+              errors.recipeTime
+                ? "form__textarea field-error"
+                : "form__textarea"
+            }
             id="recipeDescription"
             name="recipeDescription"
             spellCheck="true"
             ref={register({ required: true })}
+            aria-invalid={errors.recipeDescription ? "true" : "false"}
+            aria-required="true"
           ></textarea>
-          {errors.recipeDescription && <span>Ce champ est obligatoire</span>}
+          {errors.recipeDescription && (
+            <p className="form__error-message" role="alert">
+              Ce champ est obligatoire
+            </p>
+          )}
         </div>
         <p className="form__paragraph">
           <input

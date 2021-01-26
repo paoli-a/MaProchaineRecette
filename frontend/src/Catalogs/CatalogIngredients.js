@@ -83,7 +83,9 @@ function CatalogIngredients({
           </button>
         </li>
         {deleteError.name === ingredient.name && (
-          <span>{deleteError.message}</span>
+          <p className="ingredient__error-message" role="alert">
+            {deleteError.message}
+          </p>
         )}
       </React.Fragment>
     );
@@ -103,22 +105,34 @@ function CatalogIngredients({
                 {" "}
                 Nom de l'ingrédient à ajouter :{" "}
               </label>
-              <input
-                className="form__input"
-                type="text"
-                name="ingredientName"
-                id="ingredientName"
-                defaultValue=""
-                ref={register({
-                  required: "Ce champ est obligatoire",
-                })}
-              />
-              {errors.ingredientName && (
-                <span>{errors.ingredientName.message}</span>
-              )}
-              {errors.ingredientName && errors.ingredientName.types && (
-                <span>{errors.ingredientName.types.message}</span>
-              )}
+              <div className="container-error">
+                <input
+                  className={
+                    errors.ingredientName
+                      ? "form__input field-error"
+                      : "form__input"
+                  }
+                  type="text"
+                  name="ingredientName"
+                  id="ingredientName"
+                  defaultValue=""
+                  ref={register({
+                    required: "Ce champ est obligatoire",
+                  })}
+                  aria-required="true"
+                  aria-invalid={errors.ingredientName ? "true" : "false"}
+                />
+                {errors.ingredientName && (
+                  <p className="form__error-message" role="alert">
+                    {errors.ingredientName.message}
+                  </p>
+                )}
+                {errors.ingredientName && errors.ingredientName.types && (
+                  <p className="form__error-message" role="alert">
+                    {errors.ingredientName.types.message}
+                  </p>
+                )}
+              </div>
             </p>
             <p className="form__paragraph">
               <input

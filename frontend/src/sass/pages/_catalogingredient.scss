@@ -27,6 +27,15 @@
   }
 }
 
+.ingredient__error-message {
+  color: #d14642;
+  margin-top: 3px;
+  margin-left: 5px;
+  margin-right: 5px;
+  font-size: 0.75rem;
+  letter-spacing: 0.03333em;
+}
+
 @media (min-width: 948px) {
   .component-catalog-ingredients {
     display: grid;

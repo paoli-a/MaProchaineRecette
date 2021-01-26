@@ -27,10 +27,10 @@ function FridgeIngredientsForm({ onSubmit, possibleIngredients, totalUnits }) {
     }
     if (!authorized) {
       return (
-        <React.Fragment>
+        <p className="form__error-message" role="alert">
           Cet ingrédient n'existe pas dans le catalogue d'ingrédients. Vous
           pouvez l'y ajouter <a href="/#">ici</a>.
-        </React.Fragment>
+        </p>
       );
     } else {
       return undefined;
@@ -79,68 +79,113 @@ function FridgeIngredientsForm({ onSubmit, possibleIngredients, totalUnits }) {
           <label className="form__label" htmlFor="ingredientName">
             Nom de l'ingrédient :{" "}
           </label>
-          <InputSuggestions
-            elements={possibleIngredients}
-            id="ingredientName"
-            getElementText={(ingredient) => ingredient.name}
-            onChangeValue={handleIngredientName}
-            value={ingredientName}
-            name="ingredient"
-            type="text"
-          />
-          {errors.ingredientName && errors.ingredientName.message}
+          <div className="container-error">
+            <InputSuggestions
+              elements={possibleIngredients}
+              id="ingredientName"
+              getElementText={(ingredient) => ingredient.name}
+              onChangeValue={handleIngredientName}
+              value={ingredientName}
+              name="ingredient"
+              type="text"
+              className={
+                errors.ingredientName
+                  ? "form__input field-error"
+                  : "form__input"
+              }
+              aria-invalid={errors.ingredientName ? "true" : "false"}
+              aria-required="true"
+            />
+            {errors.ingredientName && errors.ingredientName.message}
+          </div>
         </p>
         <p className="form__paragraph">
           <label className="form__label" htmlFor="ingredientAmount">
             Quantité :{" "}
           </label>
           <span className="form__combined-container">
-            <input
-              className="form__combined-input"
-              type="number"
-              name="ingredientAmount"
-              id="ingredientAmount"
-              defaultValue=""
-              ref={register({
-                required: "Ce champ est obligatoire",
-                validate: validateAmount,
-              })}
-            />
-            {errors.ingredientAmount && errors.ingredientAmount.message}
-            <select
-              className="form__combined-select"
-              name="unit"
-              defaultValue=""
-              ref={register({ required: true })}
-              aria-label="Unité"
-            >
-              <option value="">...</option>
-              {totalUnits.map((unit) => {
-                return (
-                  <option value={unit} key={unit}>
-                    {unit}
-                  </option>
-                );
-              })}
-            </select>
-            {errors.unit && <span>Ce champ est obligatoire</span>}
+            <div className="container-error">
+              <input
+                className={
+                  errors.ingredientAmount
+                    ? "form__combined-input field-error"
+                    : "form__combined-input"
+                }
+                type="number"
+                name="ingredientAmount"
+                id="ingredientAmount"
+                defaultValue=""
+                ref={register({
+                  required: "Ce champ est obligatoire",
+                  validate: validateAmount,
+                })}
+                aria-invalid={errors.ingredientName ? "true" : "false"}
+                aria-required="true"
+              />
+              {errors.ingredientAmount && (
+                <p className="form__error-message" role="alert">
+                  {errors.ingredientAmount.message}{" "}
+                </p>
+              )}
+            </div>
+            <div className="container-error">
+              <select
+                className={
+                  errors.unit
+                    ? "form__combined-select field-error"
+                    : "form__combined-select"
+                }
+                name="unit"
+                defaultValue=""
+                ref={register({ required: true })}
+                aria-label="Unité"
+                aria-invalid={errors.ingredientName ? "true" : "false"}
+                aria-required="true"
+              >
+                <option value="">...</option>
+                {totalUnits.map((unit) => {
+                  return (
+                    <option value={unit} key={unit}>
+                      {unit}
+                    </option>
+                  );
+                })}
+              </select>
+              {errors.unit && (
+                <p className="form__error-message" role="alert">
+                  Ce champ est obligatoire
+                </p>
+              )}
+            </div>
           </span>
         </p>
         <p className="form__paragraph">
           <label className="form__label" htmlFor="expirationDate">
             Date de péremption :{" "}
           </label>
-          <input
-            className="form__input"
-            type="date"
-            name="expirationDate"
-            id="expirationDate"
-            ref={register({
-              required: "Ce champ est obligatoire",
-              validate: validateDate,
-            })}
-          />
-          {errors.expirationDate && errors.expirationDate.message}
+          <div className="container-error">
+            <input
+              className={
+                errors.expirationDate
+                  ? "form__input field-error"
+                  : "form__input"
+              }
+              type="date"
+              name="expirationDate"
+              id="expirationDate"
+              ref={register({
+                required: "Ce champ est obligatoire",
+                validate: validateDate,
+              })}
+              aria-invalid={errors.ingredientName ? "true" : "false"}
+              aria-required="true"
+            />
+            {errors.expirationDate && (
+              <p className="form__error-message" role="alert">
+                {errors.expirationDate.message}
+              </p>
+            )}
+          </div>
         </p>
         <p className="form__paragraph">
           <input
