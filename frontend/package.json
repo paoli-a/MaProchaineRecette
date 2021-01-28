@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@testing-library/jest-dom": "^5.11.4",
-    "@testing-library/react": "^11.2.2",
+    "@testing-library/jest-dom": "^5.11.9",
+    "@testing-library/react": "^11.2.3",
     "@testing-library/user-event": "^12.1.6",
     "axios": "^0.21.0",
     "http-proxy-middleware": "^1.0.6",
@@ -13,14 +13,10 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-highlight-words": "^0.16.0",
-    "react-hook-form": "^6.8.4",
+    "react-hook-form": "^6.14.2",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "3.4.3",
-    "stopword": "^1.0.6",
-    "webpack-dev-server": "3.11.0"
-  },
-  "resolutions": {
-    "docz*/**/webpack-dev-server": "3.10.3"
+    "react-scripts": "4.0.1",
+    "stopword": "^1.0.6"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -43,18 +39,18 @@
     ]
   },
   "devDependencies": {
-    "@codeceptjs/configure": "^0.5.2",
+    "@codeceptjs/configure": "^0.6.2",
     "better-docs": "^2.3.2",
-    "codeceptjs": "^3.0.0-rc.0",
-    "eslint-config-prettier": "^6.11.0",
+    "codeceptjs": "^3.0.3",
+    "eslint-config-prettier": "^7.2.0",
     "eslint-plugin-codeceptjs": "^1.3.0",
     "faker": "^5.1.0",
     "jsdoc": "^3.6.6",
     "mutationobserver-shim": "^0.3.5",
     "parcel-bundler": "^1.12.4",
-    "playwright": "^1.4.1",
-    "pm2": "^4.4.1",
-    "prettier": "^2.0.5",
+    "playwright": "^1.7.0",
+    "pm2": "^4.5.1",
+    "prettier": "^2.2.1",
     "rosie": "^2.0.1"
   }
 }

@@ -33,7 +33,24 @@ exports.config = {
           delete: { delete: "/catalogs/ingredients/{id}/" },
           fetchId: (data) => data.name,
         },
+        catalogRecipe: {
+          uri: "/catalogs/recipes/",
+          factory: "./end_to_end/factories/catalogRecipe",
+          delete: { delete: "/catalogs/recipes/{id}/" },
+          fetchId: (data) => data.id,
+        },
+        fridgeIngredient: {
+          uri: "/fridge/ingredients/",
+          factory: "./end_to_end/factories/fridgeIngredient",
+          delete: { delete: "/fridge/ingredients/{id}/" },
+          fetchId: (data) => data.id,
+        },
       },
+    },
+    DjangoHelper: {
+      require: "./end_to_end/django_helper.js",
+      databaseFile: "sqlite:///end_to_end_db.sqlite3",
+      backendPath: "../backend/maprochainerecette",
     },
   },
   include: {
