@@ -153,7 +153,7 @@ function RecipesForm({
             )}
           </div>
         </div>
-        <div>
+        <div className="form__checkbox-container">
           Catégories :
           <ul>
             {totalCategories.map((category, index) => {
