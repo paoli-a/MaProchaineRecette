@@ -82,10 +82,10 @@ function RecipesForm({
     } catch (error) {
       if (error instanceof UnauthorizedIngredient) {
         const message = (
-          <React.Fragment>
+          <>
             {error.message}
             <a href="/#">ici</a>.
-          </React.Fragment>
+          </>
         );
         setIngredientError(message);
       } else {
@@ -128,22 +128,32 @@ function RecipesForm({
     <form className="form form-recipe" onSubmit={handleSubmit(onSubmitForm)}>
       <fieldset>
         <legend>Ajouter une recette dans mon catalogue :</legend>
-        <p className="form__paragraph">
+        <div className="form__paragraph">
           <label className="form__label" htmlFor="recipeTitle">
             {" "}
             Titre de la recette :{" "}
           </label>
-          <input
-            className="form__paragraph-input"
-            type="text"
-            name="recipeTitle"
-            id="recipeTitle"
-            defaultValue=""
-            ref={register({ required: true })}
-          />
-          {errors.recipeTitle && <span>Ce champ est obligatoire</span>}
-        </p>
-        <div>
+          <div className="container-error">
+            <input
+              className={
+                errors.recipeTitle ? "form__input field-error" : "form__input"
+              }
+              type="text"
+              name="recipeTitle"
+              id="recipeTitle"
+              defaultValue=""
+              ref={register({ required: true })}
+              aria-invalid={errors.ingredientName ? "true" : "false"}
+              aria-required="true"
+            />
+            {errors.recipeTitle && (
+              <p className="form__error-message" role="alert">
+                Ce champ est obligatoire
+              </p>
+            )}
+          </div>
+        </div>
+        <div className="form__checkbox-container">
           Catégories :
           <ul>
             {totalCategories.map((category, index) => {
@@ -155,6 +165,7 @@ function RecipesForm({
                     name={`categories[${index}]`}
                     aria-label={category}
                     ref={register({ validate: validateCategories })}
+                    aria-invalid={errors.categories ? "true" : "false"}
                     id={`category-${index}`}
                   />
                   <label htmlFor={`category-${index}`}>{category}</label>
@@ -163,35 +174,47 @@ function RecipesForm({
             })}
           </ul>
           {errors.categories && (
-            <span>Au moins une catégorie doit être sélectionnée</span>
+            <p className="form__error-message" role="alert">
+              Au moins une catégorie doit être sélectionnée
+            </p>
           )}
         </div>
-        <p className="form__paragraph">
+        <div className="form__paragraph">
           <label className="form__label" htmlFor="recipeTime">
             {" "}
             Temps total de la recette :{" "}
           </label>
-          <input
-            className="form__paragraph-input"
-            type="time"
-            step="60"
-            id="recipeTime"
-            name="recipeTime"
-            ref={register({
-              required: "Ce champ est obligatoire",
-              validate: validateTime,
-            })}
-          />
-          {errors.recipeTime && errors.recipeTime.message}
-        </p>
+          <div className="container-error">
+            <input
+              className={
+                errors.recipeTime ? "form__input field-error" : "form__input"
+              }
+              type="time"
+              id="recipeTime"
+              name="recipeTime"
+              ref={register({
+                required: "Ce champ est obligatoire",
+                validate: validateTime,
+              })}
+              aria-invalid={errors.recipeTime ? "true" : "false"}
+              aria-required="true"
+            />
+            {errors.recipeTime && (
+              <p className="form__error-message" role="alert">
+                {errors.recipeTime.message}
+              </p>
+            )}
+          </div>
+        </div>
         <fieldset className="form form-ingredient-recipe">
           <legend> Ingrédients : </legend>
-          <p className="form__paragraph">
+          <div className="form__paragraph">
             <label className="form__label" htmlFor="ingredient">
               {" "}
               Nom :{" "}
             </label>
             <InputSuggestions
+              className="form__input"
               elements={possibleIngredients}
               id="ingredient"
               getElementText={(ingredient) => ingredient.name}
@@ -199,8 +222,9 @@ function RecipesForm({
               value={ingredientName}
               name="ingredient"
               type="text"
+              aria-required="true"
             />
-          </p>
+          </div>
           <p className="form__paragraph">
             <label className="form__label" htmlFor="ingredientAmount">
               {" "}
@@ -215,6 +239,7 @@ function RecipesForm({
                 min="0"
                 onChange={(e) => setIngredientAmount(e.target.value)}
                 value={ingredientAmount}
+                aria-required="true"
               />
               <select
                 className="form__combined-select"
@@ -223,6 +248,7 @@ function RecipesForm({
                 onChange={(e) => setIngredientUnit(e.target.value)}
                 onBlur={(e) => setIngredientUnit(e.target.value)}
                 value={ingredientUnit}
+                aria-required="true"
               >
                 <option value="">...</option>
                 {totalUnits.map((unit) => {
@@ -235,12 +261,12 @@ function RecipesForm({
               </select>
             </span>
           </p>
-          <p className="form__paragraph">
+          <div className="form__paragraph">
             <button className="button" onClick={handleAddIngredient}>
               Ajouter
             </button>
-            {ingredientError && <span>{ingredientError}</span>}
-          </p>
+            {ingredientError && <p role="alert">{ingredientError}</p>}
+          </div>
           <ul>
             {ingredients.map((ingredient) => {
               return (
@@ -263,13 +289,23 @@ function RecipesForm({
             Corps de la recette :{" "}
           </label>
           <textarea
-            className="form__textarea"
+            className={
+              errors.recipeTime
+                ? "form__textarea field-error"
+                : "form__textarea"
+            }
             id="recipeDescription"
             name="recipeDescription"
             spellCheck="true"
             ref={register({ required: true })}
+            aria-invalid={errors.recipeDescription ? "true" : "false"}
+            aria-required="true"
           ></textarea>
-          {errors.recipeDescription && <span>Ce champ est obligatoire</span>}
+          {errors.recipeDescription && (
+            <p className="form__error-message" role="alert">
+              Ce champ est obligatoire
+            </p>
+          )}
         </div>
         <p className="form__paragraph">
           <input
