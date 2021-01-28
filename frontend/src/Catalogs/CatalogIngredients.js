@@ -100,7 +100,7 @@ function CatalogIngredients({
         <fieldset className="add-catalog-ingredient__form-container">
           <legend>Ajouter un ingredient dans le catalogue :</legend>
           <form className="form" onSubmit={handleSubmit(onSubmitWrapper)}>
-            <p className="form__paragraph">
+            <div className="form__paragraph">
               <label className="form__label" htmlFor="ingredientName">
                 {" "}
                 Nom de l'ingrédient à ajouter :{" "}
@@ -133,7 +133,7 @@ function CatalogIngredients({
                   </p>
                 )}
               </div>
-            </p>
+            </div>
             <p className="form__paragraph">
               <input
                 className="button form__submit"

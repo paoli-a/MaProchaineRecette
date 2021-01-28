@@ -113,7 +113,11 @@ function CatalogRecipes({
           totalCategories={totalCategories}
           totalUnits={totalUnits}
         />
-        {postError && <span>{postError}</span>}
+        {postError && (
+          <p role="alert" className="recipe__error-message">
+            {postError}
+          </p>
+        )}
       </section>
       <section className="display-catalog-recipe">
         <form className="searchbox">

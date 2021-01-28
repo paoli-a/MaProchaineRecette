@@ -128,7 +128,7 @@ function RecipesForm({
     <form className="form form-recipe" onSubmit={handleSubmit(onSubmitForm)}>
       <fieldset>
         <legend>Ajouter une recette dans mon catalogue :</legend>
-        <p className="form__paragraph">
+        <div className="form__paragraph">
           <label className="form__label" htmlFor="recipeTitle">
             {" "}
             Titre de la recette :{" "}
@@ -152,7 +152,7 @@ function RecipesForm({
               </p>
             )}
           </div>
-        </p>
+        </div>
         <div>
           Catégories :
           <ul>
@@ -178,7 +178,7 @@ function RecipesForm({
             </p>
           )}
         </div>
-        <p className="form__paragraph">
+        <div className="form__paragraph">
           <label className="form__label" htmlFor="recipeTime">
             {" "}
             Temps total de la recette :{" "}
@@ -186,7 +186,7 @@ function RecipesForm({
           <div className="container-error">
             <input
               className={
-                errors.recipeTime ? "form__input field-error" : "form__-input"
+                errors.recipeTime ? "form__input field-error" : "form__input"
               }
               type="time"
               id="recipeTime"
@@ -204,10 +204,10 @@ function RecipesForm({
               </p>
             )}
           </div>
-        </p>
+        </div>
         <fieldset className="form form-ingredient-recipe">
           <legend> Ingrédients : </legend>
-          <p className="form__paragraph">
+          <div className="form__paragraph">
             <label className="form__label" htmlFor="ingredient">
               {" "}
               Nom :{" "}
@@ -223,7 +223,7 @@ function RecipesForm({
               type="text"
               aria-required="true"
             />
-          </p>
+          </div>
           <p className="form__paragraph">
             <label className="form__label" htmlFor="ingredientAmount">
               {" "}
@@ -260,12 +260,12 @@ function RecipesForm({
               </select>
             </span>
           </p>
-          <p className="form__paragraph">
+          <div className="form__paragraph">
             <button className="button" onClick={handleAddIngredient}>
               Ajouter
             </button>
             {ingredientError && <p role="alert">{ingredientError}</p>}
-          </p>
+          </div>
           <ul>
             {ingredients.map((ingredient) => {
               return (

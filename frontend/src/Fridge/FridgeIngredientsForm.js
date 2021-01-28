@@ -75,7 +75,7 @@ function FridgeIngredientsForm({ onSubmit, possibleIngredients, totalUnits }) {
     <form className="form" onSubmit={handleSubmit(onSubmitWrapper)}>
       <fieldset>
         <legend>Ajouter un ingredient frigo :</legend>
-        <p className="form__paragraph">
+        <div className="form__paragraph">
           <label className="form__label" htmlFor="ingredientName">
             Nom de l'ingrédient :{" "}
           </label>
@@ -98,8 +98,8 @@ function FridgeIngredientsForm({ onSubmit, possibleIngredients, totalUnits }) {
             />
             {errors.ingredientName && errors.ingredientName.message}
           </div>
-        </p>
-        <p className="form__paragraph">
+        </div>
+        <div className="form__paragraph">
           <label className="form__label" htmlFor="ingredientAmount">
             Quantité :{" "}
           </label>
@@ -158,8 +158,8 @@ function FridgeIngredientsForm({ onSubmit, possibleIngredients, totalUnits }) {
               )}
             </div>
           </span>
-        </p>
-        <p className="form__paragraph">
+        </div>
+        <div className="form__paragraph">
           <label className="form__label" htmlFor="expirationDate">
             Date de péremption :{" "}
           </label>
@@ -186,7 +186,7 @@ function FridgeIngredientsForm({ onSubmit, possibleIngredients, totalUnits }) {
               </p>
             )}
           </div>
-        </p>
+        </div>
         <p className="form__paragraph">
           <input
             className="button form__submit"
