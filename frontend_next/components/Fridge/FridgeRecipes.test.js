@@ -80,7 +80,7 @@ describe("Renders correctly each recipe", () => {
 });
 
 describe("the category filtration functionality works properly", () => {
-  it("renders only the categories present in the possible recipes", () => {
+  it("renders only the categories present in the possible recipes", async () => {
     const { getByText, rerender } = render(<FridgeRecipes recipes={recipes} />);
     const plat = getByText("Plat");
     const entrée = getByText("Entrée");
@@ -89,7 +89,9 @@ describe("the category filtration functionality works properly", () => {
     expect(entrée).toBeInTheDocument();
     expect(dessert).toBeInTheDocument();
     recipes.splice(0, 1);
-    rerender(<FridgeRecipes recipes={recipes} />);
+    await act(async () => {
+      rerender(<FridgeRecipes recipes={recipes} />);
+    });
     expect(plat).not.toBeInTheDocument();
     expect(entrée).toBeInTheDocument();
     expect(dessert).toBeInTheDocument();

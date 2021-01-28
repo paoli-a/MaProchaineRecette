@@ -74,6 +74,7 @@ function FridgeIngredients({
       ingredientsToClean.splice(index, 1);
     }
   }
+
   const ingredientElement = ingredients.map((ingredient) => {
     const formatedDate = ingredient.expirationDate.toLocaleDateString();
     return (
