@@ -71,7 +71,7 @@ MyApp.getInitialProps = async (context) => {
     let initialFetchError = "";
     const get = async (path) => {
       const target =
-        process.env.REACT_APP_PROXY_HOST || "http://localhost:8000";
+        process.env.NEXT_PUBLIC_PROXY_HOST || "http://localhost:8000";
       let result = { data: [] };
       try {
         result = await axios.get(`${target}${path}`);

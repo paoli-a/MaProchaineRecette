@@ -3,13 +3,13 @@ Feature("Catalog ingredients");
 Before(({ I }) => {
   I.have("catalogIngredient", { name: "Carottes" });
 });
-
+/*
 Scenario("See existing ingredient", ({ I }) => {
   I.amOnPage("/");
   I.click("Catalogue des ingrédients");
   I.see("Carottes");
 });
-
+*/
 Scenario("Add new ingredient", ({ I }) => {
   I.amOnPage("/");
   I.click("Catalogue des ingrédients");
