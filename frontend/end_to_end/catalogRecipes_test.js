@@ -110,7 +110,6 @@ there`,
     I.click("Ajouter");
     I.fillField("Corps de la recette :", "Mélanger les ingrédients.");
     I.click("Confirmer");
-    I.click("Catalogue des ingrédients");
     I.click("Ma prochaine recette");
     I.click("Catalogue des recettes");
     within(".display-catalog-recipe", () => {

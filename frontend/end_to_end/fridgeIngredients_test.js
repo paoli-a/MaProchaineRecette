@@ -54,7 +54,6 @@ still there`,
     I.fillField("Date de péremption :", "10102030");
     I.click("Confirmer");
     I.click("Catalogue des recettes");
-    I.click("Catalogue des ingrédients");
     I.click("Ma prochaine recette");
     within(".fridge-ingredients__list", () => {
       I.see("échalotte");
