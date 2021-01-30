@@ -2,7 +2,7 @@
 
 [english version](README_en.md)
 
-Le frontend utilise React et est basé sur Create React App.
+Le frontend utilise React et Next.js.
 
 ## Tests de qualité de code
 

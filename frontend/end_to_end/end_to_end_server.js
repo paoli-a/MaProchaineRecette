@@ -11,6 +11,12 @@ module.exports = {
       `${djangoEnv} pipenv run python manage.py migrate --run-syncdb`,
       true
     );
+    execute(
+      "NEXT_PUBLIC_PROXY_HOST=http://localhost:3501 node_modules/next/dist/bin/next build",
+      true
+    );
+    execute("node_modules/.bin/pm2 delete pm2_backend.json", false);
+    execute("node_modules/.bin/pm2 delete pm2_frontend.json", false);
     execute("node_modules/.bin/pm2 start pm2_backend.json", false);
     execute("node_modules/.bin/pm2 start pm2_frontend.json", true);
   },

@@ -51,16 +51,23 @@ Then, in another terminal, install the frontend:
 
 ```bash
 cd ma-prochaine-recette/frontend/
-yarn install
+yarn
 ```
 
-Once installed, you can run it with the following command:
+Once installed, you can run the development server with the following command:
 
 ```bash
-yarn start
+yarn dev
 ```
 
 The application should then start and open the browser. It will be available from your browser at the address `http://127.0.0.1:3000/`.
+
+The production server can be run with the following commands:
+
+```bash
+yarn build
+yarn start
+```
 
 ## Features overview
 

@@ -51,16 +51,23 @@ Il faut ensuite, dans un autre terminal, installer le frontend :
 
 ```bash
 cd ma-prochaine-recette/frontend/
-yarn install
+yarn
 ```
 
-Une fois installé, vous pouvez le lancer avec la commande suivante :
+Une fois installé, vous pouvez lancer le serveur de développement avec la commande suivante :
 
 ```bash
-yarn start
+yarn dev
 ```
 
 L'application devrait alors se lancer toute seule. Elle sera disponible depuis votre navigateur à l'adresse `http://127.0.0.1:3000/`.
+
+Le serveur de production peut être lancé avec les commandes suivantes :
+
+```bash
+yarn build
+yarn start
+```
 
 ## Fonctionnalités
 
