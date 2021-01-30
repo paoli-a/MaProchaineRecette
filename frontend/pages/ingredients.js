@@ -1,8 +1,14 @@
 import Head from "next/head";
+import PropTypes from "prop-types";
 import { Menu } from "../components/MyNextRecipe";
 import { CatalogIngredients } from "../components/Catalogs";
 
-export default function Ingredients({
+/**
+ * Cette page affiche le catalogue d'ingrédients possibles.
+ *
+ * @component
+ */
+function Ingredients({
   catalogIngredients,
   updateCatalogIngredients,
   fetchError,
@@ -23,3 +29,15 @@ export default function Ingredients({
     </>
   );
 }
+
+Ingredients.propTypes = {
+  catalogIngredients: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string.isRequired,
+    })
+  ).isRequired,
+  updateCatalogIngredients: PropTypes.func.isRequired,
+  fetchError: PropTypes.string,
+};
+
+export default Ingredients;
