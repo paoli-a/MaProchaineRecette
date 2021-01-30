@@ -30,6 +30,25 @@ Scenario("Remove ingredient", ({ I }) => {
 });
 
 Scenario(
+  `Add new ingredient, and navigate between tabs : the ingredient is
+still there`,
+  ({ I }) => {
+    I.amOnPage("/");
+    I.click("Catalogue des ingrédients");
+    I.fillField("Nom de l'ingrédient à ajouter :", "Navets");
+    I.click("Envoyer");
+    I.click("Ma prochaine recette");
+    I.click("Catalogue des recettes");
+    I.click("Catalogue des ingrédients");
+    within(".catalog-ingredients", () => {
+      I.see("Carottes");
+      I.see("Navets");
+    });
+    I.sendDeleteRequest("catalogs/ingredients/Navets/");
+  }
+);
+
+Scenario(
   `Take into account newly entered ingredient in the catalog by giving
 suggestions when an ingredient name is being entered in FridgeIngredients`,
   ({ I }) => {
