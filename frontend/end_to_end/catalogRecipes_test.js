@@ -90,3 +90,33 @@ Scenario("Remove recipe", ({ I }) => {
   I.click("X");
   I.dontSee("Marinade");
 });
+
+Scenario(
+  `Add new recipe, and navigate between tabs : the recipe is still
+there`,
+  ({ I }) => {
+    I.amOnPage("/");
+    I.click("Catalogue des recettes");
+    I.fillField("Titre de la recette :", "Salade légère");
+    I.checkOption("Entrée");
+    I.fillField("Temps total de la recette :", "010101");
+    I.fillField("Nom :", "échalotte");
+    I.fillField("Quantité nécessaire :", "1");
+    I.selectOption("Unité", "pièce(s)");
+    I.click("Ajouter");
+    I.fillField("Nom :", "herbes fraiches");
+    I.fillField("Quantité nécessaire :", "1");
+    I.selectOption("Unité", "pièce(s)");
+    I.click("Ajouter");
+    I.fillField("Corps de la recette :", "Mélanger les ingrédients.");
+    I.click("Confirmer");
+    I.click("Ma prochaine recette");
+    I.click("Catalogue des recettes");
+    within(".display-catalog-recipe", () => {
+      I.see("Marinade");
+      I.see("Salade légère");
+    });
+    I.click("X");
+    I.click("X");
+  }
+);

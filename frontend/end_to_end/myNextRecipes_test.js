@@ -125,3 +125,25 @@ Scenario(
     I.see("Salade");
   }
 );
+
+Scenario("Refetch feasible recipes when changing existing recipes", ({ I }) => {
+  I.amOnPage("/");
+  I.see("Marinade");
+  I.click("Catalogue des recettes");
+  I.click("X");
+  I.click("Ma prochaine recette");
+  I.dontSee("Marinade");
+  I.dontSee("Salade");
+});
+
+Scenario(
+  "Refetch feasible recipes when changing existing fridge ingredients",
+  ({ I }) => {
+    I.amOnPage("/");
+    I.see("Marinade");
+    I.click("Supprimer");
+    I.click("Ma prochaine recette");
+    I.dontSee("Marinade");
+    I.dontSee("Salade");
+  }
+);

@@ -1,3 +1,4 @@
+/* eslint-disable testing-library/no-await-sync-query */
 import React from "react";
 import {
   render,

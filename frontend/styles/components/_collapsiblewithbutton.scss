@@ -7,10 +7,10 @@
     padding: 0px 25px 3px 10px;
     background-size: 14px 14px;
     &.open {
-      background-image: url(../../images/fleche_dropdown_haut.png);
+      background-image: url(../../public/images/fleche_dropdown_haut.png);
     }
     &.closed {
-      background-image: url(../../images/fleche_dropdown_bas.png);
+      background-image: url(../../public/images/fleche_dropdown_bas.png);
     }
   }
   &__list-container {

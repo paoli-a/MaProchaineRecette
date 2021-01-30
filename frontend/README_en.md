@@ -2,7 +2,7 @@
 
 [version en français](README.md)
 
-The frontend uses React and was built with Create React App.
+The frontend uses React and Next.js.
 
 ## Code quality checks
 
