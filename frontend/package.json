@@ -52,7 +52,7 @@
     "mutationobserver-shim": "^0.3.7",
     "parcel-bundler": "^1.12.4",
     "playwright": "^1.8.0",
-    "pm2": "^4.5.1",
+    "pm2": "^4.5.4",
     "prettier": "^2.2.1",
     "rosie": "^2.0.1"
   }
