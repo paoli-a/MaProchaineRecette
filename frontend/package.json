@@ -19,7 +19,7 @@
     "react-dom": "17.0.1",
     "react-highlight-words": "^0.17.0",
     "react-hook-form": "^6.14.2",
-    "sass": "^1.32.5",
+    "sass": "^1.32.6",
     "stopword": "^1.0.6"
   },
   "devDependencies": {
