@@ -1,20 +1,12 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
 import InputSuggestions from "../InputSuggestions/InputSuggestions";
 import PropTypes from "prop-types";
 
 function FridgeIngredientsForm({ onSubmit, possibleIngredients, totalUnits }) {
-  const {
-    register,
-    handleSubmit,
-    errors,
-    reset,
-    getValues,
-    watch,
-    setValue,
-    setError,
-  } = useForm({ defaultValues: { ingredientName: "" } });
-  const { ingredientName } = watch();
+  const { register, handleSubmit, errors, reset, getValues } = useForm({
+    defaultValues: { ingredientName: "" },
+  });
 
   const validateIngredientName = () => {
     const name = getValues().ingredientName;
@@ -27,30 +19,17 @@ function FridgeIngredientsForm({ onSubmit, possibleIngredients, totalUnits }) {
     }
     if (!authorized) {
       return (
-        <p className="form__error-message" role="alert">
+        <>
           Cet ingrédient n'existe pas dans le catalogue d'ingrédients. Vous
-          pouvez l'y ajouter <a href="/#">ici</a>.
-        </p>
+          pouvez l'y ajouter <a href="/ingredients">ici</a>.
+        </>
       );
     } else {
       return undefined;
     }
   };
 
-  useEffect(() => {
-    register({ name: "ingredientName" });
-  }, [register]);
-
-  const handleIngredientName = (value) => {
-    setValue("ingredientName", value);
-  };
-
   const onSubmitWrapper = (data) => {
-    const ingredientError = validateIngredientName();
-    if (ingredientError) {
-      setError("ingredientName", "notMatch", ingredientError);
-      return;
-    }
     onSubmit(data);
     reset();
   };
@@ -84,9 +63,7 @@ function FridgeIngredientsForm({ onSubmit, possibleIngredients, totalUnits }) {
               elements={possibleIngredients}
               id="ingredientName"
               getElementText={(ingredient) => ingredient.name}
-              onChangeValue={handleIngredientName}
-              value={ingredientName}
-              name="ingredient"
+              name="ingredientName"
               type="text"
               className={
                 errors.ingredientName
@@ -95,8 +72,16 @@ function FridgeIngredientsForm({ onSubmit, possibleIngredients, totalUnits }) {
               }
               aria-invalid={errors.ingredientName ? "true" : "false"}
               aria-required="true"
+              ref={register({
+                required: "Ce champ est obligatoire",
+                validate: validateIngredientName,
+              })}
             />
-            {errors.ingredientName && errors.ingredientName.message}
+            {errors.ingredientName && (
+              <p className="form__error-message" role="alert">
+                {errors.ingredientName.message}
+              </p>
+            )}
           </div>
         </div>
         <div className="form__paragraph">

@@ -304,6 +304,8 @@ was not successful on backend side`, async () => {
     );
     const ingredient = queryByText(/100kg/);
     expect(ingredient).not.toBeInTheDocument();
+    const errorMessage = getByText("Ce champ est obligatoire");
+    expect(errorMessage).toBeInTheDocument();
   });
 
   it(`does not add the ingredient if amount is negative or null`, async () => {
@@ -364,6 +366,10 @@ was not successful on backend side`, async () => {
     ]);
     const poireaux = queryByText(/Poireaux : /);
     expect(poireaux).not.toBeInTheDocument();
+    const errorMessage = getByText(
+      /Cet ingrédient n'existe pas dans le catalogue d'ingrédients. Vous pouvez l'y ajouter/
+    );
+    expect(errorMessage).toBeInTheDocument();
   });
 
   it(`adds the ingredient returned by the backend and removes the ingredient that

@@ -13,10 +13,10 @@
   },
   "dependencies": {
     "axios": "^0.21.1",
-    "next": "10.0.6",
+    "next": "^10.0.6",
     "prop-types": "^15.7.2",
-    "react": "17.0.1",
-    "react-dom": "17.0.1",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
     "react-highlight-words": "^0.17.0",
     "react-hook-form": "^6.15.1",
     "sass": "^1.32.6",

@@ -7,18 +7,26 @@ import PropTypes from "prop-types";
  *
  * @component
  */
-function InputSuggestions({
-  elements,
-  id,
-  getElementText,
-  onChangeValue,
-  value,
-  ...attributes
-}) {
+
+const InputSuggestions = React.forwardRef(function InputSuggestions(
+  props,
+  ref
+) {
+  const {
+    elements,
+    id,
+    getElementText,
+    onChangeValue,
+    value,
+    ...attributes
+  } = props;
+
   const [elementsToPropose, setElementsToPropose] = useState([]);
 
   const handleElement = (event) => {
-    onChangeValue(event.target.value);
+    if (onChangeValue) {
+      onChangeValue(event.target.value);
+    }
     const inputTextLower = event.target.value.toLowerCase();
     const elementsFiltered = elements.filter((element) => {
       const elementAutorise = getElementText(element).toLowerCase();
@@ -45,6 +53,7 @@ function InputSuggestions({
         value={value}
         onChange={handleElement}
         autoComplete="off"
+        ref={ref}
       />
       <datalist id={id + "list"}>
         {elementsToPropose.map((element) => {
@@ -59,7 +68,7 @@ function InputSuggestions({
       </datalist>
     </React.Fragment>
   );
-}
+});
 
 InputSuggestions.propTypes = {
   /**
@@ -79,8 +88,8 @@ InputSuggestions.propTypes = {
    * Donne la valeur tapée par l'utilisateur au composant parent pour
    * qu'il puisse controler la value de l'input.
    */
-  onChangeValue: PropTypes.func.isRequired,
-  value: PropTypes.string.isRequired,
+  onChangeValue: PropTypes.func,
+  value: PropTypes.string,
 };
 
 export default InputSuggestions;
