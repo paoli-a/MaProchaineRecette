@@ -1,18 +1,12 @@
-import React, { useEffect, useRef } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
 import InputSuggestions from "../InputSuggestions/InputSuggestions";
 import PropTypes from "prop-types";
 
 function FridgeIngredientsForm({ onSubmit, possibleIngredients, totalUnits }) {
-  const {
-    register,
-    handleSubmit,
-    errors,
-    reset,
-    getValues,
-    watch,
-    setValue,
-  } = useForm({ defaultValues: { ingredientName: "" } });
+  const { register, handleSubmit, errors, reset, getValues } = useForm({
+    defaultValues: { ingredientName: "" },
+  });
 
   const validateIngredientName = () => {
     const name = getValues().ingredientName;
