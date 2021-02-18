@@ -63,7 +63,7 @@ suggestions when an ingredient name is being entered in FridgeIngredients`,
     I.click("X");
     I.click("X");
   }
-);
+).retry(2);
 
 Scenario(
   `Take into account newly entered ingredient in the catalog by giving
@@ -80,4 +80,4 @@ suggestions when an ingredient name is being entered in CatalogRecipes`,
     I.click("X");
     I.click("X");
   }
-);
+).retry(2);
