@@ -23,7 +23,7 @@
     "stopword": "^1.0.6"
   },
   "devDependencies": {
-    "@babel/core": "^7.13.1",
+    "@babel/core": "^7.13.8",
     "@codeceptjs/configure": "^0.6.2",
     "@testing-library/dom": "^7.29.6",
     "@testing-library/jest-dom": "^5.11.9",
