@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "8b3ef63693c3ef14d62a187b8fd7ed29da1984f2b7c5d56b4605748b3cc5e1a4"
+            "sha256": "b58d6a1c1de6fa86fe1ef46b1e93c8586e894b632dfcb0c926f5d314a62ba5ed"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -333,10 +333,10 @@
         },
         "identify": {
             "hashes": [
-                "sha256:7b435803dc79a0f0ce887887a62ad360f3a9e8162ac0db9ee649d5d24085bf30",
-                "sha256:ec4698722b9a8a6f2aa5f9ff9cc687956494f0ba734941659ad7f018cf457e44"
+                "sha256:2179e7359471ab55729f201b3fdf7dc2778e221f868410fedcb0987b791ba552",
+                "sha256:2a5fdf2f5319cc357eda2550bea713a404392495961022cf2462624ce62f0f46"
             ],
-            "version": "==1.6.1"
+            "version": "==2.1.0"
         },
         "iniconfig": {
             "hashes": [
@@ -528,10 +528,10 @@
         },
         "pylint-pytest": {
             "hashes": [
-                "sha256:87045fda0987bd3624049b70c42638dfa52944cd77d03c372a3ea9612e5757bc"
+                "sha256:c3bca300130fbef9adf4717b33194ba7d3c26a12594bc63f137117c5bfb46ec4"
             ],
             "index": "pypi",
-            "version": "==0.3.0"
+            "version": "==1.0.1"
         },
         "pyparsing": {
             "hashes": [
