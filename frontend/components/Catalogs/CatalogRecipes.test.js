@@ -9,184 +9,48 @@ import {
 } from "@testing-library/react";
 import CatalogRecipes from "./CatalogRecipes";
 import axios from "axios";
+import {
+  axiosGetGlobalMock,
+  recipeCrumble,
+  catalogRecipes,
+} from "../testUtils";
+import { SWRConfig, cache } from "swr";
 
 require("mutationobserver-shim");
-
 jest.mock("axios");
-let recipes;
-let catalogIngredients;
-let catalogCategories;
-let units;
 
 beforeEach(() => {
-  catalogIngredients = [
-    {
-      name: "Fraises",
-    },
-    {
-      name: "Poires",
-    },
-    {
-      name: "Framboises",
-    },
-    {
-      name: "Beurre",
-    },
-  ];
-
-  recipes = [
-    {
-      id: 1,
-      categories: ["Plat"],
-      title: "Salade de pommes de terre radis",
-      ingredients: [
-        {
-          ingredient: "pommes de terre",
-          amount: "1",
-          unit: "kg",
-        },
-        {
-          ingredient: "oeufs",
-          amount: "3",
-          unit: "pièce(s)",
-        },
-        {
-          ingredient: "vinaigre non balsamique",
-          amount: "1",
-          unit: "cas",
-        },
-        {
-          ingredient: "radis",
-          amount: "2",
-          unit: "bottes",
-        },
-        {
-          ingredient: "oignons bottes",
-          amount: "2",
-          unit: "pièce(s)",
-        },
-        {
-          ingredient: "yaourt grec",
-          amount: "1",
-          unit: "pièce(s)",
-        },
-        {
-          ingredient: "mayonnaise",
-          amount: "1",
-          unit: "cas",
-        },
-        {
-          ingredient: "moutarde",
-          amount: "0.5",
-          unit: "cas",
-        },
-        {
-          ingredient: "ail",
-          amount: "1",
-          unit: "gousse",
-        },
-      ],
-      duration: "00:35:00",
-      description:
-        "Epluchez et coupez les patates en rondelles et les cuire à l'eau. Cuire les oeufs durs. Coupez les radis en rondelles. Emincez les échalottes et les oignons. Coupez les oeufs durs. Mettre le tout dans un saladier et rajoutez le vinaigre. Mélangez. Préparez la sauce :  mélangez le yaourt, la mayonnaise, la moutarde, la gousse d'ail rapée. Assaisoner.",
-    },
-
-    {
-      id: 2,
-      categories: ["Entrée"],
-      title: "Marinade de saumon fumé",
-      ingredients: [
-        {
-          ingredient: "saumon fumé",
-          amount: "200",
-          unit: "g",
-        },
-        {
-          ingredient: "citon vert",
-          amount: "0.5",
-          unit: "pièce(s)",
-        },
-        {
-          ingredient: "vinaigre balsamique",
-          amount: "2",
-          unit: "cas",
-        },
-        {
-          ingredient: "huile d'olive",
-          amount: "2",
-          unit: "cas",
-        },
-        {
-          ingredient: "échalotte",
-          amount: "1",
-          unit: "pièce(s)",
-        },
-        {
-          ingredient: "herbes fraiches",
-          amount: "1",
-          unit: "pièce(s)",
-        },
-      ],
-      duration: "11:00:00",
-      description:
-        "Emincez le saumon, l'échalotte et le persil. Ajoutez le vinaigre, l'huile, le citron et un peu de poivre. Mélangez et laissez mariner toute la nuit.",
-    },
-  ];
-
-  catalogCategories = ["Entrée", "Plat", "Dessert", "Gouter"];
-  units = ["kg", "g", "cl", "pièce(s)"];
+  cache.clear();
+  axiosGetGlobalMock();
 });
 
 afterEach(() => {
   jest.clearAllMocks();
 });
 
-const handleNewRecipe = (recipesUpdated) => {
-  recipes = recipesUpdated;
-};
-
-const rerenderCatalog = (rerender) => {
-  rerender(
-    <CatalogRecipes
-      totalRecipes={recipes}
-      possibleIngredients={catalogIngredients}
-      totalCategories={catalogCategories}
-      totalUnits={units}
-      feasibleRecipesUpdate={() => undefined}
-      updateRecipes={handleNewRecipe}
-    />
-  );
+const renderCatalog = async () => {
+  let app;
+  await act(async () => {
+    app = render(
+      <SWRConfig value={{ dedupingInterval: 0 }}>
+        <CatalogRecipes />
+      </SWRConfig>
+    );
+  });
+  return app;
 };
 
 describe("initial display is correct", () => {
-  it("displays provided categories", () => {
-    const { getByText } = render(
-      <CatalogRecipes
-        totalRecipes={recipes}
-        possibleIngredients={catalogIngredients}
-        totalCategories={catalogCategories}
-        totalUnits={units}
-        feasibleRecipesUpdate={() => undefined}
-        updateRecipes={handleNewRecipe}
-      />
-    );
+  it("displays provided categories", async () => {
+    const { getByText } = await renderCatalog();
     const entree = getByText(/Entrée/);
     const gouter = getByText(/Gouter/);
     expect(entree).toBeInTheDocument();
     expect(gouter).toBeInTheDocument();
   });
 
-  it("displays provided units", () => {
-    const { getByLabelText } = render(
-      <CatalogRecipes
-        totalRecipes={recipes}
-        possibleIngredients={catalogIngredients}
-        totalCategories={catalogCategories}
-        totalUnits={units}
-        feasibleRecipesUpdate={() => undefined}
-        updateRecipes={handleNewRecipe}
-      />
-    );
+  it("displays provided units", async () => {
+    const { getByLabelText } = await renderCatalog();
     const unitSelect = getByLabelText("Unité");
     const kg = within(unitSelect).getByText("kg");
     const pieces = within(unitSelect).getByText("pièce(s)");
@@ -194,17 +58,8 @@ describe("initial display is correct", () => {
     expect(pieces).toBeInTheDocument();
   });
 
-  it("displays provided recipes", () => {
-    const { getByText } = render(
-      <CatalogRecipes
-        totalRecipes={recipes}
-        possibleIngredients={catalogIngredients}
-        totalCategories={catalogCategories}
-        totalUnits={units}
-        feasibleRecipesUpdate={() => undefined}
-        updateRecipes={handleNewRecipe}
-      />
-    );
+  it("displays provided recipes", async () => {
+    const { getByText } = await renderCatalog();
     const salade = getByText(/Salade de pommes de terre radis/);
     const marinade = getByText(/Marinade de saumon fumé/);
     expect(salade).toBeInTheDocument();
@@ -214,21 +69,14 @@ describe("initial display is correct", () => {
 
 describe("the adding recipe functionality works properly", () => {
   it("adds the correct recipe when filling the form and clicking on submit", async () => {
-    const { getByLabelText, getByText, rerender } = render(
-      <CatalogRecipes
-        totalRecipes={recipes}
-        possibleIngredients={catalogIngredients}
-        totalCategories={catalogCategories}
-        totalUnits={units}
-        feasibleRecipesUpdate={() => undefined}
-        updateRecipes={handleNewRecipe}
-      />
-    );
+    const { getByLabelText, getByText, getByTestId } = await renderCatalog();
+    axios.get.mockResolvedValue({
+      data: [...catalogRecipes, recipeCrumble],
+    });
     await addRecipe(getByLabelText, getByText);
-    rerenderCatalog(rerender);
     const recipe = getByText("Crumble aux poires", { exact: false });
-    const poires = getByText(/Poires :/);
-    const beurre = getByText(/Beurre :/);
+    const poires = getByTestId("strong-tag", { text: "poires :" });
+    const beurre = getByText(/beurre :/);
     expect(recipe).toBeInTheDocument();
     expect(poires).toBeInTheDocument();
     expect(beurre).toBeInTheDocument();
@@ -251,48 +99,21 @@ describe("the adding recipe functionality works properly", () => {
   });
 
   async function checkMissingInput(inputName) {
-    const { getByLabelText, getByText, queryByText } = render(
-      <CatalogRecipes
-        totalRecipes={recipes}
-        possibleIngredients={catalogIngredients}
-        totalCategories={catalogCategories}
-        totalUnits={units}
-        feasibleRecipesUpdate={() => undefined}
-        updateRecipes={handleNewRecipe}
-      />
-    );
+    const { getByLabelText, getByText, queryByText } = await renderCatalog();
     await addRecipe(getByLabelText, getByText, [inputName]);
     const recipe = queryByText("Crumble aux poires", { exact: false });
     expect(recipe).not.toBeInTheDocument();
   }
 
   it(`does not add the recipe if no title was provided`, async () => {
-    const { getByLabelText, getByText, queryByText } = render(
-      <CatalogRecipes
-        totalRecipes={recipes}
-        possibleIngredients={catalogIngredients}
-        totalCategories={catalogCategories}
-        totalUnits={units}
-        feasibleRecipesUpdate={() => undefined}
-        updateRecipes={handleNewRecipe}
-      />
-    );
+    const { getByLabelText, getByText, queryByText } = await renderCatalog();
     await addRecipe(getByLabelText, getByText, ["title"]);
     const recipe = queryByText("Épluchez et épépinez", { exact: false });
     expect(recipe).not.toBeInTheDocument();
   });
 
   it(`does not add the recipe if the duration for the recipe is negative or null`, async () => {
-    const { getByLabelText, getByText, queryByText } = render(
-      <CatalogRecipes
-        totalRecipes={recipes}
-        possibleIngredients={catalogIngredients}
-        totalCategories={catalogCategories}
-        totalUnits={units}
-        feasibleRecipesUpdate={() => undefined}
-        updateRecipes={handleNewRecipe}
-      />
-    );
+    const { getByLabelText, getByText, queryByText } = await renderCatalog();
     await addRecipe(getByLabelText, getByText, [], { duration: "00:00" });
     let recipe = queryByText("Crumble aux poires", { exact: false });
     expect(recipe).not.toBeInTheDocument();
@@ -304,34 +125,16 @@ describe("the adding recipe functionality works properly", () => {
 
   describe("the adding of ingredient on the recipe form works properly", () => {
     it(`does not add the ingredient if an ingredient with the same name
-      was already provided`, () => {
-      const { getByLabelText, getByText, getAllByText } = render(
-        <CatalogRecipes
-          totalRecipes={recipes}
-          possibleIngredients={catalogIngredients}
-          totalCategories={catalogCategories}
-          totalUnits={units}
-          feasibleRecipesUpdate={() => undefined}
-          updateRecipes={handleNewRecipe}
-        />
-      );
+      was already provided`, async () => {
+      const { getByLabelText, getByText, getAllByText } = await renderCatalog();
       addIngredient(getByLabelText, getByText, ["Fraises", "5", "g"]);
       addIngredient(getByLabelText, getByText, ["Fraises", "5", "g"]);
       const ingredient = getAllByText(/Fraises :/);
       expect(ingredient).toHaveLength(1);
     });
 
-    it(`does not add the ingredient if amount is negative or null`, () => {
-      const { getByLabelText, getByText, queryByText } = render(
-        <CatalogRecipes
-          totalRecipes={recipes}
-          possibleIngredients={catalogIngredients}
-          totalCategories={catalogCategories}
-          totalUnits={units}
-          feasibleRecipesUpdate={() => undefined}
-          updateRecipes={handleNewRecipe}
-        />
-      );
+    it(`does not add the ingredient if amount is negative or null`, async () => {
+      const { getByLabelText, getByText, queryByText } = await renderCatalog();
       addIngredient(getByLabelText, getByText, ["Fraises", "-1", "g"]);
       let fraises = queryByText(/Fraises :/);
       expect(fraises).not.toBeInTheDocument();
@@ -340,33 +143,15 @@ describe("the adding recipe functionality works properly", () => {
       expect(fraises).not.toBeInTheDocument();
     });
 
-    it(`does not add the ingredient if the ingredient is not in catalogIngredients`, () => {
-      const { getByLabelText, getByText, queryByText } = render(
-        <CatalogRecipes
-          totalRecipes={recipes}
-          possibleIngredients={catalogIngredients}
-          totalCategories={catalogCategories}
-          totalUnits={units}
-          feasibleRecipesUpdate={() => undefined}
-          updateRecipes={handleNewRecipe}
-        />
-      );
+    it(`does not add the ingredient if the ingredient is not in catalogIngredients`, async () => {
+      const { getByLabelText, getByText, queryByText } = await renderCatalog();
       addIngredient(getByLabelText, getByText, ["Poireaux", "50", "g"]);
       const poireaux = queryByText(/Poireaux : /);
       expect(poireaux).not.toBeInTheDocument();
     });
 
-    it(`provides the right proposals when a letter is entered in the input of the ingredient name`, () => {
-      const { getByLabelText, getAllByTestId } = render(
-        <CatalogRecipes
-          totalRecipes={recipes}
-          possibleIngredients={catalogIngredients}
-          totalCategories={catalogCategories}
-          totalUnits={units}
-          feasibleRecipesUpdate={() => undefined}
-          updateRecipes={handleNewRecipe}
-        />
-      );
+    it(`provides the right proposals when a letter is entered in the input of the ingredient name`, async () => {
+      const { getByLabelText, getAllByTestId } = await renderCatalog();
       const inputIngredientName = getByLabelText("Nom :");
       fireEvent.change(inputIngredientName, { target: { value: "f" } });
       const options = getAllByTestId("suggestions");
@@ -379,19 +164,9 @@ describe("the adding recipe functionality works properly", () => {
 
     it(`removes ingredient on the form when clicking on the
       remove button`, async () => {
-      const { getByLabelText, getByText, rerender } = render(
-        <CatalogRecipes
-          totalRecipes={recipes}
-          possibleIngredients={catalogIngredients}
-          totalCategories={catalogCategories}
-          totalUnits={units}
-          feasibleRecipesUpdate={() => undefined}
-          updateRecipes={handleNewRecipe}
-        />
-      );
+      const { getByLabelText, getByText } = await renderCatalog();
       addIngredient(getByLabelText, getByText, ["Poires", "1", "kg"]);
       addIngredient(getByLabelText, getByText, ["Beurre", "30", "g"]);
-      rerenderCatalog(rerender);
       const poires = getByText(/Poires : /);
       const beurre = getByText(/Beurre : /);
       const removeButton = within(poires).getByText("X");
@@ -402,17 +177,8 @@ describe("the adding recipe functionality works properly", () => {
       expect(beurre).toBeInTheDocument();
     });
 
-    it(`adds ingredients on the form when they are validated`, () => {
-      const { getByLabelText, getByText } = render(
-        <CatalogRecipes
-          totalRecipes={recipes}
-          possibleIngredients={catalogIngredients}
-          totalCategories={catalogCategories}
-          totalUnits={units}
-          feasibleRecipesUpdate={() => undefined}
-          updateRecipes={handleNewRecipe}
-        />
-      );
+    it(`adds ingredients on the form when they are validated`, async () => {
+      const { getByLabelText, getByText } = await renderCatalog();
       addIngredient(getByLabelText, getByText, ["Poires", "1", "kg"]);
       addIngredient(getByLabelText, getByText, ["Beurre", "30", "g"]);
       const poires = getByText(/Poires :/);
@@ -489,16 +255,7 @@ describe("the adding recipe functionality works properly", () => {
 
   it(`displays an error message and does not add the recipe if the recipe adding
 was not successful on backend side`, async () => {
-    const { getByLabelText, getByText, queryByText } = render(
-      <CatalogRecipes
-        totalRecipes={recipes}
-        possibleIngredients={catalogIngredients}
-        totalCategories={catalogCategories}
-        totalUnits={units}
-        feasibleRecipesUpdate={() => undefined}
-        updateRecipes={handleNewRecipe}
-      />
-    );
+    const { getByLabelText, getByText, queryByText } = await renderCatalog();
     const axiosPostResponse = {};
     axios.post.mockRejectedValue(axiosPostResponse);
     const inputTitle = getByLabelText("Titre de la recette :");
@@ -528,16 +285,7 @@ was not successful on backend side`, async () => {
 
 describe("the removing recipe functionality works properly", () => {
   it("removes the recipe when clicking on the button", async () => {
-    const { getByText, rerender, getAllByLabelText } = render(
-      <CatalogRecipes
-        totalRecipes={recipes}
-        possibleIngredients={catalogIngredients}
-        totalCategories={catalogCategories}
-        totalUnits={units}
-        feasibleRecipesUpdate={() => undefined}
-        updateRecipes={handleNewRecipe}
-      />
-    );
+    const { getByText, getAllByLabelText } = await renderCatalog();
     const axiosDeleteResponse = { data: "" };
     axios.delete.mockResolvedValue(axiosDeleteResponse);
     const recipeRemoved = getByText("Marinade de saumon fumé", {
@@ -548,24 +296,37 @@ describe("the removing recipe functionality works properly", () => {
     });
     const button = getAllByLabelText("Supprimer la recette")[1];
     fireEvent.click(button);
+    axios.get.mockResolvedValue({
+      data: [
+        {
+          id: 1,
+          categories: ["Plat"],
+          title: "Salade de pommes de terre radis",
+          ingredients: [
+            { ingredient: "pommes de terre", amount: "1", unit: "kg" },
+            { ingredient: "oeufs", amount: "3", unit: "pièce(s)" },
+            { ingredient: "vinaigre non balsamique", amount: "1", unit: "cas" },
+            { ingredient: "radis", amount: "2", unit: "botte(s)" },
+            { ingredient: "oignons bottes", amount: "2", unit: "pièce(s)" },
+            { ingredient: "yaourt grec", amount: "1", unit: "pièce(s)" },
+            { ingredient: "mayonnaise", amount: "1", unit: "cas" },
+            { ingredient: "moutarde", amount: "0.5", unit: "cas" },
+            { ingredient: "ail", amount: "1", unit: "gousse(s)" },
+          ],
+          duration: "35 min",
+          description:
+            "Eplucher et couper les patates en rondelles et les cuire à l'eau. Cuire les oeufs durs. Couper les radis en rondelles. Emincer les échalottes et les oignons. Couper les oeufs durs. Mettre le tout dans un saladier et rajouter le vinaigre. Mélanger. Préparer la sauce :  mélanger le yaourt, la mayonnaise, la moutarde, la gousse d'ail rapée. Assaisoner.",
+        },
+      ],
+    });
     await waitFor(() => expect(axios.delete).toHaveBeenCalledTimes(1));
-    rerenderCatalog(rerender);
     expect(recipeRemoved).not.toBeInTheDocument();
     expect(recipe).toBeInTheDocument();
   });
 
   it(`displays an error message and keeps the recipe if the recipe removal
 was not successful on backend side`, async () => {
-    const { getByText, getAllByLabelText } = render(
-      <CatalogRecipes
-        totalRecipes={recipes}
-        possibleIngredients={catalogIngredients}
-        totalCategories={catalogCategories}
-        totalUnits={units}
-        feasibleRecipesUpdate={() => undefined}
-        updateRecipes={handleNewRecipe}
-      />
-    );
+    const { getByText, getAllByLabelText } = await renderCatalog();
     const axiosDeleteResponse = { data: "" };
     axios.delete.mockRejectedValue(axiosDeleteResponse);
     const recipeToRemoved = getByText("Marinade de saumon fumé", {
@@ -589,16 +350,11 @@ was not successful on backend side`, async () => {
 describe("the search bar functionality works properly", () => {
   it(`displays the correct recipes according to their title when a letter
     is entered in the search bar`, async () => {
-    const { getByText, queryByText, getByPlaceholderText } = render(
-      <CatalogRecipes
-        totalRecipes={recipes}
-        possibleIngredients={catalogIngredients}
-        totalCategories={catalogCategories}
-        totalUnits={units}
-        feasibleRecipesUpdate={() => undefined}
-        updateRecipes={handleNewRecipe}
-      />
-    );
+    const {
+      getByText,
+      queryByText,
+      getByPlaceholderText,
+    } = await renderCatalog();
     const searchBar = getByPlaceholderText("Recherche par titre...");
     fireEvent.change(searchBar, { target: { value: "M" } });
     expect(getByText("Marinade de saumon fumé")).toBeInTheDocument();
@@ -610,17 +366,12 @@ describe("the search bar functionality works properly", () => {
     expect(queryByText("Marinade de saumon fumé")).not.toBeInTheDocument();
   });
 
-  it("redisplays all the recipes of the catalog after a search", () => {
-    const { getByText, queryByText, getByPlaceholderText } = render(
-      <CatalogRecipes
-        totalRecipes={recipes}
-        possibleIngredients={catalogIngredients}
-        totalCategories={catalogCategories}
-        totalUnits={units}
-        feasibleRecipesUpdate={() => undefined}
-        updateRecipes={handleNewRecipe}
-      />
-    );
+  it("redisplays all the recipes of the catalog after a search", async () => {
+    const {
+      getByText,
+      queryByText,
+      getByPlaceholderText,
+    } = await renderCatalog();
     const searchBar = getByPlaceholderText("Recherche par titre...");
     fireEvent.change(searchBar, { target: { value: "sa" } });
     expect(getByText("Salade de pommes de terre radis")).toBeInTheDocument();

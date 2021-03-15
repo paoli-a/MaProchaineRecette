@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import RecipesForm from "../Recipe/RecipesForm";
 import Recipe from "../Recipe/Recipe";
 import useFilterSearch from "../useFilterSearch";
-import PropTypes from "prop-types";
 import axios from "axios";
+import { useCatalogRecipes } from "../../hooks/swrFetch";
+import { mutate } from "swr";
 
 /**
  * Ce composant permet d'afficher les recettes du catalogue, d'en ajouter
@@ -12,29 +13,23 @@ import axios from "axios";
  *
  * @component
  */
-function CatalogRecipes({
-  totalRecipes,
-  possibleIngredients,
-  totalCategories,
-  totalUnits,
-  feasibleRecipesUpdate,
-  updateRecipes,
-}) {
+function CatalogRecipes() {
   const [searchResults, setSearchResults] = useState("");
   const [deleteError, setDeleteError] = useState({});
   const [postError, setPostError] = useState("");
+  const { catalogRecipes } = useCatalogRecipes();
 
   const handleSupprClick = (id) => {
     axios
       .delete(`/api/catalogs/recipes/${id}/`)
       .then(() => {
-        const updatedRecipes = totalRecipes.slice();
+        const updatedRecipes = catalogRecipes.slice();
         const index = updatedRecipes.findIndex((recipe) => {
           return recipe.id === id;
         });
         updatedRecipes.splice(index, 1);
-        feasibleRecipesUpdate();
-        updateRecipes(updatedRecipes);
+        mutate("/api/catalogs/recipes/");
+        mutate("/api/fridge/recipes/");
       })
       .catch(() => {
         setDeleteError({
@@ -45,7 +40,14 @@ function CatalogRecipes({
       });
   };
 
-  const handleSubmit = (data) => {
+  const updateCatalogRecipes = async (recipeToSend) => {
+    const { data } = await axios.post("/api/catalogs/recipes/", recipeToSend);
+    const updatedRecipes = catalogRecipes.slice();
+    updatedRecipes.push(data);
+    return updatedRecipes;
+  };
+
+  const handleSubmit = async (data) => {
     const categories = data.categories.filter(Boolean);
     const recipeToSend = {
       categories: categories,
@@ -54,18 +56,18 @@ function CatalogRecipes({
       duration: data.recipeTime,
       description: data.recipeDescription,
     };
-    axios
-      .post("/api/catalogs/recipes/", recipeToSend)
-      .then(({ data }) => {
-        const newRecipe = data;
-        const updatedRecipes = totalRecipes.slice();
-        updatedRecipes.push(newRecipe);
-        feasibleRecipesUpdate();
-        updateRecipes(updatedRecipes);
-      })
-      .catch(() => {
-        setPostError("L'ajout de recette a échoué.");
-      });
+    const updatedRecipes = catalogRecipes.slice();
+    updatedRecipes.push(recipeToSend);
+    mutate("/api/catalogs/recipes/", updatedRecipes, false);
+    try {
+      await mutate(
+        "/api/catalogs/recipes/",
+        updateCatalogRecipes(recipeToSend)
+      );
+      mutate("/api/fridge/recipes/");
+    } catch (error) {
+      setPostError("L'ajout de recette a échoué.");
+    }
   };
 
   const handleChangeSearch = (event) => {
@@ -73,7 +75,7 @@ function CatalogRecipes({
   };
 
   const filteredRecipes = useFilterSearch({
-    elementsToFilter: totalRecipes,
+    elementsToFilter: catalogRecipes,
     searchResults: searchResults,
     getSearchElement: (recipe) => recipe.title,
   });
@@ -107,12 +109,7 @@ function CatalogRecipes({
         Catalogue de toutes mes recettes
       </h1>
       <section className="add-recipe">
-        <RecipesForm
-          onSubmitRecipe={handleSubmit}
-          possibleIngredients={possibleIngredients}
-          totalCategories={totalCategories}
-          totalUnits={totalUnits}
-        />
+        <RecipesForm onSubmitRecipe={handleSubmit} />
         {postError && (
           <p role="alert" className="recipe__error-message">
             {postError}
@@ -137,37 +134,5 @@ function CatalogRecipes({
     </main>
   );
 }
-
-CatalogRecipes.propTypes = {
-  totalRecipes: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      categories: PropTypes.arrayOf(PropTypes.string).isRequired,
-      title: PropTypes.string.isRequired,
-      ingredients: PropTypes.arrayOf(
-        PropTypes.shape({
-          ingredient: PropTypes.string.isRequired,
-          amount: PropTypes.string.isRequired,
-          unit: PropTypes.string.isRequired,
-        }).isRequired
-      ),
-      duration: PropTypes.string.isRequired,
-      description: PropTypes.string.isRequired,
-    })
-  ).isRequired,
-  /**
-   * Il s'agit ici des ingrédients autorisés, c'est-à-dire ceux entrés
-   * dans le catalogue des ingrédients.
-   */
-  possibleIngredients: PropTypes.arrayOf(
-    PropTypes.shape({
-      name: PropTypes.string.isRequired,
-    })
-  ).isRequired,
-  totalCategories: PropTypes.arrayOf(PropTypes.string).isRequired,
-  totalUnits: PropTypes.arrayOf(PropTypes.string).isRequired,
-  feasibleRecipesUpdate: PropTypes.func.isRequired,
-  updateRecipes: PropTypes.func.isRequired,
-};
 
 export default CatalogRecipes;

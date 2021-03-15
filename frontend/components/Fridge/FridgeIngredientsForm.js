@@ -2,16 +2,19 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import InputSuggestions from "../InputSuggestions/InputSuggestions";
 import PropTypes from "prop-types";
+import { useCatalogIngredients, useUnits } from "../../hooks/swrFetch";
 
-function FridgeIngredientsForm({ onSubmit, possibleIngredients, totalUnits }) {
+function FridgeIngredientsForm({ onSubmit }) {
   const { register, handleSubmit, errors, reset, getValues } = useForm({
     defaultValues: { ingredientName: "" },
   });
+  const { catalogIngredients } = useCatalogIngredients();
+  const { units } = useUnits();
 
   const validateIngredientName = () => {
     const name = getValues().ingredientName;
     let authorized = false;
-    for (const ingredientPossible of possibleIngredients) {
+    for (const ingredientPossible of catalogIngredients) {
       if (ingredientPossible.name === name) {
         authorized = true;
         break;
@@ -60,7 +63,7 @@ function FridgeIngredientsForm({ onSubmit, possibleIngredients, totalUnits }) {
           </label>
           <div className="container-error">
             <InputSuggestions
-              elements={possibleIngredients}
+              elements={catalogIngredients}
               id="ingredientName"
               getElementText={(ingredient) => ingredient.name}
               name="ingredientName"
@@ -128,7 +131,7 @@ function FridgeIngredientsForm({ onSubmit, possibleIngredients, totalUnits }) {
                 aria-required="true"
               >
                 <option value="">...</option>
-                {totalUnits.map((unit) => {
+                {units.map((unit) => {
                   return (
                     <option value={unit} key={unit}>
                       {unit}
@@ -191,16 +194,6 @@ FridgeIngredientsForm.propTypes = {
    * et permet de les récupérer.
    */
   onSubmit: PropTypes.func.isRequired,
-  /**
-   * Il s'agit ici des ingrédients autorisés, c'est-à-dire ceux entrés
-   * dans le catalogue des ingrédients.
-   */
-  possibleIngredients: PropTypes.arrayOf(
-    PropTypes.shape({
-      name: PropTypes.string.isRequired,
-    })
-  ).isRequired,
-  totalUnits: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export default FridgeIngredientsForm;

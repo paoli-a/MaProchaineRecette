@@ -2,19 +2,22 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import InputSuggestions from "../InputSuggestions/InputSuggestions";
 import PropTypes from "prop-types";
+import {
+  useCatalogIngredients,
+  useCategories,
+  useUnits,
+} from "../../hooks/swrFetch";
 
-function RecipesForm({
-  onSubmitRecipe,
-  possibleIngredients,
-  totalCategories,
-  totalUnits,
-}) {
+function RecipesForm({ onSubmitRecipe }) {
   const { register, handleSubmit, errors, reset, watch, getValues } = useForm();
   const [ingredients, setIngredients] = useState([]);
   const [ingredientName, setIngredientName] = useState("");
   const [ingredientAmount, setIngredientAmount] = useState("");
   const [ingredientUnit, setIngredientUnit] = useState("");
   const [ingredientError, setIngredientError] = useState("");
+  const { catalogIngredients } = useCatalogIngredients();
+  const { categories } = useCategories();
+  const { units } = useUnits();
 
   const onSubmitForm = (data) => {
     if (ingredients.length === 0) {
@@ -46,7 +49,7 @@ function RecipesForm({
       );
     }
     let authorized = false;
-    for (const ingredientPossible of possibleIngredients) {
+    for (const ingredientPossible of catalogIngredients) {
       if (ingredientPossible.name === ingredientName) {
         authorized = true;
         break;
@@ -106,7 +109,7 @@ function RecipesForm({
   };
 
   const validateCategories = () => {
-    for (let i = 0; i < totalCategories.length; i++) {
+    for (let i = 0; i < categories.length; i++) {
       if (watch(`categories[${i}]`)) {
         return true;
       }
@@ -156,7 +159,7 @@ function RecipesForm({
         <div className="form__checkbox-container">
           Catégories :
           <ul>
-            {totalCategories.map((category, index) => {
+            {categories.map((category, index) => {
               return (
                 <li key={category}>
                   <input
@@ -215,7 +218,7 @@ function RecipesForm({
             </label>
             <InputSuggestions
               className="form__input"
-              elements={possibleIngredients}
+              elements={catalogIngredients}
               id="ingredient"
               getElementText={(ingredient) => ingredient.name}
               onChangeValue={(name) => setIngredientName(name)}
@@ -251,7 +254,7 @@ function RecipesForm({
                 aria-required="true"
               >
                 <option value="">...</option>
-                {totalUnits.map((unit) => {
+                {units.map((unit) => {
                   return (
                     <option value={unit} key={unit}>
                       {unit}
@@ -326,17 +329,6 @@ RecipesForm.propTypes = {
    * et permet de les récupérer.
    */
   onSubmitRecipe: PropTypes.func.isRequired,
-  /**
-   * Il s'agit ici des ingrédients autorisés, c'est-à-dire ceux entrés
-   * dans le catalogue des ingrédients.
-   */
-  possibleIngredients: PropTypes.arrayOf(
-    PropTypes.shape({
-      name: PropTypes.string.isRequired,
-    })
-  ).isRequired,
-  totalCategories: PropTypes.arrayOf(PropTypes.string).isRequired,
-  totalUnits: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export default RecipesForm;
