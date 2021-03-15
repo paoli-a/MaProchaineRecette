@@ -49,7 +49,6 @@ it("removes the correct ingredient when clicking on remove button", async () => 
       { name: "Framboises" },
       { name: "Epinards" },
       { name: "Mascarpone" },
-      ,
     ],
   });
   await waitFor(() => expect(axios.delete).toHaveBeenCalledTimes(1));
