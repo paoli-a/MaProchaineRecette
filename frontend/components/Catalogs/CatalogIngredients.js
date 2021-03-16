@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import useFilterSearch from "../useFilterSearch";
-import PropTypes from "prop-types";
+import { useCatalogIngredients } from "../../hooks/swrFetch";
+import { mutate } from "swr";
 
 /**
  * Ce composant permet d'afficher les ingrédients du catalogue, d'en ajouter
@@ -11,44 +12,52 @@ import PropTypes from "prop-types";
  *
  * @component
  */
-function CatalogIngredients({
-  possibleIngredients,
-  updatePossibleIngredients,
-}) {
+function CatalogIngredients() {
   const { register, handleSubmit, errors, reset, setError } = useForm();
   const [searchResults, setSearchResults] = useState("");
   const [deleteError, setDeleteError] = useState({});
+  const { catalogIngredients } = useCatalogIngredients();
 
-  const onSubmitWrapper = (dataForm) => {
+  const updatePossibleIngredients = async (ingredientToSend) => {
+    const { data } = await axios.post(
+      "/api/catalogs/ingredients/",
+      ingredientToSend
+    );
+    const ingredientsListUpdated = catalogIngredients.slice();
+    ingredientsListUpdated.push({ name: data.name });
+    return ingredientsListUpdated;
+  };
+
+  const onSubmitWrapper = async (dataForm) => {
     const ingredientToSend = {
       name: dataForm.ingredientName,
     };
-    axios
-      .post("/api/catalogs/ingredients/", ingredientToSend)
-      .then(({ data }) => {
-        const newIngredient = { name: data.name };
-        const ingredientsListUpdated = possibleIngredients.slice();
-        ingredientsListUpdated.push(newIngredient);
-        updatePossibleIngredients(ingredientsListUpdated);
-        reset();
-      })
-      .catch(() => {
-        setError("ingredientName", {
-          message: "L'ajout a échoué.",
-        });
+    const ingredientsListUpdated = catalogIngredients.slice();
+    ingredientsListUpdated.push(ingredientToSend);
+    mutate("/api/catalogs/ingredients/", ingredientsListUpdated, false);
+    try {
+      await mutate(
+        "/api/catalogs/ingredients/",
+        updatePossibleIngredients(ingredientToSend)
+      );
+      reset();
+    } catch (error) {
+      setError("ingredientName", {
+        message: "L'ajout a échoué.",
       });
+    }
   };
 
   const handleSupprClick = (name) => {
     axios
       .delete(`/api/catalogs/ingredients/${name}/`)
       .then(() => {
-        const ingredientsListUpdated = possibleIngredients.slice();
+        const ingredientsListUpdated = catalogIngredients.slice();
         const index = ingredientsListUpdated.findIndex((ingredient) => {
           return ingredient.name === name;
         });
         ingredientsListUpdated.splice(index, 1);
-        updatePossibleIngredients(ingredientsListUpdated);
+        mutate("/api/catalogs/ingredients/");
         setDeleteError({});
       })
       .catch(() => {
@@ -65,7 +74,7 @@ function CatalogIngredients({
   };
 
   const filteredIngredients = useFilterSearch({
-    elementsToFilter: possibleIngredients,
+    elementsToFilter: catalogIngredients,
     searchResults: searchResults,
     getSearchElement: (ingredient) => ingredient.name,
   });
@@ -163,17 +172,5 @@ function CatalogIngredients({
     </main>
   );
 }
-
-CatalogIngredients.propTypes = {
-  possibleIngredients: PropTypes.arrayOf(
-    PropTypes.shape({
-      name: PropTypes.string.isRequired,
-    })
-  ).isRequired,
-  /**
-   * Fonction mettant à jour la propriété controlée possibleIngredients.
-   */
-  updatePossibleIngredients: PropTypes.func.isRequired,
-};
 
 export default CatalogIngredients;

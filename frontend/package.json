@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "test": "jest",
+    "test": "jest --watch",
+    "test:ci": "jest",
     "lint": "eslint .",
     "end_to_end": "npx codeceptjs run --steps",
     "docs": "jsdoc -c jsdoc.conf.json"
@@ -20,7 +21,8 @@
     "react-highlight-words": "^0.17.0",
     "react-hook-form": "^6.15.4",
     "sass": "^1.32.8",
-    "stopword": "^1.0.7"
+    "stopword": "^1.0.7",
+    "swr": "^0.4.2"
   },
   "devDependencies": {
     "@babel/core": "^7.13.10",

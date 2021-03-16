@@ -1,69 +1,25 @@
-import { useState } from "react";
 import axios from "axios";
 import "../styles/main.scss";
+import {
+  useCatalogIngredients,
+  useCatalogRecipes,
+  useFridgeIngredients,
+  useCategories,
+  useUnits,
+  useFridgeRecipes,
+} from "../hooks/swrFetch";
 
 function MyApp({ Component, pageProps, props }) {
-  const [catalogIngredients, setCatalogIngredients] = useState(
-    props && props.firstTime ? props.initialCatalogIngredients : []
+  const firstTime = props && props.firstTime;
+  useCatalogIngredients(
+    firstTime ? props.initialCatalogIngredients : undefined
   );
-  const [fridgeIngredients, setFridgeIngredients] = useState(() => {
-    if (props && props.firstTime) {
-      return props.initialFridgeIngredients.map((fridgeIngredient) => {
-        return {
-          id: fridgeIngredient.id,
-          name: fridgeIngredient.ingredient,
-          expirationDate: new Date(fridgeIngredient.expiration_date),
-          amount: fridgeIngredient.amount,
-          unit: fridgeIngredient.unit,
-        };
-      });
-    } else {
-      return [];
-    }
-  });
-  const [catalogRecipes, setCatalogRecipes] = useState(
-    props && props.firstTime ? props.initialCatalogRecipes : []
-  );
-  const [catalogCategories] = useState(
-    props && props.firstTime ? props.initialCatalogCategories : []
-  );
-  const [units] = useState(props && props.firstTime ? props.initialUnits : []);
-  const [feasibleRecipes, setFeasibleRecipes] = useState(
-    props && props.firstTime ? props.initialFeasibleRecipes : []
-  );
-  const [fetchError, setFetchError] = useState(
-    props && props.firstTime ? props.initialFetchError : ""
-  );
-
-  const refetchFeasibleRecipes = () => {
-    axios
-      .get("/api/fridge/recipes/")
-      .then(({ data }) => {
-        setFeasibleRecipes(data);
-      })
-      .catch(() =>
-        setFetchError(
-          "Il y a eu une erreur vis-à-vis du serveur, veuillez reharger la page ou réessayer ultérieurement."
-        )
-      );
-  };
-
-  return (
-    <Component
-      {...pageProps}
-      catalogIngredients={catalogIngredients}
-      updateCatalogIngredients={setCatalogIngredients}
-      fridgeIngredients={fridgeIngredients}
-      updateFridgeIngredients={setFridgeIngredients}
-      catalogRecipes={catalogRecipes}
-      updateCatalogRecipes={setCatalogRecipes}
-      catalogCategories={catalogCategories}
-      units={units}
-      feasibleRecipes={feasibleRecipes}
-      fetchError={fetchError}
-      refetchFeasibleRecipes={refetchFeasibleRecipes}
-    />
-  );
+  useFridgeIngredients(firstTime ? props.initialFridgeIngredients : undefined);
+  useCatalogRecipes(firstTime ? props.initialCatalogRecipes : undefined);
+  useCategories(firstTime ? props.initialCatalogCategories : undefined);
+  useUnits(firstTime ? props.initialUnits : undefined);
+  useFridgeRecipes(firstTime ? props.initialFridgeRecipes : undefined);
+  return <Component {...pageProps} />;
 }
 
 MyApp.getInitialProps = async (context) => {
@@ -86,7 +42,7 @@ MyApp.getInitialProps = async (context) => {
     const initialFridgeIngredients = await get("/api/fridge/ingredients/");
     const initialCatalogCategories = await get("/api/catalogs/categories/");
     const initialUnits = await get("/api/units/units/");
-    const initialFeasibleRecipes = await get("/api/fridge/recipes/");
+    const initialFridgeRecipes = await get("/api/fridge/recipes/");
     return {
       props: {
         firstTime: true,
@@ -96,7 +52,7 @@ MyApp.getInitialProps = async (context) => {
         initialFridgeIngredients,
         initialCatalogCategories,
         initialUnits,
-        initialFeasibleRecipes,
+        initialFridgeRecipes,
       },
     };
   } else {

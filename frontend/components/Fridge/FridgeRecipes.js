@@ -2,7 +2,7 @@ import React, { useState, useMemo } from "react";
 import Recipe from "../Recipe/Recipe";
 import RecipesToolbar from "../Recipe/RecipesToolbar";
 import Highlighter from "react-highlight-words";
-import PropTypes from "prop-types";
+import { useFridgeRecipes } from "../../hooks/swrFetch";
 
 /**
  * Ce composant permet d'afficher les recettes. Il donne la possibilité
@@ -11,13 +11,14 @@ import PropTypes from "prop-types";
  *
  * @component
  */
-function FridgeRecipes({ recipes }) {
+function FridgeRecipes() {
   const [categories, setCategories] = useState([]);
   const [searchResults, setSearchResults] = useState("");
+  const { fridgeRecipes } = useFridgeRecipes();
 
   const categoriesPossibles = () => {
     const categories = {};
-    for (let recipe of recipes) {
+    for (let recipe of fridgeRecipes) {
       for (let categorie of recipe.categories)
         if (categorie in categories) {
           categories[categorie] += 1;
@@ -102,8 +103,8 @@ function FridgeRecipes({ recipes }) {
       }
     };
 
-    return filterRecipesSearch(filterRecipesCategories(recipes));
-  }, [recipes, categories, searchedWords, searchResults]);
+    return filterRecipesSearch(filterRecipesCategories(fridgeRecipes));
+  }, [fridgeRecipes, categories, searchedWords, searchResults]);
 
   const handleHighlight = (texte) => {
     return (
@@ -145,24 +146,5 @@ function FridgeRecipes({ recipes }) {
     </section>
   );
 }
-
-FridgeRecipes.propTypes = {
-  recipes: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      categories: PropTypes.arrayOf(PropTypes.string).isRequired,
-      title: PropTypes.string.isRequired,
-      ingredients: PropTypes.arrayOf(
-        PropTypes.shape({
-          ingredient: PropTypes.string.isRequired,
-          amount: PropTypes.string.isRequired,
-          unit: PropTypes.string.isRequired,
-        }).isRequired
-      ),
-      duration: PropTypes.string.isRequired,
-      description: PropTypes.string.isRequired,
-    })
-  ).isRequired,
-};
 
 export default FridgeRecipes;

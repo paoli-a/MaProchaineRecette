@@ -2,74 +2,36 @@
 import React from "react";
 import { render, fireEvent, act, within } from "@testing-library/react";
 import FridgeRecipes from "./FridgeRecipes";
+import { axiosGetGlobalMock } from "../testUtils";
+import { SWRConfig, cache } from "swr";
 
 require("mutationobserver-shim");
-
-let recipes;
+jest.mock("axios");
 
 beforeEach(() => {
-  recipes = [
-    {
-      id: 1,
-      categories: ["Plat", "Entrée"],
-      title: "Salade de pommes de terre radis",
-      ingredients: [
-        { ingredient: "pommes de terre", amount: "1", unit: "kg" },
-        { ingredient: "oeufs", amount: "3", unit: "pièce(s)" },
-        { ingredient: "vinaigre non balsamique", amount: "1", unit: "cas" },
-        { ingredient: "radis", amount: "2", unit: "botte(s)" },
-        { ingredient: "oignons bottes", amount: "2", unit: "pièce(s)" },
-        { ingredient: "yaourt grec", amount: "1", unit: "pièce(s)" },
-        { ingredient: "mayonnaise", amount: "1", unit: "cas" },
-        { ingredient: "moutarde", amount: "0.5", unit: "cas" },
-        { ingredient: "ail", amount: "1", unit: "gousse(s)" },
-      ],
-      duration: "35 min",
-      description:
-        "Epluchez et coupez les patates en rondelles et les cuire à l'eau. Cuire les oeufs durs. Coupez les radis en rondelles. Emincez les échalottes et les oignons. Coupez les oeufs durs. Mettre le tout dans un saladier et rajoutez le vinaigre. Mélangez. Préparez la sauce :  mélangez le yaourt, la mayonnaise, la moutarde, la gousse d'ail rapée. Assaisoner. Une recette en or ...",
-      priority_ingredients: ["oeufs"],
-      unsure_ingredients: ["ail"],
-    },
-    {
-      id: 2,
-      categories: ["Entrée"],
-      title: "Marinade de saumon fumé",
-      ingredients: [
-        { ingredient: "saumon fumé", amount: "200", unit: "g" },
-        { ingredient: "citon vert", amount: "0,5", unit: "pièce(s)" },
-        { ingredient: "vinaigre balsamique", amount: "2", unit: "cas" },
-        { ingredient: "huile d'olive", amount: "2", unit: "cas" },
-        { ingredient: "échalotte", amount: "1", unit: "pièce(s)" },
-        { ingredient: "herbes fraiches", amount: "1", unit: "cas" },
-      ],
-      duration: "11 h",
-      description:
-        "Emincez le saumon, l'échalotte et le persil. Ajoutez le vinaigre, l'huile, le citron et un peu de poivre. Mélangez et laissez mariner toute la nuit.",
-      priority_ingredients: ["herbes raiches"],
-      unsure_ingredients: [],
-    },
-    {
-      id: 3,
-      categories: ["Dessert"],
-      title: "Crumble aux poires",
-      ingredients: [
-        { ingredient: "poires", amount: "1", unit: "kg" },
-        { ingredient: "farine", amount: "150", unit: "g" },
-        { ingredient: "beurre", amount: "130", unit: "g" },
-        { ingredient: "cassonade", amount: "120", unit: "g" },
-      ],
-      duration: "1 h",
-      description:
-        "Épluchez et épépinez les poires. Coupez-les en dés. Faites-les revenir 10 min dans 40 g de beurre et 40 g de cassonade. Préchauffez le four à 210 °C. Mélangez la farine avec le reste de cassonade, 80 g de beurre mou en dés et 1 pincée de sel afin d'obtenir une pâte sableuse. Disposez les poires dans un plat à gratin beurré. Parsemez de pâte en l'effritant du bout des doigts. Enfournez 30 min. Servez chaud ou tiède.",
-      priority_ingredients: ["poires"],
-      unsure_ingredients: [],
-    },
-  ];
+  cache.clear();
+  axiosGetGlobalMock();
 });
 
+afterEach(() => {
+  jest.clearAllMocks();
+});
+
+const renderFridgeRecipes = async () => {
+  let app;
+  await act(async () => {
+    app = render(
+      <SWRConfig value={{ dedupingInterval: 0 }}>
+        <FridgeRecipes />
+      </SWRConfig>
+    );
+  });
+  return app;
+};
+
 describe("Renders correctly each recipe", () => {
-  it("renders title element of all the recipes", () => {
-    const { getByText } = render(<FridgeRecipes recipes={recipes} />);
+  it("renders title element of all the recipes", async () => {
+    const { getByText } = await renderFridgeRecipes();
     const recipeTitle1 = getByText("Salade de pommes de terre radis");
     const recipeTitle2 = getByText("Marinade de saumon fumé");
     const recipeTitle3 = getByText("Crumble aux poires");
@@ -81,24 +43,17 @@ describe("Renders correctly each recipe", () => {
 
 describe("the category filtration functionality works properly", () => {
   it("renders only the categories present in the possible recipes", async () => {
-    const { getByText, rerender } = render(<FridgeRecipes recipes={recipes} />);
+    const { getByText } = await renderFridgeRecipes();
     const plat = getByText("Plat");
     const entrée = getByText("Entrée");
     const dessert = getByText("Dessert");
     expect(plat).toBeInTheDocument();
     expect(entrée).toBeInTheDocument();
     expect(dessert).toBeInTheDocument();
-    recipes.splice(0, 1);
-    await act(async () => {
-      rerender(<FridgeRecipes recipes={recipes} />);
-    });
-    expect(plat).not.toBeInTheDocument();
-    expect(entrée).toBeInTheDocument();
-    expect(dessert).toBeInTheDocument();
   });
 
-  it("renders the right numbers of each possible categories", () => {
-    const { getByText } = render(<FridgeRecipes recipes={recipes} />);
+  it("renders the right numbers of each possible categories", async () => {
+    const { getByText } = await renderFridgeRecipes();
     const plat = getByText("Plat");
     const entree = getByText("Entrée");
     const dessert = getByText("Dessert");
@@ -110,10 +65,12 @@ describe("the category filtration functionality works properly", () => {
     expect(nombreDessert.textContent).toEqual("1");
   });
 
-  it("renders only the recipes with the category selected", () => {
-    const { getByText, getByLabelText, queryByText } = render(
-      <FridgeRecipes recipes={recipes} />
-    );
+  it("renders only the recipes with the category selected", async () => {
+    const {
+      getByText,
+      getByLabelText,
+      queryByText,
+    } = await renderFridgeRecipes();
     const plat = getByLabelText("Plat");
     fireEvent.click(plat);
     const recipeTitle1 = getByText("Salade de pommes de terre radis");
@@ -124,10 +81,12 @@ describe("the category filtration functionality works properly", () => {
     expect(recipeTitle3).not.toBeInTheDocument();
   });
 
-  it("renders only the recipes with the two categories selected", () => {
-    const { getByText, getByLabelText, queryByText } = render(
-      <FridgeRecipes recipes={recipes} />
-    );
+  it("renders only the recipes with the two categories selected", async () => {
+    const {
+      getByText,
+      getByLabelText,
+      queryByText,
+    } = await renderFridgeRecipes();
     const plat = getByLabelText("Plat");
     const dessert = getByLabelText("Dessert");
     fireEvent.click(plat);
@@ -140,8 +99,8 @@ describe("the category filtration functionality works properly", () => {
     expect(recipeTitle3).toBeInTheDocument();
   });
 
-  it("checks category checkboxes when it's clicked", () => {
-    const { getByLabelText } = render(<FridgeRecipes recipes={recipes} />);
+  it("checks category checkboxes when it's clicked", async () => {
+    const { getByLabelText } = await renderFridgeRecipes();
     const entree = getByLabelText("Entrée");
     const dessert = getByLabelText("Dessert");
     expect(entree.checked).toEqual(false);
@@ -175,7 +134,7 @@ describe("the search filtration functionality works properly", () => {
       getByText,
       getByTestId,
       queryByText,
-    } = render(<FridgeRecipes recipes={recipes} />);
+    } = await renderFridgeRecipes();
     await makeASearch("salade", getByPlaceholderText, getByTestId);
     expect(
       getByText(getContent("Salade de pommes de terre radis"))
@@ -196,7 +155,7 @@ describe("the search filtration functionality works properly", () => {
       getByText,
       getByTestId,
       queryByText,
-    } = render(<FridgeRecipes recipes={recipes} />);
+    } = await renderFridgeRecipes();
     await makeASearch("épépinez", getByPlaceholderText, getByTestId);
     expect(getByText("Crumble aux poires")).toBeInTheDocument();
     expect(
@@ -217,7 +176,7 @@ describe("the search filtration functionality works properly", () => {
       getByText,
       getByTestId,
       queryByText,
-    } = render(<FridgeRecipes recipes={recipes} />);
+    } = await renderFridgeRecipes();
     await makeASearch("Vert", getByPlaceholderText, getByTestId);
     expect(getByText("Marinade de saumon fumé")).toBeInTheDocument();
     expect(queryByText("Crumble aux poires")).not.toBeInTheDocument();
@@ -239,7 +198,7 @@ describe("the search filtration functionality works properly", () => {
       getByText,
       getByTestId,
       queryByText,
-    } = render(<FridgeRecipes recipes={recipes} />);
+    } = await renderFridgeRecipes();
     await makeASearch("Marinade y", getByPlaceholderText, getByTestId);
     expect(
       getByText(getContent("Marinade de saumon fumé"))
@@ -255,9 +214,11 @@ describe("the search filtration functionality works properly", () => {
 
   it(`renders only the recipes containing the searched words, for words of
     2 characters`, async () => {
-    const { getByPlaceholderText, getByText, getByTestId } = render(
-      <FridgeRecipes recipes={recipes} />
-    );
+    const {
+      getByPlaceholderText,
+      getByText,
+      getByTestId,
+    } = await renderFridgeRecipes();
     await makeASearch("Marinade or", getByPlaceholderText, getByTestId);
     expect(
       getByText(getContent("Marinade de saumon fumé"))
@@ -272,7 +233,7 @@ describe("the search filtration functionality works properly", () => {
       getByText,
       getByTestId,
       queryByText,
-    } = render(<FridgeRecipes recipes={recipes} />);
+    } = await renderFridgeRecipes();
     await makeASearch(
       "Marinade les de et la l",
       getByPlaceholderText,
@@ -296,7 +257,7 @@ describe("the search filtration functionality works properly", () => {
       getByText,
       getByTestId,
       queryByText,
-    } = render(<FridgeRecipes recipes={recipes} />);
+    } = await renderFridgeRecipes();
     await makeASearch("'Marinade. , ! ...", getByPlaceholderText, getByTestId);
     expect(
       getByText(getContent("Marinade de saumon fumé"))
@@ -315,7 +276,7 @@ describe("the search filtration functionality works properly", () => {
       getByText,
       getByTestId,
       queryByText,
-    } = render(<FridgeRecipes recipes={recipes} />);
+    } = await renderFridgeRecipes();
     await makeASearch("Marinade crumble", getByPlaceholderText, getByTestId);
     expect(
       getByText(getContent("Marinade de saumon fumé"))

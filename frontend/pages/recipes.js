@@ -1,22 +1,15 @@
 import Head from "next/head";
-import PropTypes from "prop-types";
 import { Menu } from "../components/MyNextRecipe";
 import { CatalogRecipes } from "../components/Catalogs";
+import { useCatalogRecipes } from "../hooks/swrFetch";
 
 /**
  * Cette page affiche le catalogue de recettes possibles.
  *
  * @component
  */
-function Recipes({
-  catalogIngredients,
-  catalogRecipes,
-  updateCatalogRecipes,
-  catalogCategories,
-  units,
-  refetchFeasibleRecipes,
-  fetchError,
-}) {
+function Recipes() {
+  const { isCatalogRecipesError } = useCatalogRecipes();
   return (
     <>
       <Head>
@@ -24,47 +17,18 @@ function Recipes({
       </Head>
       <Menu />
       <main>
-        {fetchError && <span>{fetchError}</span>}
-        <CatalogRecipes
-          totalRecipes={catalogRecipes}
-          possibleIngredients={catalogIngredients}
-          totalCategories={catalogCategories}
-          totalUnits={units}
-          feasibleRecipesUpdate={refetchFeasibleRecipes}
-          updateRecipes={updateCatalogRecipes}
-        />
+        {isCatalogRecipesError ? (
+          <span>
+            "Il y a eu une erreur vis-à-vis du serveur, veuillez recharger la
+            page ou réessayer ultérieurement."
+          </span>
+        ) : (
+          ""
+        )}
+        <CatalogRecipes />
       </main>
     </>
   );
 }
-
-Recipes.propTypes = {
-  catalogRecipes: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      categories: PropTypes.arrayOf(PropTypes.string).isRequired,
-      title: PropTypes.string.isRequired,
-      ingredients: PropTypes.arrayOf(
-        PropTypes.shape({
-          ingredient: PropTypes.string.isRequired,
-          amount: PropTypes.string.isRequired,
-          unit: PropTypes.string.isRequired,
-        }).isRequired
-      ),
-      duration: PropTypes.string.isRequired,
-      description: PropTypes.string.isRequired,
-    })
-  ).isRequired,
-  catalogIngredients: PropTypes.arrayOf(
-    PropTypes.shape({
-      name: PropTypes.string.isRequired,
-    })
-  ).isRequired,
-  catalogCategories: PropTypes.arrayOf(PropTypes.string).isRequired,
-  units: PropTypes.arrayOf(PropTypes.string).isRequired,
-  refetchFeasibleRecipes: PropTypes.func.isRequired,
-  updateCatalogRecipes: PropTypes.func.isRequired,
-  fetchError: PropTypes.string,
-};
 
 export default Recipes;
