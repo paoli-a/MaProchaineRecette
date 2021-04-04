@@ -8,7 +8,7 @@
     "start": "next start",
     "test": "jest --watch",
     "test:ci": "jest",
-    "lint": "eslint .",
+    "lint": "eslint --max-warnings=0 .",
     "end_to_end": "npx codeceptjs run --steps",
     "docs": "jsdoc -c jsdoc.conf.json"
   },
