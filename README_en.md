@@ -14,7 +14,6 @@ To be able to run the applicaiton, you need the following requirements:
 
 - [Python 3](https://www.python.org/) (preferably 3.8+)
 - [Node.js](https://nodejs.org/) (preferably 12+)
-- [Yarn](https://yarnpkg.com/)
 
 ### Procedure
 
@@ -47,7 +46,7 @@ The backend is then running. You can verify this by accessing the URL `http://12
 
 #### Frontend
 
-Then, in another terminal, install the frontend:
+Then, in another terminal, install the frontend and therefore also if necessary Yarn (`npm install --global yarn`):
 
 ```bash
 cd ma-prochaine-recette/frontend/
