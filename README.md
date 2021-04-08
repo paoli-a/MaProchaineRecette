@@ -14,7 +14,6 @@ Pour pouvoir lancer l'application, il vous faut installer une version de :
 
 - [Python 3](https://www.python.org/) (de préférence 3.8+)
 - [Node.js](https://nodejs.org/) (de préférence 12+)
-- [Yarn](https://yarnpkg.com/)
 
 ### Procédure
 
@@ -47,7 +46,7 @@ Le backend est alors en fonctionnement. Vous pouvez le vérifier en accédant à
 
 #### Frontend
 
-Il faut ensuite, dans un autre terminal, installer le frontend :
+Il faut ensuite, dans un autre terminal, installer le frontend et donc également si nécessaire Yarn (`npm install --global yarn`):
 
 ```bash
 cd ma-prochaine-recette/frontend/
