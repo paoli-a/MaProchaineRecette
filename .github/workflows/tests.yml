@@ -84,7 +84,7 @@ jobs:
         run: pipenv install
         working-directory: ./backend
       - name: Run end to end tests
-        run: yarn end_to_end
+        run: yarn e2e
         working-directory: ./frontend
         env:
           CI: true
