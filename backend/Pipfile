@@ -32,7 +32,7 @@ mypy = "0.812"
 django-stubs = "1.7.0"
 
 [packages]
-django = "3.1.7"
+django = "3.2"
 djangorestframework = "3.12.4"
 django-model-utils = "4.1.1"
 django-environ = "0.4.5"
