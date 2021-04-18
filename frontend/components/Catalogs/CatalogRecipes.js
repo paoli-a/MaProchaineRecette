@@ -4,6 +4,7 @@ import Recipe from "../Recipe/Recipe";
 import useFilterSearch from "../useFilterSearch";
 import axios from "axios";
 import { useCatalogRecipes } from "../../hooks/swrFetch";
+import { useAddCatalogRecipe } from "../../hooks/swrMutate";
 import { mutate } from "swr";
 
 /**
@@ -18,6 +19,11 @@ function CatalogRecipes() {
   const [deleteError, setDeleteError] = useState({});
   const [postError, setPostError] = useState("");
   const { catalogRecipes } = useCatalogRecipes();
+  const [addCatalogRecipe] = useAddCatalogRecipe({
+    onFailure: () => {
+      setPostError("L'ajout de recette a échoué.");
+    },
+  });
 
   const handleSupprClick = (id) => {
     axios
@@ -40,13 +46,6 @@ function CatalogRecipes() {
       });
   };
 
-  const updateCatalogRecipes = async (recipeToSend) => {
-    const { data } = await axios.post("/api/catalogs/recipes/", recipeToSend);
-    const updatedRecipes = catalogRecipes.slice();
-    updatedRecipes.push(data);
-    return updatedRecipes;
-  };
-
   const handleSubmit = async (data) => {
     const categories = data.categories.filter(Boolean);
     const recipeToSend = {
@@ -56,18 +55,7 @@ function CatalogRecipes() {
       duration: data.recipeTime,
       description: data.recipeDescription,
     };
-    const updatedRecipes = catalogRecipes.slice();
-    updatedRecipes.push(recipeToSend);
-    mutate("/api/catalogs/recipes/", updatedRecipes, false);
-    try {
-      await mutate(
-        "/api/catalogs/recipes/",
-        updateCatalogRecipes(recipeToSend)
-      );
-      mutate("/api/fridge/recipes/");
-    } catch (error) {
-      setPostError("L'ajout de recette a échoué.");
-    }
+    addCatalogRecipe({ recipeToSend });
   };
 
   const handleChangeSearch = (event) => {

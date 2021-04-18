@@ -3,6 +3,7 @@ import axios from "axios";
 import { useForm } from "react-hook-form";
 import useFilterSearch from "../useFilterSearch";
 import { useCatalogIngredients } from "../../hooks/swrFetch";
+import { useAddCatalogIngredient } from "../../hooks/swrMutate";
 import { mutate } from "swr";
 
 /**
@@ -17,35 +18,20 @@ function CatalogIngredients() {
   const [searchResults, setSearchResults] = useState("");
   const [deleteError, setDeleteError] = useState({});
   const { catalogIngredients } = useCatalogIngredients();
-
-  const updatePossibleIngredients = async (ingredientToSend) => {
-    const { data } = await axios.post(
-      "/api/catalogs/ingredients/",
-      ingredientToSend
-    );
-    const ingredientsListUpdated = catalogIngredients.slice();
-    ingredientsListUpdated.push({ name: data.name });
-    return ingredientsListUpdated;
-  };
+  const [addCatalogIngredient] = useAddCatalogIngredient({
+    onSuccess: () => reset(),
+    onFailure: () => {
+      setError("ingredientName", {
+        message: "L'ajout a échoué.",
+      });
+    },
+  });
 
   const onSubmitWrapper = async (dataForm) => {
     const ingredientToSend = {
       name: dataForm.ingredientName,
     };
-    const ingredientsListUpdated = catalogIngredients.slice();
-    ingredientsListUpdated.push(ingredientToSend);
-    mutate("/api/catalogs/ingredients/", ingredientsListUpdated, false);
-    try {
-      await mutate(
-        "/api/catalogs/ingredients/",
-        updatePossibleIngredients(ingredientToSend)
-      );
-      reset();
-    } catch (error) {
-      setError("ingredientName", {
-        message: "L'ajout a échoué.",
-      });
-    }
+    addCatalogIngredient({ ingredientToSend });
   };
 
   const handleSupprClick = (name) => {

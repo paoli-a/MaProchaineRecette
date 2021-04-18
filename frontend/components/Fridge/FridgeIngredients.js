@@ -35,21 +35,7 @@ function FridgeIngredients() {
   };
 
   const updateFridgeIngredients = async (newIngredient) => {
-    const { data } = await axios.post(
-      "/api/fridge/ingredients/",
-      newIngredient
-    );
-    const newData = {
-      id: data.id,
-      name: data.ingredient,
-      expirationDate: new Date(data.expiration_date),
-      amount: data.amount,
-      unit: data.unit,
-    };
-    const ingredientsListUpdated = fridgeIngredients.slice();
-    eliminateIngredientWithId(ingredientsListUpdated, data.id);
-    ingredientsListUpdated.push(newData);
-    return ingredientsListUpdated;
+    await axios.post("/api/fridge/ingredients/", newIngredient);
   };
 
   const handleSubmit = async (data) => {
@@ -59,15 +45,9 @@ function FridgeIngredients() {
       amount: data.ingredientAmount + "",
       unit: data.unit,
     };
-    const ingredientsListUpdated = fridgeIngredients.slice();
-    eliminateIngredientWithId(ingredientsListUpdated, data.id);
-    ingredientsListUpdated.push(newIngredient);
-    mutate("/api/fridge/ingredients/", ingredientsListUpdated, false);
     try {
-      await mutate(
-        "/api/fridge/ingredients/",
-        updateFridgeIngredients(newIngredient)
-      );
+      await updateFridgeIngredients(newIngredient);
+      mutate("/api/fridge/ingredients/");
       mutate("/api/fridge/recipes/");
     } catch (error) {
       setPostError("L'ajout de l'ingrédient a échoué.");

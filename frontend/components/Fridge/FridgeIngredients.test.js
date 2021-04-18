@@ -133,7 +133,6 @@ was not successful on backend side`, async () => {
       getByText,
       getAllByRole,
     } = await renderIngredients();
-    const values = ["Fraises", 1, "2100-04-03", "kg"];
     axios.get.mockResolvedValue({
       data: [
         {
@@ -166,6 +165,7 @@ was not successful on backend side`, async () => {
         },
       ],
     });
+    const values = ["Fraises", 1, "2100-04-03", "kg"];
     await addIngredient(getByLabelText, getByText, values);
     const ingredient = getByText("Fraises", { exact: false });
     const listItems = getAllByRole("listitem");
@@ -430,7 +430,7 @@ was not successful on backend side`, async () => {
   ) {
     const axiosPostResponse = {
       data: {
-        id: 3,
+        id: 4,
         ingredient: value[0],
         expiration_date: value[2],
         amount: value[1] + "",
