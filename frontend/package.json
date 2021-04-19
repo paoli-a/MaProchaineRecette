@@ -22,7 +22,7 @@
     "react-hook-form": "^6.15.5",
     "sass": "^1.32.8",
     "stopword": "^1.0.7",
-    "swr": "^0.5.4",
+    "swr": "^0.5.5",
     "use-mutation": "^2.1.0"
   },
   "devDependencies": {
