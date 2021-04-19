@@ -20,7 +20,7 @@
     "react-dom": "^17.0.2",
     "react-highlight-words": "^0.17.0",
     "react-hook-form": "^6.15.5",
-    "sass": "^1.32.8",
+    "sass": "^1.32.10",
     "stopword": "^1.0.7",
     "swr": "^0.5.5",
     "use-mutation": "^2.1.0"
