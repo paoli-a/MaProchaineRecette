@@ -8757,10 +8757,10 @@ react-highlight-words@^0.17.0:
     memoize-one "^4.0.0"
     prop-types "^15.5.8"
 
-react-hook-form@^6.15.5:
-  version "6.15.5"
-  resolved "https://registry.yarnpkg.com/react-hook-form/-/react-hook-form-6.15.5.tgz#c2578f9ce6a6df7b33015587d40cd880dc13e2db"
-  integrity sha512-so2jEPYKdVk1olMo+HQ9D9n1hVzaPPFO4wsjgSeZ964R7q7CHsYRbVF0PGBi83FcycA5482WHflasdwLIUVENg==
+react-hook-form@^7.2.0:
+  version "7.2.0"
+  resolved "https://registry.yarnpkg.com/react-hook-form/-/react-hook-form-7.2.0.tgz#bc7f7a437fcf921c4bfb08ca7e2d10074ac7ee45"
+  integrity sha512-kyssYtYMdhSowvUz/E1g5KqJOorjv0S0pvUluK2c1PpbFLM8Tz0MRG5l29aZKP4SoCdI4BitHfTd9uo88D6tDA==
 
 react-is@16.13.1, react-is@^16.8.1:
   version "16.13.1"
