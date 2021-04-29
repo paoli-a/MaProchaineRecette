@@ -45,9 +45,8 @@ function RecipesToolbar({ onChangeCategories, onChangeSearch, categories }) {
           className="collapsible-with-button__list-container collapsible-checkbox__input"
           type="checkbox"
           value={category}
-          name={category}
           aria-label={category}
-          ref={registerCategories}
+          {...registerCategories(category)}
           onClick={handleCheckbox}
         />
         {category}
@@ -94,11 +93,10 @@ function RecipesToolbar({ onChangeCategories, onChangeSearch, categories }) {
           <input
             className="searchbox__input"
             type="search"
-            name="q"
             placeholder="Recherche..."
             spellCheck="true"
             size="30"
-            ref={registerSearch}
+            {...registerSearch("q")}
           />
           <button
             className=" searchbox__button button"

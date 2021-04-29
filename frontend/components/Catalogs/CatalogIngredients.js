@@ -108,12 +108,9 @@ function CatalogIngredients() {
                       : "form__input"
                   }
                   type="text"
-                  name="ingredientName"
                   id="ingredientName"
                   defaultValue=""
-                  ref={register({
-                    required: "Ce champ est obligatoire",
-                  })}
+                  {...register('ingredientName', { required: "Ce champ est obligatoire" })}
                   aria-required="true"
                   aria-invalid={errors.ingredientName ? "true" : "false"}
                 />
