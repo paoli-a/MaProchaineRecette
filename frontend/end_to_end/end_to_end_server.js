@@ -5,7 +5,10 @@ module.exports = {
     const databaseFile = "sqlite:///end_to_end_db.sqlite3";
     const backendPath = "../backend/maprochainerecette";
     const djangoEnv = `cd ${backendPath} && DATABASE_URL=${databaseFile}`;
-    execute(`${djangoEnv} pipenv run python manage.py flush --noinput`, true);
+    execute(
+      `${djangoEnv} pipenv run python manage.py reset_db --noinput`,
+      true
+    );
     execute(`${djangoEnv} pipenv run python manage.py makemigrations`, true);
     execute(
       `${djangoEnv} pipenv run python manage.py migrate --run-syncdb`,
