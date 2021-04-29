@@ -20,7 +20,6 @@ const InputSuggestions = React.forwardRef(function InputSuggestions(
     value,
     ...attributes
   } = props;
-
   const [elementsToPropose, setElementsToPropose] = useState([]);
 
   const handleElement = (event) => {
@@ -42,6 +41,7 @@ const InputSuggestions = React.forwardRef(function InputSuggestions(
       return true;
     });
     setElementsToPropose(elementsFiltered);
+    attributes && attributes.onChange && attributes.onChange(event);
   };
 
   return (

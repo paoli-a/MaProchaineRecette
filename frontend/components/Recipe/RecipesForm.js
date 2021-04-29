@@ -9,7 +9,14 @@ import {
 } from "../../hooks/swrFetch";
 
 function RecipesForm({ onSubmitRecipe }) {
-  const { register, handleSubmit, errors, reset, watch, getValues } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+    watch,
+    getValues,
+  } = useForm();
   const [ingredients, setIngredients] = useState([]);
   const [ingredientName, setIngredientName] = useState("");
   const [ingredientAmount, setIngredientAmount] = useState("");
@@ -144,7 +151,7 @@ function RecipesForm({ onSubmitRecipe }) {
               type="text"
               id="recipeTitle"
               defaultValue=""
-              {...register('recipeTitle', { required: true })}
+              {...register("recipeTitle", { required: true })}
               aria-invalid={errors.ingredientName ? "true" : "false"}
               aria-required="true"
             />
@@ -165,7 +172,9 @@ function RecipesForm({ onSubmitRecipe }) {
                     type="checkbox"
                     value={category}
                     aria-label={category}
-                    {...register(`categories[${index}]`, { validate: validateCategories })}
+                    {...register(`categories[${index}]`, {
+                      validate: validateCategories,
+                    })}
                     aria-invalid={errors.categories ? "true" : "false"}
                     id={`category-${index}`}
                   />
@@ -192,7 +201,10 @@ function RecipesForm({ onSubmitRecipe }) {
               }
               type="time"
               id="recipeTime"
-              {...register('recipeTime', { required: "Ce champ est obligatoire", validate: validateTime })}
+              {...register("recipeTime", {
+                required: "Ce champ est obligatoire",
+                validate: validateTime,
+              })}
               aria-invalid={errors.recipeTime ? "true" : "false"}
               aria-required="true"
             />
@@ -293,7 +305,7 @@ function RecipesForm({ onSubmitRecipe }) {
             }
             id="recipeDescription"
             spellCheck="true"
-            {...register('recipeDescription', { required: true })}
+            {...register("recipeDescription", { required: true })}
             aria-invalid={errors.recipeDescription ? "true" : "false"}
             aria-required="true"
           ></textarea>

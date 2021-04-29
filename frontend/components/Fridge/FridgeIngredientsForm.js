@@ -5,8 +5,19 @@ import PropTypes from "prop-types";
 import { useCatalogIngredients, useUnits } from "../../hooks/swrFetch";
 
 function FridgeIngredientsForm({ onSubmit }) {
-  const { register, handleSubmit, errors, reset, getValues } = useForm({
-    defaultValues: { ingredientName: "" },
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+    getValues,
+  } = useForm({
+    defaultValues: {
+      ingredientName: "",
+      ingredientAmount: "",
+      unit: "",
+      expirationDate: "",
+    },
   });
   const { catalogIngredients } = useCatalogIngredients();
   const { units } = useUnits();
@@ -74,7 +85,10 @@ function FridgeIngredientsForm({ onSubmit }) {
               }
               aria-invalid={errors.ingredientName ? "true" : "false"}
               aria-required="true"
-              {...register('ingredientName', { required: "Ce champ est obligatoire", validate: validateIngredientName})}
+              {...register("ingredientName", {
+                required: "Ce champ est obligatoire",
+                validate: validateIngredientName,
+              })}
             />
             {errors.ingredientName && (
               <p className="form__error-message" role="alert">
@@ -98,7 +112,10 @@ function FridgeIngredientsForm({ onSubmit }) {
                 type="number"
                 id="ingredientAmount"
                 defaultValue=""
-                {...register('ingredientAmount', { required: "Ce champ est obligatoire", validate: validateAmount})}
+                {...register("ingredientAmount", {
+                  required: "Ce champ est obligatoire",
+                  validate: validateAmount,
+                })}
                 aria-invalid={errors.ingredientName ? "true" : "false"}
                 aria-required="true"
               />
@@ -116,7 +133,7 @@ function FridgeIngredientsForm({ onSubmit }) {
                     : "form__combined-select"
                 }
                 defaultValue=""
-                {...register('unit', { required: true})}
+                {...register("unit", { required: true })}
                 aria-label="Unité"
                 aria-invalid={errors.ingredientName ? "true" : "false"}
                 aria-required="true"
@@ -151,9 +168,12 @@ function FridgeIngredientsForm({ onSubmit }) {
               }
               type="date"
               id="expirationDate"
-              {...register('expirationDate', { required: "Ce champ est obligatoire", validate: validateDate})}
               aria-invalid={errors.ingredientName ? "true" : "false"}
               aria-required="true"
+              {...register("expirationDate", {
+                required: "Ce champ est obligatoire",
+                validate: validateDate,
+              })}
             />
             {errors.expirationDate && (
               <p className="form__error-message" role="alert">
