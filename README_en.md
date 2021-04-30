@@ -12,8 +12,8 @@ Currently the only form of installation is the local one from sources.
 
 To be able to run the applicaiton, you need the following requirements:
 
-- [Python 3](https://www.python.org/) (preferably 3.8+)
-- [Node.js](https://nodejs.org/) (preferably 12+)
+- [Python 3](https://www.python.org/) (preferably 3.9+)
+- [Node.js](https://nodejs.org/) (preferably 16+)
 
 ### Procedure
 
