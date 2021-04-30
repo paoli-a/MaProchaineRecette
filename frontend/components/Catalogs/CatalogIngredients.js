@@ -14,7 +14,13 @@ import { mutate } from "swr";
  * @component
  */
 function CatalogIngredients() {
-  const { register, handleSubmit, errors, reset, setError } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+    setError,
+  } = useForm();
   const [searchResults, setSearchResults] = useState("");
   const [deleteError, setDeleteError] = useState({});
   const { catalogIngredients } = useCatalogIngredients();
@@ -108,10 +114,9 @@ function CatalogIngredients() {
                       : "form__input"
                   }
                   type="text"
-                  name="ingredientName"
                   id="ingredientName"
                   defaultValue=""
-                  ref={register({
+                  {...register("ingredientName", {
                     required: "Ce champ est obligatoire",
                   })}
                   aria-required="true"

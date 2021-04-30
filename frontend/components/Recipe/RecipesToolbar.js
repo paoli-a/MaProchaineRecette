@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import PropTypes from "prop-types";
 
@@ -19,15 +19,20 @@ function RecipesToolbar({ onChangeCategories, onChangeSearch, categories }) {
     handleSubmit: handleSubmitSearch,
   } = useForm();
   const [isPannelOpen, setPannelOpen] = useState(false);
+  const [categoryValuesUpdated, setCategoryValuesUpdated] = useState(0);
 
   const handlePannelClick = () => setPannelOpen(!isPannelOpen);
 
   const handleCheckbox = () => {
+    setCategoryValuesUpdated(categoryValuesUpdated + 1);
+  };
+
+  useEffect(() => {
     const data = getCategoriesValues();
     const categoriesValues = Object.values(data);
     const filteredValues = categoriesValues.filter(Boolean);
     onChangeCategories(filteredValues);
-  };
+  }, [categoryValuesUpdated]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleSearch = (data) => {
     const search = data.q;
@@ -45,10 +50,9 @@ function RecipesToolbar({ onChangeCategories, onChangeSearch, categories }) {
           className="collapsible-with-button__list-container collapsible-checkbox__input"
           type="checkbox"
           value={category}
-          name={category}
           aria-label={category}
-          ref={registerCategories}
           onClick={handleCheckbox}
+          {...registerCategories(category)}
         />
         {category}
         <span className="collapsible-with-button__list-container collapsible-checkbox__span">
@@ -94,11 +98,10 @@ function RecipesToolbar({ onChangeCategories, onChangeSearch, categories }) {
           <input
             className="searchbox__input"
             type="search"
-            name="q"
             placeholder="Recherche..."
             spellCheck="true"
             size="30"
-            ref={registerSearch}
+            {...registerSearch("q")}
           />
           <button
             className=" searchbox__button button"
