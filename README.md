@@ -12,8 +12,8 @@ Actuellement la seule forme d'installation est l'installation locale à partir d
 
 Pour pouvoir lancer l'application, il vous faut installer une version de :
 
-- [Python 3](https://www.python.org/) (de préférence 3.8+)
-- [Node.js](https://nodejs.org/) (de préférence 12+)
+- [Python 3](https://www.python.org/) (de préférence 3.9+)
+- [Node.js](https://nodejs.org/) (de préférence 16+)
 
 ### Procédure
 
