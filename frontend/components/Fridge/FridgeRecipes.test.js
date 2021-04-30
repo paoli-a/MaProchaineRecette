@@ -1,12 +1,6 @@
 /* eslint-disable testing-library/no-await-sync-query */
 import React from "react";
-import {
-  render,
-  fireEvent,
-  act,
-  within,
-  waitFor,
-} from "@testing-library/react";
+import { render, fireEvent, act, within } from "@testing-library/react";
 import FridgeRecipes from "./FridgeRecipes";
 import { axiosGetGlobalMock } from "../testUtils";
 import { SWRConfig, cache } from "swr";
@@ -82,8 +76,8 @@ describe("the category filtration functionality works properly", () => {
     const recipeTitle1 = getByText("Salade de pommes de terre radis");
     const recipeTitle2 = queryByText("Marinade de saumon fumé");
     const recipeTitle3 = queryByText("Crumble aux poires");
-    await waitFor(() => expect(recipeTitle1).toBeInTheDocument());
-    await waitFor(() => expect(recipeTitle2).not.toBeInTheDocument());
+    expect(recipeTitle1).toBeInTheDocument();
+    expect(recipeTitle2).not.toBeInTheDocument();
     expect(recipeTitle3).not.toBeInTheDocument();
   });
 
