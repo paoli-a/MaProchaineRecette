@@ -12,9 +12,46 @@
     padding-inline-start: 2%;
   }
   &__ingredient {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
+    display: grid;
+    grid-template-columns: 7fr 1fr 1fr;
+    margin-top: 2rem;
+  }
+  &__ingredient-name {
+    margin-bottom: 0.8rem;
+    margin-top: 0;
+  }
+}
+
+.fridge-ingredient-details {
+  list-style-type: none;
+  padding: 0;
+
+  &__label {
+    font-size: 0.9rem;
+    opacity: 0.8;
+  }
+  &__expiration {
+    margin-top: 0.3rem;
+  }
+  &__delete {
+    grid-column: 3 / 4;
+  }
+  &__edit {
+    grid-column: 2 / 3;
+  }
+  &__delete,
+  &__edit {
+    grid-row: 1 / 2;
+    width: 2.3rem;
+    height: 2.3rem;
+    border: none;
+    background: none;
+    padding: 0.1rem;
+  }
+  &__delete-img,
+  &__edit-img {
+    width: 1.5rem;
+    height: 1.5rem;
   }
 }
 

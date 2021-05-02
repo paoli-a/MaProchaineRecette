@@ -68,13 +68,43 @@ function FridgeIngredients() {
     return (
       <React.Fragment key={ingredient.id}>
         <li className="fridge-ingredients__ingredient" key={ingredient.id}>
-          - {ingredient.name} : {ingredient.amount} {ingredient.unit}.
-          Expiration : {formatedDate}.
+          <h3 className="fridge-ingredients__ingredient-name">
+            {ingredient.name}
+          </h3>
+          <ul className="fridge-ingredients__details fridge-ingredient-details">
+            <li className="fridge-ingredient-details__amount">
+              <span className="fridge-ingredient-details__label">
+                Quantité :
+              </span>{" "}
+              <span className="fridge-ingredient-details__value">
+                {ingredient.amount} {ingredient.unit}
+              </span>
+            </li>
+            <li className="fridge-ingredient-details__expiration">
+              <span className="fridge-ingredient-details__label">
+                Expiration :
+              </span>{" "}
+              <span className="fridge-ingredient-details__value">
+                {formatedDate}
+              </span>
+            </li>
+          </ul>
+          <button className="button fridge-ingredient-details__edit">
+            <img
+              className="fridge-ingredient-details__edit-img"
+              src="images/edit.svg"
+              alt="Modifier"
+            />
+          </button>
           <button
-            className="button"
+            className="button fridge-ingredient-details__delete"
             onClick={() => handleSupprClick(ingredient.id)}
           >
-            Supprimer
+            <img
+              className="fridge-ingredient-details__delete-img"
+              src="images/delete.svg"
+              alt="Supprimer"
+            />
           </button>
         </li>
         {deleteError.id === ingredient.id && <span>{deleteError.message}</span>}
