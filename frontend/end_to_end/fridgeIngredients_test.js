@@ -32,14 +32,14 @@ Scenario("Add new fridge ingredient", ({ I }) => {
     I.see("échalotte");
     I.see("herbes fraiches");
   });
-  I.click("Supprimer");
-  I.click("Supprimer");
+  I.click(locate("img").withAttr({ alt: "Supprimer" }));
+  I.click(locate("img").withAttr({ alt: "Supprimer" }));
 });
 
 Scenario("Remove fridge ingredient", ({ I }) => {
   I.amOnPage("/");
   I.see("échalotte");
-  I.click("Supprimer");
+  I.click(locate("img").withAttr({ alt: "Supprimer" }));
   I.dontSee("échalotte");
 }).retry(2);
 
@@ -59,7 +59,7 @@ still there`,
       I.see("échalotte");
       I.see("herbes fraiches");
     });
-    I.click("Supprimer");
-    I.click("Supprimer");
+    I.click(locate("img").withAttr({ alt: "Supprimer" }));
+    I.click(locate("img").withAttr({ alt: "Supprimer" }));
   }
 );
