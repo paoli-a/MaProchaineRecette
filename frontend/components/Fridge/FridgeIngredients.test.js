@@ -46,26 +46,32 @@ describe("correct display of an ingredient", () => {
   it("renders expiration dates of ingredients", async () => {
     const { getByText } = await renderIngredients();
     const ingredient2 = getByText("Mascarpone", { exact: false });
-    const expectedDate = fridgeIngredients[1].expiration_date.toLocaleDateString();
-    expect(ingredient2.textContent).toContain(expectedDate);
+    const parentListItem = ingredient2.parentElement;
+    const expectedDateContent = fridgeIngredients[1].expiration_date.toLocaleDateString();
+    const expectedDate = within(parentListItem).getByText(expectedDateContent);
+    expect(expectedDate).toBeInTheDocument();
   });
 
   it("renders quantities of ingredients", async () => {
     const { getByText } = await renderIngredients();
     const ingredient1 = getByText("Epinards", { exact: false });
-    expect(ingredient1.textContent).toContain("60");
+    const parentListItem = ingredient1.parentElement;
+    const quantity = within(parentListItem).getByText(/60 /);
+    expect(quantity).toBeInTheDocument();
   });
 
   it("renders units of ingredients", async () => {
     const { getByText } = await renderIngredients();
     const ingredient1 = getByText("Epinards", { exact: false });
-    expect(ingredient1.textContent).toContain("60 g");
+    const parentListItem = ingredient1.parentElement;
+    const unit = within(parentListItem).getByText(/ g/);
+    expect(unit).toBeInTheDocument();
   });
 
   it("renders the right number of ingredients", async () => {
     const { getAllByRole } = await renderIngredients();
-    const listItems = getAllByRole("listitem");
-    expect(listItems).toHaveLength(3);
+    const ingredients = getAllByRole("heading", { level: 3 });
+    expect(ingredients).toHaveLength(3);
   });
 });
 
@@ -84,7 +90,8 @@ describe("functionalities work properly", () => {
     const axiosDeleteResponse = { data: "" };
     axios.delete.mockResolvedValue(axiosDeleteResponse);
     let ingredient = getByText("Epinards", { exact: false });
-    const button = within(ingredient).getByText("Supprimer");
+    const parentListItem = ingredient.parentElement;
+    const button = within(parentListItem).getByAltText("Supprimer");
     fireEvent.click(button);
     axios.get.mockResolvedValue({
       data: [
@@ -106,9 +113,9 @@ describe("functionalities work properly", () => {
     });
     await waitFor(() => expect(axios.delete).toHaveBeenCalledTimes(1));
     ingredient = queryByText("Epinards", { exact: false });
-    const listItems = getAllByRole("listitem");
     expect(ingredient).not.toBeInTheDocument();
-    expect(listItems).toHaveLength(2);
+    const ingredients = getAllByRole("heading", { level: 3 });
+    expect(ingredients).toHaveLength(2);
   });
 
   it(`displays an error message and keeps the ingredient if the ingredient removal
@@ -117,7 +124,8 @@ was not successful on backend side`, async () => {
     const axiosDeleteResponse = { data: "" };
     axios.delete.mockRejectedValue(axiosDeleteResponse);
     const ingredientToRemoved = getByText("Epinards", { exact: false });
-    const button = within(ingredientToRemoved).getByText("Supprimer");
+    const parentListItem = ingredientToRemoved.parentElement;
+    const button = within(parentListItem).getByAltText("Supprimer");
     fireEvent.click(button);
     await waitFor(() => expect(axios.delete).toHaveBeenCalledTimes(1));
     expect(ingredientToRemoved).toBeInTheDocument();
@@ -168,11 +176,16 @@ was not successful on backend side`, async () => {
     const values = ["Fraises", 1, "2100-04-03", "kg"];
     await addIngredient(getByLabelText, getByText, values);
     const ingredient = getByText("Fraises", { exact: false });
-    const listItems = getAllByRole("listitem");
     const expectedDate = new Date("2100-04-03");
-    expect(listItems).toHaveLength(4);
-    expect(ingredient.textContent).toContain("1 kg");
-    expect(ingredient.textContent).toContain(expectedDate.toLocaleDateString());
+    const ingredients = getAllByRole("heading", { level: 3 });
+    expect(ingredients).toHaveLength(4);
+    const parentListItem = ingredient.parentElement;
+    const quantity = within(parentListItem).getByText("1 kg");
+    const expectedDateString = within(parentListItem).getByText(
+      expectedDate.toLocaleDateString()
+    );
+    expect(quantity).toBeInTheDocument();
+    expect(expectedDateString).toBeInTheDocument();
   });
 
   it(`does not add the ingredient if no amount was provided`, async () => {
@@ -375,7 +388,7 @@ was not successful on backend side`, async () => {
       fireEvent.click(submitButton);
     });
     await waitFor(() => expect(axios.post).toHaveBeenCalledTimes(2));
-    fraises = getByText(/Fraises : /);
+    fraises = getByText(/Fraises/);
     expect(fraises).toBeInTheDocument();
     expect(queryByText(/53/)).not.toBeInTheDocument();
     expect(queryByText(/27/)).not.toBeInTheDocument();

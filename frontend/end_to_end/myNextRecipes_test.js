@@ -141,7 +141,7 @@ Scenario(
   ({ I }) => {
     I.amOnPage("/");
     I.see("Marinade");
-    I.click("Supprimer");
+    I.click(locate("img").withAttr({ alt: "Supprimer" }));
     I.click("Ma prochaine recette");
     I.dontSee("Marinade");
     I.dontSee("Salade");
