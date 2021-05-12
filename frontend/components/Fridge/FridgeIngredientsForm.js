@@ -1,10 +1,10 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import InputSuggestions from "../InputSuggestions/InputSuggestions";
 import PropTypes from "prop-types";
 import { useCatalogIngredients, useUnits } from "../../hooks/swrFetch";
 
-function FridgeIngredientsForm({ onSubmit }) {
+function FridgeIngredientsForm({ onSubmit, isEdit }) {
   const {
     register,
     handleSubmit,
@@ -63,11 +63,26 @@ function FridgeIngredientsForm({ onSubmit }) {
       return "L'ingrédient est déjà perimé";
     } else return undefined;
   };
+  const inputSuggestionsRef = useRef(null);
+  const { ref, ...rest } = register("ingredientName", {
+    required: "Ce champ est obligatoire",
+    validate: validateIngredientName,
+  });
+  useEffect(() => {
+    if (inputSuggestionsRef.current && isEdit) {
+      inputSuggestionsRef.current.focus();
+    }
+  }, [isEdit]);
 
   return (
     <form className="form" onSubmit={handleSubmit(onSubmitWrapper)}>
       <fieldset>
-        <legend>Ajouter un ingredient frigo :</legend>
+        <legend>
+          {" "}
+          {isEdit
+            ? "Modifier un ingrédient frigo :"
+            : "Ajouter un ingrédient frigo :"}
+        </legend>
         <div className="form__paragraph">
           <label className="form__label" htmlFor="ingredientName">
             Nom de l'ingrédient :{" "}
@@ -85,10 +100,11 @@ function FridgeIngredientsForm({ onSubmit }) {
               }
               aria-invalid={errors.ingredientName ? "true" : "false"}
               aria-required="true"
-              {...register("ingredientName", {
-                required: "Ce champ est obligatoire",
-                validate: validateIngredientName,
-              })}
+              {...rest}
+              ref={{
+                ref1: ref,
+                ref2: inputSuggestionsRef,
+              }}
             />
             {errors.ingredientName && (
               <p className="form__error-message" role="alert">
@@ -186,7 +202,7 @@ function FridgeIngredientsForm({ onSubmit }) {
           <input
             className="button form__submit"
             type="submit"
-            value="Confirmer"
+            value={isEdit ? "Modifier" : "Ajouter"}
           />
         </p>
       </fieldset>
@@ -197,10 +213,15 @@ function FridgeIngredientsForm({ onSubmit }) {
 FridgeIngredientsForm.propTypes = {
   /**
    * Cette fonction est exécutée au moment du submit de l'ingrédient,
-   * lorsque la validité de tous les éléments entrés a été vérifiée,
+   * lorsque la valisetEditFunctionalitydité de tous les éléments entrés a été vérifiée,
    * et permet de les récupérer.
    */
   onSubmit: PropTypes.func.isRequired,
+  /**
+   * Booléen à true si la fonctionnalité de edit a été activée et à
+   * false si c'est la fonctionnalité d'ajout d'ingrédient.
+   */
+  isEdit: PropTypes.bool.isRequired,
 };
 
 export default FridgeIngredientsForm;

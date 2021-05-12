@@ -15,6 +15,7 @@ function FridgeIngredients() {
   const [postError, setPostError] = useState("");
   const [deleteError, setDeleteError] = useState({});
   const { fridgeIngredients } = useFridgeIngredients();
+  const [editFunctionality, setEditFunctionality] = useState(false);
 
   const handleSupprClick = (id) => {
     axios
@@ -34,6 +35,10 @@ function FridgeIngredients() {
       });
   };
 
+  const handleEditClick = (id) => {
+    setEditFunctionality(true);
+  };
+
   const updateFridgeIngredients = async (newIngredient) => {
     await axios.post("/api/fridge/ingredients/", newIngredient);
   };
@@ -49,6 +54,7 @@ function FridgeIngredients() {
       await updateFridgeIngredients(newIngredient);
       mutate("/api/fridge/ingredients/");
       mutate("/api/fridge/recipes/");
+      setEditFunctionality(false);
     } catch (error) {
       setPostError("L'ajout de l'ingrédient a échoué.");
     }
@@ -89,7 +95,10 @@ function FridgeIngredients() {
               </span>
             </li>
           </ul>
-          <button className="button fridge-ingredient-details__edit">
+          <button
+            className="button fridge-ingredient-details__edit"
+            onClick={() => handleEditClick(ingredient.id)}
+          >
             <img
               className="fridge-ingredient-details__edit-img"
               src="images/edit.svg"
@@ -117,7 +126,10 @@ function FridgeIngredients() {
       <h2 className="fridge-ingredients__title-h2">
         Voici les ingrédients du frigo !
       </h2>
-      <FridgeIngredientsForm onSubmit={handleSubmit} />
+      <FridgeIngredientsForm
+        onSubmit={handleSubmit}
+        isEdit={editFunctionality}
+      />
       {postError && <span>{postError}</span>}
       <ul className="fridge-ingredients__list">{ingredientElement}</ul>
     </section>

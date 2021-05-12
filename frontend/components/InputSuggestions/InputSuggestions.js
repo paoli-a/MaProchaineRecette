@@ -21,6 +21,11 @@ const InputSuggestions = React.forwardRef(function InputSuggestions(
     ...attributes
   } = props;
   const [elementsToPropose, setElementsToPropose] = useState([]);
+  let ref1, ref2;
+  if (ref) {
+    ref1 = ref.ref1;
+    ref2 = ref.ref2;
+  }
 
   const handleElement = (event) => {
     if (onChangeValue) {
@@ -53,7 +58,14 @@ const InputSuggestions = React.forwardRef(function InputSuggestions(
         value={value}
         onChange={handleElement}
         autoComplete="off"
-        ref={ref}
+        ref={(e) => {
+          if (ref1) {
+            ref1 = ref1.current = e;
+          }
+          if (ref2) {
+            ref2 = ref2.current = e;
+          }
+        }}
       />
       <datalist id={id + "list"}>
         {elementsToPropose.map((element) => {
