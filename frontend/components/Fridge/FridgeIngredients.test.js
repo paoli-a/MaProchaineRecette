@@ -495,7 +495,7 @@ describe("functionalities work properly", () => {
       expect(ingredientName).toHaveFocus();
       expect(getByDisplayValue("60")).toBeInTheDocument();
       expect(getByDisplayValue("g")).toBeInTheDocument();
-      expect(getByDisplayValue(/2100-05-14/)).toBeInTheDocument();
+      expect(getByDisplayValue(/2100/)).toBeInTheDocument();
     });
   });
 
