@@ -471,9 +471,15 @@ describe("functionalities work properly", () => {
       }
     }
   });
+
   describe("edit functionality", () => {
-    it(`changes the state when clicking on an edit button`, async () => {
-      const { getByText, queryByText } = await renderIngredients();
+    it(`transforms the firdge ingredient add form to an edit form when
+     clicking on an edit button`, async () => {
+      const {
+        getByText,
+        queryByText,
+        getByDisplayValue,
+      } = await renderIngredients();
       let ingredient = getByText("Epinards", { exact: false });
       const parentListItem = ingredient.parentElement;
       const button = within(parentListItem).getByAltText("Modifier");
@@ -484,6 +490,12 @@ describe("functionalities work properly", () => {
       ).not.toBeInTheDocument();
       expect(getByText("Modifier")).toBeInTheDocument();
       expect(queryByText("Ajouter")).not.toBeInTheDocument();
+      const ingredientName = getByDisplayValue("Epinards");
+      expect(ingredientName).toBeInTheDocument();
+      expect(ingredientName).toHaveFocus();
+      expect(getByDisplayValue("60")).toBeInTheDocument();
+      expect(getByDisplayValue("g")).toBeInTheDocument();
+      expect(getByDisplayValue(/2100-05-14/)).toBeInTheDocument();
     });
   });
 

@@ -16,6 +16,7 @@ function FridgeIngredients() {
   const [deleteError, setDeleteError] = useState({});
   const { fridgeIngredients } = useFridgeIngredients();
   const [editFunctionality, setEditFunctionality] = useState(false);
+  const [ingredientToEdit, setIngredientToEdit] = useState({});
 
   const handleSupprClick = (id) => {
     axios
@@ -37,6 +38,13 @@ function FridgeIngredients() {
 
   const handleEditClick = (id) => {
     setEditFunctionality(true);
+    fridgeIngredients.forEach((ingredientObject) => {
+      for (const key in ingredientObject) {
+        if (key === "id" && ingredientObject[key] === id) {
+          setIngredientToEdit(ingredientObject);
+        }
+      }
+    });
   };
 
   const updateFridgeIngredients = async (newIngredient) => {
@@ -128,6 +136,7 @@ function FridgeIngredients() {
       </h2>
       <FridgeIngredientsForm
         onSubmit={handleSubmit}
+        ingredientToEdit={ingredientToEdit}
         isEdit={editFunctionality}
       />
       {postError && <span>{postError}</span>}

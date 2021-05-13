@@ -4,13 +4,14 @@ import InputSuggestions from "../InputSuggestions/InputSuggestions";
 import PropTypes from "prop-types";
 import { useCatalogIngredients, useUnits } from "../../hooks/swrFetch";
 
-function FridgeIngredientsForm({ onSubmit, isEdit }) {
+function FridgeIngredientsForm({ onSubmit, ingredientToEdit, isEdit }) {
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
     getValues,
+    setValue,
   } = useForm({
     defaultValues: {
       ingredientName: "",
@@ -64,15 +65,29 @@ function FridgeIngredientsForm({ onSubmit, isEdit }) {
     } else return undefined;
   };
   const inputSuggestionsRef = useRef(null);
-  const { ref, ...rest } = register("ingredientName", {
-    required: "Ce champ est obligatoire",
-    validate: validateIngredientName,
-  });
-  useEffect(() => {
-    if (inputSuggestionsRef.current && isEdit) {
-      inputSuggestionsRef.current.focus();
+  const { ref: ingredientNameRef, ...ingredientNameRest } = register(
+    "ingredientName",
+    {
+      required: "Ce champ est obligatoire",
+      validate: validateIngredientName,
     }
-  }, [isEdit]);
+  );
+  useEffect(() => {
+    if (isEdit) {
+      if (inputSuggestionsRef.current) {
+        inputSuggestionsRef.current.focus();
+      }
+      if (ingredientToEdit) {
+        setValue("ingredientName", ingredientToEdit.name);
+        setValue("ingredientAmount", ingredientToEdit.amount);
+        setValue("unit", ingredientToEdit.unit);
+        setValue(
+          "expirationDate",
+          ingredientToEdit.expirationDate.toISOString().substring(0, 10)
+        );
+      }
+    }
+  }, [isEdit, ingredientToEdit]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <form className="form" onSubmit={handleSubmit(onSubmitWrapper)}>
@@ -100,10 +115,10 @@ function FridgeIngredientsForm({ onSubmit, isEdit }) {
               }
               aria-invalid={errors.ingredientName ? "true" : "false"}
               aria-required="true"
-              {...rest}
+              {...ingredientNameRest}
               ref={{
-                ref1: ref,
-                ref2: inputSuggestionsRef,
+                ref: ingredientNameRef,
+                customRef: inputSuggestionsRef,
               }}
             />
             {errors.ingredientName && (
@@ -217,6 +232,16 @@ FridgeIngredientsForm.propTypes = {
    * et permet de les récupérer.
    */
   onSubmit: PropTypes.func.isRequired,
+  /**
+   * Il s'agit de l'ingrédient du frigo qui va être modifié.
+   */
+  ingredientToEdit: PropTypes.shape({
+    id: PropTypes.number,
+    name: PropTypes.string,
+    expirationDate: PropTypes.object,
+    amount: PropTypes.string,
+    unit: PropTypes.string,
+  }).isRequired,
   /**
    * Booléen à true si la fonctionnalité de edit a été activée et à
    * false si c'est la fonctionnalité d'ajout d'ingrédient.
