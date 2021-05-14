@@ -15,6 +15,7 @@ function FridgeIngredients() {
   const [postError, setPostError] = useState("");
   const [deleteError, setDeleteError] = useState({});
   const { fridgeIngredients } = useFridgeIngredients();
+  const [ingredientToEdit, setIngredientToEdit] = useState(null);
 
   const handleSupprClick = (id) => {
     axios
@@ -32,6 +33,16 @@ function FridgeIngredients() {
             "La suppression a échoué. Veuillez réessayer ultérieurement.",
         });
       });
+  };
+
+  const handleEditClick = (id) => {
+    fridgeIngredients.forEach((ingredientObject) => {
+      for (const key in ingredientObject) {
+        if (key === "id" && ingredientObject[key] === id) {
+          setIngredientToEdit(ingredientObject);
+        }
+      }
+    });
   };
 
   const updateFridgeIngredients = async (newIngredient) => {
@@ -89,7 +100,10 @@ function FridgeIngredients() {
               </span>
             </li>
           </ul>
-          <button className="button fridge-ingredient-details__edit">
+          <button
+            className="button fridge-ingredient-details__edit"
+            onClick={() => handleEditClick(ingredient.id)}
+          >
             <img
               className="fridge-ingredient-details__edit-img"
               src="images/edit.svg"
@@ -117,7 +131,10 @@ function FridgeIngredients() {
       <h2 className="fridge-ingredients__title-h2">
         Voici les ingrédients du frigo !
       </h2>
-      <FridgeIngredientsForm onSubmit={handleSubmit} />
+      <FridgeIngredientsForm
+        onSubmit={handleSubmit}
+        ingredientToEdit={ingredientToEdit}
+      />
       {postError && <span>{postError}</span>}
       <ul className="fridge-ingredients__list">{ingredientElement}</ul>
     </section>

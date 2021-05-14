@@ -2,8 +2,15 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 
 /**
- * Ce composant est un input permettant d'afficher une liste de suggestions personnalisée.
- * Toutes les props supplémentaires seront transférées à la balise interne input.
+ * Ce composant est un input permettant d'afficher une liste de
+ * suggestions personnalisée.
+ * Toutes les props supplémentaires seront transférées à la balise
+ * interne input.
+ *
+ * La ref sera transférée à l'élément input. Elle peut aussi être
+ * structurée sous forme d'objet contenant deux refs, "ref" et
+ * "customRef", la première étant celle de react hook form, et la
+ * deuxième pouvant être utilisée par exemple à des fins de focus.
  *
  * @component
  */
@@ -53,7 +60,16 @@ const InputSuggestions = React.forwardRef(function InputSuggestions(
         value={value}
         onChange={handleElement}
         autoComplete="off"
-        ref={ref}
+        ref={(e) => {
+          if (ref) {
+            if (ref.customRef || ref.ref) {
+              if (ref.ref) ref.ref(e);
+              if (ref.customRef) ref.customRef.current = e;
+            } else if (ref) {
+              ref(e);
+            }
+          }
+        }}
       />
       <datalist id={id + "list"}>
         {elementsToPropose.map((element) => {

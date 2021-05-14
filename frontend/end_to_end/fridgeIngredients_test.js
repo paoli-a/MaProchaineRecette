@@ -27,7 +27,7 @@ Scenario("Add new fridge ingredient", ({ I }) => {
   I.fillField("Quantité :", "1");
   I.selectOption("Unité", "pièce(s)");
   I.fillField("Date de péremption :", "10102030");
-  I.click("Confirmer");
+  I.click("Ajouter");
   within(".fridge-ingredients__list", () => {
     I.see("échalotte");
     I.see("herbes fraiches");
@@ -52,7 +52,7 @@ still there`,
     I.fillField("Quantité :", "1");
     I.selectOption("Unité", "pièce(s)");
     I.fillField("Date de péremption :", "10102030");
-    I.click("Confirmer");
+    I.click("Ajouter");
     I.click("Catalogue des recettes");
     I.click("Ma prochaine recette");
     within(".fridge-ingredients__list", () => {
