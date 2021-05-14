@@ -4,7 +4,7 @@ import InputSuggestions from "../InputSuggestions/InputSuggestions";
 import PropTypes from "prop-types";
 import { useCatalogIngredients, useUnits } from "../../hooks/swrFetch";
 
-function FridgeIngredientsForm({ onSubmit, ingredientToEdit, isEdit }) {
+function FridgeIngredientsForm({ onSubmit, ingredientToEdit }) {
   const {
     register,
     handleSubmit,
@@ -73,28 +73,26 @@ function FridgeIngredientsForm({ onSubmit, ingredientToEdit, isEdit }) {
     }
   );
   useEffect(() => {
-    if (isEdit) {
+    if (ingredientToEdit) {
       if (inputSuggestionsRef.current) {
         inputSuggestionsRef.current.focus();
       }
-      if (ingredientToEdit) {
-        setValue("ingredientName", ingredientToEdit.name);
-        setValue("ingredientAmount", ingredientToEdit.amount);
-        setValue("unit", ingredientToEdit.unit);
-        setValue(
-          "expirationDate",
-          ingredientToEdit.expirationDate.toISOString().substring(0, 10)
-        );
-      }
+      setValue("ingredientName", ingredientToEdit.name);
+      setValue("ingredientAmount", ingredientToEdit.amount);
+      setValue("unit", ingredientToEdit.unit);
+      setValue(
+        "expirationDate",
+        ingredientToEdit.expirationDate.toISOString().substring(0, 10)
+      );
     }
-  }, [isEdit, ingredientToEdit]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [ingredientToEdit]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <form className="form" onSubmit={handleSubmit(onSubmitWrapper)}>
       <fieldset>
         <legend>
           {" "}
-          {isEdit
+          {ingredientToEdit
             ? "Modifier un ingrédient frigo :"
             : "Ajouter un ingrédient frigo :"}
         </legend>
@@ -217,7 +215,7 @@ function FridgeIngredientsForm({ onSubmit, ingredientToEdit, isEdit }) {
           <input
             className="button form__submit"
             type="submit"
-            value={isEdit ? "Modifier" : "Ajouter"}
+            value={ingredientToEdit ? "Modifier" : "Ajouter"}
           />
         </p>
       </fieldset>
@@ -228,7 +226,7 @@ function FridgeIngredientsForm({ onSubmit, ingredientToEdit, isEdit }) {
 FridgeIngredientsForm.propTypes = {
   /**
    * Cette fonction est exécutée au moment du submit de l'ingrédient,
-   * lorsque la valisetEditFunctionalitydité de tous les éléments entrés a été vérifiée,
+   * lorsque la validité de tous les éléments entrés a été vérifiée,
    * et permet de les récupérer.
    */
   onSubmit: PropTypes.func.isRequired,
@@ -241,12 +239,7 @@ FridgeIngredientsForm.propTypes = {
     expirationDate: PropTypes.object,
     amount: PropTypes.string,
     unit: PropTypes.string,
-  }).isRequired,
-  /**
-   * Booléen à true si la fonctionnalité de edit a été activée et à
-   * false si c'est la fonctionnalité d'ajout d'ingrédient.
-   */
-  isEdit: PropTypes.bool.isRequired,
+  }),
 };
 
 export default FridgeIngredientsForm;

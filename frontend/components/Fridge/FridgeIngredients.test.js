@@ -480,7 +480,7 @@ describe("functionalities work properly", () => {
         queryByText,
         getByDisplayValue,
       } = await renderIngredients();
-      let ingredient = getByText("Epinards", { exact: false });
+      const ingredient = getByText("Epinards", { exact: false });
       const parentListItem = ingredient.parentElement;
       const button = within(parentListItem).getByAltText("Modifier");
       fireEvent.click(button);

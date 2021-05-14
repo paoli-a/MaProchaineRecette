@@ -15,8 +15,7 @@ function FridgeIngredients() {
   const [postError, setPostError] = useState("");
   const [deleteError, setDeleteError] = useState({});
   const { fridgeIngredients } = useFridgeIngredients();
-  const [editFunctionality, setEditFunctionality] = useState(false);
-  const [ingredientToEdit, setIngredientToEdit] = useState({});
+  const [ingredientToEdit, setIngredientToEdit] = useState(null);
 
   const handleSupprClick = (id) => {
     axios
@@ -37,7 +36,6 @@ function FridgeIngredients() {
   };
 
   const handleEditClick = (id) => {
-    setEditFunctionality(true);
     fridgeIngredients.forEach((ingredientObject) => {
       for (const key in ingredientObject) {
         if (key === "id" && ingredientObject[key] === id) {
@@ -62,7 +60,6 @@ function FridgeIngredients() {
       await updateFridgeIngredients(newIngredient);
       mutate("/api/fridge/ingredients/");
       mutate("/api/fridge/recipes/");
-      setEditFunctionality(false);
     } catch (error) {
       setPostError("L'ajout de l'ingrédient a échoué.");
     }
@@ -137,7 +134,6 @@ function FridgeIngredients() {
       <FridgeIngredientsForm
         onSubmit={handleSubmit}
         ingredientToEdit={ingredientToEdit}
-        isEdit={editFunctionality}
       />
       {postError && <span>{postError}</span>}
       <ul className="fridge-ingredients__list">{ingredientElement}</ul>
