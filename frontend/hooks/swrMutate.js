@@ -155,7 +155,7 @@ async function deleteCatalogRecipe({ recipeToSend }) {
  * @param {object} obj two functions to be called when the
  *   backend reply arrives. One in case of success and one in
  *   case of failure.
- * @returns array containing a function to add catalog recipe,
+ * @returns array containing a function to remove catalog recipe,
  *   and an object with additional information like errors.
  */
 function useDeleteCatalogRecipe({ onSuccess, onFailure }) {
@@ -188,9 +188,61 @@ function useDeleteCatalogRecipe({ onSuccess, onFailure }) {
   });
 }
 
+async function deleteFridgeIngredient({ ingredientToSend }) {
+  try {
+    const response = await axios.delete(
+      `/api/fridge/ingredients/${ingredientToSend.id}/`
+    );
+    return response;
+  } catch (error) {
+    throw error.response ? error.response.data : [];
+  }
+}
+
+/**
+ * Hook using use-mutation lib, to make delete request removing a fridge
+ * ingredient and update optimistically the UI, with the possibility to
+ * rollback in case of error.
+ * @param {object} obj two functions to be called when the
+ *   backend reply arrives. One in case of success and one in
+ *   case of failure.
+ * @returns array containing a function to remove fridge ingredient,
+ *   and an object with additional information like errors.
+ */
+function useDeleteFridgeIngredient({ onSuccess, onFailure }) {
+  const key = "/api/fridge/ingredients/";
+  return useMutation(deleteFridgeIngredient, {
+    onMutate({ input }) {
+      const oldData = cache.get(key);
+      mutate(
+        key,
+        (current) => {
+          const fridgeIngredientsUpdated = current.slice();
+          const index = fridgeIngredientsUpdated.findIndex((ingredient) => {
+            return ingredient.id === input.ingredientToSend.id;
+          });
+          fridgeIngredientsUpdated.splice(index, 1);
+          return fridgeIngredientsUpdated;
+        },
+        false
+      );
+      return () => mutate(key, oldData, false);
+    },
+    onSuccess() {
+      mutate(key, (current) => current);
+      if (onSuccess) onSuccess();
+    },
+    onFailure({ rollback, input }) {
+      if (rollback) rollback();
+      if (onFailure) onFailure(input.ingredientToSend.id);
+    },
+  });
+}
+
 export {
   useAddCatalogIngredient,
   useAddCatalogRecipe,
   useDeleteCatalogIngredient,
   useDeleteCatalogRecipe,
+  useDeleteFridgeIngredient,
 };
