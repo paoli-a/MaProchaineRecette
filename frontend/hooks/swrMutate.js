@@ -140,7 +140,7 @@ function useDeleteCatalogIngredient({ onSuccess, onFailure }) {
 async function deleteCatalogRecipe({ recipeToSend }) {
   try {
     const response = await axios.delete(
-      `/api/catalogs/ingredients/${recipeToSend.id}/`
+      `/api/catalogs/recipes/${recipeToSend.id}/`
     );
     return response;
   } catch (error) {

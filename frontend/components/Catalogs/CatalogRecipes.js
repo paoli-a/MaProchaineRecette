@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { mutate } from "swr";
 import RecipesForm from "../Recipe/RecipesForm";
 import Recipe from "../Recipe/Recipe";
 import useFilterSearch from "../useFilterSearch";
@@ -26,6 +27,7 @@ function CatalogRecipes() {
     },
   });
   const [deleteCatalogRecipe] = useDeleteCatalogRecipe({
+    onSuccess: () => mutate("/api/fridge/recipes/"),
     onFailure: (id) => {
       setDeleteError({
         id: id,
