@@ -329,7 +329,7 @@ was not successful on backend side`, async () => {
     const { getByText, getAllByLabelText } = await renderCatalog();
     const axiosDeleteResponse = { data: "" };
     axios.delete.mockRejectedValue(axiosDeleteResponse);
-    const recipeToRemoved = getByText("Marinade de saumon fumé", {
+    let recipeToRemoved = getByText("Marinade de saumon fumé", {
       exact: false,
     });
     const recipe = getByText("Salade de pommes de terre radis", {
@@ -338,6 +338,9 @@ was not successful on backend side`, async () => {
     const button = getAllByLabelText("Supprimer la recette")[1];
     fireEvent.click(button);
     await waitFor(() => expect(axios.delete).toHaveBeenCalledTimes(1));
+    recipeToRemoved = getByText("Marinade de saumon fumé", {
+      exact: false,
+    });
     expect(recipe).toBeInTheDocument();
     expect(recipeToRemoved).toBeInTheDocument();
     const error = getByText(

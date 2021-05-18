@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import axios from "axios";
 import { useForm } from "react-hook-form";
 import useFilterSearch from "../useFilterSearch";
 import { useCatalogIngredients } from "../../hooks/swrFetch";
-import { useAddCatalogIngredient } from "../../hooks/swrMutate";
-import { mutate } from "swr";
+import {
+  useAddCatalogIngredient,
+  useDeleteCatalogIngredient,
+} from "../../hooks/swrMutate";
 
 /**
  * Ce composant permet d'afficher les ingrédients du catalogue, d'en ajouter
@@ -32,6 +33,15 @@ function CatalogIngredients() {
       });
     },
   });
+  const [deleteCatalogIngredient] = useDeleteCatalogIngredient({
+    onSuccess: () => setDeleteError({}),
+    onFailure: (name) => {
+      setDeleteError({
+        name: name,
+        message: "La suppression a échoué. Veuillez réessayer ultérieurement.",
+      });
+    },
+  });
 
   const onSubmitWrapper = async (dataForm) => {
     const ingredientToSend = {
@@ -41,24 +51,11 @@ function CatalogIngredients() {
   };
 
   const handleSupprClick = (name) => {
-    axios
-      .delete(`/api/catalogs/ingredients/${name}/`)
-      .then(() => {
-        const ingredientsListUpdated = catalogIngredients.slice();
-        const index = ingredientsListUpdated.findIndex((ingredient) => {
-          return ingredient.name === name;
-        });
-        ingredientsListUpdated.splice(index, 1);
-        mutate("/api/catalogs/ingredients/");
-        setDeleteError({});
-      })
-      .catch(() => {
-        setDeleteError({
-          name: name,
-          message:
-            "La suppression a échoué. Veuillez réessayer ultérieurement.",
-        });
-      });
+    const index = catalogIngredients.findIndex((ingredient) => {
+      return ingredient.name === name;
+    });
+    const ingredientToSend = catalogIngredients[index];
+    deleteCatalogIngredient({ ingredientToSend });
   };
 
   const handleChangeSearch = (event) => {
