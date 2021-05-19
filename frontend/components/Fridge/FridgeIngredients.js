@@ -134,7 +134,7 @@ function FridgeIngredients() {
       <FridgeIngredientsForm
         onSubmit={handleSubmit}
         ingredientToEdit={ingredientToEdit}
-        setIngredientToEdit={setIngredientToEdit}
+        resetIngredientToEdit={() => setIngredientToEdit(null)}
       />
       {postError && <span>{postError}</span>}
       <ul className="fridge-ingredients__list">{ingredientElement}</ul>

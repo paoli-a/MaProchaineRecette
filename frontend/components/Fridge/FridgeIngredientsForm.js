@@ -7,7 +7,7 @@ import { useCatalogIngredients, useUnits } from "../../hooks/swrFetch";
 function FridgeIngredientsForm({
   onSubmit,
   ingredientToEdit,
-  setIngredientToEdit,
+  resetIngredientToEdit,
 }) {
   const {
     register,
@@ -78,7 +78,7 @@ function FridgeIngredientsForm({
   );
 
   const handleCancelClick = () => {
-    setIngredientToEdit(null);
+    resetIngredientToEdit();
     reset();
   };
 
@@ -259,7 +259,7 @@ FridgeIngredientsForm.propTypes = {
     amount: PropTypes.string,
     unit: PropTypes.string,
   }),
-  setIngredientToEdit: PropTypes.func,
+  resetIngredientToEdit: PropTypes.func,
 };
 
 export default FridgeIngredientsForm;
