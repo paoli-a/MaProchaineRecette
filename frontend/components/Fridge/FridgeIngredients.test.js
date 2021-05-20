@@ -485,10 +485,7 @@ describe("functionalities work properly", () => {
         queryByText,
         getByDisplayValue,
       } = await renderIngredients();
-      const ingredient = getByText("Epinards", { exact: false });
-      const parentListItem = ingredient.parentElement;
-      const button = within(parentListItem).getByAltText("Modifier");
-      fireEvent.click(button);
+      await clickOnEditIngredient(getByText, "Epinards");
       expect(getByText("Modifier un ingrédient frigo :")).toBeInTheDocument();
       expect(
         queryByText("Ajouter un ingrédient frigo :")
@@ -502,6 +499,52 @@ describe("functionalities work properly", () => {
       expect(getByDisplayValue("g")).toBeInTheDocument();
       expect(getByDisplayValue(/2100/)).toBeInTheDocument();
     });
+
+    it(`keeps the edit mode but changes the form values when clicking on
+    another edit button`, async () => {
+      const {
+        getByText,
+        getByDisplayValue,
+        queryByDisplayValue,
+      } = await renderIngredients();
+      await clickOnEditIngredient(getByText, "Epinards");
+      expect(getByText("Modifier un ingrédient frigo :")).toBeInTheDocument();
+      let ingredientName1 = getByDisplayValue("Epinards");
+      expect(ingredientName1).toBeInTheDocument();
+      await clickOnEditIngredient(getByText, "Mascarpone");
+      const ingredientName2 = getByDisplayValue("Mascarpone");
+      expect(ingredientName2).toBeInTheDocument();
+      ingredientName1 = queryByDisplayValue("Epinards");
+      expect(ingredientName1).not.toBeInTheDocument();
+    });
+
+    it(`transforms the fridge ingredient edit form to an add form and reset
+    the values when clicking on the cancel button`, async () => {
+      const {
+        getByText,
+        getByDisplayValue,
+        queryByText,
+        queryByDisplayValue,
+      } = await renderIngredients();
+      await clickOnEditIngredient(getByText, "Epinards");
+      expect(getByText("Modifier un ingrédient frigo :")).toBeInTheDocument();
+      expect(queryByText("Ajouter")).not.toBeInTheDocument();
+      let ingredientName = getByDisplayValue("Epinards");
+      expect(ingredientName).toBeInTheDocument();
+      const cancelButton = getByText("Annuler");
+      fireEvent.click(cancelButton);
+      expect(getByText("Ajouter un ingrédient frigo :")).toBeInTheDocument();
+      expect(queryByText("Modifier")).not.toBeInTheDocument();
+      ingredientName = queryByDisplayValue("Epinards");
+      expect(ingredientName).not.toBeInTheDocument();
+    });
+
+    async function clickOnEditIngredient(getByText, ingredientText) {
+      const ingredient = getByText(ingredientText, { exact: false });
+      const parentListItem = ingredient.parentElement;
+      const button = within(parentListItem).getByAltText("Modifier");
+      fireEvent.click(button);
+    }
   });
 
   it(`provides the right proposals when a letter is entered in the input of the ingredient name`, async () => {

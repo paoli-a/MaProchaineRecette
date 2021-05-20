@@ -4,7 +4,11 @@ import InputSuggestions from "../InputSuggestions/InputSuggestions";
 import PropTypes from "prop-types";
 import { useCatalogIngredients, useUnits } from "../../hooks/swrFetch";
 
-function FridgeIngredientsForm({ onSubmit, ingredientToEdit }) {
+function FridgeIngredientsForm({
+  onSubmit,
+  ingredientToEdit,
+  resetIngredientToEdit,
+}) {
   const {
     register,
     handleSubmit,
@@ -72,6 +76,12 @@ function FridgeIngredientsForm({ onSubmit, ingredientToEdit }) {
       validate: validateIngredientName,
     }
   );
+
+  const handleCancelClick = () => {
+    resetIngredientToEdit();
+    reset();
+  };
+
   useEffect(() => {
     if (ingredientToEdit) {
       if (inputSuggestionsRef.current) {
@@ -217,6 +227,15 @@ function FridgeIngredientsForm({ onSubmit, ingredientToEdit }) {
             type="submit"
             value={ingredientToEdit ? "Modifier" : "Ajouter"}
           />
+          {ingredientToEdit && (
+            <button
+              className="button form__cancel"
+              type="reset"
+              onClick={() => handleCancelClick()}
+            >
+              Annuler
+            </button>
+          )}
         </p>
       </fieldset>
     </form>
@@ -240,6 +259,7 @@ FridgeIngredientsForm.propTypes = {
     amount: PropTypes.string,
     unit: PropTypes.string,
   }),
+  resetIngredientToEdit: PropTypes.func,
 };
 
 export default FridgeIngredientsForm;
