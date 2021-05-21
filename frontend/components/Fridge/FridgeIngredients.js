@@ -61,8 +61,8 @@ function FridgeIngredients() {
     };
     try {
       /* We add the fridge ingredient in a non optimistic way because
-      the backend may merge several ingredients before sending them badk
-      and we can't know that inadvance on frontend side. */
+      the backend may merge several ingredients before sending them back
+      and we can't know that in advance on frontend side. */
       await updateFridgeIngredients(newIngredient);
       mutate("/api/fridge/ingredients/");
       mutate("/api/fridge/recipes/");

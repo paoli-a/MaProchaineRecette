@@ -104,7 +104,7 @@ async function deleteCatalogIngredient({ ingredientToSend }) {
  * @param {object} obj two functions to be called when the
  *   backend reply arrives. One in case of success and one in
  *   case of failure.
- * @returns array containing a function to add catalog ingredient,
+ * @returns array containing a function to remove catalog ingredient,
  *   and an object with additional information like errors.
  */
 function useDeleteCatalogIngredient({ onSuccess, onFailure }) {
