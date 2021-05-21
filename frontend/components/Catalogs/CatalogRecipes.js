@@ -1,11 +1,13 @@
 import React, { useState } from "react";
+import { mutate } from "swr";
 import RecipesForm from "../Recipe/RecipesForm";
 import Recipe from "../Recipe/Recipe";
 import useFilterSearch from "../useFilterSearch";
-import axios from "axios";
 import { useCatalogRecipes } from "../../hooks/swrFetch";
-import { useAddCatalogRecipe } from "../../hooks/swrMutate";
-import { mutate } from "swr";
+import {
+  useAddCatalogRecipe,
+  useDeleteCatalogRecipe,
+} from "../../hooks/swrMutate";
 
 /**
  * Ce composant permet d'afficher les recettes du catalogue, d'en ajouter
@@ -24,26 +26,22 @@ function CatalogRecipes() {
       setPostError("L'ajout de recette a échoué.");
     },
   });
+  const [deleteCatalogRecipe] = useDeleteCatalogRecipe({
+    onSuccess: () => mutate("/api/fridge/recipes/"),
+    onFailure: (id) => {
+      setDeleteError({
+        id: id,
+        message: "La suppression a échoué. Veuillez réessayer ultérieurement.",
+      });
+    },
+  });
 
   const handleSupprClick = (id) => {
-    axios
-      .delete(`/api/catalogs/recipes/${id}/`)
-      .then(() => {
-        const updatedRecipes = catalogRecipes.slice();
-        const index = updatedRecipes.findIndex((recipe) => {
-          return recipe.id === id;
-        });
-        updatedRecipes.splice(index, 1);
-        mutate("/api/catalogs/recipes/");
-        mutate("/api/fridge/recipes/");
-      })
-      .catch(() => {
-        setDeleteError({
-          id: id,
-          message:
-            "La suppression a échoué. Veuillez réessayer ultérieurement.",
-        });
-      });
+    const index = catalogRecipes.findIndex((recipe) => {
+      return recipe.id === id;
+    });
+    const recipeToSend = catalogRecipes[index];
+    deleteCatalogRecipe({ recipeToSend });
   };
 
   const handleSubmit = async (data) => {

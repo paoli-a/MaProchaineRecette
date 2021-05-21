@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import FridgeIngredientsForm from "./FridgeIngredientsForm";
 import axios from "axios";
 import { useFridgeIngredients } from "../../hooks/swrFetch";
+import { useDeleteFridgeIngredient } from "../../hooks/swrMutate";
 import { mutate } from "swr";
 
 /**
@@ -16,23 +17,25 @@ function FridgeIngredients() {
   const [deleteError, setDeleteError] = useState({});
   const { fridgeIngredients } = useFridgeIngredients();
   const [ingredientToEdit, setIngredientToEdit] = useState(null);
+  const [deleteFridgeIngredient] = useDeleteFridgeIngredient({
+    onSuccess: () => {
+      mutate("/api/fridge/ingredients/");
+      mutate("/api/fridge/recipes/");
+    },
+    onFailure: (id) => {
+      setDeleteError({
+        id: id,
+        message: "La suppression a échoué. Veuillez réessayer ultérieurement.",
+      });
+    },
+  });
 
   const handleSupprClick = (id) => {
-    axios
-      .delete(`/api/fridge/ingredients/${id}/`)
-      .then(() => {
-        const ingredientsListUpdated = fridgeIngredients.slice();
-        eliminateIngredientWithId(ingredientsListUpdated, id);
-        mutate("/api/fridge/ingredients/");
-        mutate("/api/fridge/recipes/");
-      })
-      .catch(() => {
-        setDeleteError({
-          id: id,
-          message:
-            "La suppression a échoué. Veuillez réessayer ultérieurement.",
-        });
-      });
+    const index = fridgeIngredients.findIndex((ingredient) => {
+      return ingredient.id === id;
+    });
+    const ingredientToSend = fridgeIngredients[index];
+    deleteFridgeIngredient({ ingredientToSend });
   };
 
   const handleEditClick = (id) => {
@@ -57,6 +60,9 @@ function FridgeIngredients() {
       unit: data.unit,
     };
     try {
+      /* We add the fridge ingredient in a non optimistic way because
+      the backend may merge several ingredients before sending them back
+      and we can't know that in advance on frontend side. */
       await updateFridgeIngredients(newIngredient);
       mutate("/api/fridge/ingredients/");
       mutate("/api/fridge/recipes/");
@@ -64,15 +70,6 @@ function FridgeIngredients() {
       setPostError("L'ajout de l'ingrédient a échoué.");
     }
   };
-
-  function eliminateIngredientWithId(ingredientsToClean, id) {
-    const index = ingredientsToClean.findIndex((ingredient) => {
-      return ingredient.id === id;
-    });
-    if (index > -1) {
-      ingredientsToClean.splice(index, 1);
-    }
-  }
 
   const ingredientElement = fridgeIngredients.map((ingredient) => {
     const formatedDate = ingredient.expirationDate.toLocaleDateString();

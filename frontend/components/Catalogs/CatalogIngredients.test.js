@@ -62,10 +62,11 @@ was not successful on backend side`, async () => {
   const { getByText, getAllByRole } = await renderCatalog();
   const axiosDeleteResponse = { data: "" };
   axios.delete.mockRejectedValue(axiosDeleteResponse);
-  const ingredient = getByText("Fraises", { exact: false });
+  let ingredient = getByText("Fraises", { exact: false });
   const button = within(ingredient).getByText("X");
   fireEvent.click(button);
   await waitFor(() => expect(axios.delete).toHaveBeenCalledTimes(1));
+  ingredient = getByText("Fraises", { exact: false });
   const listItems = getAllByRole("listitem");
   expect(ingredient).toBeInTheDocument();
   expect(listItems).toHaveLength(6);

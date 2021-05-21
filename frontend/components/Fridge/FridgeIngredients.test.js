@@ -92,12 +92,11 @@ describe("functionalities work properly", () => {
         getAllByRole,
         queryByText,
       } = await renderIngredients();
+      let ingredient = getByText("Epinards", { exact: false });
       const axiosDeleteResponse = { data: "" };
       axios.delete.mockResolvedValue(axiosDeleteResponse);
-      let ingredient = getByText("Epinards", { exact: false });
       const parentListItem = ingredient.parentElement;
       const button = within(parentListItem).getByAltText("Supprimer");
-      fireEvent.click(button);
       axios.get.mockResolvedValue({
         data: [
           {
@@ -116,23 +115,29 @@ describe("functionalities work properly", () => {
           },
         ],
       });
+      fireEvent.click(button);
       await waitFor(() => expect(axios.delete).toHaveBeenCalledTimes(1));
       ingredient = queryByText("Epinards", { exact: false });
       expect(ingredient).not.toBeInTheDocument();
       const ingredients = getAllByRole("heading", { level: 3 });
       expect(ingredients).toHaveLength(2);
+      await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(5));
     });
 
     it(`displays an error message and keeps the ingredient if the ingredient removal
       was not successful on backend side`, async () => {
-      const { getByText } = await renderIngredients();
       const axiosDeleteResponse = { data: "" };
       axios.delete.mockRejectedValue(axiosDeleteResponse);
-      const ingredientToRemoved = getByText("Epinards", { exact: false });
+      const { getByText, getAllByRole } = await renderIngredients();
+      await waitFor(() =>
+        expect(getAllByRole("heading", { level: 3 })).toHaveLength(3)
+      );
+      let ingredientToRemoved = getByText("Epinards", { exact: false });
       const parentListItem = ingredientToRemoved.parentElement;
       const button = within(parentListItem).getByAltText("Supprimer");
       fireEvent.click(button);
       await waitFor(() => expect(axios.delete).toHaveBeenCalledTimes(1));
+      ingredientToRemoved = getByText("Epinards", { exact: false });
       expect(ingredientToRemoved).toBeInTheDocument();
       const error = getByText(
         /La suppression a échoué. Veuillez réessayer ultérieurement./
