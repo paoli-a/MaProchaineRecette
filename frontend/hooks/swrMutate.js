@@ -1,6 +1,7 @@
 import axios from "axios";
 import { mutate, cache } from "swr";
 import useMutation from "use-mutation";
+import produce from "immer";
 
 async function addCatalogIngredient({ ingredientToSend }) {
   try {
@@ -115,11 +116,12 @@ function useDeleteCatalogIngredient({ onSuccess, onFailure }) {
       mutate(
         key,
         (current) => {
-          const ingredientsListUpdated = current.slice();
-          const index = ingredientsListUpdated.findIndex((ingredient) => {
-            return ingredient.name === input.ingredientToSend.name;
+          const ingredientsListUpdated = produce(current, (draftState) => {
+            const index = draftState.findIndex((ingredient) => {
+              return ingredient.name === input.ingredientToSend.name;
+            });
+            draftState.splice(index, 1);
           });
-          ingredientsListUpdated.splice(index, 1);
           return ingredientsListUpdated;
         },
         false
@@ -166,11 +168,12 @@ function useDeleteCatalogRecipe({ onSuccess, onFailure }) {
       mutate(
         key,
         (current) => {
-          const updatedRecipes = current.slice();
-          const index = updatedRecipes.findIndex((recipe) => {
-            return recipe.id === input.recipeToSend.id;
+          const updatedRecipes = produce(current, (draftState) => {
+            const index = draftState.findIndex((recipe) => {
+              return recipe.id === input.recipeToSend.id;
+            });
+            draftState.splice(index, 1);
           });
-          updatedRecipes.splice(index, 1);
           return updatedRecipes;
         },
         false
@@ -217,11 +220,12 @@ function useDeleteFridgeIngredient({ onSuccess, onFailure }) {
       mutate(
         key,
         (current) => {
-          const fridgeIngredientsUpdated = current.slice();
-          const index = fridgeIngredientsUpdated.findIndex((ingredient) => {
-            return ingredient.id === input.ingredientToSend.id;
+          const fridgeIngredientsUpdated = produce(current, (draftState) => {
+            const index = draftState.findIndex((ingredient) => {
+              return ingredient.id === input.ingredientToSend.id;
+            });
+            draftState.splice(index, 1);
           });
-          fridgeIngredientsUpdated.splice(index, 1);
           return fridgeIngredientsUpdated;
         },
         false

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import InputSuggestions from "../InputSuggestions/InputSuggestions";
 import PropTypes from "prop-types";
+import produce from "immer";
 import {
   useCatalogIngredients,
   useCategories,
@@ -33,8 +34,10 @@ function RecipesForm({ onSubmitRecipe }) {
       );
       return;
     }
-    data.ingredients = ingredients.slice();
-    onSubmitRecipe(data);
+    const newData = produce(data, (draftState) => {
+      draftState.ingredients = ingredients;
+    });
+    onSubmitRecipe(newData);
     reset();
     setIngredients([]);
     resetIngredient();
@@ -81,11 +84,12 @@ function RecipesForm({ onSubmitRecipe }) {
     event.preventDefault();
     try {
       validateNewIngredient();
-      const newIngredients = ingredients.slice();
-      newIngredients.push({
-        ingredient: ingredientName,
-        amount: ingredientAmount,
-        unit: ingredientUnit,
+      const newIngredients = produce(ingredients, (draftState) => {
+        draftState.push({
+          ingredient: ingredientName,
+          amount: ingredientAmount,
+          unit: ingredientUnit,
+        });
       });
       setIngredients(newIngredients);
       resetIngredient();
@@ -105,14 +109,15 @@ function RecipesForm({ onSubmitRecipe }) {
   };
 
   const handleSupprIngredient = (name) => {
-    const ingredientsListUpdated = ingredients.slice();
-    for (let i = 0; i < ingredientsListUpdated.length; i++) {
-      if (ingredientsListUpdated[i].ingredient === name) {
-        ingredientsListUpdated.splice(i, 1);
-        setIngredients(ingredientsListUpdated);
-        return;
+    const ingredientsListUpdated = produce(ingredients, (draftState) => {
+      for (let i = 0; i < draftState.length; i++) {
+        if (draftState[i].ingredient === name) {
+          draftState.splice(i, 1);
+          return;
+        }
       }
-    }
+    });
+    setIngredients(ingredientsListUpdated);
   };
 
   const validateCategories = () => {
