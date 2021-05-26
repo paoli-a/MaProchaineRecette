@@ -49,7 +49,14 @@ function FridgeIngredients() {
   };
 
   const updateFridgeIngredients = async (newIngredient) => {
-    await axios.post("/api/fridge/ingredients/", newIngredient);
+    if (ingredientToEdit) {
+      await axios.put(
+        `/api/fridge/ingredients/${ingredientToEdit.id}`,
+        newIngredient
+      );
+    } else {
+      await axios.post("/api/fridge/ingredients/", newIngredient);
+    }
   };
 
   const handleSubmit = async (data) => {
@@ -67,7 +74,11 @@ function FridgeIngredients() {
       mutate("/api/fridge/ingredients/");
       mutate("/api/fridge/recipes/");
     } catch (error) {
-      setPostError("L'ajout de l'ingrédient a échoué.");
+      if (ingredientToEdit) {
+        setPostError("La modification de l'ingrédient a échoué.");
+      } else {
+        setPostError("L'ajout de l'ingrédient a échoué.");
+      }
     }
   };
 

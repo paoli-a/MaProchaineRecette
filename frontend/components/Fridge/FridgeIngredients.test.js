@@ -539,6 +539,67 @@ describe("functionalities work properly", () => {
       expect(ingredientName).not.toBeInTheDocument();
     });
 
+    it(`modify the ingredient when clicking on the edit button`, async () => {
+      const {
+        getByText,
+        getByLabelText,
+        findByText,
+      } = await renderIngredients();
+      await clickOnEditIngredient(getByText, "Epinards");
+      const axiosGetResponse = {
+        data: [
+          {
+            id: 1,
+            ingredient: "Epinards",
+            expiration_date: "2200-05-03",
+            amount: 80 + "",
+            unit: "kg",
+          },
+        ],
+      };
+      const inputAmount = getByLabelText("Quantité :");
+      const inputDate = getByLabelText("Date de péremption :");
+      const selectedUnit = getByLabelText("Unité");
+      fireEvent.change(inputAmount, { target: { value: 80 } });
+      fireEvent.change(inputDate, { target: { value: "2200-05-03" } });
+      fireEvent.change(selectedUnit, { target: { value: "kg" } });
+      const editButton = getByText("Modifier");
+      axios.get.mockResolvedValue(axiosGetResponse);
+      await act(async () => {
+        fireEvent.click(editButton);
+      });
+      expect(await findByText(/Epinards/)).toBeInTheDocument();
+      expect(await findByText(/80.*kg/)).toBeInTheDocument();
+      expect(await findByText(/2200/)).toBeInTheDocument();
+    });
+
+    it(`displays an error message and does not modify the ingredient if the
+    ingredient modification was not successful on backend side`, async () => {
+      const {
+        getByText,
+        getByLabelText,
+        findByText,
+        queryByText,
+      } = await renderIngredients();
+      await clickOnEditIngredient(getByText, "Epinards");
+      const axiosPutResponse = {};
+      axios.put.mockRejectedValue(axiosPutResponse);
+      const inputAmount = getByLabelText("Quantité :");
+      const inputDate = getByLabelText("Date de péremption :");
+      fireEvent.change(inputAmount, { target: { value: 80 } });
+      fireEvent.change(inputDate, { target: { value: "2200-05-03" } });
+      const editButton = getByText("Modifier");
+      await act(async () => {
+        fireEvent.click(editButton);
+      });
+      expect(await findByText(/Epinards/)).toBeInTheDocument();
+      expect(await findByText(/60.*g/)).toBeInTheDocument();
+      expect(queryByText(/80.*kg/)).not.toBeInTheDocument();
+      expect(queryByText(/2200/)).not.toBeInTheDocument();
+      const errorMessage = "La modification de l'ingrédient a échoué.";
+      expect(getByText(errorMessage)).toBeInTheDocument();
+    });
+
     async function clickOnEditIngredient(getByText, ingredientText) {
       const ingredient = getByText(ingredientText, { exact: false });
       const parentListItem = ingredient.parentElement;
