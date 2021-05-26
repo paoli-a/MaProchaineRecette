@@ -16,6 +16,9 @@ class Command(BaseCommand):
                 name="pièce(s)", abbreviation="pièce(s)", rapport=1, type=pieces_type
             )
             Unit.objects.create(
+                name="kilogramme", abbreviation="kg", rapport=1000, type=masse
+            )
+            Unit.objects.create(
                 name="Cuillère à soupe",
                 abbreviation="cas",
                 rapport=1,
