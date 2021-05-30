@@ -1,3 +1,5 @@
+import uuid
+
 from django.db import models
 from model_utils.models import TimeStampedModel
 from units.models import Unit
@@ -5,6 +7,7 @@ from units.models import Unit
 
 class Ingredient(TimeStampedModel):
     name = models.CharField("Ingredient name", max_length=255, unique=True)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
     def __str__(self) -> str:
         return self.name
@@ -16,6 +19,7 @@ class Recipe(TimeStampedModel):
     duration = models.DurationField("Total duration of the recipe")
     ingredients = models.ManyToManyField("RecipeIngredient")
     categories = models.ManyToManyField("Category")
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
     def __str__(self) -> str:
         return self.title
@@ -25,6 +29,7 @@ class RecipeIngredient(TimeStampedModel):
     ingredient = models.ForeignKey(Ingredient, on_delete=models.PROTECT)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     unit = models.ForeignKey(Unit, on_delete=models.PROTECT)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
     def __str__(self) -> str:
         return self.ingredient.name
@@ -32,6 +37,7 @@ class RecipeIngredient(TimeStampedModel):
 
 class Category(TimeStampedModel):
     name = models.CharField("Category name", max_length=255, unique=True)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
     def __str__(self) -> str:
         return self.name

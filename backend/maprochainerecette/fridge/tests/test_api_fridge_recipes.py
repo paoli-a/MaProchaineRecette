@@ -1,4 +1,5 @@
 import datetime
+import uuid
 
 import pytest
 from catalogs.tests.factories import (
@@ -250,7 +251,7 @@ def test_get_fridge_recipes_returns_correct_fields_with_unsure_ingredients():
 def _check_recipe_fields(response, recipe):
     assert len(response.data) == 1
     recipe_data = response.data[0]
-    assert recipe_data["id"] == recipe.id
+    assert uuid.UUID(recipe_data["id"]) == recipe.id
     assertContains(response, recipe.title)
     assertContains(response, recipe.description)
     assertContains(response, recipe.duration)

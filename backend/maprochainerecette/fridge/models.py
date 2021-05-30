@@ -1,3 +1,4 @@
+import uuid
 from decimal import Decimal
 
 from catalogs.models import Ingredient
@@ -11,6 +12,7 @@ class FridgeIngredient(TimeStampedModel):
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     unit = models.ForeignKey(Unit, on_delete=models.PROTECT)
     expiration_date = models.DateField("Expiration date")
+    id = models.UUIDField(primary_key=True, default=None, editable=False)
 
     def __str__(self) -> str:
         return self.ingredient.name
@@ -31,6 +33,7 @@ class FridgeIngredient(TimeStampedModel):
             if mergeable:
                 self._update_mergeable_with_new_ingredient(mergeable)
             else:
+                self._set_pk()
                 super(FridgeIngredient, self).save(*args, **kwargs)
         else:
             super(FridgeIngredient, self).save(*args, **kwargs)
@@ -43,6 +46,9 @@ class FridgeIngredient(TimeStampedModel):
             mergeable.unit = self.unit
         mergeable.amount = amount
         mergeable.save()
+
+    def _set_pk(self):
+        self.pk = uuid.uuid4()
 
     @staticmethod
     def _compute_amount(big_element, small_element):
