@@ -257,9 +257,13 @@ def _check_recipe_fields(response, recipe):
     assertContains(response, recipe.duration)
     assert len(recipe_data["ingredients"]) == 3
     assert set(recipe_data["ingredients"][0].keys()) == {"ingredient", "amount", "unit"}
-    assert recipe_data["ingredients"][1]["ingredient"] == "Tomates"
-    assert recipe_data["ingredients"][1]["unit"] == "g"
-    assert recipe_data["ingredients"][1]["amount"] == "50.00"
+    tomate = [
+        ingredient
+        for ingredient in recipe_data["ingredients"]
+        if ingredient["ingredient"] == "Tomates"
+    ]
+    assert tomate[0]["unit"] == "g"
+    assert tomate[0]["amount"] == "50.00"
     assert len(recipe_data["categories"]) == 0
     assert len(recipe_data["priority_ingredients"]) == 1
     assert recipe_data["priority_ingredients"][0] == "Carottes"
