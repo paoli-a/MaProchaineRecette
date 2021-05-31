@@ -1,4 +1,5 @@
 import datetime
+import uuid
 
 import pytest
 from catalogs.tests.factories import (
@@ -244,21 +245,25 @@ def test_get_fridge_recipes_returns_correct_fields_with_unsure_ingredients():
     request = APIRequestFactory().get(url)
     response = FridgeRecipes.as_view()(request)
     _check_recipe_fields(response, recipe)
-    assert response.data[0]["unsure_ingredients"] == ["Carottes", "Oignons"]
+    assert set(response.data[0]["unsure_ingredients"]) == {"Carottes", "Oignons"}
 
 
 def _check_recipe_fields(response, recipe):
     assert len(response.data) == 1
     recipe_data = response.data[0]
-    assert recipe_data["id"] == recipe.id
+    assert uuid.UUID(recipe_data["id"]) == recipe.id
     assertContains(response, recipe.title)
     assertContains(response, recipe.description)
     assertContains(response, recipe.duration)
     assert len(recipe_data["ingredients"]) == 3
     assert set(recipe_data["ingredients"][0].keys()) == {"ingredient", "amount", "unit"}
-    assert recipe_data["ingredients"][1]["ingredient"] == "Tomates"
-    assert recipe_data["ingredients"][1]["unit"] == "g"
-    assert recipe_data["ingredients"][1]["amount"] == "50.00"
+    tomate = [
+        ingredient
+        for ingredient in recipe_data["ingredients"]
+        if ingredient["ingredient"] == "Tomates"
+    ]
+    assert tomate[0]["unit"] == "g"
+    assert tomate[0]["amount"] == "50.00"
     assert len(recipe_data["categories"]) == 0
     assert len(recipe_data["priority_ingredients"]) == 1
     assert recipe_data["priority_ingredients"][0] == "Carottes"

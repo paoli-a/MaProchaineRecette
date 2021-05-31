@@ -1,4 +1,5 @@
 import datetime
+import uuid
 from decimal import Decimal
 
 import pytest
@@ -37,7 +38,7 @@ def test_fridge_ingredients_list_has_correct_fields(fridge_ingredient):
     response = FridgeIngredientViewSet.as_view({"get": "list"})(request)
     assert len(response.data) == 1
     fridge_ingredient_data = response.data[0]
-    assert fridge_ingredient_data["id"] == fridge_ingredient.id
+    assert uuid.UUID(fridge_ingredient_data["id"]) == fridge_ingredient.id
     assert fridge_ingredient_data["ingredient"] == fridge_ingredient.ingredient.name
     assert fridge_ingredient_data["expiration_date"] == str(
         fridge_ingredient.expiration_date
@@ -77,7 +78,7 @@ def test_adding_fridge_ingredient_deserializes_correctly_all_fields():
     response_post = FridgeIngredientViewSet.as_view({"post": "create"})(request_post)
     assert response_post.status_code == 201
     ingredient = FridgeIngredient.objects.first()
-    assert isinstance(ingredient.id, int)
+    assert isinstance(ingredient.id, uuid.UUID)
     assert ingredient.amount == Decimal("10.00")
     assert ingredient.expiration_date == datetime.date(2020, 7, 20)
     assert ingredient.ingredient.name == "deuxieme ingrédient"
@@ -99,8 +100,9 @@ def test_adding_mergeable_fridge_ingredient_returns_correct_data():
     request_post = APIRequestFactory().post(url, request_data)
     response_post = FridgeIngredientViewSet.as_view({"post": "create"})(request_post)
     assert response_post.status_code == 201
+    expected_id = response_post.data["id"]
     expected_response = {
-        "id": 1,
+        "id": expected_id,
         "ingredient": "deuxieme ingrédient",
         "expiration_date": "2020-07-20",
         "amount": "10.00",
@@ -118,7 +120,7 @@ def test_adding_mergeable_fridge_ingredient_returns_correct_data():
     response_post = FridgeIngredientViewSet.as_view({"post": "create"})(request_post)
     assert response_post.status_code == 201
     expected_response = {
-        "id": 1,
+        "id": expected_id,
         "ingredient": "deuxieme ingrédient",
         "expiration_date": "2020-07-20",
         "amount": "0.11",

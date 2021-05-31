@@ -1,4 +1,5 @@
 import datetime
+import uuid
 from decimal import Decimal
 
 import pytest
@@ -107,7 +108,7 @@ def test_recipes_list_has_correct_fields(recipe):
     response = RecipeViewSet.as_view({"get": "list"})(request)
     assert len(response.data) == 1
     recipe_data = response.data[0]
-    assert recipe_data["id"] == recipe.id
+    assert uuid.UUID(recipe_data["id"]) == recipe.id
     assertContains(response, recipe.title)
     assertContains(response, recipe.description)
     assertContains(response, recipe.duration)
