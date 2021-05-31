@@ -245,7 +245,7 @@ def test_get_fridge_recipes_returns_correct_fields_with_unsure_ingredients():
     request = APIRequestFactory().get(url)
     response = FridgeRecipes.as_view()(request)
     _check_recipe_fields(response, recipe)
-    assert response.data[0]["unsure_ingredients"] == ["Carottes", "Oignons"]
+    assert set(response.data[0]["unsure_ingredients"]) == {"Carottes", "Oignons"}
 
 
 def _check_recipe_fields(response, recipe):
