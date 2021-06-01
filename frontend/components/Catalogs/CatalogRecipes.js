@@ -77,9 +77,12 @@ function CatalogRecipes() {
       </button>
     );
     return (
-      <React.Fragment key={myRecipe.id}>
+      <React.Fragment
+        key={
+          myRecipe.id ? myRecipe.id : `${myRecipe.title}${myRecipe.description}`
+        }
+      >
         <Recipe
-          key={myRecipe.id}
           recipe={myRecipe}
           activateClick={true}
           optionalButton={button}

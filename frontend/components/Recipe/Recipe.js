@@ -83,7 +83,7 @@ function Recipe({ recipe, optionalButton, activateClick, highlight }) {
 
 Recipe.propTypes = {
   recipe: PropTypes.shape({
-    id: PropTypes.number.isRequired,
+    id: PropTypes.number,
     categories: PropTypes.arrayOf(PropTypes.string).isRequired,
     title: PropTypes.string.isRequired,
     ingredients: PropTypes.arrayOf(
