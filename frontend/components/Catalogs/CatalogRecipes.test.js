@@ -1,20 +1,20 @@
 /* eslint-disable testing-library/no-await-sync-query */
-import React from "react";
 import {
-  render,
-  fireEvent,
   act,
-  within,
+  fireEvent,
+  render,
   waitFor,
+  within,
 } from "@testing-library/react";
-import CatalogRecipes from "./CatalogRecipes";
 import axios from "axios";
+import React from "react";
+import { cache, SWRConfig } from "swr";
 import {
   axiosGetGlobalMock,
-  recipeCrumble,
   catalogRecipes,
+  recipeCrumble,
 } from "../testUtils";
-import { SWRConfig, cache } from "swr";
+import CatalogRecipes from "./CatalogRecipes";
 
 require("mutationobserver-shim");
 jest.mock("axios");

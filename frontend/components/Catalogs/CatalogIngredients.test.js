@@ -1,15 +1,15 @@
-import React from "react";
 import {
-  render,
-  fireEvent,
-  within,
-  waitFor,
   act,
+  fireEvent,
+  render,
+  waitFor,
+  within,
 } from "@testing-library/react";
 import axios from "axios";
-import CatalogIngredients from "./CatalogIngredients";
+import React from "react";
+import { cache, SWRConfig } from "swr";
 import { axiosGetGlobalMock } from "../testUtils";
-import { SWRConfig, cache } from "swr";
+import CatalogIngredients from "./CatalogIngredients";
 
 require("mutationobserver-shim");
 jest.mock("axios");
