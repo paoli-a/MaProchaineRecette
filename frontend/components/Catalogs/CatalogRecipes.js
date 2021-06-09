@@ -44,6 +44,8 @@ function CatalogRecipes() {
     deleteCatalogRecipe({ recipeToSend });
   };
 
+  const handleEditClick = (id) => {};
+
   const handleSubmit = async (data) => {
     const categories = data.categories.filter(Boolean);
     const recipeToSend = {
@@ -68,13 +70,29 @@ function CatalogRecipes() {
 
   const allMyRecipes = filteredRecipes.map((myRecipe) => {
     const button = (
-      <button
-        className="button"
-        onClick={() => handleSupprClick(myRecipe.id)}
-        aria-label="Supprimer la recette"
-      >
-        X
-      </button>
+      <div className="buttons-container">
+        <button
+          className="button fridge-ingredient-details__edit"
+          onClick={() => handleEditClick(myRecipe.id)}
+        >
+          <img
+            className="fridge-ingredient-details__edit-img"
+            src="images/edit.svg"
+            alt="Modifier"
+          />
+        </button>
+        <button
+          className="button fridge-ingredient-details__delete"
+          onClick={() => handleSupprClick(myRecipe.id)}
+          aria-label="Supprimer la recette"
+        >
+          <img
+            className="fridge-ingredient-details__delete-img"
+            src="images/delete.svg"
+            alt="Supprimer"
+          />
+        </button>
+      </div>
     );
     return (
       <React.Fragment
