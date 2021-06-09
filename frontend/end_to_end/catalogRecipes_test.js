@@ -79,15 +79,15 @@ Scenario("Add new recipe", ({ I }) => {
     I.see("Marinade");
     I.see("Salade légère");
   });
-  I.click("X");
-  I.click("X");
+  I.click(locate("img").withAttr({ alt: "Supprimer" }));
+  I.click(locate("img").withAttr({ alt: "Supprimer" }));
 });
 
 Scenario("Remove recipe", ({ I }) => {
   I.amOnPage("/");
   I.click("Catalogue des recettes");
   I.see("Marinade");
-  I.click("X");
+  I.click(locate("img").withAttr({ alt: "Supprimer" }));
   I.dontSee("Marinade");
 });
 
@@ -116,7 +116,7 @@ there`,
       I.see("Marinade");
       I.see("Salade légère");
     });
-    I.click("X");
-    I.click("X");
+    I.click(locate("img").withAttr({ alt: "Supprimer" }));
+    I.click(locate("img").withAttr({ alt: "Supprimer" }));
   }
 );
