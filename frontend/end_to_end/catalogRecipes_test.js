@@ -74,7 +74,9 @@ Scenario("Add new recipe", ({ I }) => {
   I.selectOption("Unité", "pièce(s)");
   I.click("Ajouter");
   I.fillField("Corps de la recette :", "Mélanger les ingrédients.");
-  I.click("Confirmer");
+  within(".form__paragraph", () => {
+    I.click(".form__submit");
+  });
   within(".display-catalog-recipe", () => {
     I.see("Marinade");
     I.see("Salade légère");
@@ -109,7 +111,9 @@ there`,
     I.selectOption("Unité", "pièce(s)");
     I.click("Ajouter");
     I.fillField("Corps de la recette :", "Mélanger les ingrédients.");
-    I.click("Confirmer");
+    within(".form__paragraph", () => {
+      I.click(".form__submit");
+    });
     I.click("Ma prochaine recette");
     I.click("Catalogue des recettes");
     within(".display-catalog-recipe", () => {

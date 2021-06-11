@@ -20,6 +20,7 @@ function CatalogRecipes() {
   const [searchResults, setSearchResults] = useState("");
   const [deleteError, setDeleteError] = useState({});
   const [postError, setPostError] = useState("");
+  const [recipeToEdit, setRecipeToEdit] = useState(null);
   const { catalogRecipes } = useCatalogRecipes();
   const [addCatalogRecipe] = useAddCatalogRecipe({
     onFailure: () => {
@@ -44,7 +45,15 @@ function CatalogRecipes() {
     deleteCatalogRecipe({ recipeToSend });
   };
 
-  const handleEditClick = (id) => {};
+  const handleEditClick = (id) => {
+    catalogRecipes.forEach((recipeObject) => {
+      for (const key in recipeObject) {
+        if (key === "id" && recipeObject[key] === id) {
+          setRecipeToEdit(recipeObject);
+        }
+      }
+    });
+  };
 
   const handleSubmit = async (data) => {
     const categories = data.categories.filter(Boolean);
@@ -116,7 +125,10 @@ function CatalogRecipes() {
         Catalogue de toutes mes recettes
       </h1>
       <section className="add-recipe">
-        <RecipesForm onSubmitRecipe={handleSubmit} />
+        <RecipesForm
+          onSubmitRecipe={handleSubmit}
+          recipeToEdit={recipeToEdit}
+        />
         {postError && (
           <p role="alert" className="recipe__error-message">
             {postError}
