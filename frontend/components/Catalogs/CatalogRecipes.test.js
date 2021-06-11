@@ -126,26 +126,26 @@ describe("the adding recipe functionality works properly", () => {
   describe("the adding of ingredient on the recipe form works properly", () => {
     it(`does not add the ingredient if an ingredient with the same name
       was already provided`, async () => {
-      const { getByLabelText, getByText, getAllByText } = await renderCatalog();
-      addIngredient(getByLabelText, getByText, ["Fraises", "5", "g"]);
-      addIngredient(getByLabelText, getByText, ["Fraises", "5", "g"]);
+      const { getByLabelText, getAllByText } = await renderCatalog();
+      addIngredient(getByLabelText, ["Fraises", "5", "g"]);
+      addIngredient(getByLabelText, ["Fraises", "5", "g"]);
       const ingredient = getAllByText(/Fraises :/);
       expect(ingredient).toHaveLength(1);
     });
 
     it(`does not add the ingredient if amount is negative or null`, async () => {
-      const { getByLabelText, getByText, queryByText } = await renderCatalog();
-      addIngredient(getByLabelText, getByText, ["Fraises", "-1", "g"]);
+      const { getByLabelText, queryByText } = await renderCatalog();
+      addIngredient(getByLabelText, ["Fraises", "-1", "g"]);
       let fraises = queryByText(/Fraises :/);
       expect(fraises).not.toBeInTheDocument();
-      addIngredient(getByLabelText, getByText, ["Fraises", "0", "g"]);
+      addIngredient(getByLabelText, ["Fraises", "0", "g"]);
       fraises = queryByText(/Fraises :/);
       expect(fraises).not.toBeInTheDocument();
     });
 
     it(`does not add the ingredient if the ingredient is not in catalogIngredients`, async () => {
-      const { getByLabelText, getByText, queryByText } = await renderCatalog();
-      addIngredient(getByLabelText, getByText, ["Poireaux", "50", "g"]);
+      const { getByLabelText, queryByText } = await renderCatalog();
+      addIngredient(getByLabelText, ["Poireaux", "50", "g"]);
       const poireaux = queryByText(/Poireaux : /);
       expect(poireaux).not.toBeInTheDocument();
     });
@@ -165,8 +165,8 @@ describe("the adding recipe functionality works properly", () => {
     it(`removes ingredient on the form when clicking on the
       remove button`, async () => {
       const { getByLabelText, getByText } = await renderCatalog();
-      addIngredient(getByLabelText, getByText, ["Poires", "1", "kg"]);
-      addIngredient(getByLabelText, getByText, ["Beurre", "30", "g"]);
+      addIngredient(getByLabelText, ["Poires", "1", "kg"]);
+      addIngredient(getByLabelText, ["Beurre", "30", "g"]);
       const poires = getByText(/Poires : /);
       const beurre = getByText(/Beurre : /);
       const removeButton = within(poires).getByText("X");
@@ -179,8 +179,8 @@ describe("the adding recipe functionality works properly", () => {
 
     it(`adds ingredients on the form when they are validated`, async () => {
       const { getByLabelText, getByText } = await renderCatalog();
-      addIngredient(getByLabelText, getByText, ["Poires", "1", "kg"]);
-      addIngredient(getByLabelText, getByText, ["Beurre", "30", "g"]);
+      addIngredient(getByLabelText, ["Poires", "1", "kg"]);
+      addIngredient(getByLabelText, ["Beurre", "30", "g"]);
       const poires = getByText(/Poires :/);
       const beurre = getByText(/Beurre :/);
       expect(poires).toBeInTheDocument();
@@ -212,7 +212,7 @@ describe("the adding recipe functionality works properly", () => {
     const entree = getByLabelText("Entrée");
     const inputDuration = getByLabelText("Temps total de la recette :");
     const inputDescription = getByLabelText("Corps de la recette :");
-    const submitButton = getByText("Confirmer");
+    const submitButton = getByLabelText("Ajouter la recette");
     if (!missingFields.includes("title")) {
       fireEvent.change(inputTitle, { target: { value: "Crumble aux poires" } });
     }
@@ -224,8 +224,8 @@ describe("the adding recipe functionality works properly", () => {
       fireEvent.change(inputDuration, { target: { value: duration } });
     }
     if (!missingFields.includes("ingredients")) {
-      addIngredient(getByLabelText, getByText, ["Poires", "1", "kg"]);
-      addIngredient(getByLabelText, getByText, ["Beurre", "30", "g"]);
+      addIngredient(getByLabelText, ["Poires", "1", "kg"]);
+      addIngredient(getByLabelText, ["Beurre", "30", "g"]);
     }
     if (!missingFields.includes("description")) {
       fireEvent.change(inputDescription, {
@@ -242,11 +242,11 @@ describe("the adding recipe functionality works properly", () => {
     }
   }
 
-  function addIngredient(getByLabelText, getByText, value) {
+  function addIngredient(getByLabelText, value) {
     const inputIngredientName = getByLabelText("Nom :");
     const inputAmount = getByLabelText("Quantité nécessaire :");
     const selectedUnit = getByLabelText("Unité");
-    const addButton = getByText("Ajouter");
+    const addButton = getByLabelText("Ajouter l'ingrédient");
     fireEvent.change(inputIngredientName, { target: { value: value[0] } });
     fireEvent.change(inputAmount, { target: { value: value[1] } });
     fireEvent.change(selectedUnit, { target: { value: value[2] } });
@@ -262,11 +262,11 @@ was not successful on backend side`, async () => {
     const entree = getByLabelText("Entrée");
     const inputDuration = getByLabelText("Temps total de la recette :");
     const inputDescription = getByLabelText("Corps de la recette :");
-    const submitButton = getByText("Confirmer");
+    const submitButton = getByLabelText("Ajouter la recette");
     fireEvent.change(inputTitle, { target: { value: "Crumble aux poires" } });
     fireEvent.click(entree);
     fireEvent.change(inputDuration, { target: { value: "00:10" } });
-    addIngredient(getByLabelText, getByText, ["Poires", "1", "kg"]);
+    addIngredient(getByLabelText, ["Poires", "1", "kg"]);
     fireEvent.change(inputDescription, {
       target: {
         value: "Épluchez et épépinez les poires. Coupez-les en dés.",
@@ -383,4 +383,60 @@ describe("the search bar functionality works properly", () => {
     expect(getByText("Salade de pommes de terre radis")).toBeInTheDocument();
     expect(getByText("Marinade de saumon fumé")).toBeInTheDocument();
   });
+});
+
+describe("edit functionality", () => {
+  it(`transforms the catalog recipe add form to an edit form when
+   clicking on an edit button`, async () => {
+    const {
+      getByText,
+      queryByText,
+      getByDisplayValue,
+      queryByLabelText,
+    } = await renderCatalog();
+    await clickOnEditRecipe(getByText, "Salade de pommes de terre radis");
+    expect(
+      getByText("Modifier une recette de mon catalogue :")
+    ).toBeInTheDocument();
+    expect(
+      queryByText("Ajouter une recette dans mon catalogue :")
+    ).not.toBeInTheDocument();
+    expect(getByText("Modifier")).toBeInTheDocument();
+    expect(queryByLabelText("Ajouter la recette")).not.toBeInTheDocument();
+    const titleRecipe = getByDisplayValue("Salade de pommes de terre radis");
+    expect(titleRecipe).toBeInTheDocument();
+    expect(titleRecipe).toHaveFocus();
+    expect(
+      getByDisplayValue(
+        /Eplucher et couper les patates en rondelles et les cuire à l'eau. Cuire les oeufs durs./
+      )
+    ).toBeInTheDocument();
+  });
+
+  it(`keeps the edit mode but changes the form values when clicking on
+    another edit button`, async () => {
+    const {
+      getByText,
+      getByDisplayValue,
+      queryByDisplayValue,
+    } = await renderCatalog();
+    await clickOnEditRecipe(getByText, "Salade de pommes de terre radis");
+    expect(
+      getByText("Modifier une recette de mon catalogue :")
+    ).toBeInTheDocument();
+    let recipeTitle1 = getByDisplayValue("Salade de pommes de terre radis");
+    expect(recipeTitle1).toBeInTheDocument();
+    await clickOnEditRecipe(getByText, "Marinade de saumon fumé");
+    const recipeTitle2 = getByDisplayValue("Marinade de saumon fumé");
+    expect(recipeTitle2).toBeInTheDocument();
+    recipeTitle1 = queryByDisplayValue("Salade de pommes de terre radis");
+    expect(recipeTitle1).not.toBeInTheDocument();
+  });
+
+  async function clickOnEditRecipe(getByText, titleRecipe) {
+    const recipe = getByText(titleRecipe, { exact: false });
+    const parentListItem = recipe.parentElement;
+    const button = within(parentListItem).getByAltText("Modifier");
+    fireEvent.click(button);
+  }
 });

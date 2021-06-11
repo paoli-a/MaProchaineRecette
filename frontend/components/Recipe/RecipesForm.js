@@ -1,15 +1,15 @@
-import React, { useState } from "react";
-import { useForm } from "react-hook-form";
-import InputSuggestions from "../InputSuggestions/InputSuggestions";
-import PropTypes from "prop-types";
 import produce from "immer";
+import PropTypes from "prop-types";
+import React, { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 import {
   useCatalogIngredients,
   useCategories,
   useUnits,
 } from "../../hooks/swrFetch";
+import InputSuggestions from "../InputSuggestions/InputSuggestions";
 
-function RecipesForm({ onSubmitRecipe }) {
+function RecipesForm({ onSubmitRecipe, recipeToEdit }) {
   const {
     register,
     handleSubmit,
@@ -17,6 +17,8 @@ function RecipesForm({ onSubmitRecipe }) {
     reset,
     watch,
     getValues,
+    setValue,
+    setFocus,
   } = useForm();
   const [ingredients, setIngredients] = useState([]);
   const [ingredientName, setIngredientName] = useState("");
@@ -26,6 +28,26 @@ function RecipesForm({ onSubmitRecipe }) {
   const { catalogIngredients } = useCatalogIngredients();
   const { categories } = useCategories();
   const { units } = useUnits();
+
+  useEffect(() => {
+    if (recipeToEdit) {
+      setFocus("recipeTitle");
+      setValue("recipeTitle", recipeToEdit.title);
+      const categoriesToEdit = [];
+      categories.forEach((category) => {
+        if (recipeToEdit.categories.includes(category)) {
+          categoriesToEdit.push(category);
+        } else {
+          categoriesToEdit.push(false);
+        }
+        return categoriesToEdit;
+      });
+      setValue(`categories`, categoriesToEdit);
+      setValue("recipeTime", recipeToEdit.duration);
+      setValue("recipeDescription", recipeToEdit.description);
+      setIngredients(recipeToEdit.ingredients);
+    }
+  }, [recipeToEdit, setFocus, categories, setValue]);
 
   const onSubmitForm = (data) => {
     if (ingredients.length === 0) {
@@ -142,7 +164,11 @@ function RecipesForm({ onSubmitRecipe }) {
   return (
     <form className="form form-recipe" onSubmit={handleSubmit(onSubmitForm)}>
       <fieldset>
-        <legend>Ajouter une recette dans mon catalogue :</legend>
+        <legend>
+          {recipeToEdit
+            ? "Modifier une recette de mon catalogue :"
+            : "Ajouter une recette dans mon catalogue :"}
+        </legend>
         <div className="form__paragraph">
           <label className="form__label" htmlFor="recipeTitle">
             {" "}
@@ -276,7 +302,11 @@ function RecipesForm({ onSubmitRecipe }) {
             </span>
           </p>
           <div className="form__paragraph">
-            <button className="button" onClick={handleAddIngredient}>
+            <button
+              className="button"
+              onClick={handleAddIngredient}
+              aria-label="Ajouter l'ingrédient"
+            >
               Ajouter
             </button>
             {ingredientError && <p role="alert">{ingredientError}</p>}
@@ -324,7 +354,10 @@ function RecipesForm({ onSubmitRecipe }) {
           <input
             className="button form__submit"
             type="submit"
-            value="Confirmer"
+            aria-label={
+              recipeToEdit ? "Modifier la recette" : "Ajouter la recette"
+            }
+            value={recipeToEdit ? "Modifier" : "Ajouter"}
           />
         </p>
       </fieldset>
@@ -339,6 +372,20 @@ RecipesForm.propTypes = {
    * et permet de les récupérer.
    */
   onSubmitRecipe: PropTypes.func.isRequired,
+  recipeToEdit: PropTypes.shape({
+    id: PropTypes.number,
+    title: PropTypes.string.isRequired,
+    categories: PropTypes.arrayOf(PropTypes.string).isRequired,
+    ingredients: PropTypes.arrayOf(
+      PropTypes.shape({
+        ingredient: PropTypes.string.isRequired,
+        amount: PropTypes.string.isRequired,
+        unit: PropTypes.string.isRequired,
+      }).isRequired
+    ),
+    duration: PropTypes.string.isRequired,
+    description: PropTypes.string.isRequired,
+  }),
 };
 
 export default RecipesForm;
