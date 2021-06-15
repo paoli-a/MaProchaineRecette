@@ -1,12 +1,12 @@
-import React from "react";
 import { render } from "@testing-library/react";
+import React from "react";
 import Recipe from "./Recipe";
 
 let recipe;
 
 beforeEach(() => {
   recipe = {
-    id: 1,
+    id: "1",
     categories: ["Plat"],
     title: "Salade de pommes de terre radis",
     ingredients: [

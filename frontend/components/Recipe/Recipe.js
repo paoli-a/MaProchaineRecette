@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
-import IngredientsList from "./IngredientsList";
 import PropTypes from "prop-types";
+import React, { useEffect, useState } from "react";
+import IngredientsList from "./IngredientsList";
 
 /**
  * Ce composant permet d'afficher une recette.
@@ -83,7 +83,7 @@ function Recipe({ recipe, optionalButton, activateClick, highlight }) {
 
 Recipe.propTypes = {
   recipe: PropTypes.shape({
-    id: PropTypes.number,
+    id: PropTypes.string,
     categories: PropTypes.arrayOf(PropTypes.string).isRequired,
     title: PropTypes.string.isRequired,
     ingredients: PropTypes.arrayOf(
