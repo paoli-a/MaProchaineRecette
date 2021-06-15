@@ -196,7 +196,7 @@ describe("the adding recipe functionality works properly", () => {
   ) {
     const axiosPostResponse = {
       data: {
-        id: 5,
+        id: "5",
         title: "Crumble aux poires",
         categories: ["Entrée"],
         duration: customFields["duration"] || "00:10:00",
@@ -299,7 +299,7 @@ describe("the removing recipe functionality works properly", () => {
     axios.get.mockResolvedValue({
       data: [
         {
-          id: 1,
+          id: "1",
           categories: ["Plat"],
           title: "Salade de pommes de terre radis",
           ingredients: [
@@ -431,6 +431,33 @@ describe("edit functionality", () => {
     expect(recipeTitle2).toBeInTheDocument();
     recipeTitle1 = queryByDisplayValue("Salade de pommes de terre radis");
     expect(recipeTitle1).not.toBeInTheDocument();
+  });
+
+  it(`transforms the catalog recipes edit form to an add form and reset
+  the values when clicking on the cancel button`, async () => {
+    const {
+      getByText,
+      getByDisplayValue,
+      queryByLabelText,
+      queryByText,
+      queryByDisplayValue,
+    } = await renderCatalog();
+    await clickOnEditRecipe(getByText, "Salade de pommes de terre radis");
+    expect(
+      getByText("Modifier une recette de mon catalogue :")
+    ).toBeInTheDocument();
+    expect(queryByLabelText("Ajouter la recette")).not.toBeInTheDocument();
+    let recipeTitle = getByDisplayValue("Salade de pommes de terre radis");
+    expect(recipeTitle).toBeInTheDocument();
+    const cancelButton = getByText("Annuler");
+    fireEvent.click(cancelButton);
+    expect(
+      getByText("Ajouter une recette dans mon catalogue :")
+    ).toBeInTheDocument();
+    expect(queryByText("Modifier")).not.toBeInTheDocument();
+    recipeTitle = queryByDisplayValue("Salade de pommes de terre radis");
+    expect(queryByText("oeufs")).not.toBeInTheDocument();
+    expect(recipeTitle).not.toBeInTheDocument();
   });
 
   async function clickOnEditRecipe(getByText, titleRecipe) {

@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const recipeCrumble = {
-  id: 5,
+  id: "5",
   categories: ["Dessert"],
   title: "Crumble aux poires",
   ingredients: [
@@ -19,7 +19,7 @@ export const recipeCrumble = {
 
 export const catalogRecipes = [
   {
-    id: 1,
+    id: "1",
     categories: ["Plat"],
     title: "Salade de pommes de terre radis",
     ingredients: [
@@ -38,7 +38,7 @@ export const catalogRecipes = [
       "Eplucher et couper les patates en rondelles et les cuire à l'eau. Cuire les oeufs durs. Couper les radis en rondelles. Emincer les échalottes et les oignons. Couper les oeufs durs. Mettre le tout dans un saladier et rajouter le vinaigre. Mélanger. Préparer la sauce :  mélanger le yaourt, la mayonnaise, la moutarde, la gousse d'ail rapée. Assaisoner.",
   },
   {
-    id: 2,
+    id: "2",
     categories: ["Entrée"],
     title: "Marinade de saumon fumé",
     ingredients: [
@@ -56,7 +56,7 @@ export const catalogRecipes = [
 ];
 export const fridgeRecipes = [
   {
-    id: 1,
+    id: "1",
     categories: ["Plat", "Entrée"],
     title: "Salade de pommes de terre radis",
     ingredients: [
@@ -77,7 +77,7 @@ export const fridgeRecipes = [
     unsure_ingredients: ["ail"],
   },
   {
-    id: 2,
+    id: "2",
     categories: ["Entrée"],
     title: "Marinade de saumon fumé",
     ingredients: [
@@ -95,7 +95,7 @@ export const fridgeRecipes = [
     unsure_ingredients: [],
   },
   {
-    id: 3,
+    id: "3",
     categories: ["Dessert"],
     title: "Crumble aux poires",
     ingredients: [

@@ -9,7 +9,7 @@ import {
 } from "../../hooks/swrFetch";
 import InputSuggestions from "../InputSuggestions/InputSuggestions";
 
-function RecipesForm({ onSubmitRecipe, recipeToEdit }) {
+function RecipesForm({ onSubmitRecipe, recipeToEdit, resetRecipeToEdit }) {
   const {
     register,
     handleSubmit,
@@ -140,6 +140,13 @@ function RecipesForm({ onSubmitRecipe, recipeToEdit }) {
       }
     });
     setIngredients(ingredientsListUpdated);
+  };
+
+  const handleCancelClick = () => {
+    resetRecipeToEdit();
+    reset();
+    setIngredients([]);
+    resetIngredient();
   };
 
   const validateCategories = () => {
@@ -359,6 +366,15 @@ function RecipesForm({ onSubmitRecipe, recipeToEdit }) {
             }
             value={recipeToEdit ? "Modifier" : "Ajouter"}
           />
+          {recipeToEdit && (
+            <button
+              className="button form__cancel"
+              type="reset"
+              onClick={() => handleCancelClick()}
+            >
+              Annuler
+            </button>
+          )}
         </p>
       </fieldset>
     </form>
@@ -373,7 +389,7 @@ RecipesForm.propTypes = {
    */
   onSubmitRecipe: PropTypes.func.isRequired,
   recipeToEdit: PropTypes.shape({
-    id: PropTypes.number,
+    id: PropTypes.string,
     title: PropTypes.string.isRequired,
     categories: PropTypes.arrayOf(PropTypes.string).isRequired,
     ingredients: PropTypes.arrayOf(
@@ -386,6 +402,7 @@ RecipesForm.propTypes = {
     duration: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
   }),
+  resetRecipeToEdit: PropTypes.func,
 };
 
 export default RecipesForm;

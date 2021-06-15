@@ -128,6 +128,7 @@ function CatalogRecipes() {
         <RecipesForm
           onSubmitRecipe={handleSubmit}
           recipeToEdit={recipeToEdit}
+          resetRecipeToEdit={() => setRecipeToEdit(null)}
         />
         {postError && (
           <p role="alert" className="recipe__error-message">
