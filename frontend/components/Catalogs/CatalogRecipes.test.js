@@ -460,6 +460,78 @@ describe("edit functionality", () => {
     expect(recipeTitle).not.toBeInTheDocument();
   });
 
+  it(`modify the recipe when clicking on the edit button`, async () => {
+    const { getByText, getByLabelText, findByText } = await renderCatalog();
+    await clickOnEditRecipe(getByText, "Salade de pommes de terre radis");
+    const axiosGetResponse = {
+      data: [
+        {
+          id: "1",
+          categories: ["Plat", "Entrée"],
+          title: "Salade de pommes de terre avec radis",
+          ingredients: [
+            { ingredient: "pommes de terre", amount: "1", unit: "kg" },
+            { ingredient: "oeufs", amount: "3", unit: "pièce(s)" },
+            { ingredient: "vinaigre non balsamique", amount: "1", unit: "cas" },
+            { ingredient: "radis", amount: "2", unit: "botte(s)" },
+            { ingredient: "oignons bottes", amount: "2", unit: "pièce(s)" },
+            { ingredient: "yaourt grec", amount: "1", unit: "pièce(s)" },
+            { ingredient: "mayonnaise", amount: "1", unit: "cas" },
+            { ingredient: "moutarde", amount: "0.5", unit: "cas" },
+            { ingredient: "ail", amount: "1", unit: "gousse(s)" },
+          ],
+          duration: "35 min",
+          description: "Description modifiée",
+          priority_ingredients: ["oeufs"],
+          unsure_ingredients: ["ail"],
+        },
+      ],
+    };
+    const inputTitle = getByLabelText("Titre de la recette :");
+    const inputDescription = getByLabelText("Corps de la recette :");
+    fireEvent.change(inputTitle, {
+      target: { value: "Salade de pommes de terre avec radis" },
+    });
+    fireEvent.change(inputDescription, {
+      target: { value: "Description modifiée" },
+    });
+    const editButton = getByText("Modifier");
+    axios.get.mockResolvedValue(axiosGetResponse);
+    await act(async () => {
+      fireEvent.click(editButton);
+    });
+    expect(
+      await findByText("Salade de pommes de terre avec radis")
+    ).toBeInTheDocument();
+    expect(await findByText("Description modifiée")).toBeInTheDocument();
+  });
+
+  it(`displays an error message and does not modify the recipe if the
+  recipe modification was not successful on backend side`, async () => {
+    const { getByText, getByLabelText, findByText } = await renderCatalog();
+    await clickOnEditRecipe(getByText, "Salade de pommes de terre radis");
+    const axiosPutResponse = {};
+    axios.put.mockRejectedValue(axiosPutResponse);
+    const inputTitle = getByLabelText("Titre de la recette :");
+    const inputDescription = getByLabelText("Corps de la recette :");
+    fireEvent.change(inputTitle, {
+      target: { value: "Salade de pommes de terre avec radis" },
+    });
+    fireEvent.change(inputDescription, {
+      target: { value: "Description modifiée" },
+    });
+    const editButton = getByText("Modifier");
+    await act(async () => {
+      fireEvent.click(editButton);
+    });
+    expect(
+      await findByText("Salade de pommes de terre avec radis")
+    ).toBeInTheDocument();
+    expect(await findByText("Description modifiée")).toBeInTheDocument();
+    const errorMessage = "La modification de la recette a échoué.";
+    expect(getByText(errorMessage)).toBeInTheDocument();
+  });
+
   async function clickOnEditRecipe(getByText, titleRecipe) {
     const recipe = getByText(titleRecipe, { exact: false });
     const parentListItem = recipe.parentElement;

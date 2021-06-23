@@ -146,6 +146,51 @@ def test_adding_recipe_deserializes_correctly_all_fields():
     assert recipe_added.categories.first().name == "dessert"
 
 
+def test_updating_recipe_deserializes_correctly_all_fields():
+    masse = UnitTypeFactory(name="masse")
+    UnitFactory(abbreviation="g", type=masse)
+    ingredients, categories = [], []
+    for _ in range(5):
+        ingredients.append(RecipeIngredientFactory())
+        categories.append(CategoryFactory())
+    recipe = RecipeFactory(ingredients=ingredients[:3], categories=categories[:3])
+    url = _get_recipes_detail_absolute_url(recipe.id)
+    request_data = {
+        "title": "titre modifié",
+        "description": "description modifiée",
+        "duration": "00:04:00",
+        "ingredients": [
+            {
+                "ingredient": ingredients[0].ingredient.name,
+                "amount": "5.0",
+                "unit": "g",
+            },
+            {"ingredient": ingredients[4].ingredient.name, "amount": "2", "unit": "g"},
+        ],
+        "categories": [categories[4].name],
+    }
+    request_put = APIRequestFactory().put(url, data=request_data, format="json")
+    response_put = RecipeViewSet.as_view({"put": "update"})(request_put, pk=recipe.id)
+    assert response_put.status_code == 200
+    recipe_modified = Recipe.objects.first()
+    assert recipe_modified.title == "titre modifié"
+    assert recipe_modified.description == "description modifiée"
+    assert recipe_modified.duration == datetime.timedelta(seconds=240)
+    assert recipe_modified.ingredients.count() == 2
+    recipe_modified.ingredients.get(
+        ingredient__name=ingredients[0].ingredient.name,
+        amount=5.0,
+        unit__abbreviation="g",
+    )
+    recipe_modified.ingredients.get(
+        ingredient__name=ingredients[4].ingredient.name,
+        amount=2,
+        unit__abbreviation="g",
+    )
+    assert recipe_modified.categories.count() == 1
+    assert recipe_modified.categories.first().name == categories[4].name
+
+
 def _add_recipe():
     CategoryFactory(name="dessert")
     IngredientFactory(name="premier ingrédient")
