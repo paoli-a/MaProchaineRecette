@@ -4,6 +4,7 @@ import { useCatalogRecipes } from "../../hooks/swrFetch";
 import {
   useAddCatalogRecipe,
   useDeleteCatalogRecipe,
+  useUpdateCatalogRecipe,
 } from "../../hooks/swrMutate";
 import Recipe from "../Recipe/Recipe";
 import RecipesForm from "../Recipe/RecipesForm";
@@ -23,8 +24,15 @@ function CatalogRecipes() {
   const [recipeToEdit, setRecipeToEdit] = useState(null);
   const { catalogRecipes } = useCatalogRecipes();
   const [addCatalogRecipe] = useAddCatalogRecipe({
+    onSuccess: () => mutate("/api/fridge/recipes/"),
     onFailure: () => {
       setPostError("L'ajout de recette a échoué.");
+    },
+  });
+  const [updateCatalogRecipe] = useUpdateCatalogRecipe({
+    onSuccess: () => mutate("/api/fridge/recipes/"),
+    onFailure: () => {
+      setPostError("La modification de la recette a échoué.");
     },
   });
   const [deleteCatalogRecipe] = useDeleteCatalogRecipe({
@@ -57,14 +65,19 @@ function CatalogRecipes() {
 
   const handleSubmit = async (data) => {
     const categories = data.categories.filter(Boolean);
-    const recipeToSend = {
+    let recipeToSend = {
       categories: categories,
       title: data.recipeTitle,
       ingredients: data.ingredients,
       duration: data.recipeTime,
       description: data.recipeDescription,
     };
-    addCatalogRecipe({ recipeToSend });
+    if (recipeToEdit) {
+      recipeToSend.id = recipeToEdit.id;
+      updateCatalogRecipe({ recipeToSend });
+    } else {
+      addCatalogRecipe({ recipeToSend });
+    }
   };
 
   const handleChangeSearch = (event) => {

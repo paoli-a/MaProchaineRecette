@@ -51,3 +51,17 @@ class RecipeSerializer(serializers.ModelSerializer):
             ingredient = RecipeIngredient.objects.create(**ingredient_data)
             recipe.ingredients.add(ingredient)
         return recipe
+
+    def update(self, instance, validated_data):
+        ingredients_data = validated_data.pop("ingredients")
+        categories_data = validated_data.pop("categories")
+        categories = []
+        for categorie_data in categories_data:
+            categories.append(categorie_data)
+        instance.categories.set(categories)
+        instance.ingredients.all().delete()
+        ingredients = []
+        for ingredient_data in ingredients_data:
+            ingredients.append(RecipeIngredient.objects.create(**ingredient_data))
+        instance.ingredients.set(ingredients)
+        return super().update(instance, validated_data)
