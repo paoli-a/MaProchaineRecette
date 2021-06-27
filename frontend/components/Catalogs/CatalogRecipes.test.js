@@ -497,6 +497,7 @@ describe("edit functionality", () => {
     });
     const editButton = getByText("Modifier");
     axios.get.mockResolvedValue(axiosGetResponse);
+    axios.put.mockResolvedValue(axiosGetResponse);
     await act(async () => {
       fireEvent.click(editButton);
     });
@@ -524,12 +525,10 @@ describe("edit functionality", () => {
     await act(async () => {
       fireEvent.click(editButton);
     });
-    expect(
-      await findByText("Salade de pommes de terre avec radis")
-    ).toBeInTheDocument();
-    expect(await findByText("Description modifiée")).toBeInTheDocument();
     const errorMessage = "La modification de la recette a échoué.";
-    expect(getByText(errorMessage)).toBeInTheDocument();
+    expect(await findByText(errorMessage)).toBeInTheDocument();
+    expect(getByText("Salade de pommes de terre radis")).toBeInTheDocument();
+    expect(getByText(/Eplucher et couper les patates/)).toBeInTheDocument();
   });
 
   async function clickOnEditRecipe(getByText, titleRecipe) {
