@@ -1,5 +1,6 @@
 import datetime
 import uuid
+from datetime import timedelta
 from decimal import Decimal
 
 import pytest
@@ -17,6 +18,9 @@ from .factories import (
 )
 
 pytestmark = pytest.mark.django_db
+
+
+# ingredients
 
 
 def test_ingredient_list_contains_2_ingredients():
@@ -78,6 +82,9 @@ def _get_ingredients_detail_absolute_url(name):
     return view.reverse_action("detail", args=[name])
 
 
+# recipes
+
+
 def test_recipes_list_contains_2_recipes():
     ingredients, categories = _create_ingredients_and_categories()
     recipe1 = RecipeFactory(ingredients=ingredients, categories=categories)
@@ -111,7 +118,7 @@ def test_recipes_list_has_correct_fields(recipe):
     assert uuid.UUID(recipe_data["id"]) == recipe.id
     assertContains(response, recipe.title)
     assertContains(response, recipe.description)
-    assertContains(response, recipe.duration)
+    assertContains(response, str(recipe.duration)[:-3])
     assert len(recipe_data["ingredients"]) == 10
     assert set(recipe_data["ingredients"][0].keys()) == {"ingredient", "amount", "unit"}
     assert (
@@ -124,6 +131,15 @@ def test_recipes_list_has_correct_fields(recipe):
     )
     assert len(recipe_data["categories"]) == 10
     assert recipe_data["categories"][0] == recipe.categories.first().name
+
+
+def test_recipes_list_serialises_correctly_duration_field():
+    RecipeFactory(duration=timedelta(hours=3, minutes=40))
+    url = _get_recipes_list_absolute_url()
+    request = APIRequestFactory().get(url)
+    response = RecipeViewSet.as_view({"get": "list"})(request)
+    recipe_data = response.data[0]
+    assert recipe_data["duration"] == "03:40"
 
 
 def test_adding_recipe():
@@ -158,7 +174,7 @@ def test_updating_recipe_deserializes_correctly_all_fields():
     request_data = {
         "title": "titre modifié",
         "description": "description modifiée",
-        "duration": "00:04:00",
+        "duration": "04:00",
         "ingredients": [
             {
                 "ingredient": ingredients[0].ingredient.name,
@@ -175,7 +191,7 @@ def test_updating_recipe_deserializes_correctly_all_fields():
     recipe_modified = Recipe.objects.first()
     assert recipe_modified.title == "titre modifié"
     assert recipe_modified.description == "description modifiée"
-    assert recipe_modified.duration == datetime.timedelta(seconds=240)
+    assert recipe_modified.duration == datetime.timedelta(seconds=14400)
     assert recipe_modified.ingredients.count() == 2
     recipe_modified.ingredients.get(
         ingredient__name=ingredients[0].ingredient.name,
@@ -201,7 +217,7 @@ def _add_recipe():
     request_data = {
         "title": "title recipe",
         "description": "description recipe",
-        "duration": "00:03:00",
+        "duration": "00:03",
         "ingredients": [
             {"ingredient": "deuxième ingrédient", "amount": "10.0", "unit": "kg"}
         ],
@@ -229,6 +245,9 @@ def _get_recipes_detail_absolute_url(id):
     view.basename = "recipes"
     view.request = None
     return view.reverse_action("detail", args=[id])
+
+
+# categories
 
 
 def test_categories_list_contains_2_categories():

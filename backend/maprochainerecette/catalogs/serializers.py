@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 from catalogs.models import Category, Ingredient, Recipe, RecipeIngredient
 from rest_framework import serializers
 from units.models import Unit
@@ -31,11 +33,26 @@ class RecipeIngredientSerializer(serializers.ModelSerializer):
         fields = ["ingredient", "amount", "unit"]
 
 
+class DurationFieldHoursMinutes(serializers.DurationField):
+    """A field serializer for DurationField to include only hours:minutes."""
+
+    def to_representation(self, value):
+        seconds = value.seconds
+        hours = seconds // 3600
+        minutes = (seconds // 60) % 60
+        return f"{str(hours).zfill(2)}:{str(minutes).zfill(2)}"
+
+    def to_internal_value(self, data):
+        duration = timedelta(hours=int(data[:2]), minutes=int(data[3:]))
+        return duration
+
+
 class RecipeSerializer(serializers.ModelSerializer):
     ingredients = RecipeIngredientSerializer(many=True)
     categories = serializers.SlugRelatedField(
         many=True, queryset=Category.objects.all(), slug_field="name"
     )
+    duration = DurationFieldHoursMinutes()
 
     class Meta:
         model = Recipe
