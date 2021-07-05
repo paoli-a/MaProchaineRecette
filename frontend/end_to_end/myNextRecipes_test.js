@@ -16,7 +16,7 @@ Before(({ I }) => {
     title: "Marinade de saumon fumé",
     description:
       "Emincez le saumon, l'échalotte et le persil. Ajoutez le vinaigre, l'huile, le citron et un peu de poivre. Mélangez et laissez mariner toute la nuit.",
-    duration: "00:35:00",
+    duration: "00:35",
     categories: ["Entrée"],
     ingredients: [
       {
@@ -54,7 +54,7 @@ Before(({ I }) => {
   salade = {
     title: "Salade légère",
     description: "Mélanger les ingrédients.",
-    duration: "00:05:00",
+    duration: "00:05",
     categories: ["Entrée"],
     ingredients: [
       {
