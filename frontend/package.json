@@ -58,7 +58,7 @@
     "parcel-bundler": "^1.12.5",
     "playwright": "^1.12.2",
     "pm2": "^5.1.0",
-    "prettier": "^2.3.1",
+    "prettier": "^2.3.2",
     "prettier-plugin-organize-imports": "^2.1.0",
     "rosie": "^2.1.0"
   }
