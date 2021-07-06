@@ -59,7 +59,7 @@
     "playwright": "^1.12.3",
     "pm2": "^5.1.0",
     "prettier": "^2.3.2",
-    "prettier-plugin-organize-imports": "^2.1.0",
+    "prettier-plugin-organize-imports": "^2.2.0",
     "rosie": "^2.1.0"
   }
 }
