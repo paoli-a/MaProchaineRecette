@@ -4,6 +4,26 @@
 
 _Ma prochaine recette_ (My next recipe) is a web application that allows you to display feasible recipes based on a catalog of recipes and the list of ingredients available in the fridge.
 
+## Features overview
+
+The application consists of three main pages :
+
+### The main page of feasible recipes and available fridge ingredients
+
+- The feasible recipes are displayed in an order allowing to take into account the ingredients which will expire the fastest.
+- For each recipe displayed, the ingredient from the fridge that expires the fastest is put in bold.
+- For each recipe displayed, the ingredients that are present in it but whose type of unit does not allow their quantity to be compared with the corresponding ones in the fridge are displayed in grey and italics. These recipes are also surrounded by a grey frame to indicate that they may not be feasible.
+- It is possible to filter the recipes by categories (for example starter, main course, dessert) or to filter by keyword using the search bar.
+- When an ingredient is added to the fridge, if the same ingredient is already present with the same expiration date, the two ingredients will be merged and their quantity summed provided that their units are of the same type (for example `gram` and `kilogram`, while `gram` and `piece` will not be merged).
+
+### The recipe catalog page
+
+The recipe catalog contains all of your recipes, that will be taken into account to establish the list of feasible recipes.
+
+### The ingredient catalog page
+
+To add an ingredient in a recipe or in the fridge, the exact name of this ingredient must first be entered in the catalog of ingredients.
+
 ## Installation
 
 Currently the only form of installation is the local one from sources.
@@ -67,26 +87,6 @@ The production server can be run with the following commands:
 yarn build
 yarn start
 ```
-
-## Features overview
-
-The application consists of three main pages :
-
-### The main page of feasible recipes and available fridge ingredients
-
-- The feasible recipes are displayed in an order allowing to take into account the ingredients which will expire the fastest.
-- For each recipe displayed, the ingredient from the fridge that expires the fastest is put in bold.
-- For each recipe displayed, the ingredients that are present in it but whose type of unit does not allow their quantity to be compared with the corresponding ones in the fridge are displayed in grey and italics. These recipes are also surrounded by a grey frame to indicate that they may not be feasible.
-- It is possible to filter the recipes by categories (for example starter, main course, dessert) or to filter by keyword using the search bar.
-- When an ingredient is added to the fridge, if the same ingredient is already present with the same expiration date, the two ingredients will be merged and their quantity summed provided that their units are of the same type (for example `gram` and `kilogram`, while `gram` and `piece` will not be merged).
-
-### The recipe catalog page
-
-The recipe catalog contains all of your recipes, that will be taken into account to establish the list of feasible recipes.
-
-### The ingredient catalog page
-
-To add an ingredient in a recipe or in the fridge, the exact name of this ingredient must first be entered in the catalog of ingredients.
 
 ## Licence
 
