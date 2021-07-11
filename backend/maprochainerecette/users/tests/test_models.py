@@ -1,10 +1,10 @@
 import pytest
 
 from ..models import User
-
 from .factories import UserFactory
 
 pytestmark = pytest.mark.django_db
+
 
 def test_user_str():
     user = UserFactory(email="john@doe.com")
