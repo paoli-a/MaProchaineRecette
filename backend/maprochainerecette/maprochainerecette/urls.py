@@ -8,4 +8,6 @@ urlpatterns = [
     path("api/catalogs/", include("catalogs.urls")),
     path("api/fridge/", include("fridge.urls")),
     path("api/units/", include("units.urls")),
+    path("api/auth/", include("djoser.urls")),
+    path("api/auth/", include("djoser.urls.authtoken")),
 ]
