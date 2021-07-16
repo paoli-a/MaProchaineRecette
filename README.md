@@ -4,6 +4,26 @@
 
 Ma prochaine recette est une application web permettant d'afficher les recettes faisables en fonction d'un catalogue de recettes et de la liste des ingrédients présents dans le frigo.
 
+## Fonctionnalités
+
+L'application est composée de trois pages principales :
+
+### La page des recettes faisables et des ingrédients du frigo
+
+- Les recettes faisables sont affichées dans un ordre permettant de prendre en compte les ingrédients qui vont se périmer le plus vite.
+- Pour chaque recette affichée, l'ingrédient du frigo qui périme le plus vite est mis en gras.
+- Pour chaque recette affichée, les ingrédients qui sont présents dans celle-ci mais dont le type d'unité ne permet pas de comparer leur quantité avec ceux du frigo correspondants sont mis en grisé italique. La recette est alors entourée d'un cadre gris pour indiquer qu'elle n'est peut être pas faisable.
+- Il est possible de filtrer les recettes par catégories (par exemple entrée, plat, dessert) ou de filtrer par mot-clé grace à la barre de recherche.
+- Lorsqu'un ingrédient est ajouté dans le frigo, dans le cas où le même ingredient est déjà présent avec la même date de péremption, les deux ingrédients seront fusionnés et leur leur quantité sommée à condition que leur unités soient du même type (par exemple `gramme` et `kilogramme`, alors que `gramme` et `pièce` ne le pourront pas).
+
+### La page du catalogue de recettes
+
+Le catalogue des recettes contient l'ensemble de vos recettes, qui seront prises en compte pour établir la liste des recettes faisables.
+
+### La page du catalogue d'ingrédients
+
+Pour ajouter un ingrédient dans une recette ou dans le frigo, il faut d'abord que le nom exact de cet ingrédient soit entré dans le catalogue des ingrédients.
+
 ## Installation
 
 Actuellement la seule forme d'installation est l'installation locale à partir des sources.
@@ -67,26 +87,6 @@ Le serveur de production peut être lancé avec les commandes suivantes :
 yarn build
 yarn start
 ```
-
-## Fonctionnalités
-
-L'application est composée de trois pages principales :
-
-### La page des recettes faisables et des ingrédients du frigo
-
-- Les recettes faisables sont affichées dans un ordre permettant de prendre en compte les ingrédients qui vont se périmer le plus vite.
-- Pour chaque recette affichée, l'ingrédient du frigo qui périme le plus vite est mis en gras.
-- Pour chaque recette affichée, les ingrédients qui sont présents dans celle-ci mais dont le type d'unité ne permet pas de comparer leur quantité avec ceux du frigo correspondants sont mis en grisé italique. La recette est alors entourée d'un cadre gris pour indiquer qu'elle n'est peut être pas faisable.
-- Il est possible de filtrer les recettes par catégories (par exemple entrée, plat, dessert) ou de filtrer par mot-clé grace à la barre de recherche.
-- Lorsqu'un ingrédient est ajouté dans le frigo, dans le cas où le même ingredient est déjà présent avec la même date de péremption, les deux ingrédients seront fusionnés et leur leur quantité sommée à condition que leur unités soient du même type (par exemple `gramme` et `kilogramme`, alors que `gramme` et `pièce` ne le pourront pas).
-
-### La page du catalogue de recettes
-
-Le catalogue des recettes contient l'ensemble de vos recettes, qui seront prises en compte pour établir la liste des recettes faisables.
-
-### La page du catalogue d'ingrédients
-
-Pour ajouter un ingrédient dans une recette ou dans le frigo, il faut d'abord que le nom exact de cet ingrédient soit entré dans le catalogue des ingrédients.
 
 ## Licence
 
