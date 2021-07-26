@@ -27,7 +27,7 @@
     "use-mutation": "^2.1.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.14.6",
+    "@babel/core": "^7.14.8",
     "@codeceptjs/configure": "^0.6.2",
     "@testing-library/dom": "^8.1.0",
     "@testing-library/jest-dom": "^5.14.1",
