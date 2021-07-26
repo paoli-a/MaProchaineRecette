@@ -8602,10 +8602,10 @@ prelude-ls@~1.1.2:
   resolved "https://registry.yarnpkg.com/prelude-ls/-/prelude-ls-1.1.2.tgz#21932a549f5e52ffd9a827f570e04be62a97da54"
   integrity sha1-IZMqVJ9eUv/ZqCf1cOBL5iqX2lQ=
 
-prettier-plugin-organize-imports@^2.3.0:
-  version "2.3.0"
-  resolved "https://registry.yarnpkg.com/prettier-plugin-organize-imports/-/prettier-plugin-organize-imports-2.3.0.tgz#eb9d5043bc643992492bb7530b0f597d650f2ee7"
-  integrity sha512-U8wYUKvgBv+qJ3kZPI8VWfHbN0m/VxvMvWttLGKeFgcYzRzXmmRhP2FKN7IazOIZr9LFb6lSnLoPo3qwnDWUIw==
+prettier-plugin-organize-imports@^2.3.3:
+  version "2.3.3"
+  resolved "https://registry.yarnpkg.com/prettier-plugin-organize-imports/-/prettier-plugin-organize-imports-2.3.3.tgz#6877bcf8ca02569198d8f419c954a0d90a95de15"
+  integrity sha512-PBOwQ8vEIB2b7B3gCuBG7D+dqsr1fsTR4TSAjNacRVdHJrD0yzgz9grOLPSyfwJm+NUTZLyWeHoZ+1mHaUrk+g==
 
 prettier@^2.3.2:
   version "2.3.2"
