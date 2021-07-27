@@ -18,7 +18,7 @@ def test_createrecipesfortest_create_correct_elements():
     assert len(Category.objects.all()) == 3
     assert len(Recipe.objects.all()) == 0
     assert len(RecipeIngredient.objects.all()) == 0
-    assert len(Ingredient.objects.all()) == 6
+    assert len(Ingredient.objects.all()) == 7
     assert len(Unit.objects.all()) == 4
     assert len(UnitType.objects.all()) == 2
 
@@ -33,7 +33,7 @@ def test_deleterecipes_deletes_all_elements_linked_to_recipes():
     call_command("createrecipesfortest")
     assert len(Category.objects.all()) == 3
     assert len(Recipe.objects.all()) == 0
-    assert len(Ingredient.objects.all()) == 6
+    assert len(Ingredient.objects.all()) == 7
     assert len(Unit.objects.all()) == 4
     assert len(UnitType.objects.all()) == 2
     call_command("deleterecipes")
