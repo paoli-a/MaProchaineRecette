@@ -124,3 +124,28 @@ there`,
     I.click(locate("img").withAttr({ alt: "Supprimer" }));
   }
 );
+
+Scenario("Edit existing catalog recipe", ({ I }) => {
+  I.amOnPage("/");
+  I.click("Catalogue des recettes");
+  I.click(locate("img").withAttr({ alt: "Modifier" }));
+  I.fillField("Titre de la recette :", "Marinade de saumon express");
+  I.fillField("Nom :", "ciboulette");
+  I.fillField("Quantité nécessaire :", "1");
+  I.selectOption("Unité", "pièce(s)");
+  I.click("Ajouter");
+  I.fillField(
+    "Corps de la recette :",
+    "Emincez l'échalotte, le saumon et le persil."
+  );
+  within(".form__paragraph", () => {
+    I.click(".form__submit");
+  });
+  I.click("Modifier");
+  I.click("Marinade de saumon express");
+  within(".display-catalog-recipe", () => {
+    I.see("Marinade de saumon express");
+    I.see("ciboulette");
+    I.see("Emincez l'échalotte, le saumon et le persil.");
+  });
+});

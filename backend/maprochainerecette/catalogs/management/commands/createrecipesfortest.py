@@ -28,6 +28,7 @@ class Command(BaseCommand):
             Category.objects.create(name="Plat")
             Category.objects.create(name="Dessert")
             Ingredient.objects.create(name="saumon fumé")
+            Ingredient.objects.create(name="ciboulette")
             Ingredient.objects.create(name="citon vert")
             Ingredient.objects.create(name="vinaigre balsamique")
             Ingredient.objects.create(name="huile d'olive")
