@@ -24,7 +24,7 @@
     "sass": "^1.37.5",
     "stopword": "^1.0.9",
     "swr": "^0.5.6",
-    "use-mutation": "^2.1.0"
+    "use-mutation": "^2.2.1"
   },
   "devDependencies": {
     "@babel/core": "^7.14.8",
