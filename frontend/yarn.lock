@@ -9979,10 +9979,10 @@ stealthy-require@^1.1.1:
   resolved "https://registry.yarnpkg.com/stealthy-require/-/stealthy-require-1.1.1.tgz#35b09875b4ff49f26a777e509b3090a3226bf24b"
   integrity sha1-NbCYdbT/SfJqd35QmzCQoyJr8ks=
 
-stopword@^1.0.9:
-  version "1.0.9"
-  resolved "https://registry.yarnpkg.com/stopword/-/stopword-1.0.9.tgz#3c619d829d074f455ca6eee304ceba6e9ec37a77"
-  integrity sha512-rQS/EkfDCLYmJcSj0N0O0DjxVFz9CwVLUvMPJPssRax24Bmfy07eJMSwPh8NHkk/kfh8YWIPRcl/QowBIhIZpg==
+stopword@^1.0.11:
+  version "1.0.11"
+  resolved "https://registry.yarnpkg.com/stopword/-/stopword-1.0.11.tgz#2f9f36558bf1ad8c9e1197e572442e9b8814f153"
+  integrity sha512-rMBuk91/PTdV7GpVIwlZRLGcmZ9OMbTM+KXJN19oKIkgns+EhTVEzXfb4q8/v4ExuoGxNSBSHmuzt+DUijuQqQ==
 
 stream-browserify@3.0.0:
   version "3.0.0"
