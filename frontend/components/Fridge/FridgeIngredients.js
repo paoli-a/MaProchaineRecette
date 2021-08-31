@@ -1,9 +1,10 @@
-import React, { useState } from "react";
-import FridgeIngredientsForm from "./FridgeIngredientsForm";
 import axios from "axios";
+import React, { useState } from "react";
+import { mutate } from "swr";
+import { API_PATHS } from "../../constants/paths";
 import { useFridgeIngredients } from "../../hooks/swrFetch";
 import { useDeleteFridgeIngredient } from "../../hooks/swrMutate";
-import { mutate } from "swr";
+import FridgeIngredientsForm from "./FridgeIngredientsForm";
 
 /**
  * Ce composant permet d'afficher les ingrédients du frigo, d'en ajouter
@@ -19,8 +20,8 @@ function FridgeIngredients() {
   const [ingredientToEdit, setIngredientToEdit] = useState(null);
   const [deleteFridgeIngredient] = useDeleteFridgeIngredient({
     onSuccess: () => {
-      mutate("/api/fridge/ingredients/");
-      mutate("/api/fridge/recipes/");
+      mutate(API_PATHS.fridgeIngredients);
+      mutate(API_PATHS.fridgeRecipes);
     },
     onFailure: (id) => {
       setDeleteError({
@@ -51,11 +52,11 @@ function FridgeIngredients() {
   const updateFridgeIngredients = async (newIngredient) => {
     if (ingredientToEdit) {
       await axios.put(
-        `/api/fridge/ingredients/${ingredientToEdit.id}`,
+        `${API_PATHS.fridgeIngredients}${ingredientToEdit.id}`,
         newIngredient
       );
     } else {
-      await axios.post("/api/fridge/ingredients/", newIngredient);
+      await axios.post(API_PATHS.fridgeIngredients, newIngredient);
     }
   };
 
@@ -71,8 +72,8 @@ function FridgeIngredients() {
       the backend may merge several ingredients before sending them back
       and we can't know that in advance on frontend side. */
       await updateFridgeIngredients(newIngredient);
-      mutate("/api/fridge/ingredients/");
-      mutate("/api/fridge/recipes/");
+      mutate(API_PATHS.fridgeIngredients);
+      mutate(API_PATHS.fridgeRecipes);
     } catch (error) {
       if (ingredientToEdit) {
         setPostError("La modification de l'ingrédient a échoué.");

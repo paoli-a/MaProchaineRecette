@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { mutate } from "swr";
+import { API_PATHS } from "../../constants/paths";
 import { useCatalogRecipes } from "../../hooks/swrFetch";
 import {
   useAddCatalogRecipe,
@@ -24,19 +25,19 @@ function CatalogRecipes() {
   const [recipeToEdit, setRecipeToEdit] = useState(null);
   const { catalogRecipes } = useCatalogRecipes();
   const [addCatalogRecipe] = useAddCatalogRecipe({
-    onSuccess: () => mutate("/api/fridge/recipes/"),
+    onSuccess: () => mutate(API_PATHS.fridgeRecipes),
     onFailure: () => {
       setPostError("L'ajout de recette a échoué.");
     },
   });
   const [updateCatalogRecipe] = useUpdateCatalogRecipe({
-    onSuccess: () => mutate("/api/fridge/recipes/"),
+    onSuccess: () => mutate(API_PATHS.fridgeRecipes),
     onFailure: () => {
       setPostError("La modification de la recette a échoué.");
     },
   });
   const [deleteCatalogRecipe] = useDeleteCatalogRecipe({
-    onSuccess: () => mutate("/api/fridge/recipes/"),
+    onSuccess: () => mutate(API_PATHS.fridgeRecipes),
     onFailure: (id) => {
       setDeleteError({
         id: id,
