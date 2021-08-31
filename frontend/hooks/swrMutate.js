@@ -2,11 +2,12 @@ import axios from "axios";
 import produce from "immer";
 import { cache, mutate } from "swr";
 import useMutation from "use-mutation";
+import { API_PATHS } from "../constants/paths";
 
 async function addCatalogIngredient({ ingredientToSend }) {
   try {
     const response = await axios.post(
-      "/api/catalogs/ingredients/",
+      API_PATHS.catalogIngredients,
       ingredientToSend
     );
     return response;
@@ -26,7 +27,7 @@ async function addCatalogIngredient({ ingredientToSend }) {
  *   and an object with additional information like errors.
  */
 function useAddCatalogIngredient({ onSuccess, onFailure }) {
-  const key = "/api/catalogs/ingredients/";
+  const key = API_PATHS.catalogIngredients;
   return useMutation(addCatalogIngredient, {
     onMutate({ input }) {
       const oldData = cache.get(key);
@@ -46,7 +47,7 @@ function useAddCatalogIngredient({ onSuccess, onFailure }) {
 
 async function addCatalogRecipe({ recipeToSend }) {
   try {
-    const response = await axios.post("/api/catalogs/recipes/", recipeToSend);
+    const response = await axios.post(API_PATHS.catalogRecipes, recipeToSend);
     return response;
   } catch (error) {
     throw error.response ? error.response.data : [];
@@ -64,7 +65,7 @@ async function addCatalogRecipe({ recipeToSend }) {
  *   and an object with additional information like errors.
  */
 function useAddCatalogRecipe({ onSuccess, onFailure }) {
-  const key = "/api/catalogs/recipes/";
+  const key = API_PATHS.catalogRecipes;
   return useMutation(addCatalogRecipe, {
     onMutate({ input }) {
       const oldData = cache.get(key);
@@ -90,7 +91,7 @@ function useAddCatalogRecipe({ onSuccess, onFailure }) {
 async function updateCatalogRecipe({ recipeToSend }) {
   try {
     const response = await axios.put(
-      `/api/catalogs/recipes/${recipeToSend.id}/`,
+      `${API_PATHS.catalogRecipes}${recipeToSend.id}/`,
       recipeToSend
     );
     return response;
@@ -110,7 +111,7 @@ async function updateCatalogRecipe({ recipeToSend }) {
  *   and an object with additional information like errors.
  */
 function useUpdateCatalogRecipe({ onSuccess, onFailure }) {
-  const key = "/api/catalogs/recipes/";
+  const key = API_PATHS.catalogRecipes;
   return useMutation(updateCatalogRecipe, {
     onMutate({ input }) {
       const oldData = cache.get(key);
@@ -148,7 +149,7 @@ function useUpdateCatalogRecipe({ onSuccess, onFailure }) {
 async function deleteCatalogIngredient({ ingredientToSend }) {
   try {
     const response = await axios.delete(
-      `/api/catalogs/ingredients/${ingredientToSend.name}/`
+      `${API_PATHS.catalogIngredients}${ingredientToSend.name}/`
     );
     return response;
   } catch (error) {
@@ -167,7 +168,7 @@ async function deleteCatalogIngredient({ ingredientToSend }) {
  *   and an object with additional information like errors.
  */
 function useDeleteCatalogIngredient({ onSuccess, onFailure }) {
-  const key = "/api/catalogs/ingredients/";
+  const key = API_PATHS.catalogIngredients;
   return useMutation(deleteCatalogIngredient, {
     onMutate({ input }) {
       const oldData = cache.get(key);
@@ -200,7 +201,7 @@ function useDeleteCatalogIngredient({ onSuccess, onFailure }) {
 async function deleteCatalogRecipe({ recipeToSend }) {
   try {
     const response = await axios.delete(
-      `/api/catalogs/recipes/${recipeToSend.id}/`
+      `${API_PATHS.catalogRecipes}${recipeToSend.id}/`
     );
     return response;
   } catch (error) {
@@ -219,7 +220,7 @@ async function deleteCatalogRecipe({ recipeToSend }) {
  *   and an object with additional information like errors.
  */
 function useDeleteCatalogRecipe({ onSuccess, onFailure }) {
-  const key = "/api/catalogs/recipes/";
+  const key = API_PATHS.catalogRecipes;
   return useMutation(deleteCatalogRecipe, {
     onMutate({ input }) {
       const oldData = cache.get(key);
@@ -252,7 +253,7 @@ function useDeleteCatalogRecipe({ onSuccess, onFailure }) {
 async function deleteFridgeIngredient({ ingredientToSend }) {
   try {
     const response = await axios.delete(
-      `/api/fridge/ingredients/${ingredientToSend.id}/`
+      `${API_PATHS.fridgeIngredients}${ingredientToSend.id}/`
     );
     return response;
   } catch (error) {
@@ -271,7 +272,7 @@ async function deleteFridgeIngredient({ ingredientToSend }) {
  *   and an object with additional information like errors.
  */
 function useDeleteFridgeIngredient({ onSuccess, onFailure }) {
-  const key = "/api/fridge/ingredients/";
+  const key = API_PATHS.fridgeIngredients;
   return useMutation(deleteFridgeIngredient, {
     onMutate({ input }) {
       const oldData = cache.get(key);

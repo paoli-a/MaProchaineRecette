@@ -1,10 +1,11 @@
 import axios from "axios";
 import useSWR from "swr";
+import { API_PATHS } from "../constants/paths";
 
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 
 function useCatalogIngredients(initialData) {
-  const { data, error } = useSWR("/api/catalogs/ingredients/", fetcher, {
+  const { data, error } = useSWR(API_PATHS.catalogIngredients, fetcher, {
     initialData: initialData,
   });
   let catalogIngredients = data ? data : [];
@@ -16,7 +17,7 @@ function useCatalogIngredients(initialData) {
 }
 
 function useCatalogRecipes(initialData) {
-  const { data, error } = useSWR("/api/catalogs/recipes/", fetcher, {
+  const { data, error } = useSWR(API_PATHS.catalogRecipes, fetcher, {
     initialData: initialData,
   });
   let catalogRecipes = data ? data : [];
@@ -28,7 +29,7 @@ function useCatalogRecipes(initialData) {
 }
 
 function useFridgeIngredients(initialData) {
-  const { data, error } = useSWR("/api/fridge/ingredients/", fetcher, {
+  const { data, error } = useSWR(API_PATHS.fridgeIngredients, fetcher, {
     initialData: initialData,
   });
   let fridgeIngredients = [];
@@ -51,7 +52,7 @@ function useFridgeIngredients(initialData) {
 }
 
 function useCategories(initialData) {
-  const { data, error } = useSWR("/api/catalogs/categories/", fetcher, {
+  const { data, error } = useSWR(API_PATHS.catalogCategories, fetcher, {
     initialData: initialData,
   });
   let categories = data ? data : [];
@@ -63,7 +64,7 @@ function useCategories(initialData) {
 }
 
 function useUnits(initialData) {
-  const { data, error } = useSWR("/api/units/units/", fetcher, {
+  const { data, error } = useSWR(API_PATHS.units, fetcher, {
     initialData: initialData,
   });
   let units = data ? data : [];
@@ -75,7 +76,7 @@ function useUnits(initialData) {
 }
 
 function useFridgeRecipes(initialData) {
-  const { data, error } = useSWR("/api/fridge/recipes/", fetcher, {
+  const { data, error } = useSWR(API_PATHS.fridgeRecipes, fetcher, {
     initialData: initialData,
   });
   let recipes = data ? data : [];

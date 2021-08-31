@@ -1,13 +1,14 @@
 import axios from "axios";
-import "../styles/main.scss";
+import { API_PATHS } from "../constants/paths";
 import {
   useCatalogIngredients,
   useCatalogRecipes,
-  useFridgeIngredients,
   useCategories,
-  useUnits,
+  useFridgeIngredients,
   useFridgeRecipes,
+  useUnits,
 } from "../hooks/swrFetch";
+import "../styles/main.scss";
 
 function MyApp({ Component, pageProps, props }) {
   const firstTime = props && props.firstTime;
@@ -37,12 +38,12 @@ MyApp.getInitialProps = async (context) => {
       }
       return result.data;
     };
-    const initialCatalogIngredients = await get("/api/catalogs/ingredients/");
-    const initialCatalogRecipes = await get("/api/catalogs/recipes/");
-    const initialFridgeIngredients = await get("/api/fridge/ingredients/");
-    const initialCatalogCategories = await get("/api/catalogs/categories/");
-    const initialUnits = await get("/api/units/units/");
-    const initialFridgeRecipes = await get("/api/fridge/recipes/");
+    const initialCatalogIngredients = await get(API_PATHS.catalogIngredients);
+    const initialCatalogRecipes = await get(API_PATHS.catalogRecipes);
+    const initialFridgeIngredients = await get(API_PATHS.fridgeIngredients);
+    const initialCatalogCategories = await get(API_PATHS.catalogCategories);
+    const initialUnits = await get(API_PATHS.units);
+    const initialFridgeRecipes = await get(API_PATHS.fridgeRecipes);
     return {
       props: {
         firstTime: true,

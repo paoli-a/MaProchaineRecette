@@ -1,4 +1,5 @@
 import axios from "axios";
+import { API_PATHS } from "../constants/paths";
 
 export const recipeCrumble = {
   id: "5",
@@ -163,27 +164,27 @@ export function axiosGetGlobalMock() {
 
 function mockAxiosGet(rejectedElement) {
   axios.get.mockImplementation((url) => {
-    if (url === "/api/catalogs/ingredients/") {
+    if (url === API_PATHS.catalogIngredients) {
       return rejectedElement === "ingredients"
         ? Promise.reject(new Error(""))
         : Promise.resolve(axiosResponseIngredients);
-    } else if (url === "/api/catalogs/recipes/") {
+    } else if (url === API_PATHS.catalogRecipes) {
       return rejectedElement === "recipes"
         ? Promise.reject(new Error(""))
         : Promise.resolve(axiosResponseRecipes);
-    } else if (url === "/api/fridge/ingredients/") {
+    } else if (url === API_PATHS.fridgeIngredients) {
       return rejectedElement === "fridge"
         ? Promise.reject(new Error(""))
         : Promise.resolve(axiosResponseFridgeIngredients);
-    } else if (url === "/api/fridge/recipes/") {
+    } else if (url === API_PATHS.fridgeRecipes) {
       return rejectedElement === "feasibleRecipes"
         ? Promise.reject(new Error(""))
         : Promise.resolve(axiosResponseFridgeRecipes);
-    } else if (url === "/api/catalogs/categories/") {
+    } else if (url === API_PATHS.catalogCategories) {
       return rejectedElement === "categories"
         ? Promise.reject(new Error(""))
         : Promise.resolve(axiosResponseCategories);
-    } else if (url === "/api/units/units/") {
+    } else if (url === API_PATHS.units) {
       return rejectedElement === "units"
         ? Promise.reject(new Error(""))
         : Promise.resolve(axiosResponseUnits);
