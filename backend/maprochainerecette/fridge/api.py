@@ -8,6 +8,19 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 
+class ConsumeIngredients(APIView):
+    authentication_classes = [authentication.TokenAuthentication]
+    permission_classes = [permissions.AllowAny]
+
+    def post(self, request, recipe_id):
+        """View to remove all the corresponding fridge ingredients of a consumed feasible recipe.
+
+        Currently this action doesn't work for recipes with unsure ingredients.
+
+        """
+        return Response(recipe_id)
+
+
 class FridgeIngredientViewSet(viewsets.ModelViewSet):
     """Provides a CRUD API for fridge ingredients."""
 

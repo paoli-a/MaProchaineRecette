@@ -1,5 +1,5 @@
 from django.urls import path
-from fridge.api import FridgeIngredientViewSet, FridgeRecipes
+from fridge.api import ConsumeIngredients, FridgeIngredientViewSet, FridgeRecipes
 from rest_framework import routers
 
 router = routers.DefaultRouter()
@@ -9,4 +9,9 @@ urlpatterns = router.urls
 
 urlpatterns += [
     path(route="recipes/", view=FridgeRecipes.as_view(), name="recipes_fridge_list"),
+    path(
+        route="recipes/<uuid:recipe_id>/consume/",
+        view=ConsumeIngredients.as_view(),
+        name="recipes_consume",
+    ),
 ]
