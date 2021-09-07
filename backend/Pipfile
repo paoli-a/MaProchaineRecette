@@ -30,6 +30,11 @@ black = "21.8b0"
 pre-commit = "2.14.1"
 mypy = "0.910"
 django-stubs = "1.8.0"
+### for Open API ###
+pyyaml = "5.4.1"
+uritemplate = "3.0.1"
+coreapi = "2.3.3"
+####################
 
 [packages]
 django = "3.2.6"
