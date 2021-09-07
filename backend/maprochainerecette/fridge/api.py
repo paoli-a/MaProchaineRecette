@@ -18,7 +18,27 @@ class ConsumeIngredients(APIView):
         Currently this action doesn't work for recipes with unsure ingredients.
 
         """
-        return Response(recipe_id)
+        recipe = Recipe.objects.get(id=recipe_id)
+        for recipe_ingredient in recipe.ingredients.all():
+            ingredient_id = recipe_ingredient.ingredient.id
+            fridge_ingredients = FridgeIngredient.objects.filter(
+                ingredient=ingredient_id
+            ).order_by("expiration_date")
+            consumed_amount = 0
+            for fridge_ingredient in fridge_ingredients.all():
+                initial_fridge_ingredient_amount = fridge_ingredient.amount
+                fridge_ingredient.amount = max(
+                    0,
+                    fridge_ingredient.amount
+                    - (recipe_ingredient.amount - consumed_amount),
+                )
+                if fridge_ingredient.amount == 0:
+                    fridge_ingredients.delete()
+                    consumed_amount += initial_fridge_ingredient_amount
+                else:
+                    fridge_ingredient.save()
+                    break
+        return Response()
 
 
 class FridgeIngredientViewSet(viewsets.ModelViewSet):
