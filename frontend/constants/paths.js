@@ -5,4 +5,7 @@ export const API_PATHS = Object.freeze({
   fridgeIngredients: "/api/fridge/ingredients/",
   fridgeRecipes: "/api/fridge/recipes/",
   units: "/api/units/units/",
+  consume: function createConsumePath(recipeId) {
+    return `api/fridge/recipes/${recipeId}/consume/`;
+  },
 });

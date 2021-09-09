@@ -1,8 +1,11 @@
-import React, { useState, useMemo } from "react";
+import axios from "axios";
+import React, { useMemo, useState } from "react";
+import Highlighter from "react-highlight-words";
+import { mutate } from "swr";
+import { API_PATHS } from "../../constants/paths";
+import { useFridgeRecipes } from "../../hooks/swrFetch";
 import Recipe from "../Recipe/Recipe";
 import RecipesToolbar from "../Recipe/RecipesToolbar";
-import Highlighter from "react-highlight-words";
-import { useFridgeRecipes } from "../../hooks/swrFetch";
 
 /**
  * Ce composant permet d'afficher les recettes. Il donne la possibilité
@@ -14,6 +17,7 @@ import { useFridgeRecipes } from "../../hooks/swrFetch";
 function FridgeRecipes() {
   const [categories, setCategories] = useState([]);
   const [searchResults, setSearchResults] = useState("");
+  const [consumeError, setConsumeError] = useState({});
   const { fridgeRecipes } = useFridgeRecipes();
 
   const categoriesPossibles = () => {
@@ -116,12 +120,38 @@ function FridgeRecipes() {
     );
   };
 
+  const handleConsume = (id) => {
+    axios
+      .post(API_PATHS.consume(id))
+      .then(() => {
+        mutate(API_PATHS.fridgeIngredients);
+        mutate(API_PATHS.fridgeRecipes);
+      })
+      .catch(() => {
+        setConsumeError({
+          id,
+          value:
+            "La recette n'a pas pu être consommée, veuillez réessayer plus tard",
+        });
+      });
+  };
+
   const displayedRecipes = filteredRecipes.map((myRecipe) => {
+    const consumeButton = (
+      <button
+        className="button fridge-recipes__consume-button"
+        onClick={() => handleConsume(myRecipe.id)}
+      >
+        Consommer la recette
+      </button>
+    );
     return (
       <Recipe
         key={myRecipe.id}
         recipe={myRecipe}
+        optionalButton={consumeButton}
         highlight={searchResults ? handleHighlight : undefined}
+        error={consumeError.id === myRecipe.id ? consumeError.value : ""}
       />
     );
   });
