@@ -1,9 +1,16 @@
 /* eslint-disable testing-library/no-await-sync-query */
+import {
+  act,
+  fireEvent,
+  render,
+  waitFor,
+  within,
+} from "@testing-library/react";
+import axios from "axios";
 import React from "react";
-import { render, fireEvent, act, within } from "@testing-library/react";
-import FridgeRecipes from "./FridgeRecipes";
+import { cache, SWRConfig } from "swr";
 import { axiosGetGlobalMock } from "../testUtils";
-import { SWRConfig, cache } from "swr";
+import FridgeRecipes from "./FridgeRecipes";
 
 require("mutationobserver-shim");
 jest.mock("axios");
@@ -288,5 +295,22 @@ describe("the search filtration functionality works properly", () => {
     expect(
       queryByText(getContent("Salade de pommes de terre radis"))
     ).not.toBeInTheDocument();
+  });
+});
+
+describe("Consuming functionnality", () => {
+  it(`displays an error message when clicking on the consume button if the
+  modification was not successful on backend side`, async () => {
+    const { getAllByText, getByText } = await renderFridgeRecipes();
+    axios.post.mockRejectedValue({});
+    const consumeButton = getAllByText("Consommer la recette")[0];
+    fireEvent.click(consumeButton);
+    await waitFor(() =>
+      expect(
+        getByText(
+          "La recette n'a pas pu être consommée, veuillez réessayer plus tard"
+        )
+      ).toBeInTheDocument()
+    );
   });
 });

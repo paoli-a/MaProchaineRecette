@@ -533,8 +533,8 @@ describe("edit functionality", () => {
 
   async function clickOnEditRecipe(getByText, titleRecipe) {
     const recipe = getByText(titleRecipe, { exact: false });
-    const parentListItem = recipe.parentElement;
-    const button = within(parentListItem).getByAltText("Modifier");
+    const divButton = recipe.closest("div");
+    const button = within(divButton).getByAltText("Modifier");
     fireEvent.click(button);
   }
 });

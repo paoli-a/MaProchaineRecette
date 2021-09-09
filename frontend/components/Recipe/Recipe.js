@@ -11,9 +11,8 @@ import IngredientsList from "./IngredientsList";
  *
  * @component
  */
-function Recipe({ recipe, optionalButton, activateClick, highlight }) {
+function Recipe({ recipe, optionalButton, error, activateClick, highlight }) {
   const [isRecipeOpen, setRecipeOpen] = useState();
-
   useEffect(() => {
     if (activateClick === true) {
       setRecipeOpen(false);
@@ -37,16 +36,10 @@ function Recipe({ recipe, optionalButton, activateClick, highlight }) {
             {" "}
             {highlight(recipe.title)}
           </button>{" "}
-          {optionalButton}
         </h2>
       );
     } else {
-      return (
-        <h2 className="Recipe__title">
-          {" "}
-          {highlight(recipe.title)} {optionalButton}
-        </h2>
-      );
+      return <h2 className="Recipe__title"> {highlight(recipe.title)}</h2>;
     }
   };
   const isRecipeUnsure = Boolean(
@@ -61,7 +54,11 @@ function Recipe({ recipe, optionalButton, activateClick, highlight }) {
           : "Recipe collapsible-with-title"
       }
     >
-      {title()}
+      {error}
+      <div className="Recipe__header">
+        {title()}
+        {!isRecipeUnsure && optionalButton}
+      </div>
       <div
         className={
           isRecipeOpen
@@ -100,6 +97,10 @@ Recipe.propTypes = {
    * Permet de faire apparaître un bouton à côté du titre d'une recette.
    */
   optionalButton: PropTypes.element,
+  /**
+   * Permet d'afficher les erreurs concernant la consommation.
+   */
+  error: PropTypes.string,
   /**
    * Permet de faire en sorte que seul le titre des recettes soit affiché et de
    faire apparaître la totalité de la recette quand on clique sur ce titre.
