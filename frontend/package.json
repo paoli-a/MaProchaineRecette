@@ -13,7 +13,7 @@
     "docs": "jsdoc -c jsdoc.conf.json"
   },
   "dependencies": {
-    "axios": "^0.21.1",
+    "axios": "^0.21.2",
     "immer": "^9.0.6",
     "next": "^11.1.2",
     "prop-types": "^15.7.2",
