@@ -25,7 +25,7 @@ Before(({ I }) => {
         unit: "g",
       },
       {
-        ingredient: "citon vert",
+        ingredient: "citron vert",
         amount: "0.5",
         unit: "pièce(s)",
       },
@@ -77,14 +77,14 @@ Before(({ I }) => {
     unit: "g",
   });
   I.have("fridgeIngredient", {
-    ingredient: "citon vert",
+    ingredient: "citron vert",
     amount: "1",
     unit: "pièce(s)",
   });
   I.have("fridgeIngredient", {
     ingredient: "vinaigre balsamique",
-    amount: "100",
-    unit: "g",
+    amount: "4",
+    unit: "cas",
   });
   I.have("fridgeIngredient", {
     ingredient: "huile d'olive",
@@ -145,5 +145,24 @@ Scenario(
     I.click("Ma prochaine recette");
     I.dontSee("Marinade");
     I.dontSee("Salade");
+  }
+);
+
+Scenario(
+  "Consume correctly fridge ingredients when clicking on the consume button of a recipe",
+  ({ I }) => {
+    I.amOnPage("/");
+    I.see("Marinade");
+    I.click("Consommer la recette");
+    within(".fridge-ingredients__list", () => {
+      I.see("saumon fumé");
+      I.see("200");
+      I.see("g");
+      I.dontSee("échalotte");
+      I.dontSee("herbes fraiches");
+      I.see("citron vert");
+      I.see("0.5");
+      I.dontSee("Marinade");
+    });
   }
 );

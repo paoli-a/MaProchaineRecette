@@ -24,7 +24,7 @@ Before(({ I }) => {
         unit: "g",
       },
       {
-        ingredient: "citon vert",
+        ingredient: "citron vert",
         amount: "0.5",
         unit: "pièce(s)",
       },
