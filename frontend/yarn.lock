@@ -3045,10 +3045,10 @@ coa@^2.0.2:
     chalk "^2.4.1"
     q "^1.1.2"
 
-codeceptjs@^3.1.1:
-  version "3.1.1"
-  resolved "https://registry.yarnpkg.com/codeceptjs/-/codeceptjs-3.1.1.tgz#77757ca779549258451e08a0136c7164357382ed"
-  integrity sha512-9ns82gxMc04kAy7S2FI0ZhevAOSBrZnHGTX9AXivhmg7hyK5QUKfm6grSVcFxwEHBbQta2G98h8W32eKGo4POA==
+codeceptjs@^3.1.2:
+  version "3.1.2"
+  resolved "https://registry.yarnpkg.com/codeceptjs/-/codeceptjs-3.1.2.tgz#99ecd2716d17ab178063f29c37f459e3ad13435a"
+  integrity sha512-S+qWY8tXHgpaKUaVhrDNbvsFYwBZ0ODP2zGLWD/3jFV/HlKzLIZbwfq1Yj3c8Yw/p0rIl6KFeg923uGbKHwF3Q==
   dependencies:
     "@codeceptjs/configure" "^0.6.2"
     "@codeceptjs/helper" "^1.0.2"
@@ -3081,6 +3081,7 @@ codeceptjs@^3.1.1:
     requireg "^0.2.2"
     resq "^1.10.0"
     sprintf-js "^1.1.1"
+    uuid "^8.3.2"
 
 collect-v8-coverage@^1.0.0:
   version "1.0.1"
@@ -10891,6 +10892,11 @@ uuid@^3.0.0, uuid@^3.2.1, uuid@^3.3.2:
   version "3.4.0"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.4.0.tgz#b23e4358afa8a202fe7a100af1f5f883f02007ee"
   integrity sha512-HjSDRw6gZE5JMggctHBcjVak08+KEVhSIiDzFnT9S9aegmp85S/bReBVTb4QTFaRNptJ9kuYaNhnbNEOkbKb/A==
+
+uuid@^8.3.2:
+  version "8.3.2"
+  resolved "https://registry.yarnpkg.com/uuid/-/uuid-8.3.2.tgz#80d5b5ced271bb9af6c445f21a1a04c606cefbe2"
+  integrity sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==
 
 v8-compile-cache@^2.0.0, v8-compile-cache@^2.0.3:
   version "2.2.0"
