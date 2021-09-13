@@ -15,7 +15,7 @@ Before(({ I }) => {
     unit: "pièce(s)",
   });
   I.have("fridgeIngredient", {
-    ingredient: "citon vert",
+    ingredient: "citron vert",
     amount: "2",
     unit: "kg",
   });
@@ -24,7 +24,7 @@ Before(({ I }) => {
 Scenario("See existing fridge ingredient", ({ I }) => {
   I.amOnPage("/");
   I.see("échalotte");
-  I.see("citon vert");
+  I.see("citron vert");
 });
 
 Scenario("Add new fridge ingredient", ({ I }) => {
@@ -84,14 +84,14 @@ Scenario("Edit existing fridge ingredient", ({ I }) => {
   I.click(
     locate("img")
       .withAttr({ alt: "Modifier" })
-      .inside(locate("li").withChild("h3").withText("citon vert"))
+      .inside(locate("li").withChild("h3").withText("citron vert"))
   );
   I.fillField("Quantité :", "6");
   I.selectOption("Unité", "g");
   I.fillField("Date de péremption :", "10102033");
   I.click("Modifier");
   within(".fridge-ingredients__list", () => {
-    I.see("citon vert");
+    I.see("citron vert");
     I.see("6");
     I.see("g");
     I.see("échalotte");
