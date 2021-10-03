@@ -1,19 +1,19 @@
 /* eslint-disable testing-library/no-await-sync-query */
-import React from "react";
 import {
-  render,
-  fireEvent,
-  within,
   act,
+  fireEvent,
+  render,
   waitFor,
+  within,
 } from "@testing-library/react";
+import React from "react";
+import { cache, SWRConfig } from "swr";
+import {
+  axiosGetGlobalMock,
+  fridgeIngredients,
+  mockedAxios,
+} from "../testUtils";
 import FridgeIngredients from "./FridgeIngredients";
-import axios from "axios";
-import { axiosGetGlobalMock, fridgeIngredients } from "../testUtils";
-import { SWRConfig, cache } from "swr";
-
-require("mutationobserver-shim");
-jest.mock("axios");
 
 beforeEach(() => {
   cache.clear();
@@ -94,10 +94,10 @@ describe("functionalities work properly", () => {
       } = await renderIngredients();
       let ingredient = getByText("Epinards", { exact: false });
       const axiosDeleteResponse = { data: "" };
-      axios.delete.mockResolvedValue(axiosDeleteResponse);
+      mockedAxios.delete.mockResolvedValue(axiosDeleteResponse);
       const parentListItem = ingredient.parentElement;
       const button = within(parentListItem).getByAltText("Supprimer");
-      axios.get.mockResolvedValue({
+      mockedAxios.get.mockResolvedValue({
         data: [
           {
             id: 2,
@@ -116,18 +116,18 @@ describe("functionalities work properly", () => {
         ],
       });
       fireEvent.click(button);
-      await waitFor(() => expect(axios.delete).toHaveBeenCalledTimes(1));
+      await waitFor(() => expect(mockedAxios.delete).toHaveBeenCalledTimes(1));
       ingredient = queryByText("Epinards", { exact: false });
       expect(ingredient).not.toBeInTheDocument();
       const ingredients = getAllByRole("heading", { level: 3 });
       expect(ingredients).toHaveLength(2);
-      await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(5));
+      await waitFor(() => expect(mockedAxios.get).toHaveBeenCalledTimes(5));
     });
 
     it(`displays an error message and keeps the ingredient if the ingredient removal
       was not successful on backend side`, async () => {
       const axiosDeleteResponse = { data: "" };
-      axios.delete.mockRejectedValue(axiosDeleteResponse);
+      mockedAxios.delete.mockRejectedValue(axiosDeleteResponse);
       const { getByText, getAllByRole } = await renderIngredients();
       await waitFor(() =>
         expect(getAllByRole("heading", { level: 3 })).toHaveLength(3)
@@ -136,7 +136,7 @@ describe("functionalities work properly", () => {
       const parentListItem = ingredientToRemoved.parentElement;
       const button = within(parentListItem).getByAltText("Supprimer");
       fireEvent.click(button);
-      await waitFor(() => expect(axios.delete).toHaveBeenCalledTimes(1));
+      await waitFor(() => expect(mockedAxios.delete).toHaveBeenCalledTimes(1));
       ingredientToRemoved = getByText("Epinards", { exact: false });
       expect(ingredientToRemoved).toBeInTheDocument();
       const error = getByText(
@@ -153,7 +153,7 @@ describe("functionalities work properly", () => {
         getByText,
         getAllByRole,
       } = await renderIngredients();
-      axios.get.mockResolvedValue({
+      mockedAxios.get.mockResolvedValue({
         data: [
           {
             id: 1,
@@ -305,7 +305,7 @@ describe("functionalities work properly", () => {
         getByText,
         queryByText,
       } = await renderIngredients();
-      axios.get.mockResolvedValue({
+      mockedAxios.get.mockResolvedValue({
         data: [
           {
             id: 1,
@@ -354,7 +354,7 @@ describe("functionalities work properly", () => {
           unit: "kg",
         },
       };
-      axios.post.mockResolvedValue(axiosPostResponse);
+      mockedAxios.post.mockResolvedValue(axiosPostResponse);
       const inputName = getByLabelText("Nom de l'ingrédient :");
       const inputAmount = getByLabelText("Quantité :");
       const inputDate = getByLabelText("Date de péremption :");
@@ -364,7 +364,7 @@ describe("functionalities work properly", () => {
       fireEvent.change(inputAmount, { target: { value: "27" } });
       fireEvent.change(inputDate, { target: { value: "2100-04-03" } });
       fireEvent.change(selectedUnit, { target: { value: "kg" } });
-      axios.get.mockResolvedValue({
+      mockedAxios.get.mockResolvedValue({
         data: [
           {
             id: 1,
@@ -399,7 +399,7 @@ describe("functionalities work properly", () => {
       await act(async () => {
         fireEvent.click(submitButton);
       });
-      await waitFor(() => expect(axios.post).toHaveBeenCalledTimes(2));
+      await waitFor(() => expect(mockedAxios.post).toHaveBeenCalledTimes(2));
       fraises = getByText(/Fraises/);
       expect(fraises).toBeInTheDocument();
       expect(queryByText(/53/)).not.toBeInTheDocument();
@@ -415,7 +415,7 @@ describe("functionalities work properly", () => {
         queryByText,
       } = await renderIngredients();
       const axiosPostResponse = {};
-      axios.post.mockRejectedValue(axiosPostResponse);
+      mockedAxios.post.mockRejectedValue(axiosPostResponse);
       const inputName = getByLabelText("Nom de l'ingrédient :");
       const inputAmount = getByLabelText("Quantité :");
       const inputDate = getByLabelText("Date de péremption :");
@@ -428,7 +428,7 @@ describe("functionalities work properly", () => {
       await act(async () => {
         fireEvent.click(submitButton);
       });
-      await waitFor(() => expect(axios.post).toHaveBeenCalledTimes(1));
+      await waitFor(() => expect(mockedAxios.post).toHaveBeenCalledTimes(1));
       const ingredientToAdd = queryByText("Beurre", { exact: false });
       expect(ingredientToAdd).not.toBeInTheDocument();
       const error = getByText(/L'ajout de l'ingrédient a échoué/);
@@ -450,7 +450,7 @@ describe("functionalities work properly", () => {
           unit: value[3],
         },
       };
-      axios.post.mockResolvedValue(axiosPostResponse);
+      mockedAxios.post.mockResolvedValue(axiosPostResponse);
       const inputName = getByLabelText("Nom de l'ingrédient :");
       const inputAmount = getByLabelText("Quantité :");
       const inputDate = getByLabelText("Date de péremption :");
@@ -472,7 +472,7 @@ describe("functionalities work properly", () => {
         fireEvent.click(submitButton);
       });
       if (!missingFields) {
-        await waitFor(() => expect(axios.post).toHaveBeenCalledTimes(1));
+        await waitFor(() => expect(mockedAxios.post).toHaveBeenCalledTimes(1));
       }
     }
   });
@@ -564,7 +564,7 @@ describe("functionalities work properly", () => {
       fireEvent.change(inputDate, { target: { value: "2200-05-03" } });
       fireEvent.change(selectedUnit, { target: { value: "kg" } });
       const editButton = getByText("Modifier");
-      axios.get.mockResolvedValue(axiosGetResponse);
+      mockedAxios.get.mockResolvedValue(axiosGetResponse);
       await act(async () => {
         fireEvent.click(editButton);
       });
@@ -583,7 +583,7 @@ describe("functionalities work properly", () => {
       } = await renderIngredients();
       await clickOnEditIngredient(getByText, "Epinards");
       const axiosPutResponse = {};
-      axios.put.mockRejectedValue(axiosPutResponse);
+      mockedAxios.put.mockRejectedValue(axiosPutResponse);
       const inputAmount = getByLabelText("Quantité :");
       const inputDate = getByLabelText("Date de péremption :");
       fireEvent.change(inputAmount, { target: { value: 80 } });

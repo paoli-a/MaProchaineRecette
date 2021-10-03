@@ -12,7 +12,7 @@ import IngredientsList from "./IngredientsList";
  * @component
  */
 function Recipe({ recipe, optionalButton, error, activateClick, highlight }) {
-  const [isRecipeOpen, setRecipeOpen] = useState();
+  const [isRecipeOpen, setRecipeOpen] = useState(false);
   useEffect(() => {
     if (activateClick === true) {
       setRecipeOpen(false);

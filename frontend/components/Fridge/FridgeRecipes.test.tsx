@@ -6,14 +6,10 @@ import {
   waitFor,
   within,
 } from "@testing-library/react";
-import axios from "axios";
 import React from "react";
 import { cache, SWRConfig } from "swr";
-import { axiosGetGlobalMock } from "../testUtils";
+import { axiosGetGlobalMock, mockedAxios } from "../testUtils";
 import FridgeRecipes from "./FridgeRecipes";
-
-require("mutationobserver-shim");
-jest.mock("axios");
 
 beforeEach(() => {
   cache.clear();
@@ -302,7 +298,7 @@ describe("Consuming functionnality", () => {
   it(`displays an error message when clicking on the consume button if the
   modification was not successful on backend side`, async () => {
     const { getAllByText, getByText } = await renderFridgeRecipes();
-    axios.post.mockRejectedValue({});
+    mockedAxios.post.mockRejectedValue({});
     const consumeButton = getAllByText("Consommer la recette")[0];
     fireEvent.click(consumeButton);
     await waitFor(() =>

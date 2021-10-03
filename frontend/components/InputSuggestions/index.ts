@@ -1,1 +1,2 @@
-export { InputSuggestions } from "./InputSuggestions";
+import InputSuggestions from "./InputSuggestions";
+export { InputSuggestions };

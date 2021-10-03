@@ -1,4 +1,6 @@
-export { IngredientsList } from "./IngredientsList";
-export { Recipe } from "./Recipe";
-export { RecipesForm } from "./RecipesForm";
-export { RecipesToolbar } from "./RecipesToolbar";
+import IngredientsList from "./IngredientsList";
+import Recipe from "./Recipe";
+import RecipesForm from "./RecipesForm";
+import RecipesToolbar from "./RecipesToolbar";
+
+export { IngredientsList, Recipe, RecipesForm, RecipesToolbar };

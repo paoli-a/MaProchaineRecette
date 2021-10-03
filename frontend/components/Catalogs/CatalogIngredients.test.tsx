@@ -5,14 +5,10 @@ import {
   waitFor,
   within,
 } from "@testing-library/react";
-import axios from "axios";
 import React from "react";
 import { cache, SWRConfig } from "swr";
-import { axiosGetGlobalMock } from "../testUtils";
+import { axiosGetGlobalMock, mockedAxios } from "../testUtils";
 import CatalogIngredients from "./CatalogIngredients";
-
-require("mutationobserver-shim");
-jest.mock("axios");
 
 beforeEach(() => {
   cache.clear();
@@ -38,11 +34,11 @@ const renderCatalog = async () => {
 it("removes the correct ingredient when clicking on remove button", async () => {
   const { getByText, getAllByRole } = await renderCatalog();
   const axiosDeleteResponse = { data: "" };
-  axios.delete.mockResolvedValue(axiosDeleteResponse);
+  mockedAxios.delete.mockResolvedValue(axiosDeleteResponse);
   const ingredient = getByText("Fraises", { exact: false });
   const button = within(ingredient).getByText("X");
   fireEvent.click(button);
-  axios.get.mockResolvedValue({
+  mockedAxios.get.mockResolvedValue({
     data: [
       { name: "Poires" },
       { name: "Beurre" },
@@ -51,7 +47,7 @@ it("removes the correct ingredient when clicking on remove button", async () => 
       { name: "Mascarpone" },
     ],
   });
-  await waitFor(() => expect(axios.delete).toHaveBeenCalledTimes(1));
+  await waitFor(() => expect(mockedAxios.delete).toHaveBeenCalledTimes(1));
   const listItems = getAllByRole("listitem");
   expect(ingredient).not.toBeInTheDocument();
   expect(listItems).toHaveLength(5);
@@ -61,11 +57,11 @@ it(`displays an error message and keeps the ingredient if the ingredient removal
 was not successful on backend side`, async () => {
   const { getByText, getAllByRole } = await renderCatalog();
   const axiosDeleteResponse = { data: "" };
-  axios.delete.mockRejectedValue(axiosDeleteResponse);
+  mockedAxios.delete.mockRejectedValue(axiosDeleteResponse);
   let ingredient = getByText("Fraises", { exact: false });
   const button = within(ingredient).getByText("X");
   fireEvent.click(button);
-  await waitFor(() => expect(axios.delete).toHaveBeenCalledTimes(1));
+  await waitFor(() => expect(mockedAxios.delete).toHaveBeenCalledTimes(1));
   ingredient = getByText("Fraises", { exact: false });
   const listItems = getAllByRole("listitem");
   expect(ingredient).toBeInTheDocument();
@@ -78,12 +74,12 @@ it(`adds the correct ingredient when filling the form and clicking
   on submit`, async () => {
   const { getByLabelText, getByText, getAllByRole } = await renderCatalog();
   const axiosPostResponse = { data: { name: "Chocolat" } };
-  axios.post.mockResolvedValue(axiosPostResponse);
+  mockedAxios.post.mockResolvedValue(axiosPostResponse);
   const inputName = getByLabelText("Nom de l'ingrédient à ajouter :");
   const submitButton = getByText("Envoyer");
   fireEvent.change(inputName, { target: { value: "Chocolat" } });
   fireEvent.click(submitButton);
-  axios.get.mockResolvedValue({
+  mockedAxios.get.mockResolvedValue({
     data: [
       { name: "Fraises" },
       { name: "Poires" },
@@ -94,7 +90,7 @@ it(`adds the correct ingredient when filling the form and clicking
       { name: "Chocolat" },
     ],
   });
-  await waitFor(() => expect(axios.post).toHaveBeenCalledTimes(1));
+  await waitFor(() => expect(mockedAxios.post).toHaveBeenCalledTimes(1));
   const ingredient = getByText("Chocolat", { exact: false });
   const listItems = getAllByRole("listitem");
   expect(listItems).toHaveLength(7);
@@ -110,12 +106,12 @@ was not successful on backend side`, async () => {
     getAllByRole,
   } = await renderCatalog();
   const axiosPostResponse = {};
-  axios.post.mockRejectedValue(axiosPostResponse);
+  mockedAxios.post.mockRejectedValue(axiosPostResponse);
   const inputName = getByLabelText("Nom de l'ingrédient à ajouter :");
   const submitButton = getByText("Envoyer");
   fireEvent.change(inputName, { target: { value: "Chocolat" } });
   fireEvent.click(submitButton);
-  await waitFor(() => expect(axios.post).toHaveBeenCalledTimes(1));
+  await waitFor(() => expect(mockedAxios.post).toHaveBeenCalledTimes(1));
   const ingredient = queryByText("Chocolat", { exact: false });
   const listItems = getAllByRole("listitem");
   expect(listItems).toHaveLength(6);

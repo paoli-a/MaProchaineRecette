@@ -1,8 +1,8 @@
+import PropTypes from "prop-types";
 import React, { useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
-import InputSuggestions from "../InputSuggestions/InputSuggestions";
-import PropTypes from "prop-types";
 import { useCatalogIngredients, useUnits } from "../../hooks/swrFetch";
+import InputSuggestions from "../InputSuggestions/InputSuggestions";
 
 function FridgeIngredientsForm({
   onSubmit,
@@ -37,12 +37,7 @@ function FridgeIngredientsForm({
       }
     }
     if (!authorized) {
-      return (
-        <>
-          Cet ingrédient n'existe pas dans le catalogue d'ingrédients. Vous
-          pouvez l'y ajouter <a href="/ingredients">ici</a>.
-        </>
-      );
+      return "Cet ingrédient n'existe pas dans le catalogue d'ingrédients. Vous pouvez l'y ajouter.";
     } else {
       return undefined;
     }
@@ -54,7 +49,7 @@ function FridgeIngredientsForm({
   };
 
   const validateAmount = () => {
-    if (getValues().ingredientAmount <= 0) {
+    if (parseInt(getValues().ingredientAmount, 10) <= 0) {
       return "La quantité doit être supérieure à 0";
     } else return undefined;
   };

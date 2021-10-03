@@ -1,6 +1,9 @@
 import axios from "axios";
 import { API_PATHS } from "../constants/paths";
 
+jest.mock("axios");
+export const mockedAxios = axios as jest.Mocked<typeof axios>;
+
 export const recipeCrumble = {
   id: "5",
   categories: ["Dessert"],
@@ -162,8 +165,8 @@ export function axiosGetGlobalMock() {
   mockAxiosGet();
 }
 
-function mockAxiosGet(rejectedElement) {
-  axios.get.mockImplementation((url) => {
+function mockAxiosGet(rejectedElement?: string) {
+  mockedAxios.get.mockImplementation((url) => {
     if (url === API_PATHS.catalogIngredients) {
       return rejectedElement === "ingredients"
         ? Promise.reject(new Error(""))

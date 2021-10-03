@@ -24,7 +24,9 @@ function RecipesForm({ onSubmitRecipe, recipeToEdit, resetRecipeToEdit }) {
   const [ingredientName, setIngredientName] = useState("");
   const [ingredientAmount, setIngredientAmount] = useState("");
   const [ingredientUnit, setIngredientUnit] = useState("");
-  const [ingredientError, setIngredientError] = useState("");
+  const [ingredientError, setIngredientError] = useState<JSX.Element | string>(
+    ""
+  );
   const { catalogIngredients } = useCatalogIngredients();
   const { categories } = useCategories();
   const { units } = useUnits();
@@ -97,7 +99,7 @@ function RecipesForm({ onSubmitRecipe, recipeToEdit, resetRecipeToEdit }) {
         throw new Error("Cet ingrédient a déjà été ajouté");
       }
     }
-    if (ingredientAmount <= 0) {
+    if (parseInt(ingredientAmount, 10) <= 0) {
       throw new Error("La quantité doit être supérieure à 0");
     }
   };

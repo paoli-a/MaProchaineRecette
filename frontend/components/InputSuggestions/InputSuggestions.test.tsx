@@ -1,5 +1,5 @@
+import { fireEvent, render } from "@testing-library/react";
 import React from "react";
-import { render, fireEvent } from "@testing-library/react";
 import InputSuggestions from "./InputSuggestions";
 
 let catalogIngredients;
@@ -41,13 +41,13 @@ it(`provides the right proposals when a letter is entered in the input of the in
   const inputIngredientName = getByLabelText("Ingrédients :");
   fireEvent.change(inputIngredientName, { target: { value: "fra" } });
   let options = getAllByTestId("suggestions");
-  let fraises = options[0];
-  let framboises = options[1];
+  let fraises = options[0] as HTMLInputElement;
+  let framboises = options[1] as HTMLInputElement;
   expect(fraises.value).toBe("Fraises");
   expect(framboises.value).toBe("Framboises");
   fireEvent.change(inputIngredientName, { target: { value: "fram" } });
   options = getAllByTestId("suggestions");
-  fraises = options[0];
+  fraises = options[0] as HTMLInputElement;
   expect(fraises.value).toBe("Framboises");
   expect(options).toHaveLength(1);
 });

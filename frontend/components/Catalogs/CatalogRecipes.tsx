@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { mutate } from "swr";
 import { API_PATHS } from "../../constants/paths";
+import { RecipeType } from "../../constants/types";
 import { useCatalogRecipes } from "../../hooks/swrFetch";
 import {
   useAddCatalogRecipe,
@@ -11,6 +12,11 @@ import Recipe from "../Recipe/Recipe";
 import RecipesForm from "../Recipe/RecipesForm";
 import useFilterSearch from "../useFilterSearch";
 
+type DeleteErrorType = {
+  id?: string;
+  message?: string;
+};
+
 /**
  * Ce composant permet d'afficher les recettes du catalogue, d'en ajouter
  * et d'en supprimer. Une recherche peut etre faite sur le nom des recettes et
@@ -20,7 +26,7 @@ import useFilterSearch from "../useFilterSearch";
  */
 function CatalogRecipes() {
   const [searchResults, setSearchResults] = useState("");
-  const [deleteError, setDeleteError] = useState({});
+  const [deleteError, setDeleteError] = useState<DeleteErrorType>({});
   const [postError, setPostError] = useState("");
   const [recipeToEdit, setRecipeToEdit] = useState(null);
   const { catalogRecipes } = useCatalogRecipes();
@@ -66,7 +72,7 @@ function CatalogRecipes() {
 
   const handleSubmit = async (data) => {
     const categories = data.categories.filter(Boolean);
-    let recipeToSend = {
+    let recipeToSend: RecipeType = {
       categories: categories,
       title: data.recipeTitle,
       ingredients: data.ingredients,
@@ -159,7 +165,7 @@ function CatalogRecipes() {
             value={searchResults}
             placeholder="Recherche par titre..."
             spellCheck="true"
-            size="30"
+            size={30}
             onChange={handleChangeSearch}
           />
         </form>
