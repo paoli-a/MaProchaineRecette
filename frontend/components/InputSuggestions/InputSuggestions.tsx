@@ -39,7 +39,15 @@ const InputSuggestions = React.forwardRef<
   HTMLInputElement,
   InputSuggestionsProps
 >(function InputSuggestions(
-  { elements, id, getElementText, onChangeValue, value, ...attributes },
+  {
+    elements,
+    id,
+    getElementText,
+    onChangeValue,
+    value,
+    customRef,
+    ...attributes
+  },
   ref
 ) {
   const [elementsToPropose, setElementsToPropose] = useState([]);
@@ -76,13 +84,11 @@ const InputSuggestions = React.forwardRef<
         onChange={handleElement}
         autoComplete="off"
         ref={(e) => {
-          if (ref) {
-            if (ref.customRef || ref.ref) {
-              if (ref.ref) ref.ref(e);
-              if (ref.customRef) ref.customRef.current = e;
-            } else if (ref) {
-              ref(e);
-            }
+          if (ref && ref instanceof Function) {
+            ref(e);
+          }
+          if (customRef) {
+            customRef.current = e;
           }
         }}
       />

@@ -64,13 +64,6 @@ function FridgeIngredientsForm({
     } else return undefined;
   };
   const inputSuggestionsRef = useRef(null);
-  const { ref: ingredientNameRef, ...ingredientNameRest } = register(
-    "ingredientName",
-    {
-      required: "Ce champ est obligatoire",
-      validate: validateIngredientName,
-    }
-  );
 
   const handleCancelClick = () => {
     resetIngredientToEdit();
@@ -118,11 +111,11 @@ function FridgeIngredientsForm({
               }
               aria-invalid={errors.ingredientName ? "true" : "false"}
               aria-required="true"
-              {...ingredientNameRest}
-              ref={{
-                ref: ingredientNameRef,
-                customRef: inputSuggestionsRef,
-              }}
+              customRef={inputSuggestionsRef}
+              {...register("ingredientName", {
+                required: "Ce champ est obligatoire",
+                validate: validateIngredientName,
+              })}
             />
             {errors.ingredientName && (
               <p className="form__error-message" role="alert">
