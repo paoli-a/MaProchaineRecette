@@ -6,6 +6,11 @@ import { useFridgeIngredients } from "../../hooks/swrFetch";
 import { useDeleteFridgeIngredient } from "../../hooks/swrMutate";
 import FridgeIngredientsForm from "./FridgeIngredientsForm";
 
+type DeleteErrorType = {
+  id?: string;
+  message?: string;
+};
+
 /**
  * Ce composant permet d'afficher les ingrédients du frigo, d'en ajouter
  * et d'en supprimer. Seul des noms d'ingrédients déjà présents dans le catalogue
@@ -15,7 +20,7 @@ import FridgeIngredientsForm from "./FridgeIngredientsForm";
  */
 function FridgeIngredients() {
   const [postError, setPostError] = useState("");
-  const [deleteError, setDeleteError] = useState({});
+  const [deleteError, setDeleteError] = useState<DeleteErrorType>({});
   const { fridgeIngredients } = useFridgeIngredients();
   const [ingredientToEdit, setIngredientToEdit] = useState(null);
   const [deleteFridgeIngredient] = useDeleteFridgeIngredient({

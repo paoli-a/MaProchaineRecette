@@ -9,6 +9,7 @@
     "test": "jest --watch",
     "test:ci": "jest",
     "lint": "eslint --max-warnings=0 .",
+    "type-check": "tsc --pretty --noEmit",
     "e2e": "npx codeceptjs run --steps",
     "docs": "jsdoc -c jsdoc.conf.json"
   },
@@ -32,6 +33,7 @@
     "@testing-library/dom": "^8.6.0",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^12.1.0",
+    "@types/react": "^17.0.26",
     "@typescript-eslint/eslint-plugin": "^4.33.0",
     "@typescript-eslint/parser": "^4.31.2",
     "babel-eslint": "^10.1.0",
@@ -60,6 +62,7 @@
     "pm2": "^5.1.2",
     "prettier": "^2.4.1",
     "prettier-plugin-organize-imports": "^2.3.4",
-    "rosie": "^2.1.0"
+    "rosie": "^2.1.0",
+    "typescript": "^4.4.3"
   }
 }

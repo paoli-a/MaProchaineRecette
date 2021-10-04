@@ -4,7 +4,7 @@ import { API_PATHS } from "../constants/paths";
 
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 
-function useCatalogIngredients(initialData) {
+function useCatalogIngredients(initialData?: any) {
   const { data, error } = useSWR(API_PATHS.catalogIngredients, fetcher, {
     initialData: initialData,
   });
@@ -16,7 +16,7 @@ function useCatalogIngredients(initialData) {
   };
 }
 
-function useCatalogRecipes(initialData) {
+function useCatalogRecipes(initialData?: any) {
   const { data, error } = useSWR(API_PATHS.catalogRecipes, fetcher, {
     initialData: initialData,
   });
@@ -28,7 +28,7 @@ function useCatalogRecipes(initialData) {
   };
 }
 
-function useFridgeIngredients(initialData) {
+function useFridgeIngredients(initialData?: any) {
   const { data, error } = useSWR(API_PATHS.fridgeIngredients, fetcher, {
     initialData: initialData,
   });
@@ -51,7 +51,7 @@ function useFridgeIngredients(initialData) {
   };
 }
 
-function useCategories(initialData) {
+function useCategories(initialData?: any) {
   const { data, error } = useSWR(API_PATHS.catalogCategories, fetcher, {
     initialData: initialData,
   });
@@ -63,7 +63,7 @@ function useCategories(initialData) {
   };
 }
 
-function useUnits(initialData) {
+function useUnits(initialData?: any) {
   const { data, error } = useSWR(API_PATHS.units, fetcher, {
     initialData: initialData,
   });
@@ -75,7 +75,7 @@ function useUnits(initialData) {
   };
 }
 
-function useFridgeRecipes(initialData) {
+function useFridgeRecipes(initialData?: any) {
   const { data, error } = useSWR(API_PATHS.fridgeRecipes, fetcher, {
     initialData: initialData,
   });

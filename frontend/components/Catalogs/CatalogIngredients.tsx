@@ -1,11 +1,16 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import useFilterSearch from "../useFilterSearch";
 import { useCatalogIngredients } from "../../hooks/swrFetch";
 import {
   useAddCatalogIngredient,
   useDeleteCatalogIngredient,
 } from "../../hooks/swrMutate";
+import useFilterSearch from "../useFilterSearch";
+
+type DeleteErrorType = {
+  name?: string;
+  message?: string;
+};
 
 /**
  * Ce composant permet d'afficher les ingrédients du catalogue, d'en ajouter
@@ -23,7 +28,7 @@ function CatalogIngredients() {
     setError,
   } = useForm();
   const [searchResults, setSearchResults] = useState("");
-  const [deleteError, setDeleteError] = useState({});
+  const [deleteError, setDeleteError] = useState<DeleteErrorType>({});
   const { catalogIngredients } = useCatalogIngredients();
   const [addCatalogIngredient] = useAddCatalogIngredient({
     onSuccess: () => reset(),
@@ -149,7 +154,7 @@ function CatalogIngredients() {
             value={searchResults}
             placeholder="Recherche..."
             spellCheck="true"
-            size="30"
+            size={30}
             onChange={handleChangeSearch}
           />
         </form>

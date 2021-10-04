@@ -1,6 +1,6 @@
+import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import PropTypes from "prop-types";
 
 /**
  * Ce composant permet d'afficher les outils de filtrage des recettes:
@@ -100,7 +100,7 @@ function RecipesToolbar({ onChangeCategories, onChangeSearch, categories }) {
             type="search"
             placeholder="Recherche..."
             spellCheck="true"
-            size="30"
+            size={30}
             {...registerSearch("q")}
           />
           <button

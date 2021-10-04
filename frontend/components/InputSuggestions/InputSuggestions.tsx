@@ -1,5 +1,25 @@
 import React, { useState } from "react";
-import PropTypes from "prop-types";
+
+type ElementType = { name: string };
+
+type InputSuggestionsProps = {
+  /**
+   * Il s'agit ici des objets contenant les textes qui seront suggérés.
+   */
+  elements: ElementType[];
+  id: string;
+  /**
+   * Permet de récupérer le texte à suggérer à partir de l'élément
+   */
+  getElementText: (element: ElementType) => string;
+  /**
+   * Donne la valeur tapée par l'utilisateur au composant parent pour
+   * qu'il puisse controler la value de l'input.
+   */
+  onChangeValue?: (value: string) => string;
+  value?: string;
+  [attributes: string]: any;
+};
 
 /**
  * Ce composant est un input permettant d'afficher une liste de
@@ -15,18 +35,21 @@ import PropTypes from "prop-types";
  * @component
  */
 
-const InputSuggestions = React.forwardRef(function InputSuggestions(
-  props,
-  ref
-) {
-  const {
+const InputSuggestions = React.forwardRef<
+  HTMLInputElement,
+  InputSuggestionsProps
+>(function InputSuggestions(
+  {
     elements,
     id,
     getElementText,
     onChangeValue,
     value,
+    customRef,
     ...attributes
-  } = props;
+  },
+  ref
+) {
   const [elementsToPropose, setElementsToPropose] = useState([]);
 
   const handleElement = (event) => {
@@ -61,13 +84,11 @@ const InputSuggestions = React.forwardRef(function InputSuggestions(
         onChange={handleElement}
         autoComplete="off"
         ref={(e) => {
-          if (ref) {
-            if (ref.customRef || ref.ref) {
-              if (ref.ref) ref.ref(e);
-              if (ref.customRef) ref.customRef.current = e;
-            } else if (ref) {
-              ref(e);
-            }
+          if (ref && ref instanceof Function) {
+            ref(e);
+          }
+          if (customRef) {
+            customRef.current = e;
           }
         }}
       />
@@ -85,27 +106,5 @@ const InputSuggestions = React.forwardRef(function InputSuggestions(
     </React.Fragment>
   );
 });
-
-InputSuggestions.propTypes = {
-  /**
-   * Il s'agit ici des objets contenant les textes qui seront suggérés.
-   */
-  elements: PropTypes.arrayOf(
-    PropTypes.shape({
-      name: PropTypes.string.isRequired,
-    })
-  ).isRequired,
-  id: PropTypes.string.isRequired,
-  /**
-   * Permet de récupérer le texte à suggérer à partir de l'élément
-   */
-  getElementText: PropTypes.func.isRequired,
-  /**
-   * Donne la valeur tapée par l'utilisateur au composant parent pour
-   * qu'il puisse controler la value de l'input.
-   */
-  onChangeValue: PropTypes.func,
-  value: PropTypes.string,
-};
 
 export default InputSuggestions;

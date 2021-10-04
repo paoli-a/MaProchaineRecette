@@ -6,18 +6,15 @@ import {
   waitFor,
   within,
 } from "@testing-library/react";
-import axios from "axios";
 import React from "react";
 import { cache, SWRConfig } from "swr";
 import {
   axiosGetGlobalMock,
   catalogRecipes,
+  mockedAxios,
   recipeCrumble,
 } from "../testUtils";
 import CatalogRecipes from "./CatalogRecipes";
-
-require("mutationobserver-shim");
-jest.mock("axios");
 
 beforeEach(() => {
   cache.clear();
@@ -70,7 +67,7 @@ describe("initial display is correct", () => {
 describe("the adding recipe functionality works properly", () => {
   it("adds the correct recipe when filling the form and clicking on submit", async () => {
     const { getByLabelText, getByText, getByTestId } = await renderCatalog();
-    axios.get.mockResolvedValue({
+    mockedAxios.get.mockResolvedValue({
       data: [...catalogRecipes, recipeCrumble],
     });
     await addRecipe(getByLabelText, getByText);
@@ -207,7 +204,7 @@ describe("the adding recipe functionality works properly", () => {
         description: "Épluchez et épépinez les poires. Coupez-les en dés.",
       },
     };
-    axios.post.mockResolvedValue(axiosPostResponse);
+    mockedAxios.post.mockResolvedValue(axiosPostResponse);
     const inputTitle = getByLabelText("Titre de la recette :");
     const entree = getByLabelText("Entrée");
     const inputDuration = getByLabelText("Temps total de la recette :");
@@ -238,7 +235,7 @@ describe("the adding recipe functionality works properly", () => {
       fireEvent.click(submitButton);
     });
     if (!missingFields) {
-      await waitFor(() => expect(axios.post).toHaveBeenCalledTimes(1));
+      await waitFor(() => expect(mockedAxios.post).toHaveBeenCalledTimes(1));
     }
   }
 
@@ -257,7 +254,7 @@ describe("the adding recipe functionality works properly", () => {
 was not successful on backend side`, async () => {
     const { getByLabelText, getByText, queryByText } = await renderCatalog();
     const axiosPostResponse = {};
-    axios.post.mockRejectedValue(axiosPostResponse);
+    mockedAxios.post.mockRejectedValue(axiosPostResponse);
     const inputTitle = getByLabelText("Titre de la recette :");
     const entree = getByLabelText("Entrée");
     const inputDuration = getByLabelText("Temps total de la recette :");
@@ -275,7 +272,7 @@ was not successful on backend side`, async () => {
     await act(async () => {
       fireEvent.click(submitButton);
     });
-    await waitFor(() => expect(axios.post).toHaveBeenCalledTimes(1));
+    await waitFor(() => expect(mockedAxios.post).toHaveBeenCalledTimes(1));
     const recipeToAdd = queryByText("Crumble aux poires", { exact: false });
     expect(recipeToAdd).not.toBeInTheDocument();
     const error = getByText(/L'ajout de recette a échoué/);
@@ -287,7 +284,7 @@ describe("the removing recipe functionality works properly", () => {
   it("removes the recipe when clicking on the button", async () => {
     const { getByText, getAllByLabelText } = await renderCatalog();
     const axiosDeleteResponse = { data: "" };
-    axios.delete.mockResolvedValue(axiosDeleteResponse);
+    mockedAxios.delete.mockResolvedValue(axiosDeleteResponse);
     const recipeRemoved = getByText("Marinade de saumon fumé", {
       exact: false,
     });
@@ -296,7 +293,7 @@ describe("the removing recipe functionality works properly", () => {
     });
     const button = getAllByLabelText("Supprimer la recette")[1];
     fireEvent.click(button);
-    axios.get.mockResolvedValue({
+    mockedAxios.get.mockResolvedValue({
       data: [
         {
           id: "1",
@@ -319,7 +316,7 @@ describe("the removing recipe functionality works properly", () => {
         },
       ],
     });
-    await waitFor(() => expect(axios.delete).toHaveBeenCalledTimes(1));
+    await waitFor(() => expect(mockedAxios.delete).toHaveBeenCalledTimes(1));
     expect(recipeRemoved).not.toBeInTheDocument();
     expect(recipe).toBeInTheDocument();
   });
@@ -328,7 +325,7 @@ describe("the removing recipe functionality works properly", () => {
 was not successful on backend side`, async () => {
     const { getByText, getAllByLabelText } = await renderCatalog();
     const axiosDeleteResponse = { data: "" };
-    axios.delete.mockRejectedValue(axiosDeleteResponse);
+    mockedAxios.delete.mockRejectedValue(axiosDeleteResponse);
     let recipeToRemoved = getByText("Marinade de saumon fumé", {
       exact: false,
     });
@@ -337,7 +334,7 @@ was not successful on backend side`, async () => {
     });
     const button = getAllByLabelText("Supprimer la recette")[1];
     fireEvent.click(button);
-    await waitFor(() => expect(axios.delete).toHaveBeenCalledTimes(1));
+    await waitFor(() => expect(mockedAxios.delete).toHaveBeenCalledTimes(1));
     recipeToRemoved = getByText("Marinade de saumon fumé", {
       exact: false,
     });
@@ -496,8 +493,8 @@ describe("edit functionality", () => {
       target: { value: "Description modifiée" },
     });
     const editButton = getByText("Modifier");
-    axios.get.mockResolvedValue(axiosGetResponse);
-    axios.put.mockResolvedValue(axiosGetResponse);
+    mockedAxios.get.mockResolvedValue(axiosGetResponse);
+    mockedAxios.put.mockResolvedValue(axiosGetResponse);
     await act(async () => {
       fireEvent.click(editButton);
     });
@@ -512,7 +509,7 @@ describe("edit functionality", () => {
     const { getByText, getByLabelText, findByText } = await renderCatalog();
     await clickOnEditRecipe(getByText, "Salade de pommes de terre radis");
     const axiosPutResponse = {};
-    axios.put.mockRejectedValue(axiosPutResponse);
+    mockedAxios.put.mockRejectedValue(axiosPutResponse);
     const inputTitle = getByLabelText("Titre de la recette :");
     const inputDescription = getByLabelText("Corps de la recette :");
     fireEvent.change(inputTitle, {

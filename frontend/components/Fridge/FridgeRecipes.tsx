@@ -7,6 +7,11 @@ import { useFridgeRecipes } from "../../hooks/swrFetch";
 import Recipe from "../Recipe/Recipe";
 import RecipesToolbar from "../Recipe/RecipesToolbar";
 
+type ConsumeErrorType = {
+  id?: string;
+  value?: string;
+};
+
 /**
  * Ce composant permet d'afficher les recettes. Il donne la possibilité
  * de trier les recettes par catégories mais aussi de faire une recherche
@@ -17,7 +22,7 @@ import RecipesToolbar from "../Recipe/RecipesToolbar";
 function FridgeRecipes() {
   const [categories, setCategories] = useState([]);
   const [searchResults, setSearchResults] = useState("");
-  const [consumeError, setConsumeError] = useState({});
+  const [consumeError, setConsumeError] = useState<ConsumeErrorType>({});
   const { fridgeRecipes } = useFridgeRecipes();
 
   const categoriesPossibles = () => {
