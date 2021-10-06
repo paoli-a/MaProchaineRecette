@@ -4,6 +4,13 @@ import { useForm } from "react-hook-form";
 import { useCatalogIngredients, useUnits } from "../../hooks/swrFetch";
 import InputSuggestions from "../InputSuggestions/InputSuggestions";
 
+type FormInputs = {
+  ingredientName: string;
+  ingredientAmount: string;
+  unit: string;
+  expirationDate: string;
+};
+
 function FridgeIngredientsForm({
   onSubmit,
   ingredientToEdit,
@@ -16,7 +23,7 @@ function FridgeIngredientsForm({
     reset,
     getValues,
     setValue,
-  } = useForm({
+  } = useForm<FormInputs>({
     defaultValues: {
       ingredientName: "",
       ingredientAmount: "",

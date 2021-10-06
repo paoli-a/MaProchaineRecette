@@ -52,6 +52,11 @@ jobs:
         working-directory: ./frontend
         env:
           CI: true
+      - name: Run type checking
+        run: yarn type-check
+        working-directory: ./frontend
+        env:
+          CI: true
       - name: Run unit tests
         run: yarn test:ci
         working-directory: ./frontend
