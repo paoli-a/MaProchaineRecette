@@ -1,5 +1,4 @@
 import produce from "immer";
-import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import {
@@ -9,7 +8,40 @@ import {
 } from "../../hooks/swrFetch";
 import InputSuggestions from "../InputSuggestions/InputSuggestions";
 
-function RecipesForm({ onSubmitRecipe, recipeToEdit, resetRecipeToEdit }) {
+type FormInputs = {
+  recipeTitle: string;
+  [category: string]: any;
+  recipeTime: string;
+  recipeDescription: string;
+};
+
+type RecipesFormProps = {
+  /**
+   * Cette fonction est exécutée au moment du submit de de la recette,
+   * lorsque la validité de tous les éléments entrés a été vérifiée,
+   * et permet de les récupérer.
+   */
+  onSubmitRecipe: (newData: any) => void;
+  recipeToEdit: {
+    id?: string;
+    title: string;
+    categories: string[];
+    ingredients: {
+      ingredient: string;
+      amount: string;
+      unit: string;
+    }[];
+    duration: string;
+    description: string;
+  };
+  resetRecipeToEdit?: () => void;
+};
+
+function RecipesForm({
+  onSubmitRecipe,
+  recipeToEdit,
+  resetRecipeToEdit,
+}: RecipesFormProps): JSX.Element {
   const {
     register,
     handleSubmit,
@@ -19,7 +51,7 @@ function RecipesForm({ onSubmitRecipe, recipeToEdit, resetRecipeToEdit }) {
     getValues,
     setValue,
     setFocus,
-  } = useForm();
+  } = useForm<FormInputs>();
   const [ingredients, setIngredients] = useState([]);
   const [ingredientName, setIngredientName] = useState("");
   const [ingredientAmount, setIngredientAmount] = useState("");
@@ -382,29 +414,5 @@ function RecipesForm({ onSubmitRecipe, recipeToEdit, resetRecipeToEdit }) {
     </form>
   );
 }
-
-RecipesForm.propTypes = {
-  /**
-   * Cette fonction est exécutée au moment du submit de de la recette,
-   * lorsque la validité de tous les éléments entrés a été vérifiée,
-   * et permet de les récupérer.
-   */
-  onSubmitRecipe: PropTypes.func.isRequired,
-  recipeToEdit: PropTypes.shape({
-    id: PropTypes.string,
-    title: PropTypes.string.isRequired,
-    categories: PropTypes.arrayOf(PropTypes.string).isRequired,
-    ingredients: PropTypes.arrayOf(
-      PropTypes.shape({
-        ingredient: PropTypes.string.isRequired,
-        amount: PropTypes.string.isRequired,
-        unit: PropTypes.string.isRequired,
-      }).isRequired
-    ),
-    duration: PropTypes.string.isRequired,
-    description: PropTypes.string.isRequired,
-  }),
-  resetRecipeToEdit: PropTypes.func,
-};
 
 export default RecipesForm;

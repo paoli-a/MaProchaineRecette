@@ -1,6 +1,42 @@
-import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
 import IngredientsList from "./IngredientsList";
+
+type RecipeProps = {
+  recipe: {
+    id: string;
+    categories: string[];
+    title: string;
+    ingredients: {
+      ingredient: string;
+      amount: string;
+      unit: string;
+    }[];
+    duration: string;
+    description: string;
+    priority_ingredients: string[];
+    unsure_ingredients: string[];
+  };
+  /**
+   * Permet de faire apparaître un bouton à côté du titre d'une recette.
+   */
+  optionalButton?: JSX.Element;
+  /**
+   * Permet d'afficher les erreurs concernant la consommation.
+   */
+  error?: string;
+  /**
+   * Permet de faire en sorte que seul le titre des recettes soit affiché et de
+   faire apparaître la totalité de la recette quand on clique sur ce titre.
+   */
+  activateClick?: boolean;
+  /**
+   * La prop highlight est une fonction qui permet de modifier le titre ou la
+   * description de chaque recette en mettant en valeur une partie ou la totalité
+   * du texte, par exemple avec des balises mark. Par défaut, la fonction garde
+   * le texte original. Cette prop est transmise à IngredientsList.
+   */
+  highlight?: (texte: string) => JSX.Element | string;
+};
 
 /**
  * Ce composant permet d'afficher une recette.
@@ -11,7 +47,13 @@ import IngredientsList from "./IngredientsList";
  *
  * @component
  */
-function Recipe({ recipe, optionalButton, error, activateClick, highlight }) {
+function Recipe({
+  recipe,
+  optionalButton,
+  error,
+  activateClick,
+  highlight = (texte) => texte,
+}: RecipeProps) {
   const [isRecipeOpen, setRecipeOpen] = useState(false);
   useEffect(() => {
     if (activateClick === true) {
@@ -77,46 +119,5 @@ function Recipe({ recipe, optionalButton, error, activateClick, highlight }) {
     </article>
   );
 }
-
-Recipe.propTypes = {
-  recipe: PropTypes.shape({
-    id: PropTypes.string,
-    categories: PropTypes.arrayOf(PropTypes.string).isRequired,
-    title: PropTypes.string.isRequired,
-    ingredients: PropTypes.arrayOf(
-      PropTypes.shape({
-        ingredient: PropTypes.string.isRequired,
-        amount: PropTypes.string.isRequired,
-        unit: PropTypes.string.isRequired,
-      }).isRequired
-    ),
-    duration: PropTypes.string.isRequired,
-    description: PropTypes.string.isRequired,
-  }).isRequired,
-  /**
-   * Permet de faire apparaître un bouton à côté du titre d'une recette.
-   */
-  optionalButton: PropTypes.element,
-  /**
-   * Permet d'afficher les erreurs concernant la consommation.
-   */
-  error: PropTypes.string,
-  /**
-   * Permet de faire en sorte que seul le titre des recettes soit affiché et de
-   faire apparaître la totalité de la recette quand on clique sur ce titre.
-   */
-  activateClick: PropTypes.bool,
-  /**
-   * La prop highlight est une fonction qui permet de modifier le titre ou la
-   * description de chaque recette en mettant en valeur une partie ou la totalité
-   * du texte, par exemple avec des balises mark. Par défaut, la fonction garde
-   * le texte original. Cette prop est transmise à IngredientsList.
-   */
-  highlight: PropTypes.func,
-};
-
-Recipe.defaultProps = {
-  highlight: (texte) => texte,
-};
 
 export default Recipe;
