@@ -12,6 +12,10 @@ type DeleteErrorType = {
   message?: string;
 };
 
+type FormInputs = {
+  ingredientName: string;
+};
+
 /**
  * Ce composant permet d'afficher les ingrédients du catalogue, d'en ajouter
  * et d'en supprimer. Une recherche peut etre faite sur le nom des ingrédients et
@@ -26,7 +30,7 @@ function CatalogIngredients() {
     formState: { errors },
     reset,
     setError,
-  } = useForm();
+  } = useForm<FormInputs>();
   const [searchResults, setSearchResults] = useState("");
   const [deleteError, setDeleteError] = useState<DeleteErrorType>({});
   const { catalogIngredients } = useCatalogIngredients();

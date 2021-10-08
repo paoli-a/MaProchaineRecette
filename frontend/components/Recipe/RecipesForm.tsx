@@ -1,6 +1,7 @@
 import produce from "immer";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { RecipeType } from "../../constants/types";
 import {
   useCatalogIngredients,
   useCategories,
@@ -22,18 +23,7 @@ type RecipesFormProps = {
    * et permet de les récupérer.
    */
   onSubmitRecipe: (newData: any) => void;
-  recipeToEdit: {
-    id?: string;
-    title: string;
-    categories: string[];
-    ingredients: {
-      ingredient: string;
-      amount: string;
-      unit: string;
-    }[];
-    duration: string;
-    description: string;
-  };
+  recipeToEdit: RecipeType;
   resetRecipeToEdit?: () => void;
 };
 

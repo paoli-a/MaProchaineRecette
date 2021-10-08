@@ -1,21 +1,9 @@
 import React, { useEffect, useState } from "react";
+import { RecipeType } from "../../constants/types";
 import IngredientsList from "./IngredientsList";
 
 type RecipeProps = {
-  recipe: {
-    id: string;
-    categories: string[];
-    title: string;
-    ingredients: {
-      ingredient: string;
-      amount: string;
-      unit: string;
-    }[];
-    duration: string;
-    description: string;
-    priority_ingredients: string[];
-    unsure_ingredients: string[];
-  };
+  recipe: RecipeType;
   /**
    * Permet de faire apparaître un bouton à côté du titre d'une recette.
    */

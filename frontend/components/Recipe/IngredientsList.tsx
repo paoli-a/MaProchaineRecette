@@ -1,11 +1,12 @@
 import React from "react";
+import { RecipeIngredientType } from "../../constants/types";
 
 type IngredientsListProps = {
   /**
    * Il s'agit ici de la liste d'ingredients nécessaires avec leur quantité
    * recquise pour une recette donnée.
    */
-  ingredients: { ingredient: string; amount: string; unit: string }[];
+  ingredients: RecipeIngredientType[];
 
   /**
    * Il s'agit ici des ingrédients les plus urgents en terme de date de

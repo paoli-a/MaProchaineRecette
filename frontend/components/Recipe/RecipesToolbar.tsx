@@ -21,6 +21,14 @@ type RecipesToolbarProps = {
   };
 };
 
+type CategoryInput = {
+  [category: string]: string;
+};
+
+type SearchInput = {
+  q: string;
+};
+
 /**
  * Ce composant permet d'afficher les outils de filtrage des recettes:
  * - la sélection des catégories
@@ -36,11 +44,11 @@ function RecipesToolbar({
   const {
     register: registerCategories,
     getValues: getCategoriesValues,
-  } = useForm();
+  } = useForm<CategoryInput>();
   const {
     register: registerSearch,
     handleSubmit: handleSubmitSearch,
-  } = useForm();
+  } = useForm<SearchInput>();
   const [isPannelOpen, setPannelOpen] = useState(false);
   const [categoryValuesUpdated, setCategoryValuesUpdated] = useState(0);
 
