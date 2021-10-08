@@ -1,4 +1,3 @@
-import PropTypes from "prop-types";
 import React, { useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { useCatalogIngredients, useUnits } from "../../hooks/swrFetch";
@@ -11,11 +10,31 @@ type FormInputs = {
   expirationDate: string;
 };
 
+type FridgeIngredientsFormProps = {
+  /**
+   * Cette fonction est exécutée au moment du submit de l'ingrédient,
+   * lorsque la validité de tous les éléments entrés a été vérifiée,
+   * et permet de les récupérer.
+   */
+  onSubmit: (data: any) => void;
+  /**
+   * Il s'agit de l'ingrédient du frigo qui va être modifié.
+   */
+  ingredientToEdit: {
+    id: number;
+    name: string;
+    expirationDate: Date;
+    amount: string;
+    unit: string;
+  };
+  resetIngredientToEdit: () => void;
+};
+
 function FridgeIngredientsForm({
   onSubmit,
   ingredientToEdit,
   resetIngredientToEdit,
-}) {
+}: FridgeIngredientsFormProps): JSX.Element {
   const {
     register,
     handleSubmit,
@@ -236,25 +255,5 @@ function FridgeIngredientsForm({
     </form>
   );
 }
-
-FridgeIngredientsForm.propTypes = {
-  /**
-   * Cette fonction est exécutée au moment du submit de l'ingrédient,
-   * lorsque la validité de tous les éléments entrés a été vérifiée,
-   * et permet de les récupérer.
-   */
-  onSubmit: PropTypes.func.isRequired,
-  /**
-   * Il s'agit de l'ingrédient du frigo qui va être modifié.
-   */
-  ingredientToEdit: PropTypes.shape({
-    id: PropTypes.number,
-    name: PropTypes.string,
-    expirationDate: PropTypes.object,
-    amount: PropTypes.string,
-    unit: PropTypes.string,
-  }),
-  resetIngredientToEdit: PropTypes.func,
-};
 
 export default FridgeIngredientsForm;

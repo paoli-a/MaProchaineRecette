@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { mutate } from "swr";
 import { API_PATHS } from "../../constants/paths";
-import { RecipeType } from "../../constants/types";
+import { RecipeToSendType } from "../../constants/types";
 import { useCatalogRecipes } from "../../hooks/swrFetch";
 import {
   useAddCatalogRecipe,
@@ -72,7 +72,7 @@ function CatalogRecipes() {
 
   const handleSubmit = async (data) => {
     const categories = data.categories.filter(Boolean);
-    let recipeToSend: RecipeType = {
+    let recipeToSend: RecipeToSendType = {
       categories: categories,
       title: data.recipeTitle,
       ingredients: data.ingredients,

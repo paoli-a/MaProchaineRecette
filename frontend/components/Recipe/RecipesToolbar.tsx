@@ -1,6 +1,33 @@
-import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+
+type RecipesToolbarProps = {
+  /**
+   * Cette fonction permet de récupérer les nouvelles catégories sélectionnées
+   * lorsque l'utilisateur clique sur la checkbox des catégories.
+   */
+  onChangeCategories: (filteredValues: any) => void;
+  /**
+   * Cette fonction permet de récupérer la recherche de l'utilisateur
+   * pour filtrer les recettes.
+   */
+  onChangeSearch: (search: any) => void;
+  /**
+   * Chaque catégorie est associée à un chiffre qui représente le nombre de
+   * recettes ayant cette catégorie.
+   */
+  categories: {
+    [category: string]: number;
+  };
+};
+
+type CategoryInput = {
+  [category: string]: string;
+};
+
+type SearchInput = {
+  q: string;
+};
 
 /**
  * Ce composant permet d'afficher les outils de filtrage des recettes:
@@ -9,15 +36,19 @@ import { useForm } from "react-hook-form";
  *
  * @component
  */
-function RecipesToolbar({ onChangeCategories, onChangeSearch, categories }) {
+function RecipesToolbar({
+  onChangeCategories,
+  onChangeSearch,
+  categories,
+}: RecipesToolbarProps): JSX.Element {
   const {
     register: registerCategories,
     getValues: getCategoriesValues,
-  } = useForm();
+  } = useForm<CategoryInput>();
   const {
     register: registerSearch,
     handleSubmit: handleSubmitSearch,
-  } = useForm();
+  } = useForm<SearchInput>();
   const [isPannelOpen, setPannelOpen] = useState(false);
   const [categoryValuesUpdated, setCategoryValuesUpdated] = useState(0);
 
@@ -112,23 +143,5 @@ function RecipesToolbar({ onChangeCategories, onChangeSearch, categories }) {
     </fieldset>
   );
 }
-
-RecipesToolbar.propTypes = {
-  /**
-   * Cette fonction permet de récupérer les nouvelles catégories sélectionnées
-   * lorsque l'utilisateur clique sur la checkbox des catégories.
-   */
-  onChangeCategories: PropTypes.func.isRequired,
-  /**
-   * Cette fonction permet de récupérer la recherche de l'utilisateur
-   * pour filtrer les recettes.
-   */
-  onChangeSearch: PropTypes.func.isRequired,
-  /**
-   * Chaque catégorie est associée à un chiffre qui représente le nombre de
-   * recettes ayant cette catégorie.
-   */
-  categories: PropTypes.objectOf(PropTypes.number).isRequired,
-};
 
 export default RecipesToolbar;

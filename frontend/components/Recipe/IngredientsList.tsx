@@ -1,5 +1,31 @@
 import React from "react";
-import PropTypes from "prop-types";
+import { RecipeIngredientType } from "../../constants/types";
+
+type IngredientsListProps = {
+  /**
+   * Il s'agit ici de la liste d'ingredients nécessaires avec leur quantité
+   * recquise pour une recette donnée.
+   */
+  ingredients: RecipeIngredientType[];
+
+  /**
+   * Il s'agit ici des ingrédients les plus urgents en terme de date de
+   * péremption.
+   */
+  priorityIngredients?: string[];
+  /**
+   * Il s'agit ici des ingrédients qui sont présents dans le frigo
+   * mais dont la quantité ne peut pas être vérifiée conforme pour
+   * la recette.
+   */
+  unsureIngredients?: string[];
+  /**
+   * La prop highlight est une fonction qui permet de modifier le nom de chaque
+   * ingrédient en mettant en valeur une partie ou la totalité de ce nom, par
+   * exemple avec des balises mark. Par défaut, la fonction garde le texte original.
+   */
+  highlight?: (texte: string) => JSX.Element | string;
+};
 
 /**
  * Ce composant permet d'afficher la liste des ingrédients nécessaires avec leur
@@ -9,10 +35,10 @@ import PropTypes from "prop-types";
  */
 function IngredientsList({
   ingredients,
-  priorityIngredients,
-  unsureIngredients,
-  highlight,
-}) {
+  priorityIngredients = [],
+  unsureIngredients = [],
+  highlight = (texte) => texte,
+}: IngredientsListProps): JSX.Element {
   const renderName = (ingredient) => {
     const isIngredientPriority = priorityIngredients.includes(ingredient);
     if (isIngredientPriority) {
@@ -51,42 +77,5 @@ function IngredientsList({
 
   return <ul className="Recipe__ingredients-container">{ingredientsList}</ul>;
 }
-
-IngredientsList.propTypes = {
-  /**
-   * Il s'agit ici de la liste d'ingredients nécessaires avec leur quantité
-   * recquise pour une recette donnée.
-   */
-  ingredients: PropTypes.arrayOf(
-    PropTypes.shape({
-      ingredient: PropTypes.string.isRequired,
-      amount: PropTypes.string.isRequired,
-      unit: PropTypes.string.isRequired,
-    }).isRequired
-  ),
-  /**
-   * Il s'agit ici des ingrédients les plus urgents en terme de date de
-   * péremption.
-   */
-  priorityIngredients: PropTypes.arrayOf(PropTypes.string),
-  /**
-   * Il s'agit ici des ingrédients qui sont présents dans le frigo
-   * mais dont la quantité ne peut pas être vérifiée conforme pour
-   * la recette.
-   */
-  unsureIngredients: PropTypes.arrayOf(PropTypes.string),
-  /**
-   * La prop highlight est une fonction qui permet de modifier le nom de chaque
-   * ingrédient en mettant en valeur une partie ou la totalité de ce nom, par
-   * exemple avec des balises mark. Par défaut, la fonction garde le texte original.
-   */
-  highlight: PropTypes.func,
-};
-
-IngredientsList.defaultProps = {
-  highlight: (texte) => texte,
-  priorityIngredients: [],
-  unsureIngredients: [],
-};
 
 export default IngredientsList;

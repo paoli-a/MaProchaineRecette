@@ -1,4 +1,9 @@
-type RecipeType = {
+interface RecipeType extends RecipeToSendType {
+  priority_ingredients: string[];
+  unsure_ingredients: string[];
+}
+
+type RecipeToSendType = {
   id?: string;
   categories: string[];
   title: string;
@@ -13,4 +18,4 @@ type RecipeIngredientType = {
   unit: string;
 };
 
-export type { RecipeType, RecipeIngredientType };
+export type { RecipeType, RecipeToSendType, RecipeIngredientType };
