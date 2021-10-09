@@ -29,11 +29,12 @@ module.exports = {
   },
 };
 
-function execute(command, output_result = false) {
-  let output = execSync(command, {
+function execute(command, outputResult = true) {
+  let options = {
     encoding: "utf-8",
-  });
-  if (output_result) {
-    console.log("__________\n", output);
+  };
+  if (outputResult) {
+    options.stdio = "inherit";
   }
+  execSync(command, options);
 }
