@@ -4,9 +4,9 @@ function useFilterSearch({
   elementsToFilter,
   searchResults,
   getSearchElement,
-}) {
+}: any) {
   return useMemo(() => {
-    const filterUtilSearch = function (element) {
+    const filterUtilSearch = function (element: any) {
       const searchElement = getSearchElement(element).toLowerCase();
       const searchResultsLower = searchResults.toLowerCase();
       const totalLetters = Math.min(searchElement.length, searchResults.length);

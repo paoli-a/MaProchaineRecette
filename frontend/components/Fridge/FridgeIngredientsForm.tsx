@@ -69,7 +69,7 @@ function FridgeIngredientsForm({
     }
   };
 
-  const onSubmitWrapper = (data) => {
+  const onSubmitWrapper = (data: any) => {
     onSubmit(data);
     reset();
   };
@@ -128,7 +128,7 @@ function FridgeIngredientsForm({
             <InputSuggestions
               elements={catalogIngredients}
               id="ingredientName"
-              getElementText={(ingredient) => ingredient.name}
+              getElementText={(ingredient: any) => ingredient.name}
               type="text"
               className={
                 errors.ingredientName
@@ -192,7 +192,7 @@ function FridgeIngredientsForm({
                 aria-required="true"
               >
                 <option value="">...</option>
-                {units.map((unit) => {
+                {units.map((unit: string) => {
                   return (
                     <option value={unit} key={unit}>
                       {unit}

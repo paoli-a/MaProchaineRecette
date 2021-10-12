@@ -1,10 +1,11 @@
 import axios from "axios";
 import { API_PATHS } from "../constants/paths";
+import { RecipeType } from "../constants/types";
 
 jest.mock("axios");
 export const mockedAxios = axios as jest.Mocked<typeof axios>;
 
-export const recipeCrumble = {
+export const recipeCrumble: RecipeType = {
   id: "5",
   categories: ["Dessert"],
   title: "Crumble aux poires",
@@ -148,12 +149,12 @@ export const catalogIngredients = [
 ];
 export const catalogCategories = ["Entrée", "Plat", "Dessert", "Gouter"];
 export const units = ["kg", "g", "cl", "pièce(s)"];
-let axiosResponseIngredients;
-let axiosResponseRecipes;
-let axiosResponseFridgeIngredients;
-let axiosResponseCategories;
-let axiosResponseUnits;
-let axiosResponseFridgeRecipes;
+let axiosResponseIngredients: any;
+let axiosResponseRecipes: any;
+let axiosResponseFridgeIngredients: any;
+let axiosResponseCategories: any;
+let axiosResponseUnits: any;
+let axiosResponseFridgeRecipes: any;
 
 export function axiosGetGlobalMock() {
   axiosResponseIngredients = { data: catalogIngredients };

@@ -2,6 +2,7 @@ import {
   act,
   fireEvent,
   render,
+  RenderResult,
   waitFor,
   within,
 } from "@testing-library/react";
@@ -19,7 +20,7 @@ afterEach(() => {
   jest.clearAllMocks();
 });
 
-const renderCatalog = async () => {
+const renderCatalog = async (): Promise<RenderResult> => {
   let app;
   await act(async () => {
     app = render(

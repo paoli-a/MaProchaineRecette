@@ -3,6 +3,7 @@ import {
   act,
   fireEvent,
   render,
+  RenderResult,
   waitFor,
   within,
 } from "@testing-library/react";
@@ -25,7 +26,7 @@ afterEach(() => {
   jest.clearAllMocks();
 });
 
-const renderCatalog = async () => {
+const renderCatalog = async (): Promise<RenderResult> => {
   let app;
   await act(async () => {
     app = render(
@@ -72,7 +73,7 @@ describe("the adding recipe functionality works properly", () => {
     });
     await addRecipe(getByLabelText, getByText);
     const recipe = getByText("Crumble aux poires", { exact: false });
-    const poires = getByTestId("strong-tag", { text: "poires :" });
+    const poires = getByTestId("strong-tag");
     const beurre = getByText(/beurre :/);
     expect(recipe).toBeInTheDocument();
     expect(poires).toBeInTheDocument();
@@ -95,7 +96,7 @@ describe("the adding recipe functionality works properly", () => {
     await checkMissingInput("description");
   });
 
-  async function checkMissingInput(inputName) {
+  async function checkMissingInput(inputName: string) {
     const { getByLabelText, getByText, queryByText } = await renderCatalog();
     await addRecipe(getByLabelText, getByText, [inputName]);
     const recipe = queryByText("Crumble aux poires", { exact: false });
@@ -152,8 +153,8 @@ describe("the adding recipe functionality works properly", () => {
       const inputIngredientName = getByLabelText("Nom :");
       fireEvent.change(inputIngredientName, { target: { value: "f" } });
       const options = getAllByTestId("suggestions");
-      let fraises = options[0];
-      let framboises = options[1];
+      let fraises = options[0] as HTMLOptionElement;
+      let framboises = options[1] as HTMLOptionElement;
       expect(options).toHaveLength(2);
       expect(fraises.value).toEqual("Fraises");
       expect(framboises.value).toEqual("Framboises");
@@ -186,17 +187,17 @@ describe("the adding recipe functionality works properly", () => {
   });
 
   async function addRecipe(
-    getByLabelText,
-    getByText,
-    missingFields = [],
-    customFields = {}
+    getByLabelText: any,
+    getByText: any,
+    missingFields: string[] = [],
+    customFields = { duration: "00:10:00" }
   ) {
     const axiosPostResponse = {
       data: {
         id: "5",
         title: "Crumble aux poires",
         categories: ["Entrée"],
-        duration: customFields["duration"] || "00:10:00",
+        duration: customFields["duration"],
         ingredients: [
           { ingredient: "Poires", amount: "1", unit: "kg" },
           { ingredient: "Beurre", amount: "30", unit: "g" },
@@ -239,7 +240,7 @@ describe("the adding recipe functionality works properly", () => {
     }
   }
 
-  function addIngredient(getByLabelText, value) {
+  function addIngredient(getByLabelText: any, value: string[]) {
     const inputIngredientName = getByLabelText("Nom :");
     const inputAmount = getByLabelText("Quantité nécessaire :");
     const selectedUnit = getByLabelText("Unité");
@@ -528,7 +529,7 @@ describe("edit functionality", () => {
     expect(getByText(/Eplucher et couper les patates/)).toBeInTheDocument();
   });
 
-  async function clickOnEditRecipe(getByText, titleRecipe) {
+  async function clickOnEditRecipe(getByText: any, titleRecipe: string) {
     const recipe = getByText(titleRecipe, { exact: false });
     const divButton = recipe.closest("div");
     const button = within(divButton).getByAltText("Modifier");

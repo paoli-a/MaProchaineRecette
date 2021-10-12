@@ -10,7 +10,7 @@ import {
 } from "../hooks/swrFetch";
 import "../styles/main.scss";
 
-function MyApp({ Component, pageProps, props }) {
+function MyApp({ Component, pageProps, props }: any) {
   const firstTime = props && props.firstTime;
   useCatalogIngredients(
     firstTime ? props.initialCatalogIngredients : undefined
@@ -23,13 +23,13 @@ function MyApp({ Component, pageProps, props }) {
   return <Component {...pageProps} />;
 }
 
-MyApp.getInitialProps = async (context) => {
+MyApp.getInitialProps = async (context: any) => {
   if (context.ctx.req) {
     let initialFetchError = "";
-    const get = async (path) => {
+    const get = async (path: any) => {
       const target =
         process.env.NEXT_PUBLIC_PROXY_HOST || "http://localhost:8000";
-      let result = { data: [] };
+      let result: any = { data: [] };
       try {
         result = await axios.get(`${target}${path}`);
       } catch (err) {

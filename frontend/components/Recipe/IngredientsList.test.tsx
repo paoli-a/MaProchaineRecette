@@ -1,10 +1,11 @@
-import React from "react";
 import { render } from "@testing-library/react";
+import React from "react";
+import { RecipeIngredientType } from "../../constants/types";
 import IngredientsList from "./IngredientsList";
 
-let ingredients;
-let priorityIngredients;
-let unsureIngredients;
+let ingredients: RecipeIngredientType[];
+let priorityIngredients: string[];
+let unsureIngredients: string[];
 
 beforeEach(() => {
   ingredients = [

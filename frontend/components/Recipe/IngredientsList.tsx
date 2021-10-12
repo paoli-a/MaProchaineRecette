@@ -39,7 +39,7 @@ function IngredientsList({
   unsureIngredients = [],
   highlight = (texte) => texte,
 }: IngredientsListProps): JSX.Element {
-  const renderName = (ingredient) => {
+  const renderName = (ingredient: string) => {
     const isIngredientPriority = priorityIngredients.includes(ingredient);
     if (isIngredientPriority) {
       return <strong data-testid="strong-tag">{highlight(ingredient)}</strong>;
@@ -48,7 +48,11 @@ function IngredientsList({
     }
   };
 
-  const renderIngredient = (ingredient, amount, unit) => {
+  const renderIngredient = (
+    ingredient: string,
+    amount: string,
+    unit: string
+  ) => {
     const isIngredientUnsure = unsureIngredients.includes(ingredient);
     if (isIngredientUnsure) {
       return (
