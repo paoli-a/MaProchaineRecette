@@ -18,4 +18,22 @@ type RecipeIngredientType = {
   unit: string;
 };
 
-export type { RecipeType, RecipeToSendType, RecipeIngredientType };
+type FridgeIngredientType = {
+  id: string;
+  name: string;
+  expirationDate: Date;
+  amount: string;
+  unit: string;
+};
+
+type IngredientType = {
+  name: string;
+};
+
+export type {
+  RecipeType,
+  RecipeToSendType,
+  RecipeIngredientType,
+  FridgeIngredientType,
+  IngredientType,
+};

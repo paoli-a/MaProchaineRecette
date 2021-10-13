@@ -3,6 +3,7 @@ import {
   act,
   fireEvent,
   render,
+  RenderResult,
   waitFor,
   within,
 } from "@testing-library/react";
@@ -24,7 +25,7 @@ afterEach(() => {
   jest.clearAllMocks();
 });
 
-const renderIngredients = async () => {
+const renderIngredients = async (): Promise<RenderResult> => {
   let app;
   await act(async () => {
     app = render(
@@ -212,7 +213,7 @@ describe("functionalities work properly", () => {
       await checkMissingInput("unité");
     });
 
-    async function checkMissingInput(inputName) {
+    async function checkMissingInput(inputName: string) {
       const {
         getByLabelText,
         getByText,
@@ -436,10 +437,10 @@ describe("functionalities work properly", () => {
     });
 
     async function addIngredient(
-      getByLabelText,
-      getByText,
-      value,
-      missingFields = []
+      getByLabelText: any,
+      getByText: any,
+      value: any[],
+      missingFields: string[] = []
     ) {
       const axiosPostResponse = {
         data: {
@@ -600,7 +601,10 @@ describe("functionalities work properly", () => {
       expect(getByText(errorMessage)).toBeInTheDocument();
     });
 
-    async function clickOnEditIngredient(getByText, ingredientText) {
+    async function clickOnEditIngredient(
+      getByText: any,
+      ingredientText: string
+    ) {
       const ingredient = getByText(ingredientText, { exact: false });
       const parentListItem = ingredient.parentElement;
       const button = within(parentListItem).getByAltText("Modifier");
@@ -613,8 +617,8 @@ describe("functionalities work properly", () => {
     const inputIngredientName = getByLabelText("Nom de l'ingrédient :");
     fireEvent.change(inputIngredientName, { target: { value: "f" } });
     const options = getAllByTestId("suggestions");
-    let fraises = options[0];
-    let framboises = options[1];
+    let fraises = options[0] as HTMLOptionElement;
+    let framboises = options[1] as HTMLOptionElement;
     expect(options).toHaveLength(2);
     expect(fraises.value).toEqual("Fraises");
     expect(framboises.value).toEqual("Framboises");

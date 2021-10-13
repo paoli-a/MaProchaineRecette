@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { ChangeEvent, useState } from "react";
 import { mutate } from "swr";
 import { API_PATHS } from "../../constants/paths";
-import { RecipeToSendType } from "../../constants/types";
+import { RecipeToSendType, RecipeType } from "../../constants/types";
 import { useCatalogRecipes } from "../../hooks/swrFetch";
 import {
   useAddCatalogRecipe,
@@ -44,7 +44,7 @@ function CatalogRecipes() {
   });
   const [deleteCatalogRecipe] = useDeleteCatalogRecipe({
     onSuccess: () => mutate(API_PATHS.fridgeRecipes),
-    onFailure: (id) => {
+    onFailure: (id: string) => {
       setDeleteError({
         id: id,
         message: "La suppression a échoué. Veuillez réessayer ultérieurement.",
@@ -52,16 +52,16 @@ function CatalogRecipes() {
     },
   });
 
-  const handleSupprClick = (id) => {
-    const index = catalogRecipes.findIndex((recipe) => {
+  const handleSupprClick = (id: string) => {
+    const index = catalogRecipes.findIndex((recipe: RecipeType) => {
       return recipe.id === id;
     });
     const recipeToSend = catalogRecipes[index];
     deleteCatalogRecipe({ recipeToSend });
   };
 
-  const handleEditClick = (id) => {
-    catalogRecipes.forEach((recipeObject) => {
+  const handleEditClick = (id: string) => {
+    catalogRecipes.forEach((recipeObject: any) => {
       for (const key in recipeObject) {
         if (key === "id" && recipeObject[key] === id) {
           setRecipeToEdit(recipeObject);
@@ -70,7 +70,7 @@ function CatalogRecipes() {
     });
   };
 
-  const handleSubmit = async (data) => {
+  const handleSubmit = async (data: any) => {
     const categories = data.categories.filter(Boolean);
     let recipeToSend: RecipeToSendType = {
       categories: categories,
@@ -87,17 +87,17 @@ function CatalogRecipes() {
     }
   };
 
-  const handleChangeSearch = (event) => {
+  const handleChangeSearch = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchResults(event.target.value);
   };
 
   const filteredRecipes = useFilterSearch({
     elementsToFilter: catalogRecipes,
     searchResults: searchResults,
-    getSearchElement: (recipe) => recipe.title,
+    getSearchElement: (recipe: RecipeType) => recipe.title,
   });
 
-  const allMyRecipes = filteredRecipes.map((myRecipe) => {
+  const allMyRecipes = filteredRecipes.map((myRecipe: RecipeType) => {
     const button = (
       <div className="buttons-container">
         <button

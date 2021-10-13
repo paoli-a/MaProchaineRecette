@@ -3,6 +3,7 @@ import React, { useMemo, useState } from "react";
 import Highlighter from "react-highlight-words";
 import { mutate } from "swr";
 import { API_PATHS } from "../../constants/paths";
+import { RecipeType } from "../../constants/types";
 import { useFridgeRecipes } from "../../hooks/swrFetch";
 import Recipe from "../Recipe/Recipe";
 import RecipesToolbar from "../Recipe/RecipesToolbar";
@@ -26,7 +27,7 @@ function FridgeRecipes() {
   const { fridgeRecipes } = useFridgeRecipes();
 
   const categoriesPossibles = () => {
-    const categories = {};
+    const categories: any = {};
     for (let recipe of fridgeRecipes) {
       for (let categorie of recipe.categories)
         if (categorie in categories) {
@@ -39,13 +40,13 @@ function FridgeRecipes() {
   };
 
   const searchedWords = useMemo(() => {
-    const removePunctuation = (results) => {
+    const removePunctuation = (results: any) => {
       const punctuationRegex = /[…~`!@#$%^&*(){}[\];:"'<,.>?/\\|_+=-]/g;
       let resultWithoutPunctuation = results.replace(punctuationRegex, "");
       return resultWithoutPunctuation.replace(/\s{2,}/g, " ");
     };
 
-    const removeStopwords = (results) => {
+    const removeStopwords = (results: any) => {
       const stopword = require("stopword");
       return stopword.removeStopwords(results, stopword.fr);
     };
@@ -55,7 +56,7 @@ function FridgeRecipes() {
   }, [searchResults]);
 
   const filteredRecipes = useMemo(() => {
-    const filterUtilCategories = function (recipe) {
+    const filterUtilCategories = function (recipe: RecipeType) {
       for (let categorie of categories) {
         if (recipe.categories.includes(categorie)) {
           return true;
@@ -64,7 +65,7 @@ function FridgeRecipes() {
       return false;
     };
 
-    const filterRecipesCategories = (recipesToFilter) => {
+    const filterRecipesCategories = (recipesToFilter: RecipeType[]) => {
       if (categories.length === 0) {
         return recipesToFilter;
       } else {
@@ -72,7 +73,7 @@ function FridgeRecipes() {
       }
     };
 
-    const lowerResults = (recipe) => {
+    const lowerResults = (recipe: RecipeType) => {
       const ingredientsListLower = recipe.ingredients.map((ingredientInfos) => {
         return ingredientInfos.ingredient.toLowerCase();
       });
@@ -84,7 +85,7 @@ function FridgeRecipes() {
       return resultsLower;
     };
 
-    const filterUtilSearch = function (recipe) {
+    const filterUtilSearch = function (recipe: RecipeType) {
       const { recipeTitle, description, ingredientsList } = lowerResults(
         recipe
       );
@@ -104,7 +105,7 @@ function FridgeRecipes() {
       return false;
     };
 
-    const filterRecipesSearch = function (recipesToFilter) {
+    const filterRecipesSearch = function (recipesToFilter: RecipeType[]) {
       if (searchResults.length === 0) {
         return recipesToFilter;
       } else {
@@ -115,7 +116,7 @@ function FridgeRecipes() {
     return filterRecipesSearch(filterRecipesCategories(fridgeRecipes));
   }, [fridgeRecipes, categories, searchedWords, searchResults]);
 
-  const handleHighlight = (texte) => {
+  const handleHighlight = (texte: any) => {
     return (
       <Highlighter
         highlightClassName="searchHighlight"
@@ -125,7 +126,7 @@ function FridgeRecipes() {
     );
   };
 
-  const handleConsume = (id) => {
+  const handleConsume = (id: string) => {
     axios
       .post(API_PATHS.consume(id))
       .then(() => {
@@ -141,7 +142,7 @@ function FridgeRecipes() {
       });
   };
 
-  const displayedRecipes = filteredRecipes.map((myRecipe) => {
+  const displayedRecipes = filteredRecipes.map((myRecipe: RecipeType) => {
     const consumeButton = (
       <button
         className="button fridge-recipes__consume-button"
@@ -161,11 +162,11 @@ function FridgeRecipes() {
     );
   });
 
-  const handleChangeCategories = (updatedCategories) => {
+  const handleChangeCategories = (updatedCategories: any) => {
     setCategories(updatedCategories);
   };
 
-  const handleChangeSearch = (search) => {
+  const handleChangeSearch = (search: any) => {
     setSearchResults(search.toLowerCase());
   };
 

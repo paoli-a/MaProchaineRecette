@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { ChangeEvent, useState } from "react";
 import { useForm } from "react-hook-form";
+import { IngredientType } from "../../constants/types";
 import { useCatalogIngredients } from "../../hooks/swrFetch";
 import {
   useAddCatalogIngredient,
@@ -44,7 +45,7 @@ function CatalogIngredients() {
   });
   const [deleteCatalogIngredient] = useDeleteCatalogIngredient({
     onSuccess: () => setDeleteError({}),
-    onFailure: (name) => {
+    onFailure: (name: string) => {
       setDeleteError({
         name: name,
         message: "La suppression a échoué. Veuillez réessayer ultérieurement.",
@@ -52,51 +53,53 @@ function CatalogIngredients() {
     },
   });
 
-  const onSubmitWrapper = async (dataForm) => {
+  const onSubmitWrapper = async (dataForm: any) => {
     const ingredientToSend = {
       name: dataForm.ingredientName,
     };
     addCatalogIngredient({ ingredientToSend });
   };
 
-  const handleSupprClick = (name) => {
-    const index = catalogIngredients.findIndex((ingredient) => {
+  const handleSupprClick = (name: string) => {
+    const index = catalogIngredients.findIndex((ingredient: IngredientType) => {
       return ingredient.name === name;
     });
     const ingredientToSend = catalogIngredients[index];
     deleteCatalogIngredient({ ingredientToSend });
   };
 
-  const handleChangeSearch = (event) => {
+  const handleChangeSearch = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchResults(event.target.value);
   };
 
   const filteredIngredients = useFilterSearch({
     elementsToFilter: catalogIngredients,
     searchResults: searchResults,
-    getSearchElement: (ingredient) => ingredient.name,
+    getSearchElement: (ingredient: IngredientType) => ingredient.name,
   });
 
-  const ingredientsToDisplay = filteredIngredients.map((ingredient) => {
-    return (
-      <React.Fragment key={ingredient.name}>
-        <li className="catalog-ingredients__ingredient" key={ingredient.name}>
-          {ingredient.name}
-          <button
-            className="button"
-            onClick={() => handleSupprClick(ingredient.name)}
-          >
-            X
-          </button>
-        </li>
-        {deleteError.name === ingredient.name && (
-          <p className="ingredient__error-message" role="alert">
-            {deleteError.message}
-          </p>
-        )}
-      </React.Fragment>
-    );
-  });
+  const ingredientsToDisplay = filteredIngredients.map(
+    (ingredient: IngredientType) => {
+      return (
+        <React.Fragment key={ingredient.name}>
+          <li className="catalog-ingredients__ingredient" key={ingredient.name}>
+            {ingredient.name}
+            <button
+              className="button"
+              onClick={() => handleSupprClick(ingredient.name)}
+            >
+              X
+            </button>
+          </li>
+          {deleteError.name === ingredient.name && (
+            <p className="ingredient__error-message" role="alert">
+              {deleteError.message}
+            </p>
+          )}
+        </React.Fragment>
+      );
+    }
+  );
 
   return (
     <main className="component-catalog-ingredients">

@@ -2,7 +2,7 @@ import axios from "axios";
 import useSWR from "swr";
 import { API_PATHS } from "../constants/paths";
 
-const fetcher = (url) => axios.get(url).then((res) => res.data);
+const fetcher = (url: any) => axios.get(url).then((res) => res.data);
 
 function useCatalogIngredients(initialData?: any) {
   const { data, error } = useSWR(API_PATHS.catalogIngredients, fetcher, {
@@ -34,7 +34,7 @@ function useFridgeIngredients(initialData?: any) {
   });
   let fridgeIngredients = [];
   if (data) {
-    fridgeIngredients = data.map((fridgeIngredient) => {
+    fridgeIngredients = data.map((fridgeIngredient: any) => {
       return {
         id: fridgeIngredient.id,
         name: fridgeIngredient.ingredient,

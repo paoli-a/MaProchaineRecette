@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useState } from "react";
 import { mutate } from "swr";
 import { API_PATHS } from "../../constants/paths";
+import { FridgeIngredientType } from "../../constants/types";
 import { useFridgeIngredients } from "../../hooks/swrFetch";
 import { useDeleteFridgeIngredient } from "../../hooks/swrMutate";
 import FridgeIngredientsForm from "./FridgeIngredientsForm";
@@ -9,6 +10,13 @@ import FridgeIngredientsForm from "./FridgeIngredientsForm";
 type DeleteErrorType = {
   id?: string;
   message?: string;
+};
+
+type NewIngredientType = {
+  ingredient: string;
+  expiration_date: Date;
+  amount: string;
+  unit: string;
 };
 
 /**
@@ -28,7 +36,7 @@ function FridgeIngredients() {
       mutate(API_PATHS.fridgeIngredients);
       mutate(API_PATHS.fridgeRecipes);
     },
-    onFailure: (id) => {
+    onFailure: (id: string) => {
       setDeleteError({
         id: id,
         message: "La suppression a échoué. Veuillez réessayer ultérieurement.",
@@ -36,16 +44,18 @@ function FridgeIngredients() {
     },
   });
 
-  const handleSupprClick = (id) => {
-    const index = fridgeIngredients.findIndex((ingredient) => {
-      return ingredient.id === id;
-    });
+  const handleSupprClick = (id: string) => {
+    const index = fridgeIngredients.findIndex(
+      (ingredient: FridgeIngredientType) => {
+        return ingredient.id === id;
+      }
+    );
     const ingredientToSend = fridgeIngredients[index];
     deleteFridgeIngredient({ ingredientToSend });
   };
 
-  const handleEditClick = (id) => {
-    fridgeIngredients.forEach((ingredientObject) => {
+  const handleEditClick = (id: string) => {
+    fridgeIngredients.forEach((ingredientObject: any) => {
       for (const key in ingredientObject) {
         if (key === "id" && ingredientObject[key] === id) {
           setIngredientToEdit(ingredientObject);
@@ -54,7 +64,7 @@ function FridgeIngredients() {
     });
   };
 
-  const updateFridgeIngredients = async (newIngredient) => {
+  const updateFridgeIngredients = async (newIngredient: NewIngredientType) => {
     if (ingredientToEdit) {
       await axios.put(
         `${API_PATHS.fridgeIngredients}${ingredientToEdit.id}`,
@@ -65,7 +75,7 @@ function FridgeIngredients() {
     }
   };
 
-  const handleSubmit = async (data) => {
+  const handleSubmit = async (data: any) => {
     const newIngredient = {
       ingredient: data.ingredientName,
       expiration_date: data.expirationDate,
@@ -88,57 +98,61 @@ function FridgeIngredients() {
     }
   };
 
-  const ingredientElement = fridgeIngredients.map((ingredient) => {
-    const formatedDate = ingredient.expirationDate.toLocaleDateString();
-    return (
-      <React.Fragment key={ingredient.id}>
-        <li className="fridge-ingredients__ingredient" key={ingredient.id}>
-          <h3 className="fridge-ingredients__ingredient-name">
-            {ingredient.name}
-          </h3>
-          <ul className="fridge-ingredients__details fridge-ingredient-details">
-            <li className="fridge-ingredient-details__amount">
-              <span className="fridge-ingredient-details__label">
-                Quantité :
-              </span>{" "}
-              <span className="fridge-ingredient-details__value">
-                {ingredient.amount} {ingredient.unit}
-              </span>
-            </li>
-            <li className="fridge-ingredient-details__expiration">
-              <span className="fridge-ingredient-details__label">
-                Expiration :
-              </span>{" "}
-              <span className="fridge-ingredient-details__value">
-                {formatedDate}
-              </span>
-            </li>
-          </ul>
-          <button
-            className="button fridge-ingredient-details__edit"
-            onClick={() => handleEditClick(ingredient.id)}
-          >
-            <img
-              className="fridge-ingredient-details__edit-img"
-              src="images/edit.svg"
-              alt="Modifier"
-            />
-          </button>
-          <button
-            className="button fridge-ingredient-details__delete"
-            onClick={() => handleSupprClick(ingredient.id)}
-          >
-            <img
-              className="fridge-ingredient-details__delete-img"
-              src="images/delete.svg"
-              alt="Supprimer"
-            />
-          </button>
-        </li>
-        {deleteError.id === ingredient.id && <span>{deleteError.message}</span>}
-      </React.Fragment>
-    );
-  });
+  const ingredientElement = fridgeIngredients.map(
+    (ingredient: FridgeIngredientType) => {
+      const formatedDate = ingredient.expirationDate.toLocaleDateString();
+      return (
+        <React.Fragment key={ingredient.id}>
+          <li className="fridge-ingredients__ingredient" key={ingredient.id}>
+            <h3 className="fridge-ingredients__ingredient-name">
+              {ingredient.name}
+            </h3>
+            <ul className="fridge-ingredients__details fridge-ingredient-details">
+              <li className="fridge-ingredient-details__amount">
+                <span className="fridge-ingredient-details__label">
+                  Quantité :
+                </span>{" "}
+                <span className="fridge-ingredient-details__value">
+                  {ingredient.amount} {ingredient.unit}
+                </span>
+              </li>
+              <li className="fridge-ingredient-details__expiration">
+                <span className="fridge-ingredient-details__label">
+                  Expiration :
+                </span>{" "}
+                <span className="fridge-ingredient-details__value">
+                  {formatedDate}
+                </span>
+              </li>
+            </ul>
+            <button
+              className="button fridge-ingredient-details__edit"
+              onClick={() => handleEditClick(ingredient.id)}
+            >
+              <img
+                className="fridge-ingredient-details__edit-img"
+                src="images/edit.svg"
+                alt="Modifier"
+              />
+            </button>
+            <button
+              className="button fridge-ingredient-details__delete"
+              onClick={() => handleSupprClick(ingredient.id)}
+            >
+              <img
+                className="fridge-ingredient-details__delete-img"
+                src="images/delete.svg"
+                alt="Supprimer"
+              />
+            </button>
+          </li>
+          {deleteError.id === ingredient.id && (
+            <span>{deleteError.message}</span>
+          )}
+        </React.Fragment>
+      );
+    }
+  );
 
   return (
     <section className="fridge-ingredients">

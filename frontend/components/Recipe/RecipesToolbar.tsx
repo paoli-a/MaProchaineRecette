@@ -65,7 +65,7 @@ function RecipesToolbar({
     onChangeCategories(filteredValues);
   }, [categoryValuesUpdated]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const handleSearch = (data) => {
+  const handleSearch = (data: any) => {
     const search = data.q;
     onChangeSearch(search);
   };

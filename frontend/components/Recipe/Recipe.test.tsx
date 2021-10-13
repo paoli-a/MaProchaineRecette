@@ -1,9 +1,10 @@
 import { render } from "@testing-library/react";
 import React from "react";
+import { RecipeType } from "../../constants/types";
 import Recipe from "./Recipe";
 
-let recipe;
-let recipeNotUnsure;
+let recipe: RecipeType;
+let recipeNotUnsure: RecipeType;
 
 beforeEach(() => {
   recipe = {
@@ -45,6 +46,7 @@ beforeEach(() => {
     description:
       "Eplucher et couper les patates en rondelles et les cuire à l'eau. Cuire les oeufs durs. Couper les radis en rondelles. Emincer les échalottes et les oignons. Couper les oeufs durs. Mettre le tout dans un saladier et rajouter le vinaigre. Mélanger. Préparer la sauce :  mélanger le yaourt, la mayonnaise, la moutarde, la gousse d'ail rapée. Assaisoner.",
     priority_ingredients: ["oeufs"],
+    unsure_ingredients: [],
   };
 });
 

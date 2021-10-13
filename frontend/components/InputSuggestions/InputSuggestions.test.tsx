@@ -2,7 +2,7 @@ import { fireEvent, render } from "@testing-library/react";
 import React from "react";
 import InputSuggestions from "./InputSuggestions";
 
-let catalogIngredients;
+let catalogIngredients: { name: string }[];
 
 beforeEach(() => {
   catalogIngredients = [
@@ -23,7 +23,7 @@ beforeEach(() => {
 
 it(`provides the right proposals when a letter is entered in the input of the ingredient name`, () => {
   let value = "";
-  const handleChange = (val) => {
+  const handleChange = (val: string) => {
     value = val;
   };
   const { getByLabelText, getAllByTestId } = render(
@@ -32,7 +32,7 @@ it(`provides the right proposals when a letter is entered in the input of the in
       <InputSuggestions
         id="ingredients"
         elements={catalogIngredients}
-        getElementText={(ingredient) => ingredient.name}
+        getElementText={(ingredient: any) => ingredient.name}
         onChangeValue={handleChange}
         value={value}
       />

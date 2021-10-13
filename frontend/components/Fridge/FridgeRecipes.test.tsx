@@ -3,6 +3,7 @@ import {
   act,
   fireEvent,
   render,
+  RenderResult,
   waitFor,
   within,
 } from "@testing-library/react";
@@ -20,7 +21,7 @@ afterEach(() => {
   jest.clearAllMocks();
 });
 
-const renderFridgeRecipes = async () => {
+const renderFridgeRecipes = async (): Promise<RenderResult> => {
   let app;
   await act(async () => {
     app = render(
@@ -104,8 +105,8 @@ describe("the category filtration functionality works properly", () => {
 
   it("checks category checkboxes when it's clicked", async () => {
     const { getByLabelText } = await renderFridgeRecipes();
-    const entree = getByLabelText("Entrée");
-    const dessert = getByLabelText("Dessert");
+    const entree = getByLabelText("Entrée") as HTMLInputElement;
+    const dessert = getByLabelText("Dessert") as HTMLInputElement;
     expect(entree.checked).toEqual(false);
     fireEvent.click(entree);
     expect(entree.checked).toEqual(true);
@@ -116,7 +117,11 @@ describe("the category filtration functionality works properly", () => {
 });
 
 describe("the search filtration functionality works properly", () => {
-  async function makeASearch(wantedValue, getByPlaceholderText, getByTestId) {
+  async function makeASearch(
+    wantedValue: string,
+    getByPlaceholderText: any,
+    getByTestId: any
+  ) {
     const searchBar = getByPlaceholderText("Recherche...");
     const submitButton = getByTestId("search-button");
     fireEvent.change(searchBar, { target: { value: wantedValue } });
@@ -125,10 +130,10 @@ describe("the search filtration functionality works properly", () => {
     });
   }
 
-  const getContent = (text) => {
+  const getContent = (text: string) => {
     /* This function finds only text between tags, but it does not
     find the text when it's not cut by tags.*/
-    return (content, node) => Boolean(node.textContent === text);
+    return (content: any, node: any) => Boolean(node.textContent === text);
   };
 
   it("renders only the recipes containing the searched word in their titles", async () => {

@@ -1,5 +1,5 @@
 import produce from "immer";
-import React, { useEffect, useState } from "react";
+import React, { MouseEvent, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { RecipeType } from "../../constants/types";
 import {
@@ -57,8 +57,8 @@ function RecipesForm({
     if (recipeToEdit) {
       setFocus("recipeTitle");
       setValue("recipeTitle", recipeToEdit.title);
-      const categoriesToEdit = [];
-      categories.forEach((category) => {
+      const categoriesToEdit: any = [];
+      categories.forEach((category: any) => {
         if (recipeToEdit.categories.includes(category)) {
           categoriesToEdit.push(category);
         } else {
@@ -73,14 +73,14 @@ function RecipesForm({
     }
   }, [recipeToEdit, setFocus, categories, setValue]);
 
-  const onSubmitForm = (data) => {
+  const onSubmitForm = (data: any) => {
     if (ingredients.length === 0) {
       setIngredientError(
         "Au moins un ingrédient doit être présent dans la recette"
       );
       return;
     }
-    const newData = produce(data, (draftState) => {
+    const newData = produce(data, (draftState: any) => {
       draftState.ingredients = ingredients;
     });
     onSubmitRecipe(newData);
@@ -126,7 +126,7 @@ function RecipesForm({
     }
   };
 
-  const handleAddIngredient = (event) => {
+  const handleAddIngredient = (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     try {
       validateNewIngredient();
@@ -154,7 +154,7 @@ function RecipesForm({
     }
   };
 
-  const handleSupprIngredient = (name) => {
+  const handleSupprIngredient = (name: string) => {
     const ingredientsListUpdated = produce(ingredients, (draftState) => {
       for (let i = 0; i < draftState.length; i++) {
         if (draftState[i].ingredient === name) {
@@ -227,7 +227,7 @@ function RecipesForm({
         <div className="form__checkbox-container">
           Catégories :
           <ul>
-            {categories.map((category, index) => {
+            {categories.map((category: any, index: number) => {
               return (
                 <li key={category}>
                   <input
@@ -288,8 +288,8 @@ function RecipesForm({
               className="form__input"
               elements={catalogIngredients}
               id="ingredient"
-              getElementText={(ingredient) => ingredient.name}
-              onChangeValue={(name) => setIngredientName(name)}
+              getElementText={(ingredient: any) => ingredient.name}
+              onChangeValue={(name: string) => setIngredientName(name)}
               value={ingredientName}
               name="ingredient"
               type="text"
@@ -322,7 +322,7 @@ function RecipesForm({
                 aria-required="true"
               >
                 <option value="">...</option>
-                {units.map((unit) => {
+                {units.map((unit: string) => {
                   return (
                     <option value={unit} key={unit}>
                       {unit}

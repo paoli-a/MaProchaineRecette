@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { ChangeEvent, useState } from "react";
 
 type ElementType = { name: string };
 
@@ -52,7 +52,7 @@ const InputSuggestions = React.forwardRef<
 ) {
   const [elementsToPropose, setElementsToPropose] = useState([]);
 
-  const handleElement = (event) => {
+  const handleElement = (event: ChangeEvent<HTMLInputElement>) => {
     if (onChangeValue) {
       onChangeValue(event.target.value);
     }

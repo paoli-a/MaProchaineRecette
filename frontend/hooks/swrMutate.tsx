@@ -3,8 +3,13 @@ import produce from "immer";
 import { cache, mutate } from "swr";
 import useMutation from "use-mutation";
 import { API_PATHS } from "../constants/paths";
+import {
+  FridgeIngredientType,
+  IngredientType,
+  RecipeType,
+} from "../constants/types";
 
-async function addCatalogIngredient({ ingredientToSend }) {
+async function addCatalogIngredient({ ingredientToSend }: any) {
   try {
     const response = await axios.post(
       API_PATHS.catalogIngredients,
@@ -26,12 +31,16 @@ async function addCatalogIngredient({ ingredientToSend }) {
  * @returns array containing a function to add catalog ingredient,
  *   and an object with additional information like errors.
  */
-function useAddCatalogIngredient({ onSuccess, onFailure }) {
+function useAddCatalogIngredient({ onSuccess, onFailure }: any) {
   const key = API_PATHS.catalogIngredients;
   return useMutation(addCatalogIngredient, {
     onMutate({ input }) {
       const oldData = cache.get(key);
-      mutate(key, (current) => [...current, input.ingredientToSend], false);
+      mutate(
+        key,
+        (current: any) => [...current, input.ingredientToSend],
+        false
+      );
       return () => mutate(key, oldData, false);
     },
     onSuccess() {
@@ -45,7 +54,7 @@ function useAddCatalogIngredient({ onSuccess, onFailure }) {
   });
 }
 
-async function addCatalogRecipe({ recipeToSend }) {
+async function addCatalogRecipe({ recipeToSend }: any) {
   try {
     const response = await axios.post(API_PATHS.catalogRecipes, recipeToSend);
     return response;
@@ -64,17 +73,17 @@ async function addCatalogRecipe({ recipeToSend }) {
  * @returns array containing a function to add catalog recipe,
  *   and an object with additional information like errors.
  */
-function useAddCatalogRecipe({ onSuccess, onFailure }) {
+function useAddCatalogRecipe({ onSuccess, onFailure }: any) {
   const key = API_PATHS.catalogRecipes;
   return useMutation(addCatalogRecipe, {
     onMutate({ input }) {
       const oldData = cache.get(key);
-      mutate(key, (current) => [...current, input.recipeToSend], false);
+      mutate(key, (current: any) => [...current, input.recipeToSend], false);
       return () => mutate(key, oldData, false);
     },
     onSuccess({ data }) {
-      mutate(key, (current) =>
-        current.map((recipe) => {
+      mutate(key, (current: any) =>
+        current.map((recipe: RecipeType) => {
           if (recipe.id) return recipe;
           return data.data;
         })
@@ -88,7 +97,7 @@ function useAddCatalogRecipe({ onSuccess, onFailure }) {
   });
 }
 
-async function updateCatalogRecipe({ recipeToSend }) {
+async function updateCatalogRecipe({ recipeToSend }: any) {
   try {
     const response = await axios.put(
       `${API_PATHS.catalogRecipes}${recipeToSend.id}/`,
@@ -110,16 +119,16 @@ async function updateCatalogRecipe({ recipeToSend }) {
  * @returns array containing a function to update catalog recipe,
  *   and an object with additional information like errors.
  */
-function useUpdateCatalogRecipe({ onSuccess, onFailure }) {
+function useUpdateCatalogRecipe({ onSuccess, onFailure }: any) {
   const key = API_PATHS.catalogRecipes;
   return useMutation(updateCatalogRecipe, {
     onMutate({ input }) {
       const oldData = cache.get(key);
       mutate(
         key,
-        (current) => {
-          const updatedRecipes = produce(current, (draftState) => {
-            const index = draftState.findIndex((recipe) => {
+        (current: any) => {
+          const updatedRecipes = produce(current, (draftState: any) => {
+            const index = draftState.findIndex((recipe: RecipeType) => {
               return recipe.id === input.recipeToSend.id;
             });
             draftState.splice(index, 1, input.recipeToSend);
@@ -131,8 +140,8 @@ function useUpdateCatalogRecipe({ onSuccess, onFailure }) {
       return () => mutate(key, oldData, false);
     },
     onSuccess({ data }) {
-      mutate(key, (current) =>
-        current.map((recipe) => {
+      mutate(key, (current: any) =>
+        current.map((recipe: RecipeType) => {
           if (recipe.id === data.data.id) return data.data;
           return recipe;
         })
@@ -146,7 +155,7 @@ function useUpdateCatalogRecipe({ onSuccess, onFailure }) {
   });
 }
 
-async function deleteCatalogIngredient({ ingredientToSend }) {
+async function deleteCatalogIngredient({ ingredientToSend }: any) {
   try {
     const response = await axios.delete(
       `${API_PATHS.catalogIngredients}${ingredientToSend.name}/`
@@ -167,16 +176,16 @@ async function deleteCatalogIngredient({ ingredientToSend }) {
  * @returns array containing a function to remove catalog ingredient,
  *   and an object with additional information like errors.
  */
-function useDeleteCatalogIngredient({ onSuccess, onFailure }) {
+function useDeleteCatalogIngredient({ onSuccess, onFailure }: any) {
   const key = API_PATHS.catalogIngredients;
   return useMutation(deleteCatalogIngredient, {
     onMutate({ input }) {
       const oldData = cache.get(key);
       mutate(
         key,
-        (current) => {
-          const ingredientsListUpdated = produce(current, (draftState) => {
-            const index = draftState.findIndex((ingredient) => {
+        (current: any) => {
+          const ingredientsListUpdated = produce(current, (draftState: any) => {
+            const index = draftState.findIndex((ingredient: IngredientType) => {
               return ingredient.name === input.ingredientToSend.name;
             });
             draftState.splice(index, 1);
@@ -198,7 +207,7 @@ function useDeleteCatalogIngredient({ onSuccess, onFailure }) {
   });
 }
 
-async function deleteCatalogRecipe({ recipeToSend }) {
+async function deleteCatalogRecipe({ recipeToSend }: any) {
   try {
     const response = await axios.delete(
       `${API_PATHS.catalogRecipes}${recipeToSend.id}/`
@@ -219,16 +228,16 @@ async function deleteCatalogRecipe({ recipeToSend }) {
  * @returns array containing a function to remove catalog recipe,
  *   and an object with additional information like errors.
  */
-function useDeleteCatalogRecipe({ onSuccess, onFailure }) {
+function useDeleteCatalogRecipe({ onSuccess, onFailure }: any) {
   const key = API_PATHS.catalogRecipes;
   return useMutation(deleteCatalogRecipe, {
     onMutate({ input }) {
       const oldData = cache.get(key);
       mutate(
         key,
-        (current) => {
-          const updatedRecipes = produce(current, (draftState) => {
-            const index = draftState.findIndex((recipe) => {
+        (current: any) => {
+          const updatedRecipes = produce(current, (draftState: any) => {
+            const index = draftState.findIndex((recipe: RecipeType) => {
               return recipe.id === input.recipeToSend.id;
             });
             draftState.splice(index, 1);
@@ -240,7 +249,7 @@ function useDeleteCatalogRecipe({ onSuccess, onFailure }) {
       return () => mutate(key, oldData, false);
     },
     onSuccess() {
-      mutate(key, (current) => current);
+      mutate(key, (current: any) => current);
       if (onSuccess) onSuccess();
     },
     onFailure({ rollback, input }) {
@@ -250,7 +259,7 @@ function useDeleteCatalogRecipe({ onSuccess, onFailure }) {
   });
 }
 
-async function deleteFridgeIngredient({ ingredientToSend }) {
+async function deleteFridgeIngredient({ ingredientToSend }: any) {
   try {
     const response = await axios.delete(
       `${API_PATHS.fridgeIngredients}${ingredientToSend.id}/`
@@ -271,20 +280,25 @@ async function deleteFridgeIngredient({ ingredientToSend }) {
  * @returns array containing a function to remove fridge ingredient,
  *   and an object with additional information like errors.
  */
-function useDeleteFridgeIngredient({ onSuccess, onFailure }) {
+function useDeleteFridgeIngredient({ onSuccess, onFailure }: any) {
   const key = API_PATHS.fridgeIngredients;
   return useMutation(deleteFridgeIngredient, {
     onMutate({ input }) {
       const oldData = cache.get(key);
       mutate(
         key,
-        (current) => {
-          const fridgeIngredientsUpdated = produce(current, (draftState) => {
-            const index = draftState.findIndex((ingredient) => {
-              return ingredient.id === input.ingredientToSend.id;
-            });
-            draftState.splice(index, 1);
-          });
+        (current: any) => {
+          const fridgeIngredientsUpdated = produce(
+            current,
+            (draftState: any) => {
+              const index = draftState.findIndex(
+                (ingredient: FridgeIngredientType) => {
+                  return ingredient.id === input.ingredientToSend.id;
+                }
+              );
+              draftState.splice(index, 1);
+            }
+          );
           return fridgeIngredientsUpdated;
         },
         false
@@ -292,7 +306,7 @@ function useDeleteFridgeIngredient({ onSuccess, onFailure }) {
       return () => mutate(key, oldData, false);
     },
     onSuccess() {
-      mutate(key, (current) => current);
+      mutate(key, (current: any) => current);
       if (onSuccess) onSuccess();
     },
     onFailure({ rollback, input }) {
