@@ -26,9 +26,14 @@ type FridgeIngredientType = {
   unit: string;
 };
 
+type IngredientType = {
+  name: string;
+};
+
 export type {
   RecipeType,
   RecipeToSendType,
   RecipeIngredientType,
   FridgeIngredientType,
+  IngredientType,
 };

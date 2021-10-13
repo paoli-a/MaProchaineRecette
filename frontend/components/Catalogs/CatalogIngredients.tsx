@@ -1,5 +1,6 @@
 import React, { ChangeEvent, useState } from "react";
 import { useForm } from "react-hook-form";
+import { IngredientType } from "../../constants/types";
 import { useCatalogIngredients } from "../../hooks/swrFetch";
 import {
   useAddCatalogIngredient,
@@ -14,10 +15,6 @@ type DeleteErrorType = {
 
 type FormInputs = {
   ingredientName: string;
-};
-
-type IngredientType = {
-  name: string;
 };
 
 /**

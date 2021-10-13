@@ -2,9 +2,12 @@ import axios from "axios";
 import produce from "immer";
 import { cache, mutate } from "swr";
 import useMutation from "use-mutation";
-import IngredientType from "../components/Catalogs/CatalogIngredients";
 import { API_PATHS } from "../constants/paths";
-import { FridgeIngredientType, RecipeType } from "../constants/types";
+import {
+  FridgeIngredientType,
+  IngredientType,
+  RecipeType,
+} from "../constants/types";
 
 async function addCatalogIngredient({ ingredientToSend }: any) {
   try {
@@ -182,11 +185,9 @@ function useDeleteCatalogIngredient({ onSuccess, onFailure }: any) {
         key,
         (current: any) => {
           const ingredientsListUpdated = produce(current, (draftState: any) => {
-            const index = draftState.findIndex(
-              (ingredient: typeof IngredientType) => {
-                return ingredient.name === input.ingredientToSend.name;
-              }
-            );
+            const index = draftState.findIndex((ingredient: IngredientType) => {
+              return ingredient.name === input.ingredientToSend.name;
+            });
             draftState.splice(index, 1);
           });
           return ingredientsListUpdated;
