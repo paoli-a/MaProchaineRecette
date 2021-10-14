@@ -1,6 +1,6 @@
 import axios from "axios";
 import produce from "immer";
-import { cache, mutate } from "swr";
+import { useSWRConfig } from "swr";
 import useMutation from "use-mutation";
 import { API_PATHS } from "../constants/paths";
 import {
@@ -32,6 +32,7 @@ async function addCatalogIngredient({ ingredientToSend }: any) {
  *   and an object with additional information like errors.
  */
 function useAddCatalogIngredient({ onSuccess, onFailure }: any) {
+  const { cache, mutate } = useSWRConfig();
   const key = API_PATHS.catalogIngredients;
   return useMutation(addCatalogIngredient, {
     onMutate({ input }) {
@@ -74,6 +75,7 @@ async function addCatalogRecipe({ recipeToSend }: any) {
  *   and an object with additional information like errors.
  */
 function useAddCatalogRecipe({ onSuccess, onFailure }: any) {
+  const { cache, mutate } = useSWRConfig();
   const key = API_PATHS.catalogRecipes;
   return useMutation(addCatalogRecipe, {
     onMutate({ input }) {
@@ -120,6 +122,7 @@ async function updateCatalogRecipe({ recipeToSend }: any) {
  *   and an object with additional information like errors.
  */
 function useUpdateCatalogRecipe({ onSuccess, onFailure }: any) {
+  const { cache, mutate } = useSWRConfig();
   const key = API_PATHS.catalogRecipes;
   return useMutation(updateCatalogRecipe, {
     onMutate({ input }) {
@@ -177,6 +180,7 @@ async function deleteCatalogIngredient({ ingredientToSend }: any) {
  *   and an object with additional information like errors.
  */
 function useDeleteCatalogIngredient({ onSuccess, onFailure }: any) {
+  const { cache, mutate } = useSWRConfig();
   const key = API_PATHS.catalogIngredients;
   return useMutation(deleteCatalogIngredient, {
     onMutate({ input }) {
@@ -229,6 +233,7 @@ async function deleteCatalogRecipe({ recipeToSend }: any) {
  *   and an object with additional information like errors.
  */
 function useDeleteCatalogRecipe({ onSuccess, onFailure }: any) {
+  const { cache, mutate } = useSWRConfig();
   const key = API_PATHS.catalogRecipes;
   return useMutation(deleteCatalogRecipe, {
     onMutate({ input }) {
@@ -281,6 +286,7 @@ async function deleteFridgeIngredient({ ingredientToSend }: any) {
  *   and an object with additional information like errors.
  */
 function useDeleteFridgeIngredient({ onSuccess, onFailure }: any) {
+  const { cache, mutate } = useSWRConfig();
   const key = API_PATHS.fridgeIngredients;
   return useMutation(deleteFridgeIngredient, {
     onMutate({ input }) {

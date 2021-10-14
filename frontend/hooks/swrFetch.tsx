@@ -4,9 +4,9 @@ import { API_PATHS } from "../constants/paths";
 
 const fetcher = (url: any) => axios.get(url).then((res) => res.data);
 
-function useCatalogIngredients(initialData?: any) {
+function useCatalogIngredients(fallbackData?: any) {
   const { data, error } = useSWR(API_PATHS.catalogIngredients, fetcher, {
-    initialData: initialData,
+    fallbackData: fallbackData,
   });
   let catalogIngredients = data ? data : [];
   return {
@@ -16,9 +16,9 @@ function useCatalogIngredients(initialData?: any) {
   };
 }
 
-function useCatalogRecipes(initialData?: any) {
+function useCatalogRecipes(fallbackData?: any) {
   const { data, error } = useSWR(API_PATHS.catalogRecipes, fetcher, {
-    initialData: initialData,
+    fallbackData: fallbackData,
   });
   let catalogRecipes = data ? data : [];
   return {
@@ -28,9 +28,9 @@ function useCatalogRecipes(initialData?: any) {
   };
 }
 
-function useFridgeIngredients(initialData?: any) {
+function useFridgeIngredients(fallbackData?: any) {
   const { data, error } = useSWR(API_PATHS.fridgeIngredients, fetcher, {
-    initialData: initialData,
+    fallbackData: fallbackData,
   });
   let fridgeIngredients = [];
   if (data) {
@@ -51,9 +51,9 @@ function useFridgeIngredients(initialData?: any) {
   };
 }
 
-function useCategories(initialData?: any) {
+function useCategories(fallbackData?: any) {
   const { data, error } = useSWR(API_PATHS.catalogCategories, fetcher, {
-    initialData: initialData,
+    fallbackData: fallbackData,
   });
   let categories = data ? data : [];
   return {
@@ -63,9 +63,9 @@ function useCategories(initialData?: any) {
   };
 }
 
-function useUnits(initialData?: any) {
+function useUnits(fallbackData?: any) {
   const { data, error } = useSWR(API_PATHS.units, fetcher, {
-    initialData: initialData,
+    fallbackData: fallbackData,
   });
   let units = data ? data : [];
   return {
@@ -75,9 +75,9 @@ function useUnits(initialData?: any) {
   };
 }
 
-function useFridgeRecipes(initialData?: any) {
+function useFridgeRecipes(fallbackData?: any) {
   const { data, error } = useSWR(API_PATHS.fridgeRecipes, fetcher, {
-    initialData: initialData,
+    fallbackData: fallbackData,
   });
   let recipes = data ? data : [];
   return {
