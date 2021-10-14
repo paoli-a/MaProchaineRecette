@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useState } from "react";
-import { mutate } from "swr";
+import { useSWRConfig } from "swr";
 import { API_PATHS } from "../../constants/paths";
 import { FridgeIngredientType } from "../../constants/types";
 import { useFridgeIngredients } from "../../hooks/swrFetch";
@@ -27,6 +27,7 @@ type NewIngredientType = {
  * @component
  */
 function FridgeIngredients() {
+  const { mutate } = useSWRConfig();
   const [postError, setPostError] = useState("");
   const [deleteError, setDeleteError] = useState<DeleteErrorType>({});
   const { fridgeIngredients } = useFridgeIngredients();

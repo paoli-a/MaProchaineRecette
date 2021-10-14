@@ -8,7 +8,7 @@ import {
   within,
 } from "@testing-library/react";
 import React from "react";
-import { cache, SWRConfig } from "swr";
+import { SWRConfig } from "swr";
 import {
   axiosGetGlobalMock,
   catalogRecipes,
@@ -18,7 +18,6 @@ import {
 import CatalogRecipes from "./CatalogRecipes";
 
 beforeEach(() => {
-  cache.clear();
   axiosGetGlobalMock();
 });
 
@@ -30,7 +29,7 @@ const renderCatalog = async (): Promise<RenderResult> => {
   let app;
   await act(async () => {
     app = render(
-      <SWRConfig value={{ dedupingInterval: 0 }}>
+      <SWRConfig value={{ dedupingInterval: 0, provider: () => new Map() }}>
         <CatalogRecipes />
       </SWRConfig>
     );
