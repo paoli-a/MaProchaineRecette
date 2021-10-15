@@ -3,6 +3,7 @@ import produce from "immer";
 import { useSWRConfig } from "swr";
 import useMutation from "use-mutation";
 import { API_PATHS } from "../constants/paths";
+import { isCatalogRecipeResponse } from "../constants/typeGuards";
 import {
   FridgeIngredientType,
   IngredientType,
@@ -145,7 +146,9 @@ function useUpdateCatalogRecipe({ onSuccess, onFailure }: any) {
     onSuccess({ data }) {
       mutate(key, (current: any) =>
         current.map((recipe: RecipeType) => {
-          if (recipe.id === data.data.id) return data.data;
+          if (isCatalogRecipeResponse(data)) {
+            if (recipe.id === data.data.id) return data.data;
+          }
           return recipe;
         })
       );
