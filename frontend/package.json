@@ -22,7 +22,7 @@
     "react-dom": "^17.0.2",
     "react-highlight-words": "^0.17.0",
     "react-hook-form": "^7.17.4",
-    "sass": "^1.42.1",
+    "sass": "^1.43.2",
     "stopword": "^1.0.11",
     "swr": "^1.0.1",
     "use-mutation": "^2.2.1"
@@ -55,7 +55,7 @@
     "eslint-plugin-testing-library": "^4.12.4",
     "faker": "^5.5.3",
     "identity-obj-proxy": "^3.0.0",
-    "jest": "^27.2.5",
+    "jest": "^27.3.1",
     "jsdoc": "^3.6.7",
     "mutationobserver-shim": "^0.3.7",
     "parcel-bundler": "^1.12.5",
