@@ -18,7 +18,11 @@ async function addCatalogIngredient({ ingredientToSend }: any) {
     );
     return response;
   } catch (error) {
-    throw error.response ? error.response.data : [];
+    if (axios.isAxiosError(error) && error.response) {
+      throw error.response.data;
+    } else {
+      throw Error("Unknown error");
+    }
   }
 }
 
@@ -61,7 +65,11 @@ async function addCatalogRecipe({ recipeToSend }: any) {
     const response = await axios.post(API_PATHS.catalogRecipes, recipeToSend);
     return response;
   } catch (error) {
-    throw error.response ? error.response.data : [];
+    if (axios.isAxiosError(error) && error.response) {
+      throw error.response.data;
+    } else {
+      throw Error("Unknown error");
+    }
   }
 }
 
@@ -108,7 +116,11 @@ async function updateCatalogRecipe({ recipeToSend }: any) {
     );
     return response;
   } catch (error) {
-    throw error.response ? error.response.data : [];
+    if (axios.isAxiosError(error) && error.response) {
+      throw error.response.data;
+    } else {
+      throw Error("Unknown error");
+    }
   }
 }
 
@@ -168,7 +180,11 @@ async function deleteCatalogIngredient({ ingredientToSend }: any) {
     );
     return response;
   } catch (error) {
-    throw error.response ? error.response.data : [];
+    if (axios.isAxiosError(error) && error.response) {
+      throw error.response.data;
+    } else {
+      throw Error("Unknown error");
+    }
   }
 }
 
@@ -221,7 +237,11 @@ async function deleteCatalogRecipe({ recipeToSend }: any) {
     );
     return response;
   } catch (error) {
-    throw error.response ? error.response.data : [];
+    if (axios.isAxiosError(error) && error.response) {
+      throw error.response.data;
+    } else {
+      throw Error("Unknown error");
+    }
   }
 }
 
@@ -274,7 +294,11 @@ async function deleteFridgeIngredient({ ingredientToSend }: any) {
     );
     return response;
   } catch (error) {
-    throw error.response ? error.response.data : [];
+    if (axios.isAxiosError(error) && error.response) {
+      throw error.response.data;
+    } else {
+      throw Error("Unknown error");
+    }
   }
 }
 

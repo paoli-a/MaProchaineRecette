@@ -146,7 +146,7 @@ function FridgeRecipes() {
     const consumeButton = (
       <button
         className="button fridge-recipes__consume-button"
-        onClick={() => handleConsume(myRecipe.id)}
+        onClick={() => myRecipe.id && handleConsume(myRecipe.id)}
       >
         Consommer la recette
       </button>

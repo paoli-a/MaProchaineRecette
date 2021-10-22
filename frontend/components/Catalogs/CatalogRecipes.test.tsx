@@ -26,7 +26,7 @@ afterEach(() => {
 });
 
 const renderCatalog = async (): Promise<RenderResult> => {
-  let app;
+  let app = render(<></>);
   await act(async () => {
     app = render(
       <SWRConfig value={{ dedupingInterval: 0, provider: () => new Map() }}>
@@ -421,13 +421,17 @@ describe("edit functionality", () => {
     expect(
       getByText("Modifier une recette de mon catalogue :")
     ).toBeInTheDocument();
-    let recipeTitle1 = getByDisplayValue("Salade de pommes de terre radis");
-    expect(recipeTitle1).toBeInTheDocument();
+    const recipeTitle1Present = getByDisplayValue(
+      "Salade de pommes de terre radis"
+    );
+    expect(recipeTitle1Present).toBeInTheDocument();
     await clickOnEditRecipe(getByText, "Marinade de saumon fumé");
     const recipeTitle2 = getByDisplayValue("Marinade de saumon fumé");
     expect(recipeTitle2).toBeInTheDocument();
-    recipeTitle1 = queryByDisplayValue("Salade de pommes de terre radis");
-    expect(recipeTitle1).not.toBeInTheDocument();
+    const recipeTitle1Absent = queryByDisplayValue(
+      "Salade de pommes de terre radis"
+    );
+    expect(recipeTitle1Absent).not.toBeInTheDocument();
   });
 
   it(`transforms the catalog recipes edit form to an add form and reset
@@ -444,17 +448,21 @@ describe("edit functionality", () => {
       getByText("Modifier une recette de mon catalogue :")
     ).toBeInTheDocument();
     expect(queryByLabelText("Ajouter la recette")).not.toBeInTheDocument();
-    let recipeTitle = getByDisplayValue("Salade de pommes de terre radis");
-    expect(recipeTitle).toBeInTheDocument();
+    const recipeTitlePresent = getByDisplayValue(
+      "Salade de pommes de terre radis"
+    );
+    expect(recipeTitlePresent).toBeInTheDocument();
     const cancelButton = getByText("Annuler");
     fireEvent.click(cancelButton);
     expect(
       getByText("Ajouter une recette dans mon catalogue :")
     ).toBeInTheDocument();
     expect(queryByText("Modifier")).not.toBeInTheDocument();
-    recipeTitle = queryByDisplayValue("Salade de pommes de terre radis");
+    const recipeTitleAbsent = queryByDisplayValue(
+      "Salade de pommes de terre radis"
+    );
     expect(queryByText("oeufs")).not.toBeInTheDocument();
-    expect(recipeTitle).not.toBeInTheDocument();
+    expect(recipeTitleAbsent).not.toBeInTheDocument();
   });
 
   it(`modify the recipe when clicking on the edit button`, async () => {

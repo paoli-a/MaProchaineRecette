@@ -20,7 +20,7 @@ afterEach(() => {
 });
 
 const renderCatalog = async (): Promise<RenderResult> => {
-  let app;
+  let app = render(<></>);
   await act(async () => {
     app = render(
       <SWRConfig value={{ dedupingInterval: 0, provider: () => new Map() }}>

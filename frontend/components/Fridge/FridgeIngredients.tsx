@@ -31,7 +31,10 @@ function FridgeIngredients() {
   const [postError, setPostError] = useState("");
   const [deleteError, setDeleteError] = useState<DeleteErrorType>({});
   const { fridgeIngredients } = useFridgeIngredients();
-  const [ingredientToEdit, setIngredientToEdit] = useState(null);
+  const [
+    ingredientToEdit,
+    setIngredientToEdit,
+  ] = useState<FridgeIngredientType | null>(null);
   const [deleteFridgeIngredient] = useDeleteFridgeIngredient({
     onSuccess: () => {
       mutate(API_PATHS.fridgeIngredients);
