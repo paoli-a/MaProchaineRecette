@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
+import { FridgeIngredientType } from "../../constants/types";
 import { useCatalogIngredients, useUnits } from "../../hooks/swrFetch";
 import InputSuggestions from "../InputSuggestions/InputSuggestions";
 
@@ -20,13 +21,7 @@ type FridgeIngredientsFormProps = {
   /**
    * Il s'agit de l'ingrédient du frigo qui va être modifié.
    */
-  ingredientToEdit: {
-    id: number;
-    name: string;
-    expirationDate: Date;
-    amount: string;
-    unit: string;
-  };
+  ingredientToEdit: null | FridgeIngredientType;
   resetIngredientToEdit: () => void;
 };
 
@@ -89,7 +84,7 @@ function FridgeIngredientsForm({
       return "L'ingrédient est déjà perimé";
     } else return undefined;
   };
-  const inputSuggestionsRef = useRef(null);
+  const inputSuggestionsRef = useRef<HTMLInputElement>(null);
 
   const handleCancelClick = () => {
     resetIngredientToEdit();
@@ -98,7 +93,7 @@ function FridgeIngredientsForm({
 
   useEffect(() => {
     if (ingredientToEdit) {
-      if (inputSuggestionsRef.current) {
+      if (inputSuggestionsRef && inputSuggestionsRef.current) {
         inputSuggestionsRef.current.focus();
       }
       setValue("ingredientName", ingredientToEdit.name);

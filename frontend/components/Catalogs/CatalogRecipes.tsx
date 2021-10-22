@@ -28,7 +28,7 @@ function CatalogRecipes() {
   const [searchResults, setSearchResults] = useState("");
   const [deleteError, setDeleteError] = useState<DeleteErrorType>({});
   const [postError, setPostError] = useState("");
-  const [recipeToEdit, setRecipeToEdit] = useState(null);
+  const [recipeToEdit, setRecipeToEdit] = useState<null | RecipeType>(null);
   const { catalogRecipes } = useCatalogRecipes();
   const [addCatalogRecipe] = useAddCatalogRecipe({
     onSuccess: () => mutate(API_PATHS.fridgeRecipes),
@@ -52,7 +52,7 @@ function CatalogRecipes() {
     },
   });
 
-  const handleSupprClick = (id: string) => {
+  const handleSupprClick = (id?: string) => {
     const index = catalogRecipes.findIndex((recipe: RecipeType) => {
       return recipe.id === id;
     });
@@ -102,7 +102,7 @@ function CatalogRecipes() {
       <div className="buttons-container">
         <button
           className="button fridge-ingredient-details__edit"
-          onClick={() => handleEditClick(myRecipe.id)}
+          onClick={() => myRecipe.id && handleEditClick(myRecipe.id)}
         >
           <img
             className="fridge-ingredient-details__edit-img"

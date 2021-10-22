@@ -1,7 +1,7 @@
 import produce from "immer";
 import React, { MouseEvent, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { RecipeType } from "../../constants/types";
+import { RecipeIngredientType, RecipeType } from "../../constants/types";
 import {
   useCatalogIngredients,
   useCategories,
@@ -23,7 +23,7 @@ type RecipesFormProps = {
    * et permet de les récupérer.
    */
   onSubmitRecipe: (newData: any) => void;
-  recipeToEdit: RecipeType;
+  recipeToEdit: null | RecipeType;
   resetRecipeToEdit?: () => void;
 };
 
@@ -42,7 +42,7 @@ function RecipesForm({
     setValue,
     setFocus,
   } = useForm<FormInputs>();
-  const [ingredients, setIngredients] = useState([]);
+  const [ingredients, setIngredients] = useState<RecipeIngredientType[]>([]);
   const [ingredientName, setIngredientName] = useState("");
   const [ingredientAmount, setIngredientAmount] = useState("");
   const [ingredientUnit, setIngredientUnit] = useState("");
@@ -148,7 +148,7 @@ function RecipesForm({
           </>
         );
         setIngredientError(message);
-      } else {
+      } else if (error instanceof Error) {
         setIngredientError(error.message);
       }
     }
@@ -167,7 +167,7 @@ function RecipesForm({
   };
 
   const handleCancelClick = () => {
-    resetRecipeToEdit();
+    resetRecipeToEdit && resetRecipeToEdit();
     reset();
     setIngredients([]);
     resetIngredient();

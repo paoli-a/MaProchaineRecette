@@ -50,7 +50,7 @@ const InputSuggestions = React.forwardRef<
   },
   ref
 ) {
-  const [elementsToPropose, setElementsToPropose] = useState([]);
+  const [elementsToPropose, setElementsToPropose] = useState<ElementType[]>([]);
 
   const handleElement = (event: ChangeEvent<HTMLInputElement>) => {
     if (onChangeValue) {

@@ -25,7 +25,7 @@ afterEach(() => {
 });
 
 const renderIngredients = async (): Promise<RenderResult> => {
-  let app;
+  let app = render(<></>);
   await act(async () => {
     app = render(
       <SWRConfig value={{ dedupingInterval: 0, provider: () => new Map() }}>
@@ -46,7 +46,7 @@ describe("correct display of an ingredient", () => {
   it("renders expiration dates of ingredients", async () => {
     const { getByText } = await renderIngredients();
     const ingredient2 = getByText("Mascarpone", { exact: false });
-    const parentListItem = ingredient2.parentElement;
+    const parentListItem = ingredient2.parentElement!;
     const expectedDateContent = fridgeIngredients[1].expiration_date.toLocaleDateString();
     const expectedDate = within(parentListItem).getByText(expectedDateContent);
     expect(expectedDate).toBeInTheDocument();
@@ -55,7 +55,7 @@ describe("correct display of an ingredient", () => {
   it("renders quantities of ingredients", async () => {
     const { getByText } = await renderIngredients();
     const ingredient1 = getByText("Epinards", { exact: false });
-    const parentListItem = ingredient1.parentElement;
+    const parentListItem = ingredient1.parentElement!;
     const quantity = within(parentListItem).getByText(/60 /);
     expect(quantity).toBeInTheDocument();
   });
@@ -63,7 +63,7 @@ describe("correct display of an ingredient", () => {
   it("renders units of ingredients", async () => {
     const { getByText } = await renderIngredients();
     const ingredient1 = getByText("Epinards", { exact: false });
-    const parentListItem = ingredient1.parentElement;
+    const parentListItem = ingredient1.parentElement!;
     const unit = within(parentListItem).getByText(/ g/);
     expect(unit).toBeInTheDocument();
   });
@@ -92,10 +92,12 @@ describe("functionalities work properly", () => {
         getAllByRole,
         queryByText,
       } = await renderIngredients();
-      let ingredient = getByText("Epinards", { exact: false });
+      const ingredientPresent = getByText("Epinards", {
+        exact: false,
+      });
       const axiosDeleteResponse = { data: "" };
       mockedAxios.delete.mockResolvedValue(axiosDeleteResponse);
-      const parentListItem = ingredient.parentElement;
+      const parentListItem = ingredientPresent.parentElement!;
       const button = within(parentListItem).getByAltText("Supprimer");
       mockedAxios.get.mockResolvedValue({
         data: [
@@ -117,8 +119,8 @@ describe("functionalities work properly", () => {
       });
       fireEvent.click(button);
       await waitFor(() => expect(mockedAxios.delete).toHaveBeenCalledTimes(1));
-      ingredient = queryByText("Epinards", { exact: false });
-      expect(ingredient).not.toBeInTheDocument();
+      const ingredientAbsent = queryByText("Epinards", { exact: false });
+      expect(ingredientAbsent).not.toBeInTheDocument();
       const ingredients = getAllByRole("heading", { level: 3 });
       expect(ingredients).toHaveLength(2);
       await waitFor(() => expect(mockedAxios.get).toHaveBeenCalledTimes(5));
@@ -133,7 +135,7 @@ describe("functionalities work properly", () => {
         expect(getAllByRole("heading", { level: 3 })).toHaveLength(3)
       );
       let ingredientToRemoved = getByText("Epinards", { exact: false });
-      const parentListItem = ingredientToRemoved.parentElement;
+      const parentListItem = ingredientToRemoved.parentElement!;
       const button = within(parentListItem).getByAltText("Supprimer");
       fireEvent.click(button);
       await waitFor(() => expect(mockedAxios.delete).toHaveBeenCalledTimes(1));
@@ -191,7 +193,7 @@ describe("functionalities work properly", () => {
       const expectedDate = new Date("2100-04-03");
       const ingredients = getAllByRole("heading", { level: 3 });
       expect(ingredients).toHaveLength(4);
-      const parentListItem = ingredient.parentElement;
+      const parentListItem = ingredient.parentElement!;
       const quantity = within(parentListItem).getByText("1 kg");
       const expectedDateString = within(parentListItem).getByText(
         expectedDate.toLocaleDateString()
@@ -509,13 +511,13 @@ describe("functionalities work properly", () => {
       } = await renderIngredients();
       await clickOnEditIngredient(getByText, "Epinards");
       expect(getByText("Modifier un ingrédient frigo :")).toBeInTheDocument();
-      let ingredientName1 = getByDisplayValue("Epinards");
-      expect(ingredientName1).toBeInTheDocument();
+      const ingredientName1Present = getByDisplayValue("Epinards");
+      expect(ingredientName1Present).toBeInTheDocument();
       await clickOnEditIngredient(getByText, "Mascarpone");
       const ingredientName2 = getByDisplayValue("Mascarpone");
       expect(ingredientName2).toBeInTheDocument();
-      ingredientName1 = queryByDisplayValue("Epinards");
-      expect(ingredientName1).not.toBeInTheDocument();
+      const ingredientName1Absent = queryByDisplayValue("Epinards");
+      expect(ingredientName1Absent).not.toBeInTheDocument();
     });
 
     it(`transforms the fridge ingredient edit form to an add form and reset
@@ -529,14 +531,14 @@ describe("functionalities work properly", () => {
       await clickOnEditIngredient(getByText, "Epinards");
       expect(getByText("Modifier un ingrédient frigo :")).toBeInTheDocument();
       expect(queryByText("Ajouter")).not.toBeInTheDocument();
-      let ingredientName = getByDisplayValue("Epinards");
-      expect(ingredientName).toBeInTheDocument();
+      const ingredientNamePresent = getByDisplayValue("Epinards");
+      expect(ingredientNamePresent).toBeInTheDocument();
       const cancelButton = getByText("Annuler");
       fireEvent.click(cancelButton);
       expect(getByText("Ajouter un ingrédient frigo :")).toBeInTheDocument();
       expect(queryByText("Modifier")).not.toBeInTheDocument();
-      ingredientName = queryByDisplayValue("Epinards");
-      expect(ingredientName).not.toBeInTheDocument();
+      const ingredientNameAbsent = queryByDisplayValue("Epinards");
+      expect(ingredientNameAbsent).not.toBeInTheDocument();
     });
 
     it(`modify the ingredient when clicking on the edit button`, async () => {
