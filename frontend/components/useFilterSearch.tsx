@@ -1,12 +1,18 @@
 import { useMemo } from "react";
 
-function useFilterSearch({
+type UseFilterSearchProps<Element> = {
+  elementsToFilter: Element[];
+  searchResults: string;
+  getSearchElement: (element: Element) => string;
+};
+
+function useFilterSearch<Element>({
   elementsToFilter,
   searchResults,
   getSearchElement,
-}: any) {
+}: UseFilterSearchProps<Element>): Element[] {
   return useMemo(() => {
-    const filterUtilSearch = function (element: any) {
+    const filterUtilSearch = function (element: Element) {
       const searchElement = getSearchElement(element).toLowerCase();
       const searchResultsLower = searchResults.toLowerCase();
       const totalLetters = Math.min(searchElement.length, searchResults.length);

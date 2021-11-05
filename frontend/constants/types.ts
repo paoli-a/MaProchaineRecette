@@ -18,12 +18,30 @@ type RecipeIngredientType = {
   unit: string;
 };
 
+interface SubmitRecipeDataType extends RecipeDataType {
+  ingredients: RecipeIngredientType[];
+}
+
+type RecipeDataType = {
+  recipeTitle: string;
+  recipeTime: string;
+  recipeDescription: string;
+  categories: (string | boolean)[];
+};
+
 type FridgeIngredientType = {
   id: string;
   name: string;
   expirationDate: Date;
   amount: string;
   unit: string;
+};
+
+type SubmitFridgeIngredientDataType = {
+  ingredientName: string;
+  ingredientAmount: string;
+  unit: string;
+  expirationDate: string;
 };
 
 type IngredientType = {
@@ -36,4 +54,7 @@ export type {
   RecipeIngredientType,
   FridgeIngredientType,
   IngredientType,
+  SubmitRecipeDataType,
+  RecipeDataType,
+  SubmitFridgeIngredientDataType,
 };

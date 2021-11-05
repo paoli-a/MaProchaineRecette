@@ -6,12 +6,12 @@ type RecipesToolbarProps = {
    * Cette fonction permet de récupérer les nouvelles catégories sélectionnées
    * lorsque l'utilisateur clique sur la checkbox des catégories.
    */
-  onChangeCategories: (filteredValues: any) => void;
+  onChangeCategories: (filteredValues: string[]) => void;
   /**
    * Cette fonction permet de récupérer la recherche de l'utilisateur
    * pour filtrer les recettes.
    */
-  onChangeSearch: (search: any) => void;
+  onChangeSearch: (search: string) => void;
   /**
    * Chaque catégorie est associée à un chiffre qui représente le nombre de
    * recettes ayant cette catégorie.
@@ -65,7 +65,7 @@ function RecipesToolbar({
     onChangeCategories(filteredValues);
   }, [categoryValuesUpdated]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const handleSearch = (data: any) => {
+  const handleSearch = (data: SearchInput) => {
     const search = data.q;
     onChangeSearch(search);
   };

@@ -42,7 +42,7 @@ it(`provides the right proposals when a letter is entered in the input of the in
   fireEvent.change(inputIngredientName, { target: { value: "fra" } });
   let options = getAllByTestId("suggestions");
   let fraises = options[0] as HTMLInputElement;
-  let framboises = options[1] as HTMLInputElement;
+  const framboises = options[1] as HTMLInputElement;
   expect(fraises.value).toBe("Fraises");
   expect(framboises.value).toBe("Framboises");
   fireEvent.change(inputIngredientName, { target: { value: "fram" } });

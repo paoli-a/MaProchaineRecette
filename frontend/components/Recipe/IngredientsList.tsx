@@ -73,7 +73,7 @@ function IngredientsList({
   };
 
   const ingredientsList = [];
-  for (let { ingredient, amount, unit } of ingredients) {
+  for (const { ingredient, amount, unit } of ingredients) {
     ingredientsList.push(
       <li key={ingredient}>{renderIngredient(ingredient, amount, unit)}</li>
     );

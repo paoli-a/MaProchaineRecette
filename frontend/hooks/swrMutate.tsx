@@ -7,6 +7,7 @@ import { isCatalogRecipeResponse } from "../constants/typeGuards";
 import {
   FridgeIngredientType,
   IngredientType,
+  RecipeToSendType,
   RecipeType,
 } from "../constants/types";
 
@@ -108,7 +109,11 @@ function useAddCatalogRecipe({ onSuccess, onFailure }: any) {
   });
 }
 
-async function updateCatalogRecipe({ recipeToSend }: any) {
+async function updateCatalogRecipe({
+  recipeToSend,
+}: {
+  recipeToSend: RecipeToSendType;
+}) {
   try {
     const response = await axios.put(
       `${API_PATHS.catalogRecipes}${recipeToSend.id}/`,

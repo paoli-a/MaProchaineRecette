@@ -1,7 +1,7 @@
 import Head from "next/head";
-import { Menu } from "../components/MyNextRecipe";
 import { FridgeIngredients, FridgeRecipes } from "../components/Fridge";
-import { useFridgeRecipes, useFridgeIngredients } from "../hooks/swrFetch";
+import { Menu } from "../components/MyNextRecipe";
+import { useFridgeIngredients, useFridgeRecipes } from "../hooks/swrFetch";
 
 /**
  * Cette page affiche les ingrédients du frigo et les recettes
@@ -10,7 +10,7 @@ import { useFridgeRecipes, useFridgeIngredients } from "../hooks/swrFetch";
  * @component
  */
 function MyNextRecipe() {
-  const { isfridgeRecipesError } = useFridgeRecipes();
+  const { isFridgeRecipesError } = useFridgeRecipes();
   const { isFridgeIngredientsError } = useFridgeIngredients();
   return (
     <>
@@ -19,7 +19,7 @@ function MyNextRecipe() {
       </Head>
       <Menu />
       <main className="my-next-recipes">
-        {isfridgeRecipesError | isFridgeIngredientsError ? (
+        {isFridgeRecipesError || isFridgeIngredientsError ? (
           <span>
             "Il y a eu une erreur vis-à-vis du serveur, veuillez recharger la
             page ou réessayer ultérieurement."

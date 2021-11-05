@@ -276,7 +276,7 @@ describe("functionalities work properly", () => {
       } = await renderIngredients();
       const values = ["kiwi", 5, "2019-04-03", "g"];
       await addIngredient(getByLabelText, getByText, values);
-      let kiwi = queryByText(/kiwi/);
+      const kiwi = queryByText(/kiwi/);
       expect(kiwi).not.toBeInTheDocument();
     });
 
@@ -618,8 +618,8 @@ describe("functionalities work properly", () => {
     const inputIngredientName = getByLabelText("Nom de l'ingrédient :");
     fireEvent.change(inputIngredientName, { target: { value: "f" } });
     const options = getAllByTestId("suggestions");
-    let fraises = options[0] as HTMLOptionElement;
-    let framboises = options[1] as HTMLOptionElement;
+    const fraises = options[0] as HTMLOptionElement;
+    const framboises = options[1] as HTMLOptionElement;
     expect(options).toHaveLength(2);
     expect(fraises.value).toEqual("Fraises");
     expect(framboises.value).toEqual("Framboises");

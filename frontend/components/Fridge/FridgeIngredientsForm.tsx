@@ -1,6 +1,9 @@
 import React, { useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
-import { FridgeIngredientType } from "../../constants/types";
+import {
+  FridgeIngredientType,
+  SubmitFridgeIngredientDataType,
+} from "../../constants/types";
 import { useCatalogIngredients, useUnits } from "../../hooks/swrFetch";
 import InputSuggestions from "../InputSuggestions/InputSuggestions";
 
@@ -17,7 +20,7 @@ type FridgeIngredientsFormProps = {
    * lorsque la validité de tous les éléments entrés a été vérifiée,
    * et permet de les récupérer.
    */
-  onSubmit: (data: any) => void;
+  onSubmit: (data: SubmitFridgeIngredientDataType) => void;
   /**
    * Il s'agit de l'ingrédient du frigo qui va être modifié.
    */
@@ -64,7 +67,7 @@ function FridgeIngredientsForm({
     }
   };
 
-  const onSubmitWrapper = (data: any) => {
+  const onSubmitWrapper = (data: SubmitFridgeIngredientDataType) => {
     onSubmit(data);
     reset();
   };

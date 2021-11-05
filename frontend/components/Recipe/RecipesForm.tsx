@@ -1,7 +1,12 @@
 import produce from "immer";
 import React, { MouseEvent, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { RecipeIngredientType, RecipeType } from "../../constants/types";
+import {
+  RecipeDataType,
+  RecipeIngredientType,
+  RecipeType,
+  SubmitRecipeDataType,
+} from "../../constants/types";
 import {
   useCatalogIngredients,
   useCategories,
@@ -22,7 +27,7 @@ type RecipesFormProps = {
    * lorsque la validité de tous les éléments entrés a été vérifiée,
    * et permet de les récupérer.
    */
-  onSubmitRecipe: (newData: any) => void;
+  onSubmitRecipe: (newData: SubmitRecipeDataType) => void;
   recipeToEdit: null | RecipeType;
   resetRecipeToEdit?: () => void;
 };
@@ -57,8 +62,8 @@ function RecipesForm({
     if (recipeToEdit) {
       setFocus("recipeTitle");
       setValue("recipeTitle", recipeToEdit.title);
-      const categoriesToEdit: any = [];
-      categories.forEach((category: any) => {
+      const categoriesToEdit: (string | boolean)[] = [];
+      categories.forEach((category: string) => {
         if (recipeToEdit.categories.includes(category)) {
           categoriesToEdit.push(category);
         } else {
@@ -73,16 +78,17 @@ function RecipesForm({
     }
   }, [recipeToEdit, setFocus, categories, setValue]);
 
-  const onSubmitForm = (data: any) => {
+  const onSubmitForm = (data: RecipeDataType) => {
     if (ingredients.length === 0) {
       setIngredientError(
         "Au moins un ingrédient doit être présent dans la recette"
       );
       return;
     }
-    const newData = produce(data, (draftState: any) => {
+    const newData = produce<RecipeDataType>(data, (draftState: any) => {
       draftState.ingredients = ingredients;
-    });
+    }) as SubmitRecipeDataType;
+
     onSubmitRecipe(newData);
     reset();
     setIngredients([]);
@@ -116,7 +122,7 @@ function RecipesForm({
         "Cet ingrédient n'existe pas dans le catalogue d'ingrédients. Vous pouvez l'y ajouter "
       );
     }
-    for (let ingredientExistant of ingredients) {
+    for (const ingredientExistant of ingredients) {
       if (ingredientExistant.ingredient === ingredientName) {
         throw new Error("Cet ingrédient a déjà été ajouté");
       }
@@ -227,7 +233,7 @@ function RecipesForm({
         <div className="form__checkbox-container">
           Catégories :
           <ul>
-            {categories.map((category: any, index: number) => {
+            {categories.map((category: string, index: number) => {
               return (
                 <li key={category}>
                   <input

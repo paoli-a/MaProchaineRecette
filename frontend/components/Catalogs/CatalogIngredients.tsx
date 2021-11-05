@@ -53,7 +53,7 @@ function CatalogIngredients() {
     },
   });
 
-  const onSubmitWrapper = async (dataForm: any) => {
+  const onSubmitWrapper = async (dataForm: FormInputs) => {
     const ingredientToSend = {
       name: dataForm.ingredientName,
     };
