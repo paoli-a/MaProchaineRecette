@@ -2,7 +2,10 @@ import axios from "axios";
 import React, { useState } from "react";
 import { useSWRConfig } from "swr";
 import { API_PATHS } from "../../constants/paths";
-import { FridgeIngredientType } from "../../constants/types";
+import {
+  FridgeIngredientType,
+  SubmitFridgeIngredientDataType,
+} from "../../constants/types";
 import { useFridgeIngredients } from "../../hooks/swrFetch";
 import { useDeleteFridgeIngredient } from "../../hooks/swrMutate";
 import FridgeIngredientsForm from "./FridgeIngredientsForm";
@@ -14,7 +17,7 @@ type DeleteErrorType = {
 
 type NewIngredientType = {
   ingredient: string;
-  expiration_date: Date;
+  expiration_date: string;
   amount: string;
   unit: string;
 };
@@ -59,7 +62,7 @@ function FridgeIngredients() {
   };
 
   const handleEditClick = (id: string) => {
-    fridgeIngredients.forEach((ingredientObject: any) => {
+    fridgeIngredients.forEach((ingredientObject: FridgeIngredientType) => {
       for (const key in ingredientObject) {
         if (key === "id" && ingredientObject[key] === id) {
           setIngredientToEdit(ingredientObject);
@@ -79,7 +82,7 @@ function FridgeIngredients() {
     }
   };
 
-  const handleSubmit = async (data: any) => {
+  const handleSubmit = async (data: SubmitFridgeIngredientDataType) => {
     const newIngredient = {
       ingredient: data.ingredientName,
       expiration_date: data.expirationDate,

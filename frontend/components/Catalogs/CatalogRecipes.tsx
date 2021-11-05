@@ -1,7 +1,11 @@
 import React, { ChangeEvent, useState } from "react";
 import { mutate } from "swr";
 import { API_PATHS } from "../../constants/paths";
-import { RecipeToSendType, RecipeType } from "../../constants/types";
+import {
+  RecipeToSendType,
+  RecipeType,
+  SubmitRecipeDataType,
+} from "../../constants/types";
 import { useCatalogRecipes } from "../../hooks/swrFetch";
 import {
   useAddCatalogRecipe,
@@ -53,7 +57,7 @@ function CatalogRecipes() {
   });
 
   const handleSupprClick = (id?: string) => {
-    const index = catalogRecipes.findIndex((recipe: RecipeType) => {
+    const index = catalogRecipes.findIndex((recipe: RecipeToSendType) => {
       return recipe.id === id;
     });
     const recipeToSend = catalogRecipes[index];
@@ -61,7 +65,7 @@ function CatalogRecipes() {
   };
 
   const handleEditClick = (id: string) => {
-    catalogRecipes.forEach((recipeObject: any) => {
+    catalogRecipes.forEach((recipeObject: RecipeType) => {
       for (const key in recipeObject) {
         if (key === "id" && recipeObject[key] === id) {
           setRecipeToEdit(recipeObject);
@@ -70,9 +74,9 @@ function CatalogRecipes() {
     });
   };
 
-  const handleSubmit = async (data: any) => {
-    const categories = data.categories.filter(Boolean);
-    let recipeToSend: RecipeToSendType = {
+  const handleSubmit = async (data: SubmitRecipeDataType) => {
+    const categories = data.categories.filter(Boolean) as string[];
+    const recipeToSend: RecipeToSendType = {
       categories: categories,
       title: data.recipeTitle,
       ingredients: data.ingredients,
@@ -91,7 +95,7 @@ function CatalogRecipes() {
     setSearchResults(event.target.value);
   };
 
-  const filteredRecipes = useFilterSearch({
+  const filteredRecipes = useFilterSearch<RecipeType>({
     elementsToFilter: catalogRecipes,
     searchResults: searchResults,
     getSearchElement: (recipe: RecipeType) => recipe.title,

@@ -20,4 +20,22 @@ function isCatalogRecipeResponse(
   return isResponseLike(response) && typeof response.data.id === "string";
 }
 
-export { isCatalogRecipeResponse };
+function isCorrectArrayResponse<ArrayElementType>(
+  response: unknown,
+  checkDeeper: (arrayElement: ArrayElementType) => boolean
+): response is ArrayElementType[] {
+  if (!Array.isArray(response)) {
+    return false;
+  }
+  if (
+    response.some((element: ArrayElementType) => {
+      return !checkDeeper(element);
+    })
+  ) {
+    return false;
+  }
+
+  return true;
+}
+
+export { isCatalogRecipeResponse, isCorrectArrayResponse };

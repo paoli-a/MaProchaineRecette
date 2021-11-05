@@ -13,6 +13,10 @@ type ConsumeErrorType = {
   value?: string;
 };
 
+type CategoriesPossiblesType = {
+  [key: string]: number;
+};
+
 /**
  * Ce composant permet d'afficher les recettes. Il donne la possibilité
  * de trier les recettes par catégories mais aussi de faire une recherche
@@ -21,15 +25,15 @@ type ConsumeErrorType = {
  * @component
  */
 function FridgeRecipes() {
-  const [categories, setCategories] = useState([]);
+  const [categories, setCategories] = useState<string[]>([]);
   const [searchResults, setSearchResults] = useState("");
   const [consumeError, setConsumeError] = useState<ConsumeErrorType>({});
   const { fridgeRecipes } = useFridgeRecipes();
 
   const categoriesPossibles = () => {
-    const categories: any = {};
-    for (let recipe of fridgeRecipes) {
-      for (let categorie of recipe.categories)
+    const categories: CategoriesPossiblesType | Record<string, never> = {};
+    for (const recipe of fridgeRecipes) {
+      for (const categorie of recipe.categories)
         if (categorie in categories) {
           categories[categorie] += 1;
         } else {
@@ -40,13 +44,13 @@ function FridgeRecipes() {
   };
 
   const searchedWords = useMemo(() => {
-    const removePunctuation = (results: any) => {
+    const removePunctuation = (results: string): string => {
       const punctuationRegex = /[…~`!@#$%^&*(){}[\];:"'<,.>?/\\|_+=-]/g;
-      let resultWithoutPunctuation = results.replace(punctuationRegex, "");
+      const resultWithoutPunctuation = results.replace(punctuationRegex, "");
       return resultWithoutPunctuation.replace(/\s{2,}/g, " ");
     };
 
-    const removeStopwords = (results: any) => {
+    const removeStopwords = (results: string[]) => {
       const stopword = require("stopword");
       return stopword.removeStopwords(results, stopword.fr);
     };
@@ -57,7 +61,7 @@ function FridgeRecipes() {
 
   const filteredRecipes = useMemo(() => {
     const filterUtilCategories = function (recipe: RecipeType) {
-      for (let categorie of categories) {
+      for (const categorie of categories) {
         if (recipe.categories.includes(categorie)) {
           return true;
         }
@@ -89,12 +93,12 @@ function FridgeRecipes() {
       const { recipeTitle, description, ingredientsList } = lowerResults(
         recipe
       );
-      for (let mot of searchedWords) {
+      for (const mot of searchedWords) {
         if (mot.length > 1) {
           if (recipeTitle.includes(mot) || description.includes(mot)) {
             return true;
           } else {
-            for (let ingredient of ingredientsList) {
+            for (const ingredient of ingredientsList) {
               if (ingredient.includes(mot)) {
                 return true;
               }
@@ -116,7 +120,7 @@ function FridgeRecipes() {
     return filterRecipesSearch(filterRecipesCategories(fridgeRecipes));
   }, [fridgeRecipes, categories, searchedWords, searchResults]);
 
-  const handleHighlight = (texte: any) => {
+  const handleHighlight = (texte: string) => {
     return (
       <Highlighter
         highlightClassName="searchHighlight"
@@ -162,11 +166,11 @@ function FridgeRecipes() {
     );
   });
 
-  const handleChangeCategories = (updatedCategories: any) => {
+  const handleChangeCategories = (updatedCategories: string[]) => {
     setCategories(updatedCategories);
   };
 
-  const handleChangeSearch = (search: any) => {
+  const handleChangeSearch = (search: string) => {
     setSearchResults(search.toLowerCase());
   };
 

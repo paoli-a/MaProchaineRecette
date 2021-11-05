@@ -118,21 +118,21 @@ export const fridgeRecipes = [
 ];
 export const fridgeIngredients = [
   {
-    id: 1,
+    id: "1",
     ingredient: "Epinards",
     expiration_date: new Date(2100, 4, 15),
     amount: "60",
     unit: "g",
   },
   {
-    id: 2,
+    id: "2",
     ingredient: "Mascarpone",
     expiration_date: new Date(2100, 4, 15),
     amount: "1",
     unit: "kg",
   },
   {
-    id: 3,
+    id: "3",
     ingredient: "Poires",
     expiration_date: new Date(2100, 3, 13),
     amount: "1",

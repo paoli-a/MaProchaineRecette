@@ -1,4 +1,5 @@
 import axios from "axios";
+import type { AppContext, AppProps } from "next/app";
 import { API_PATHS } from "../constants/paths";
 import {
   useCatalogIngredients,
@@ -10,7 +11,20 @@ import {
 } from "../hooks/swrFetch";
 import "../styles/main.scss";
 
-function MyApp({ Component, pageProps, props }: any) {
+interface MyAppPros extends AppProps {
+  props: {
+    firstTime: boolean;
+    initialFetchError: any;
+    initialCatalogIngredients: any;
+    initialCatalogRecipes: any;
+    initialFridgeIngredients: any;
+    initialCatalogCategories: any;
+    initialUnits: any;
+    initialFridgeRecipes: any;
+  };
+}
+
+function MyApp({ Component, pageProps, props }: MyAppPros) {
   const firstTime = props && props.firstTime;
   useCatalogIngredients(
     firstTime ? props.initialCatalogIngredients : undefined
@@ -23,7 +37,7 @@ function MyApp({ Component, pageProps, props }: any) {
   return <Component {...pageProps} />;
 }
 
-MyApp.getInitialProps = async (context: any) => {
+MyApp.getInitialProps = async (context: AppContext) => {
   if (context.ctx.req) {
     let initialFetchError = "";
     const get = async (path: any) => {
