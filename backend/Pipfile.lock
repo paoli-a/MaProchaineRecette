@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "a08b6e97280ee7bf6beede4880f64c6939391e5c0d9d796baf953c724bc3bbf8"
+            "sha256": "3d60128bc374b73286565a7c77d08a09e2ff39f41eea58ff7ba0202a9a65f016"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -160,11 +160,11 @@
         },
         "django-extensions": {
             "hashes": [
-                "sha256:50de8977794a66a91575dd40f87d5053608f679561731845edbd325ceeb387e3",
-                "sha256:5f0fea7bf131ca303090352577a9e7f8bfbf5489bd9d9c8aea9401db28db34a0"
+                "sha256:28e1e1bf49f0e00307ba574d645b0af3564c981a6dfc87209d48cb98f77d0b1a",
+                "sha256:9238b9e016bb0009d621e05cf56ea8ce5cce9b32e91ad2026996a7377ca28069"
             ],
             "index": "pypi",
-            "version": "==3.1.3"
+            "version": "==3.1.5"
         },
         "django-model-utils": {
             "hashes": [
@@ -313,11 +313,11 @@
         },
         "pycparser": {
             "hashes": [
-                "sha256:2d475327684562c3a96cc71adf7dc8c4f0565175cf86b6d7a404ff4c771f15f0",
-                "sha256:7582ad22678f0fcd81102833f60ef8d0e57288b6b5fb00323d101be910e35705"
+                "sha256:8ee45429555515e1f6b185e78100aea234072576aa43ab53aefcae078162fca9",
+                "sha256:e644fdec12f7872f86c58ff790da456218b10f863970249516d60a5eaca77206"
             ],
             "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'",
-            "version": "==2.20"
+            "version": "==2.21"
         },
         "pyjwt": {
             "hashes": [
@@ -683,11 +683,11 @@
         },
         "identify": {
             "hashes": [
-                "sha256:b9ffbeb7ed87e96ce017c66b80ca04fda3adbceb5c74e54fc7d99281d27d0859",
-                "sha256:ffab539d9121b386ffdea84628ff3eefda15f520f392ce11b393b0a909632cdf"
+                "sha256:4de55a93e0ba72bf917c840b3794eb1055a67272a1732351c557c88ec42011b1",
+                "sha256:595283a1c3a078ac5774ad4dc4d1bdd0c1602f60bcf11ae673b64cb2b1945762"
             ],
             "markers": "python_full_version >= '3.6.1'",
-            "version": "==2.3.3"
+            "version": "==2.3.4"
         },
         "iniconfig": {
             "hashes": [
