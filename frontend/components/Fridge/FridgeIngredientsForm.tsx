@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import {
+  ElementType,
   FridgeIngredientType,
   SubmitFridgeIngredientDataType,
 } from "../../constants/types";
@@ -126,7 +127,7 @@ function FridgeIngredientsForm({
             <InputSuggestions
               elements={catalogIngredients}
               id="ingredientName"
-              getElementText={(ingredient: any) => ingredient.name}
+              getElementText={(ingredient: ElementType) => ingredient.name}
               type="text"
               className={
                 errors.ingredientName

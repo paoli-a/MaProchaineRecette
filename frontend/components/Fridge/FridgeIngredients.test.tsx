@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable testing-library/no-await-sync-query */
 import {
   act,
@@ -12,6 +13,7 @@ import { SWRConfig } from "swr";
 import {
   axiosGetGlobalMock,
   fridgeIngredients,
+  GetByType,
   mockedAxios,
 } from "../testUtils";
 import FridgeIngredients from "./FridgeIngredients";
@@ -438,9 +440,9 @@ describe("functionalities work properly", () => {
     });
 
     async function addIngredient(
-      getByLabelText: any,
-      getByText: any,
-      value: any[],
+      getByLabelText: GetByType,
+      getByText: GetByType,
+      value: (string | number)[],
       missingFields: string[] = []
     ) {
       const axiosPostResponse = {
@@ -603,11 +605,11 @@ describe("functionalities work properly", () => {
     });
 
     async function clickOnEditIngredient(
-      getByText: any,
+      getByText: GetByType,
       ingredientText: string
     ) {
       const ingredient = getByText(ingredientText, { exact: false });
-      const parentListItem = ingredient.parentElement;
+      const parentListItem = ingredient.parentElement!;
       const button = within(parentListItem).getByAltText("Modifier");
       fireEvent.click(button);
     }

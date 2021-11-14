@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { RecipeType } from "../../constants/types";
+import { CatalogRecipeType, RecipeType } from "../../constants/types";
 import IngredientsList from "./IngredientsList";
 
-type RecipeProps = {
-  recipe: RecipeType;
+type RecipeProps<T> = {
+  recipe: T;
   /**
    * Permet de faire apparaître un bouton à côté du titre d'une recette.
    */
@@ -35,13 +35,13 @@ type RecipeProps = {
  *
  * @component
  */
-function Recipe({
+function Recipe<T extends CatalogRecipeType | RecipeType>({
   recipe,
   optionalButton,
   error,
   activateClick,
   highlight = (texte) => texte,
-}: RecipeProps) {
+}: RecipeProps<T>) {
   const [isRecipeOpen, setRecipeOpen] = useState(false);
   useEffect(() => {
     if (activateClick === true) {
@@ -73,7 +73,9 @@ function Recipe({
     }
   };
   const isRecipeUnsure = Boolean(
-    recipe.unsure_ingredients && recipe.unsure_ingredients.length !== 0
+    "unsure_ingredients" in recipe &&
+      recipe.unsure_ingredients &&
+      recipe.unsure_ingredients.length !== 0
   );
 
   return (
@@ -98,8 +100,16 @@ function Recipe({
       >
         <IngredientsList
           ingredients={recipe.ingredients}
-          priorityIngredients={recipe.priority_ingredients}
-          unsureIngredients={recipe.unsure_ingredients}
+          priorityIngredients={
+            "unsure_ingredients" in recipe
+              ? recipe.priority_ingredients
+              : undefined
+          }
+          unsureIngredients={
+            "unsure_ingredients" in recipe
+              ? recipe.unsure_ingredients
+              : undefined
+          }
           highlight={highlight}
         />
         <p className="Recipe__description">{highlight(recipe.description)}</p>

@@ -8,6 +8,7 @@ function isCatalogRecipeResponse(
   response: unknown
 ): response is CatalogRecipeResponse {
   type CatalogRecipeResponseLike = {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     data: Record<any, any>;
   };
   function isResponseLike(

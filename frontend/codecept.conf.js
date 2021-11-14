@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 const { setHeadlessWhen } = require("@codeceptjs/configure");
 
 setHeadlessWhen(process.env.CI);

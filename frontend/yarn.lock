@@ -1722,6 +1722,11 @@
   resolved "https://registry.yarnpkg.com/@types/stack-utils/-/stack-utils-2.0.0.tgz#7036640b4e21cc2f259ae826ce843d277dad8cff"
   integrity sha512-RJJrrySY7A8havqpGObOB4W92QXKJo63/jFLLgpvOtsGUqbQZ9Sbgl35KMm1DjC6j7AvmmU2bIno+3IyEaemaw==
 
+"@types/stopword@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@types/stopword/-/stopword-1.0.2.tgz#10a111fc0e19d0336004834cb5649fb40737977e"
+  integrity sha512-BKc31cRB8m41k2Xko9g+zdIUA/Yi2Gbd4Kz4bRauvq6ic3bfyHyOO0wHneG888q3cIbi2AGYY1PG6Z0nG9K0TA==
+
 "@types/testing-library__jest-dom@^5.9.1":
   version "5.9.5"
   resolved "https://registry.yarnpkg.com/@types/testing-library__jest-dom/-/testing-library__jest-dom-5.9.5.tgz#5bf25c91ad2d7b38f264b12275e5c92a66d849b0"

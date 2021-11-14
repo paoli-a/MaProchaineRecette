@@ -1,6 +1,12 @@
+import { Matcher, SelectorMatcherOptions } from "@testing-library/react";
 import axios from "axios";
 import { API_PATHS } from "../constants/paths";
-import { RecipeType } from "../constants/types";
+import {
+  CatalogRecipeType,
+  FridgeIngredientBackendType,
+  IngredientType,
+  RecipeType,
+} from "../constants/types";
 
 jest.mock("axios");
 export const mockedAxios = axios as jest.Mocked<typeof axios>;
@@ -149,12 +155,12 @@ export const catalogIngredients = [
 ];
 export const catalogCategories = ["Entrée", "Plat", "Dessert", "Gouter"];
 export const units = ["kg", "g", "cl", "pièce(s)"];
-let axiosResponseIngredients: any;
-let axiosResponseRecipes: any;
-let axiosResponseFridgeIngredients: any;
-let axiosResponseCategories: any;
-let axiosResponseUnits: any;
-let axiosResponseFridgeRecipes: any;
+let axiosResponseIngredients: { data: IngredientType[] };
+let axiosResponseRecipes: { data: CatalogRecipeType[] };
+let axiosResponseFridgeRecipes: { data: RecipeType[] };
+let axiosResponseFridgeIngredients: { data: FridgeIngredientBackendType[] };
+let axiosResponseCategories: { data: string[] };
+let axiosResponseUnits: { data: string[] };
 
 export function axiosGetGlobalMock() {
   axiosResponseIngredients = { data: catalogIngredients };
@@ -197,3 +203,8 @@ function mockAxiosGet(rejectedElement?: string) {
     }
   });
 }
+
+export type GetByType = (
+  id: Matcher,
+  options?: SelectorMatcherOptions | undefined
+) => HTMLElement;

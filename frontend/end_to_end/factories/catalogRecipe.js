@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 var Factory = require("rosie").Factory;
 var faker = require("faker");
 

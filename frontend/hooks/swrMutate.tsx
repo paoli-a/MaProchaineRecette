@@ -5,13 +5,19 @@ import useMutation from "use-mutation";
 import { API_PATHS } from "../constants/paths";
 import { isCatalogRecipeResponse } from "../constants/typeGuards";
 import {
+  CatalogRecipeType,
   FridgeIngredientType,
   IngredientType,
   RecipeToSendType,
-  RecipeType,
 } from "../constants/types";
 
-async function addCatalogIngredient({ ingredientToSend }: any) {
+type AddCatalogIngredientArgs = {
+  ingredientToSend: IngredientType;
+};
+
+async function addCatalogIngredient({
+  ingredientToSend,
+}: AddCatalogIngredientArgs) {
   try {
     const response = await axios.post(
       API_PATHS.catalogIngredients,
@@ -27,6 +33,11 @@ async function addCatalogIngredient({ ingredientToSend }: any) {
   }
 }
 
+type UseAddCatalogIngredientArgs = {
+  onSuccess: () => void;
+  onFailure: () => void;
+};
+
 /**
  * Hook using use-mutation lib, to make post request adding an
  * ingredient and update optimistically the UI, with the possibility
@@ -37,7 +48,10 @@ async function addCatalogIngredient({ ingredientToSend }: any) {
  * @returns array containing a function to add catalog ingredient,
  *   and an object with additional information like errors.
  */
-function useAddCatalogIngredient({ onSuccess, onFailure }: any) {
+function useAddCatalogIngredient({
+  onSuccess: handleSuccess,
+  onFailure: handleFailure,
+}: UseAddCatalogIngredientArgs) {
   const { cache, mutate } = useSWRConfig();
   const key = API_PATHS.catalogIngredients;
   return useMutation(addCatalogIngredient, {
@@ -45,23 +59,27 @@ function useAddCatalogIngredient({ onSuccess, onFailure }: any) {
       const oldData = cache.get(key);
       mutate(
         key,
-        (current: any) => [...current, input.ingredientToSend],
+        (current: IngredientType[]) => [...current, input.ingredientToSend],
         false
       );
       return () => mutate(key, oldData, false);
     },
     onSuccess() {
       mutate(key);
-      if (onSuccess) onSuccess();
+      if (handleSuccess) handleSuccess();
     },
     onFailure({ rollback }) {
       if (rollback) rollback();
-      if (onFailure) onFailure();
+      if (handleFailure) handleFailure();
     },
   });
 }
 
-async function addCatalogRecipe({ recipeToSend }: any) {
+type AddCatalogRecipeArgs = {
+  recipeToSend: RecipeToSendType;
+};
+
+async function addCatalogRecipe({ recipeToSend }: AddCatalogRecipeArgs) {
   try {
     const response = await axios.post(API_PATHS.catalogRecipes, recipeToSend);
     return response;
@@ -74,6 +92,8 @@ async function addCatalogRecipe({ recipeToSend }: any) {
   }
 }
 
+type UseAddCatalogRecipeArgs = UseAddCatalogIngredientArgs;
+
 /**
  * Hook using use-mutation lib, to make post request adding a recipe
  * and update optimistically the UI, with the possibility to rollback
@@ -84,36 +104,43 @@ async function addCatalogRecipe({ recipeToSend }: any) {
  * @returns array containing a function to add catalog recipe,
  *   and an object with additional information like errors.
  */
-function useAddCatalogRecipe({ onSuccess, onFailure }: any) {
+function useAddCatalogRecipe({
+  onSuccess: handleSuccess,
+  onFailure: handleFailure,
+}: UseAddCatalogRecipeArgs) {
   const { cache, mutate } = useSWRConfig();
   const key = API_PATHS.catalogRecipes;
   return useMutation(addCatalogRecipe, {
     onMutate({ input }) {
       const oldData = cache.get(key);
-      mutate(key, (current: any) => [...current, input.recipeToSend], false);
+      mutate(
+        key,
+        (current: CatalogRecipeType[]) => [...current, input.recipeToSend],
+        false
+      );
       return () => mutate(key, oldData, false);
     },
     onSuccess({ data }) {
-      mutate(key, (current: any) =>
-        current.map((recipe: RecipeType) => {
+      mutate(key, (current: CatalogRecipeType[]) =>
+        current.map((recipe: CatalogRecipeType) => {
           if (recipe.id) return recipe;
           return data.data;
         })
       );
-      if (onSuccess) onSuccess();
+      if (handleSuccess) handleSuccess();
     },
     onFailure({ rollback }) {
       if (rollback) rollback();
-      if (onFailure) onFailure();
+      if (handleFailure) handleFailure();
     },
   });
 }
 
-async function updateCatalogRecipe({
-  recipeToSend,
-}: {
+type UpdateCatalogRecipeArgs = {
   recipeToSend: RecipeToSendType;
-}) {
+};
+
+async function updateCatalogRecipe({ recipeToSend }: UpdateCatalogRecipeArgs) {
   try {
     const response = await axios.put(
       `${API_PATHS.catalogRecipes}${recipeToSend.id}/`,
@@ -129,6 +156,8 @@ async function updateCatalogRecipe({
   }
 }
 
+type UseUpdateCatalogRecipeArgs = UseAddCatalogIngredientArgs;
+
 /**
  * Hook using use-mutation lib, to make put request updating a recipe
  * and update optimistically the UI, with the possibility to rollback
@@ -139,7 +168,10 @@ async function updateCatalogRecipe({
  * @returns array containing a function to update catalog recipe,
  *   and an object with additional information like errors.
  */
-function useUpdateCatalogRecipe({ onSuccess, onFailure }: any) {
+function useUpdateCatalogRecipe({
+  onSuccess: handleSuccess,
+  onFailure: handleFailure,
+}: UseUpdateCatalogRecipeArgs) {
   const { cache, mutate } = useSWRConfig();
   const key = API_PATHS.catalogRecipes;
   return useMutation(updateCatalogRecipe, {
@@ -147,13 +179,18 @@ function useUpdateCatalogRecipe({ onSuccess, onFailure }: any) {
       const oldData = cache.get(key);
       mutate(
         key,
-        (current: any) => {
-          const updatedRecipes = produce(current, (draftState: any) => {
-            const index = draftState.findIndex((recipe: RecipeType) => {
-              return recipe.id === input.recipeToSend.id;
-            });
-            draftState.splice(index, 1, input.recipeToSend);
-          });
+        (current: CatalogRecipeType[]) => {
+          const updatedRecipes = produce(
+            current,
+            (draftState: CatalogRecipeType[]) => {
+              const index = draftState.findIndex(
+                (recipe: CatalogRecipeType) => {
+                  return recipe.id === input.recipeToSend.id;
+                }
+              );
+              draftState.splice(index, 1, input.recipeToSend);
+            }
+          );
           return updatedRecipes;
         },
         false
@@ -161,24 +198,30 @@ function useUpdateCatalogRecipe({ onSuccess, onFailure }: any) {
       return () => mutate(key, oldData, false);
     },
     onSuccess({ data }) {
-      mutate(key, (current: any) =>
-        current.map((recipe: RecipeType) => {
+      mutate(key, (current: CatalogRecipeType[]) =>
+        current.map((recipe: CatalogRecipeType) => {
           if (isCatalogRecipeResponse(data)) {
             if (recipe.id === data.data.id) return data.data;
           }
           return recipe;
         })
       );
-      if (onSuccess) onSuccess();
+      if (handleSuccess) handleSuccess();
     },
     onFailure({ rollback }) {
       if (rollback) rollback();
-      if (onFailure) onFailure();
+      if (handleFailure) handleFailure();
     },
   });
 }
 
-async function deleteCatalogIngredient({ ingredientToSend }: any) {
+type DeleteCatalogIngredientArgs = {
+  ingredientToSend: IngredientType;
+};
+
+async function deleteCatalogIngredient({
+  ingredientToSend,
+}: DeleteCatalogIngredientArgs) {
   try {
     const response = await axios.delete(
       `${API_PATHS.catalogIngredients}${ingredientToSend.name}/`
@@ -193,6 +236,11 @@ async function deleteCatalogIngredient({ ingredientToSend }: any) {
   }
 }
 
+type UseDeleteCatalogIngredientArgs = {
+  onSuccess: () => void;
+  onFailure: (name: string) => void;
+};
+
 /**
  * Hook using use-mutation lib, to make delete request, removing an
  * ingredient and update optimistically the UI, with the possibility
@@ -203,7 +251,10 @@ async function deleteCatalogIngredient({ ingredientToSend }: any) {
  * @returns array containing a function to remove catalog ingredient,
  *   and an object with additional information like errors.
  */
-function useDeleteCatalogIngredient({ onSuccess, onFailure }: any) {
+function useDeleteCatalogIngredient({
+  onSuccess: handleSuccess,
+  onFailure: handleFailure,
+}: UseDeleteCatalogIngredientArgs) {
   const { cache, mutate } = useSWRConfig();
   const key = API_PATHS.catalogIngredients;
   return useMutation(deleteCatalogIngredient, {
@@ -211,13 +262,18 @@ function useDeleteCatalogIngredient({ onSuccess, onFailure }: any) {
       const oldData = cache.get(key);
       mutate(
         key,
-        (current: any) => {
-          const ingredientsListUpdated = produce(current, (draftState: any) => {
-            const index = draftState.findIndex((ingredient: IngredientType) => {
-              return ingredient.name === input.ingredientToSend.name;
-            });
-            draftState.splice(index, 1);
-          });
+        (current: IngredientType[]) => {
+          const ingredientsListUpdated = produce(
+            current,
+            (draftState: IngredientType[]) => {
+              const index = draftState.findIndex(
+                (ingredient: IngredientType) => {
+                  return ingredient.name === input.ingredientToSend.name;
+                }
+              );
+              draftState.splice(index, 1);
+            }
+          );
           return ingredientsListUpdated;
         },
         false
@@ -226,16 +282,20 @@ function useDeleteCatalogIngredient({ onSuccess, onFailure }: any) {
     },
     onSuccess() {
       mutate(key);
-      if (onSuccess) onSuccess();
+      if (handleSuccess) handleSuccess();
     },
     onFailure({ rollback, input }) {
       if (rollback) rollback();
-      if (onFailure) onFailure(input.ingredientToSend.name);
+      if (handleFailure) handleFailure(input.ingredientToSend.name);
     },
   });
 }
 
-async function deleteCatalogRecipe({ recipeToSend }: any) {
+type DeleteCatalogRecipeArgs = {
+  recipeToSend: CatalogRecipeType;
+};
+
+async function deleteCatalogRecipe({ recipeToSend }: DeleteCatalogRecipeArgs) {
   try {
     const response = await axios.delete(
       `${API_PATHS.catalogRecipes}${recipeToSend.id}/`
@@ -250,6 +310,8 @@ async function deleteCatalogRecipe({ recipeToSend }: any) {
   }
 }
 
+type UseDeleteCatalogRecipeArgs = UseDeleteCatalogIngredientArgs;
+
 /**
  * Hook using use-mutation lib, to make delete request removing a recipe
  * and update optimistically the UI, with the possibility to rollback
@@ -260,7 +322,10 @@ async function deleteCatalogRecipe({ recipeToSend }: any) {
  * @returns array containing a function to remove catalog recipe,
  *   and an object with additional information like errors.
  */
-function useDeleteCatalogRecipe({ onSuccess, onFailure }: any) {
+function useDeleteCatalogRecipe({
+  onSuccess: handleSuccess,
+  onFailure: handleFailure,
+}: UseDeleteCatalogRecipeArgs) {
   const { cache, mutate } = useSWRConfig();
   const key = API_PATHS.catalogRecipes;
   return useMutation(deleteCatalogRecipe, {
@@ -268,13 +333,18 @@ function useDeleteCatalogRecipe({ onSuccess, onFailure }: any) {
       const oldData = cache.get(key);
       mutate(
         key,
-        (current: any) => {
-          const updatedRecipes = produce(current, (draftState: any) => {
-            const index = draftState.findIndex((recipe: RecipeType) => {
-              return recipe.id === input.recipeToSend.id;
-            });
-            draftState.splice(index, 1);
-          });
+        (current: CatalogRecipeType[]) => {
+          const updatedRecipes = produce(
+            current,
+            (draftState: CatalogRecipeType[]) => {
+              const index = draftState.findIndex(
+                (recipe: CatalogRecipeType) => {
+                  return recipe.id === input.recipeToSend.id;
+                }
+              );
+              draftState.splice(index, 1);
+            }
+          );
           return updatedRecipes;
         },
         false
@@ -282,17 +352,24 @@ function useDeleteCatalogRecipe({ onSuccess, onFailure }: any) {
       return () => mutate(key, oldData, false);
     },
     onSuccess() {
-      mutate(key, (current: any) => current);
-      if (onSuccess) onSuccess();
+      mutate(key, (current: CatalogRecipeType[]) => current);
+      if (handleSuccess) handleSuccess();
     },
     onFailure({ rollback, input }) {
       if (rollback) rollback();
-      if (onFailure) onFailure(input.recipeToSend.id);
+      if (handleFailure)
+        handleFailure(input.recipeToSend.id ? input.recipeToSend.id : "");
     },
   });
 }
 
-async function deleteFridgeIngredient({ ingredientToSend }: any) {
+type DeleteFridgeIngredientArgs = {
+  ingredientToSend: FridgeIngredientType;
+};
+
+async function deleteFridgeIngredient({
+  ingredientToSend,
+}: DeleteFridgeIngredientArgs) {
   try {
     const response = await axios.delete(
       `${API_PATHS.fridgeIngredients}${ingredientToSend.id}/`
@@ -307,6 +384,8 @@ async function deleteFridgeIngredient({ ingredientToSend }: any) {
   }
 }
 
+type UseDeleteFridgeIngredientArgs = UseDeleteCatalogRecipeArgs;
+
 /**
  * Hook using use-mutation lib, to make delete request removing a fridge
  * ingredient and update optimistically the UI, with the possibility to
@@ -317,7 +396,10 @@ async function deleteFridgeIngredient({ ingredientToSend }: any) {
  * @returns array containing a function to remove fridge ingredient,
  *   and an object with additional information like errors.
  */
-function useDeleteFridgeIngredient({ onSuccess, onFailure }: any) {
+function useDeleteFridgeIngredient({
+  onSuccess: handleSuccess,
+  onFailure: handleFailure,
+}: UseDeleteFridgeIngredientArgs) {
   const { cache, mutate } = useSWRConfig();
   const key = API_PATHS.fridgeIngredients;
   return useMutation(deleteFridgeIngredient, {
@@ -325,10 +407,10 @@ function useDeleteFridgeIngredient({ onSuccess, onFailure }: any) {
       const oldData = cache.get(key);
       mutate(
         key,
-        (current: any) => {
+        (current: FridgeIngredientType[]) => {
           const fridgeIngredientsUpdated = produce(
             current,
-            (draftState: any) => {
+            (draftState: FridgeIngredientType[]) => {
               const index = draftState.findIndex(
                 (ingredient: FridgeIngredientType) => {
                   return ingredient.id === input.ingredientToSend.id;
@@ -344,12 +426,12 @@ function useDeleteFridgeIngredient({ onSuccess, onFailure }: any) {
       return () => mutate(key, oldData, false);
     },
     onSuccess() {
-      mutate(key, (current: any) => current);
-      if (onSuccess) onSuccess();
+      mutate(key, (current: FridgeIngredientType[]) => current);
+      if (handleSuccess) handleSuccess();
     },
     onFailure({ rollback, input }) {
       if (rollback) rollback();
-      if (onFailure) onFailure(input.ingredientToSend.id);
+      if (handleFailure) handleFailure(input.ingredientToSend.id);
     },
   });
 }

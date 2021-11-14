@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 const Helper = require("@codeceptjs/helper");
 const execSync = require("child_process").execSync;
 

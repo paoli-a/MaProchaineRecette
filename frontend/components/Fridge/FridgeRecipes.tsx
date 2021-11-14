@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useMemo, useState } from "react";
 import Highlighter from "react-highlight-words";
+import * as stopword from "stopword";
 import { mutate } from "swr";
 import { API_PATHS } from "../../constants/paths";
 import { RecipeType } from "../../constants/types";
@@ -51,7 +52,6 @@ function FridgeRecipes() {
     };
 
     const removeStopwords = (results: string[]) => {
-      const stopword = require("stopword");
       return stopword.removeStopwords(results, stopword.fr);
     };
 

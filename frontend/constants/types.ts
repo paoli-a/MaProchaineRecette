@@ -3,7 +3,7 @@ interface RecipeType extends RecipeToSendType {
   unsure_ingredients: string[];
 }
 
-type RecipeToSendType = {
+type CatalogRecipeType = {
   id?: string;
   categories: string[];
   title: string;
@@ -11,6 +11,8 @@ type RecipeToSendType = {
   duration: string;
   description: string;
 };
+
+type RecipeToSendType = CatalogRecipeType;
 
 type RecipeIngredientType = {
   ingredient: string;
@@ -37,6 +39,14 @@ type FridgeIngredientType = {
   unit: string;
 };
 
+type FridgeIngredientBackendType = {
+  id: string;
+  ingredient: string;
+  expiration_date: Date;
+  amount: string;
+  unit: string;
+};
+
 type SubmitFridgeIngredientDataType = {
   ingredientName: string;
   ingredientAmount: string;
@@ -48,6 +58,8 @@ type IngredientType = {
   name: string;
 };
 
+type ElementType = { name: string };
+
 export type {
   RecipeType,
   RecipeToSendType,
@@ -57,4 +69,7 @@ export type {
   SubmitRecipeDataType,
   RecipeDataType,
   SubmitFridgeIngredientDataType,
+  FridgeIngredientBackendType,
+  ElementType,
+  CatalogRecipeType,
 };
