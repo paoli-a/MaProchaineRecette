@@ -1,8 +1,9 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import useSWR from "swr";
 import { API_PATHS } from "../constants/paths";
 import { isCorrectArrayResponse } from "../constants/typeGuards";
 import {
+  CatalogRecipeType,
   FridgeIngredientType,
   IngredientType,
   RecipeType,
@@ -15,7 +16,7 @@ type UseCatalogIngredients = {
 };
 
 type UseCatalogRecipes = {
-  catalogRecipes: RecipeType[];
+  catalogRecipes: CatalogRecipeType[];
   isCatalogRecipesLoading: boolean;
   isCatalogRecipesError: boolean;
 };
@@ -68,10 +69,10 @@ function fetcherCatalogIngredients(url: string): Promise<IngredientType[]> {
   });
 }
 
-function fetcherCatalogRecipes(url: string): Promise<RecipeType[]> {
-  return axios.get(url).then((res): RecipeType[] => {
+function fetcherCatalogRecipes(url: string): Promise<CatalogRecipeType[]> {
+  return axios.get(url).then((res): CatalogRecipeType[] => {
     if (
-      isCorrectArrayResponse(res.data, (element: RecipeType) => {
+      isCorrectArrayResponse(res.data, (element: CatalogRecipeType) => {
         return (
           typeof element === "object" &&
           "categories" in element &&
@@ -151,7 +152,7 @@ function fetcherFridgeIngredients(
 function useCatalogIngredients(
   fallbackData?: IngredientType[]
 ): UseCatalogIngredients {
-  const { data, error } = useSWR<IngredientType[], Record<any, any>>(
+  const { data, error } = useSWR<IngredientType[], AxiosError<Error>>(
     API_PATHS.catalogIngredients,
     fetcherCatalogIngredients,
     {
@@ -166,8 +167,10 @@ function useCatalogIngredients(
   };
 }
 
-function useCatalogRecipes(fallbackData?: RecipeType[]): UseCatalogRecipes {
-  const { data, error } = useSWR<RecipeType[], Record<any, any>>(
+function useCatalogRecipes(
+  fallbackData?: CatalogRecipeType[]
+): UseCatalogRecipes {
+  const { data, error } = useSWR<CatalogRecipeType[], AxiosError<Error>>(
     API_PATHS.catalogRecipes,
     fetcherCatalogRecipes,
     {
@@ -187,7 +190,7 @@ function useFridgeIngredients(
 ): UseFridgeIngredients {
   const { data, error } = useSWR<
     FridgeIngredientBackendType[],
-    Record<any, any>
+    AxiosError<Error>
   >(API_PATHS.fridgeIngredients, fetcherFridgeIngredients, {
     fallbackData: fallbackData,
   });
@@ -213,7 +216,7 @@ function useFridgeIngredients(
 }
 
 function useCategories(fallbackData?: string[]): UseCategories {
-  const { data, error } = useSWR<string[], Record<any, any>>(
+  const { data, error } = useSWR<string[], AxiosError<Error>>(
     API_PATHS.catalogCategories,
     fetcherArrayOfStrings,
     {
@@ -229,7 +232,7 @@ function useCategories(fallbackData?: string[]): UseCategories {
 }
 
 function useUnits(fallbackData?: string[]): UseUnits {
-  const { data, error } = useSWR<string[], Record<any, any>>(
+  const { data, error } = useSWR<string[], AxiosError<Error>>(
     API_PATHS.units,
     fetcherArrayOfStrings,
     {
@@ -245,7 +248,7 @@ function useUnits(fallbackData?: string[]): UseUnits {
 }
 
 function useFridgeRecipes(fallbackData?: RecipeType[]): UseFridgeRecipes {
-  const { data, error } = useSWR<RecipeType[], Record<any, any>>(
+  const { data, error } = useSWR<RecipeType[], AxiosError<Error>>(
     API_PATHS.fridgeRecipes,
     fetcherFridgeRecipes,
     {

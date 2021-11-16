@@ -1,6 +1,5 @@
 import React, { ChangeEvent, useState } from "react";
-
-type ElementType = { name: string };
+import { ElementType } from "../../constants/types";
 
 type InputSuggestionsProps = {
   /**
@@ -18,6 +17,7 @@ type InputSuggestionsProps = {
    */
   onChangeValue?: (value: string) => string;
   value?: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [attributes: string]: any;
 };
 

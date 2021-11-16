@@ -9,7 +9,7 @@ import {
 } from "@testing-library/react";
 import React from "react";
 import { SWRConfig } from "swr";
-import { axiosGetGlobalMock, mockedAxios } from "../testUtils";
+import { axiosGetGlobalMock, GetByType, mockedAxios } from "../testUtils";
 import FridgeRecipes from "./FridgeRecipes";
 
 beforeEach(() => {
@@ -118,8 +118,8 @@ describe("the category filtration functionality works properly", () => {
 describe("the search filtration functionality works properly", () => {
   async function makeASearch(
     wantedValue: string,
-    getByPlaceholderText: any,
-    getByTestId: any
+    getByPlaceholderText: GetByType,
+    getByTestId: GetByType
   ) {
     const searchBar = getByPlaceholderText("Recherche...");
     const submitButton = getByTestId("search-button");
@@ -132,7 +132,8 @@ describe("the search filtration functionality works properly", () => {
   const getContent = (text: string) => {
     /* This function finds only text between tags, but it does not
     find the text when it's not cut by tags.*/
-    return (content: any, node: any) => Boolean(node.textContent === text);
+    return (content: string, element: Element | null) =>
+      Boolean(element?.textContent === text);
   };
 
   it("renders only the recipes containing the searched word in their titles", async () => {

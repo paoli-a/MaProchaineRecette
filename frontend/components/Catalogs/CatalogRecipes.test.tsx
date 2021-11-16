@@ -9,6 +9,7 @@ import {
 } from "@testing-library/react";
 import React from "react";
 import { SWRConfig } from "swr";
+import type { GetByType } from "../testUtils";
 import {
   axiosGetGlobalMock,
   catalogRecipes,
@@ -186,8 +187,8 @@ describe("the adding recipe functionality works properly", () => {
   });
 
   async function addRecipe(
-    getByLabelText: any,
-    getByText: any,
+    getByLabelText: GetByType,
+    getByText: GetByType,
     missingFields: string[] = [],
     customFields = { duration: "00:10:00" }
   ) {
@@ -239,7 +240,7 @@ describe("the adding recipe functionality works properly", () => {
     }
   }
 
-  function addIngredient(getByLabelText: any, value: string[]) {
+  function addIngredient(getByLabelText: GetByType, value: string[]) {
     const inputIngredientName = getByLabelText("Nom :");
     const inputAmount = getByLabelText("Quantité nécessaire :");
     const selectedUnit = getByLabelText("Unité");
@@ -536,10 +537,11 @@ describe("edit functionality", () => {
     expect(getByText(/Eplucher et couper les patates/)).toBeInTheDocument();
   });
 
-  async function clickOnEditRecipe(getByText: any, titleRecipe: string) {
+  async function clickOnEditRecipe(getByText: GetByType, titleRecipe: string) {
     const recipe = getByText(titleRecipe, { exact: false });
     const divButton = recipe.closest("div");
-    const button = within(divButton).getByAltText("Modifier");
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const button = within(divButton!).getByAltText("Modifier");
     fireEvent.click(button);
   }
 });

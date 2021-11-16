@@ -2,6 +2,8 @@ import produce from "immer";
 import React, { MouseEvent, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import {
+  CatalogRecipeType,
+  ElementType,
   RecipeDataType,
   RecipeIngredientType,
   RecipeType,
@@ -16,27 +18,28 @@ import InputSuggestions from "../InputSuggestions/InputSuggestions";
 
 type FormInputs = {
   recipeTitle: string;
-  [category: string]: any;
   recipeTime: string;
   recipeDescription: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [category: string]: any;
 };
 
-type RecipesFormProps = {
+type RecipesFormProps<T> = {
   /**
    * Cette fonction est exécutée au moment du submit de de la recette,
    * lorsque la validité de tous les éléments entrés a été vérifiée,
    * et permet de les récupérer.
    */
   onSubmitRecipe: (newData: SubmitRecipeDataType) => void;
-  recipeToEdit: null | RecipeType;
+  recipeToEdit: null | T;
   resetRecipeToEdit?: () => void;
 };
 
-function RecipesForm({
+function RecipesForm<T extends RecipeType | CatalogRecipeType>({
   onSubmitRecipe,
   recipeToEdit,
   resetRecipeToEdit,
-}: RecipesFormProps): JSX.Element {
+}: RecipesFormProps<T>): JSX.Element {
   const {
     register,
     handleSubmit,
@@ -85,9 +88,7 @@ function RecipesForm({
       );
       return;
     }
-    const newData = produce<RecipeDataType>(data, (draftState: any) => {
-      draftState.ingredients = ingredients;
-    }) as SubmitRecipeDataType;
+    const newData = { ...data, ingredients };
 
     onSubmitRecipe(newData);
     reset();
@@ -294,7 +295,7 @@ function RecipesForm({
               className="form__input"
               elements={catalogIngredients}
               id="ingredient"
-              getElementText={(ingredient: any) => ingredient.name}
+              getElementText={(ingredient: ElementType) => ingredient.name}
               onChangeValue={(name: string) => setIngredientName(name)}
               value={ingredientName}
               name="ingredient"

@@ -2,8 +2,8 @@ import React, { ChangeEvent, useState } from "react";
 import { mutate } from "swr";
 import { API_PATHS } from "../../constants/paths";
 import {
+  CatalogRecipeType,
   RecipeToSendType,
-  RecipeType,
   SubmitRecipeDataType,
 } from "../../constants/types";
 import { useCatalogRecipes } from "../../hooks/swrFetch";
@@ -32,7 +32,9 @@ function CatalogRecipes() {
   const [searchResults, setSearchResults] = useState("");
   const [deleteError, setDeleteError] = useState<DeleteErrorType>({});
   const [postError, setPostError] = useState("");
-  const [recipeToEdit, setRecipeToEdit] = useState<null | RecipeType>(null);
+  const [recipeToEdit, setRecipeToEdit] = useState<null | CatalogRecipeType>(
+    null
+  );
   const { catalogRecipes } = useCatalogRecipes();
   const [addCatalogRecipe] = useAddCatalogRecipe({
     onSuccess: () => mutate(API_PATHS.fridgeRecipes),
@@ -65,7 +67,7 @@ function CatalogRecipes() {
   };
 
   const handleEditClick = (id: string) => {
-    catalogRecipes.forEach((recipeObject: RecipeType) => {
+    catalogRecipes.forEach((recipeObject: CatalogRecipeType) => {
       for (const key in recipeObject) {
         if (key === "id" && recipeObject[key] === id) {
           setRecipeToEdit(recipeObject);
@@ -95,13 +97,13 @@ function CatalogRecipes() {
     setSearchResults(event.target.value);
   };
 
-  const filteredRecipes = useFilterSearch<RecipeType>({
+  const filteredRecipes = useFilterSearch<CatalogRecipeType>({
     elementsToFilter: catalogRecipes,
     searchResults: searchResults,
-    getSearchElement: (recipe: RecipeType) => recipe.title,
+    getSearchElement: (recipe: CatalogRecipeType) => recipe.title,
   });
 
-  const allMyRecipes = filteredRecipes.map((myRecipe: RecipeType) => {
+  const allMyRecipes = filteredRecipes.map((myRecipe: CatalogRecipeType) => {
     const button = (
       <div className="buttons-container">
         <button

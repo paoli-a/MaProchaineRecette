@@ -1,6 +1,12 @@
 import axios from "axios";
 import type { AppContext, AppProps } from "next/app";
 import { API_PATHS } from "../constants/paths";
+import type {
+  CatalogRecipeType,
+  FridgeIngredientBackendType,
+  IngredientType,
+  RecipeType,
+} from "../constants/types";
 import {
   useCatalogIngredients,
   useCatalogRecipes,
@@ -14,13 +20,13 @@ import "../styles/main.scss";
 interface MyAppPros extends AppProps {
   props: {
     firstTime: boolean;
-    initialFetchError: any;
-    initialCatalogIngredients: any;
-    initialCatalogRecipes: any;
-    initialFridgeIngredients: any;
-    initialCatalogCategories: any;
-    initialUnits: any;
-    initialFridgeRecipes: any;
+    initialFetchError: string;
+    initialCatalogIngredients: IngredientType[];
+    initialCatalogRecipes: CatalogRecipeType[];
+    initialFridgeIngredients: FridgeIngredientBackendType[];
+    initialCatalogCategories: string[];
+    initialUnits: string[];
+    initialFridgeRecipes: RecipeType[];
   };
 }
 
@@ -40,24 +46,36 @@ function MyApp({ Component, pageProps, props }: MyAppPros) {
 MyApp.getInitialProps = async (context: AppContext) => {
   if (context.ctx.req) {
     let initialFetchError = "";
-    const get = async (path: any) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const get = async <T extends Record<any, any> | string>(
+      path: string
+    ): Promise<T[]> => {
       const target =
         process.env.NEXT_PUBLIC_PROXY_HOST || "http://localhost:8000";
-      let result: any = { data: [] };
+      let result: { data: T[] } = { data: [] };
       try {
         result = await axios.get(`${target}${path}`);
       } catch (err) {
         initialFetchError =
           "Il y a eu une erreur vis-à-vis du serveur, veuillez reharger la page ou réessayer ultérieurement.";
       }
+      // TODO: put a type guard here
       return result.data;
     };
-    const initialCatalogIngredients = await get(API_PATHS.catalogIngredients);
-    const initialCatalogRecipes = await get(API_PATHS.catalogRecipes);
-    const initialFridgeIngredients = await get(API_PATHS.fridgeIngredients);
-    const initialCatalogCategories = await get(API_PATHS.catalogCategories);
-    const initialUnits = await get(API_PATHS.units);
-    const initialFridgeRecipes = await get(API_PATHS.fridgeRecipes);
+    const initialCatalogIngredients = await get<IngredientType>(
+      API_PATHS.catalogIngredients
+    );
+    const initialCatalogRecipes = await get<CatalogRecipeType>(
+      API_PATHS.catalogRecipes
+    );
+    const initialFridgeIngredients = await get<FridgeIngredientBackendType>(
+      API_PATHS.fridgeIngredients
+    );
+    const initialCatalogCategories = await get<string>(
+      API_PATHS.catalogCategories
+    );
+    const initialUnits = await get<string>(API_PATHS.units);
+    const initialFridgeRecipes = await get<RecipeType>(API_PATHS.fridgeRecipes);
     return {
       props: {
         firstTime: true,
