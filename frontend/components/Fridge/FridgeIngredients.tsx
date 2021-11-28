@@ -40,8 +40,8 @@ function FridgeIngredients() {
   ] = useState<FridgeIngredientType | null>(null);
   const [deleteFridgeIngredient] = useDeleteFridgeIngredient({
     onSuccess: () => {
-      mutate(API_PATHS.fridgeIngredients);
-      mutate(API_PATHS.fridgeRecipes);
+      void mutate(API_PATHS.fridgeIngredients);
+      void mutate(API_PATHS.fridgeRecipes);
     },
     onFailure: (id: string) => {
       setDeleteError({
@@ -58,7 +58,7 @@ function FridgeIngredients() {
       }
     );
     const ingredientToSend = fridgeIngredients[index];
-    deleteFridgeIngredient({ ingredientToSend });
+    void deleteFridgeIngredient({ ingredientToSend });
   };
 
   const handleEditClick = (id: string) => {
@@ -94,8 +94,8 @@ function FridgeIngredients() {
       the backend may merge several ingredients before sending them back
       and we can't know that in advance on frontend side. */
       await updateFridgeIngredients(newIngredient);
-      mutate(API_PATHS.fridgeIngredients);
-      mutate(API_PATHS.fridgeRecipes);
+      void mutate(API_PATHS.fridgeIngredients);
+      void mutate(API_PATHS.fridgeRecipes);
     } catch (error) {
       if (ingredientToEdit) {
         setPostError("La modification de l'ingrédient a échoué.");

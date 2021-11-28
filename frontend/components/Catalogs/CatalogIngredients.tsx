@@ -53,11 +53,11 @@ function CatalogIngredients() {
     },
   });
 
-  const onSubmitWrapper = async (dataForm: FormInputs) => {
+  const onSubmitWrapper = (dataForm: FormInputs) => {
     const ingredientToSend = {
       name: dataForm.ingredientName,
     };
-    addCatalogIngredient({ ingredientToSend });
+    void addCatalogIngredient({ ingredientToSend });
   };
 
   const handleSupprClick = (name: string) => {
@@ -65,7 +65,7 @@ function CatalogIngredients() {
       return ingredient.name === name;
     });
     const ingredientToSend = catalogIngredients[index];
-    deleteCatalogIngredient({ ingredientToSend });
+    void deleteCatalogIngredient({ ingredientToSend });
   };
 
   const handleChangeSearch = (event: ChangeEvent<HTMLInputElement>) => {

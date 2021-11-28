@@ -1,5 +1,5 @@
+/* eslint-disable @typescript-eslint/unbound-method */
 import {
-  act,
   fireEvent,
   render,
   RenderResult,
@@ -20,14 +20,12 @@ afterEach(() => {
 });
 
 const renderCatalog = async (): Promise<RenderResult> => {
-  let app = render(<></>);
-  await act(async () => {
-    app = render(
-      <SWRConfig value={{ dedupingInterval: 0, provider: () => new Map() }}>
-        <CatalogIngredients />
-      </SWRConfig>
-    );
-  });
+  const app = render(
+    <SWRConfig value={{ dedupingInterval: 0, provider: () => new Map() }}>
+      <CatalogIngredients />
+    </SWRConfig>
+  );
+  await waitFor(() => app);
   return app;
 };
 

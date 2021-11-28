@@ -1,6 +1,5 @@
 /* eslint-disable testing-library/no-await-sync-query */
 import {
-  act,
   fireEvent,
   render,
   RenderResult,
@@ -21,14 +20,12 @@ afterEach(() => {
 });
 
 const renderFridgeRecipes = async (): Promise<RenderResult> => {
-  let app = render(<></>);
-  await act(async () => {
-    app = render(
-      <SWRConfig value={{ dedupingInterval: 0, provider: () => new Map() }}>
-        <FridgeRecipes />
-      </SWRConfig>
-    );
-  });
+  const app = render(
+    <SWRConfig value={{ dedupingInterval: 0, provider: () => new Map() }}>
+      <FridgeRecipes />
+    </SWRConfig>
+  );
+  await waitFor(() => app);
   return app;
 };
 
@@ -124,7 +121,7 @@ describe("the search filtration functionality works properly", () => {
     const searchBar = getByPlaceholderText("Recherche...");
     const submitButton = getByTestId("search-button");
     fireEvent.change(searchBar, { target: { value: wantedValue } });
-    await act(async () => {
+    await waitFor(() => {
       fireEvent.click(submitButton);
     });
   }

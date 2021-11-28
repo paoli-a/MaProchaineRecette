@@ -134,8 +134,8 @@ function FridgeRecipes() {
     axios
       .post(API_PATHS.consume(id))
       .then(() => {
-        mutate(API_PATHS.fridgeIngredients);
-        mutate(API_PATHS.fridgeRecipes);
+        void mutate(API_PATHS.fridgeIngredients);
+        void mutate(API_PATHS.fridgeRecipes);
       })
       .catch(() => {
         setConsumeError({

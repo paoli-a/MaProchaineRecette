@@ -3,9 +3,13 @@ import produce from "immer";
 import { useSWRConfig } from "swr";
 import useMutation from "use-mutation";
 import { API_PATHS } from "../constants/paths";
-import { isCatalogRecipeResponse } from "../constants/typeGuards";
+import {
+  isCatalogRecipeResponse,
+  isCorrectArrayResponse,
+} from "../constants/typeGuards";
 import {
   CatalogRecipeType,
+  FridgeIngredientBackendType,
   FridgeIngredientType,
   IngredientType,
   RecipeToSendType,
@@ -56,8 +60,18 @@ function useAddCatalogIngredient({
   const key = API_PATHS.catalogIngredients;
   return useMutation(addCatalogIngredient, {
     onMutate({ input }) {
-      const oldData = cache.get(key);
-      mutate(
+      const uncheckedData: unknown = cache.get(key);
+      let oldData: IngredientType[] = [];
+      if (
+        isCorrectArrayResponse(
+          uncheckedData,
+          (element: IngredientType) =>
+            typeof element === "object" && "name" in element
+        )
+      ) {
+        oldData = uncheckedData;
+      }
+      void mutate(
         key,
         (current: IngredientType[]) => [...current, input.ingredientToSend],
         false
@@ -65,7 +79,7 @@ function useAddCatalogIngredient({
       return () => mutate(key, oldData, false);
     },
     onSuccess() {
-      mutate(key);
+      void mutate(key);
       if (handleSuccess) handleSuccess();
     },
     onFailure({ rollback }) {
@@ -112,19 +126,43 @@ function useAddCatalogRecipe({
   const key = API_PATHS.catalogRecipes;
   return useMutation(addCatalogRecipe, {
     onMutate({ input }) {
-      const oldData = cache.get(key);
-      mutate(
+      const uncheckedData: unknown = cache.get(key);
+      let oldData: CatalogRecipeType[] = [];
+      if (
+        isCorrectArrayResponse(uncheckedData, (element: CatalogRecipeType) => {
+          return (
+            typeof element === "object" &&
+            "categories" in element &&
+            "title" in element &&
+            "ingredients" in element &&
+            "duration" in element &&
+            "description" in element
+          );
+        })
+      ) {
+        oldData = uncheckedData;
+      }
+      void mutate(
         key,
         (current: CatalogRecipeType[]) => [...current, input.recipeToSend],
         false
       );
       return () => mutate(key, oldData, false);
     },
-    onSuccess({ data }) {
-      mutate(key, (current: CatalogRecipeType[]) =>
+    onSuccess({ data }: { data: unknown }) {
+      void mutate(key, (current: CatalogRecipeType[]) =>
         current.map((recipe: CatalogRecipeType) => {
-          if (recipe.id) return recipe;
-          return data.data;
+          if (recipe.id) {
+            return recipe;
+          } else if (isCatalogRecipeResponse(data)) {
+            return data.data;
+          } else {
+            throw new Error(
+              `The data sent back by the backend ${JSON.stringify(
+                data
+              )} is not of type CatalogRecipeType`
+            );
+          }
         })
       );
       if (handleSuccess) handleSuccess();
@@ -141,6 +179,11 @@ type UpdateCatalogRecipeArgs = {
 };
 
 async function updateCatalogRecipe({ recipeToSend }: UpdateCatalogRecipeArgs) {
+  if (recipeToSend.id === undefined) {
+    throw new Error(
+      "You're trying to update a catalog recipe with an undefined id"
+    );
+  }
   try {
     const response = await axios.put(
       `${API_PATHS.catalogRecipes}${recipeToSend.id}/`,
@@ -176,8 +219,23 @@ function useUpdateCatalogRecipe({
   const key = API_PATHS.catalogRecipes;
   return useMutation(updateCatalogRecipe, {
     onMutate({ input }) {
-      const oldData = cache.get(key);
-      mutate(
+      const uncheckedData: unknown = cache.get(key);
+      let oldData: CatalogRecipeType[] = [];
+      if (
+        isCorrectArrayResponse(uncheckedData, (element: CatalogRecipeType) => {
+          return (
+            typeof element === "object" &&
+            "categories" in element &&
+            "title" in element &&
+            "ingredients" in element &&
+            "duration" in element &&
+            "description" in element
+          );
+        })
+      ) {
+        oldData = uncheckedData;
+      }
+      void mutate(
         key,
         (current: CatalogRecipeType[]) => {
           const updatedRecipes = produce(
@@ -197,13 +255,19 @@ function useUpdateCatalogRecipe({
       );
       return () => mutate(key, oldData, false);
     },
-    onSuccess({ data }) {
-      mutate(key, (current: CatalogRecipeType[]) =>
+    onSuccess({ data }: { data: unknown }) {
+      void mutate(key, (current: CatalogRecipeType[]) =>
         current.map((recipe: CatalogRecipeType) => {
           if (isCatalogRecipeResponse(data)) {
             if (recipe.id === data.data.id) return data.data;
+            else return recipe;
+          } else {
+            throw new Error(
+              `The data sent back by the backend ${JSON.stringify(
+                data
+              )} is not of type CatalogRecipeType`
+            );
           }
-          return recipe;
         })
       );
       if (handleSuccess) handleSuccess();
@@ -259,8 +323,18 @@ function useDeleteCatalogIngredient({
   const key = API_PATHS.catalogIngredients;
   return useMutation(deleteCatalogIngredient, {
     onMutate({ input }) {
-      const oldData = cache.get(key);
-      mutate(
+      const uncheckedData: unknown = cache.get(key);
+      let oldData: IngredientType[] = [];
+      if (
+        isCorrectArrayResponse(
+          uncheckedData,
+          (element: IngredientType) =>
+            typeof element === "object" && "name" in element
+        )
+      ) {
+        oldData = uncheckedData;
+      }
+      void mutate(
         key,
         (current: IngredientType[]) => {
           const ingredientsListUpdated = produce(
@@ -281,7 +355,7 @@ function useDeleteCatalogIngredient({
       return () => mutate(key, oldData, false);
     },
     onSuccess() {
-      mutate(key);
+      void mutate(key);
       if (handleSuccess) handleSuccess();
     },
     onFailure({ rollback, input }) {
@@ -296,6 +370,11 @@ type DeleteCatalogRecipeArgs = {
 };
 
 async function deleteCatalogRecipe({ recipeToSend }: DeleteCatalogRecipeArgs) {
+  if (recipeToSend.id === undefined) {
+    throw new Error(
+      "You're trying to delete a catalog recipe with an undefined id"
+    );
+  }
   try {
     const response = await axios.delete(
       `${API_PATHS.catalogRecipes}${recipeToSend.id}/`
@@ -330,8 +409,23 @@ function useDeleteCatalogRecipe({
   const key = API_PATHS.catalogRecipes;
   return useMutation(deleteCatalogRecipe, {
     onMutate({ input }) {
-      const oldData = cache.get(key);
-      mutate(
+      const uncheckedData: unknown = cache.get(key);
+      let oldData: CatalogRecipeType[] = [];
+      if (
+        isCorrectArrayResponse(uncheckedData, (element: CatalogRecipeType) => {
+          return (
+            typeof element === "object" &&
+            "categories" in element &&
+            "title" in element &&
+            "ingredients" in element &&
+            "duration" in element &&
+            "description" in element
+          );
+        })
+      ) {
+        oldData = uncheckedData;
+      }
+      void mutate(
         key,
         (current: CatalogRecipeType[]) => {
           const updatedRecipes = produce(
@@ -352,7 +446,7 @@ function useDeleteCatalogRecipe({
       return () => mutate(key, oldData, false);
     },
     onSuccess() {
-      mutate(key, (current: CatalogRecipeType[]) => current);
+      void mutate(key, (current: CatalogRecipeType[]) => current);
       if (handleSuccess) handleSuccess();
     },
     onFailure({ rollback, input }) {
@@ -404,8 +498,26 @@ function useDeleteFridgeIngredient({
   const key = API_PATHS.fridgeIngredients;
   return useMutation(deleteFridgeIngredient, {
     onMutate({ input }) {
-      const oldData = cache.get(key);
-      mutate(
+      const uncheckedData: unknown = cache.get(key);
+      let oldData: FridgeIngredientBackendType[] = [];
+      if (
+        isCorrectArrayResponse(
+          uncheckedData,
+          (element: FridgeIngredientBackendType) => {
+            return (
+              typeof element === "object" &&
+              "id" in element &&
+              "ingredient" in element &&
+              "expiration_date" in element &&
+              "amount" in element &&
+              "unit" in element
+            );
+          }
+        )
+      ) {
+        oldData = uncheckedData;
+      }
+      void mutate(
         key,
         (current: FridgeIngredientType[]) => {
           const fridgeIngredientsUpdated = produce(
@@ -426,7 +538,7 @@ function useDeleteFridgeIngredient({
       return () => mutate(key, oldData, false);
     },
     onSuccess() {
-      mutate(key, (current: FridgeIngredientType[]) => current);
+      void mutate(key, (current: FridgeIngredientType[]) => current);
       if (handleSuccess) handleSuccess();
     },
     onFailure({ rollback, input }) {
