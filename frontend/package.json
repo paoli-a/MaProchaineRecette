@@ -10,6 +10,7 @@
     "test:ci": "jest",
     "lint": "eslint --max-warnings=0 .",
     "type-check": "tsc --pretty --noEmit",
+    "test-all": "yarn lint && yarn type-check && jest",
     "e2e": "npx codeceptjs run --steps",
     "docs": "jsdoc -c jsdoc.conf.json"
   },

@@ -1,7 +1,7 @@
-import { RecipeType } from "./types";
+import { CatalogRecipeType } from "./types";
 
 type CatalogRecipeResponse = {
-  data: RecipeType;
+  data: CatalogRecipeType;
 };
 
 function isCatalogRecipeResponse(

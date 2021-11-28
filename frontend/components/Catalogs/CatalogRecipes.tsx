@@ -63,7 +63,7 @@ function CatalogRecipes() {
       return recipe.id === id;
     });
     const recipeToSend = catalogRecipes[index];
-    deleteCatalogRecipe({ recipeToSend });
+    void deleteCatalogRecipe({ recipeToSend });
   };
 
   const handleEditClick = (id: string) => {
@@ -76,7 +76,7 @@ function CatalogRecipes() {
     });
   };
 
-  const handleSubmit = async (data: SubmitRecipeDataType) => {
+  const handleSubmit = (data: SubmitRecipeDataType) => {
     const categories = data.categories.filter(Boolean) as string[];
     const recipeToSend: RecipeToSendType = {
       categories: categories,
@@ -87,9 +87,9 @@ function CatalogRecipes() {
     };
     if (recipeToEdit) {
       recipeToSend.id = recipeToEdit.id;
-      updateCatalogRecipe({ recipeToSend });
+      void updateCatalogRecipe({ recipeToSend });
     } else {
-      addCatalogRecipe({ recipeToSend });
+      void addCatalogRecipe({ recipeToSend });
     }
   };
 

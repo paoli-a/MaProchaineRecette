@@ -1,6 +1,6 @@
+/* eslint-disable @typescript-eslint/unbound-method */
 /* eslint-disable testing-library/no-await-sync-query */
 import {
-  act,
   fireEvent,
   render,
   RenderResult,
@@ -27,14 +27,12 @@ afterEach(() => {
 });
 
 const renderCatalog = async (): Promise<RenderResult> => {
-  let app = render(<></>);
-  await act(async () => {
-    app = render(
-      <SWRConfig value={{ dedupingInterval: 0, provider: () => new Map() }}>
-        <CatalogRecipes />
-      </SWRConfig>
-    );
-  });
+  const app = render(
+    <SWRConfig value={{ dedupingInterval: 0, provider: () => new Map() }}>
+      <CatalogRecipes />
+    </SWRConfig>
+  );
+  await waitFor(() => app);
   return app;
 };
 
@@ -168,9 +166,7 @@ describe("the adding recipe functionality works properly", () => {
       const poires = getByText(/Poires : /);
       const beurre = getByText(/Beurre : /);
       const removeButton = within(poires).getByText("X");
-      await act(async () => {
-        fireEvent.click(removeButton);
-      });
+      fireEvent.click(removeButton);
       expect(poires).not.toBeInTheDocument();
       expect(beurre).toBeInTheDocument();
     });
@@ -232,7 +228,7 @@ describe("the adding recipe functionality works properly", () => {
         },
       });
     }
-    await act(async () => {
+    await waitFor(() => {
       fireEvent.click(submitButton);
     });
     if (!missingFields) {
@@ -270,7 +266,7 @@ was not successful on backend side`, async () => {
         value: "Épluchez et épépinez les poires. Coupez-les en dés.",
       },
     });
-    await act(async () => {
+    await waitFor(() => {
       fireEvent.click(submitButton);
     });
     await waitFor(() => expect(mockedAxios.post).toHaveBeenCalledTimes(1));
@@ -392,7 +388,7 @@ describe("edit functionality", () => {
       getByDisplayValue,
       queryByLabelText,
     } = await renderCatalog();
-    await clickOnEditRecipe(getByText, "Salade de pommes de terre radis");
+    clickOnEditRecipe(getByText, "Salade de pommes de terre radis");
     expect(
       getByText("Modifier une recette de mon catalogue :")
     ).toBeInTheDocument();
@@ -418,7 +414,7 @@ describe("edit functionality", () => {
       getByDisplayValue,
       queryByDisplayValue,
     } = await renderCatalog();
-    await clickOnEditRecipe(getByText, "Salade de pommes de terre radis");
+    clickOnEditRecipe(getByText, "Salade de pommes de terre radis");
     expect(
       getByText("Modifier une recette de mon catalogue :")
     ).toBeInTheDocument();
@@ -426,7 +422,7 @@ describe("edit functionality", () => {
       "Salade de pommes de terre radis"
     );
     expect(recipeTitle1Present).toBeInTheDocument();
-    await clickOnEditRecipe(getByText, "Marinade de saumon fumé");
+    clickOnEditRecipe(getByText, "Marinade de saumon fumé");
     const recipeTitle2 = getByDisplayValue("Marinade de saumon fumé");
     expect(recipeTitle2).toBeInTheDocument();
     const recipeTitle1Absent = queryByDisplayValue(
@@ -444,7 +440,7 @@ describe("edit functionality", () => {
       queryByText,
       queryByDisplayValue,
     } = await renderCatalog();
-    await clickOnEditRecipe(getByText, "Salade de pommes de terre radis");
+    clickOnEditRecipe(getByText, "Salade de pommes de terre radis");
     expect(
       getByText("Modifier une recette de mon catalogue :")
     ).toBeInTheDocument();
@@ -468,30 +464,30 @@ describe("edit functionality", () => {
 
   it(`modify the recipe when clicking on the edit button`, async () => {
     const { getByText, getByLabelText, findByText } = await renderCatalog();
-    await clickOnEditRecipe(getByText, "Salade de pommes de terre radis");
-    const axiosGetResponse = {
-      data: [
-        {
-          id: "1",
-          categories: ["Plat", "Entrée"],
-          title: "Salade de pommes de terre avec radis",
-          ingredients: [
-            { ingredient: "pommes de terre", amount: "1", unit: "kg" },
-            { ingredient: "oeufs", amount: "3", unit: "pièce(s)" },
-            { ingredient: "vinaigre non balsamique", amount: "1", unit: "cas" },
-            { ingredient: "radis", amount: "2", unit: "botte(s)" },
-            { ingredient: "oignons bottes", amount: "2", unit: "pièce(s)" },
-            { ingredient: "yaourt grec", amount: "1", unit: "pièce(s)" },
-            { ingredient: "mayonnaise", amount: "1", unit: "cas" },
-            { ingredient: "moutarde", amount: "0.5", unit: "cas" },
-            { ingredient: "ail", amount: "1", unit: "gousse(s)" },
-          ],
-          duration: "35 min",
-          description: "Description modifiée",
-          priority_ingredients: ["oeufs"],
-          unsure_ingredients: ["ail"],
-        },
+    clickOnEditRecipe(getByText, "Salade de pommes de terre radis");
+    const modifiedReipe = {
+      id: "1",
+      categories: ["Plat", "Entrée"],
+      title: "Salade de pommes de terre avec radis",
+      ingredients: [
+        { ingredient: "pommes de terre", amount: "1", unit: "kg" },
+        { ingredient: "oeufs", amount: "3", unit: "pièce(s)" },
+        { ingredient: "vinaigre non balsamique", amount: "1", unit: "cas" },
+        { ingredient: "radis", amount: "2", unit: "botte(s)" },
+        { ingredient: "oignons bottes", amount: "2", unit: "pièce(s)" },
+        { ingredient: "yaourt grec", amount: "1", unit: "pièce(s)" },
+        { ingredient: "mayonnaise", amount: "1", unit: "cas" },
+        { ingredient: "moutarde", amount: "0.5", unit: "cas" },
+        { ingredient: "ail", amount: "1", unit: "gousse(s)" },
       ],
+      duration: "35 min",
+      description: "Description modifiée",
+    };
+    const axiosGetResponse = {
+      data: [modifiedReipe],
+    };
+    const axiosPutResponse = {
+      data: modifiedReipe,
     };
     const inputTitle = getByLabelText("Titre de la recette :");
     const inputDescription = getByLabelText("Corps de la recette :");
@@ -503,8 +499,8 @@ describe("edit functionality", () => {
     });
     const editButton = getByText("Modifier");
     mockedAxios.get.mockResolvedValue(axiosGetResponse);
-    mockedAxios.put.mockResolvedValue(axiosGetResponse);
-    await act(async () => {
+    mockedAxios.put.mockResolvedValue(axiosPutResponse);
+    await waitFor(() => {
       fireEvent.click(editButton);
     });
     expect(
@@ -516,7 +512,7 @@ describe("edit functionality", () => {
   it(`displays an error message and does not modify the recipe if the
   recipe modification was not successful on backend side`, async () => {
     const { getByText, getByLabelText, findByText } = await renderCatalog();
-    await clickOnEditRecipe(getByText, "Salade de pommes de terre radis");
+    clickOnEditRecipe(getByText, "Salade de pommes de terre radis");
     const axiosPutResponse = {};
     mockedAxios.put.mockRejectedValue(axiosPutResponse);
     const inputTitle = getByLabelText("Titre de la recette :");
@@ -528,7 +524,7 @@ describe("edit functionality", () => {
       target: { value: "Description modifiée" },
     });
     const editButton = getByText("Modifier");
-    await act(async () => {
+    await waitFor(() => {
       fireEvent.click(editButton);
     });
     const errorMessage = "La modification de la recette a échoué.";
@@ -537,7 +533,7 @@ describe("edit functionality", () => {
     expect(getByText(/Eplucher et couper les patates/)).toBeInTheDocument();
   });
 
-  async function clickOnEditRecipe(getByText: GetByType, titleRecipe: string) {
+  function clickOnEditRecipe(getByText: GetByType, titleRecipe: string) {
     const recipe = getByText(titleRecipe, { exact: false });
     const divButton = recipe.closest("div");
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion

@@ -1,7 +1,7 @@
+/* eslint-disable @typescript-eslint/unbound-method */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable testing-library/no-await-sync-query */
 import {
-  act,
   fireEvent,
   render,
   RenderResult,
@@ -27,14 +27,12 @@ afterEach(() => {
 });
 
 const renderIngredients = async (): Promise<RenderResult> => {
-  let app = render(<></>);
-  await act(async () => {
-    app = render(
-      <SWRConfig value={{ dedupingInterval: 0, provider: () => new Map() }}>
-        <FridgeIngredients />
-      </SWRConfig>
-    );
-  });
+  const app = render(
+    <SWRConfig value={{ dedupingInterval: 0, provider: () => new Map() }}>
+      <FridgeIngredients />
+    </SWRConfig>
+  );
+  await waitFor(() => app);
   return app;
 };
 
@@ -400,7 +398,7 @@ describe("functionalities work properly", () => {
           },
         ],
       });
-      await act(async () => {
+      await waitFor(() => {
         fireEvent.click(submitButton);
       });
       await waitFor(() => expect(mockedAxios.post).toHaveBeenCalledTimes(2));
@@ -429,7 +427,7 @@ describe("functionalities work properly", () => {
       fireEvent.change(inputAmount, { target: { value: 100 } });
       fireEvent.change(inputDate, { target: { value: "2100-04-03" } });
       fireEvent.change(selectedUnit, { target: { value: "kg" } });
-      await act(async () => {
+      await waitFor(() => {
         fireEvent.click(submitButton);
       });
       await waitFor(() => expect(mockedAxios.post).toHaveBeenCalledTimes(1));
@@ -450,7 +448,7 @@ describe("functionalities work properly", () => {
           id: 4,
           ingredient: value[0],
           expiration_date: value[2],
-          amount: value[1] + "",
+          amount: String(value[1]),
           unit: value[3],
         },
       };
@@ -472,7 +470,7 @@ describe("functionalities work properly", () => {
       if (!missingFields.includes("unité")) {
         fireEvent.change(selectedUnit, { target: { value: value[3] } });
       }
-      await act(async () => {
+      await waitFor(() => {
         fireEvent.click(submitButton);
       });
       if (!missingFields) {
@@ -489,7 +487,7 @@ describe("functionalities work properly", () => {
         queryByText,
         getByDisplayValue,
       } = await renderIngredients();
-      await clickOnEditIngredient(getByText, "Epinards");
+      clickOnEditIngredient(getByText, "Epinards");
       expect(getByText("Modifier un ingrédient frigo :")).toBeInTheDocument();
       expect(
         queryByText("Ajouter un ingrédient frigo :")
@@ -511,11 +509,11 @@ describe("functionalities work properly", () => {
         getByDisplayValue,
         queryByDisplayValue,
       } = await renderIngredients();
-      await clickOnEditIngredient(getByText, "Epinards");
+      clickOnEditIngredient(getByText, "Epinards");
       expect(getByText("Modifier un ingrédient frigo :")).toBeInTheDocument();
       const ingredientName1Present = getByDisplayValue("Epinards");
       expect(ingredientName1Present).toBeInTheDocument();
-      await clickOnEditIngredient(getByText, "Mascarpone");
+      clickOnEditIngredient(getByText, "Mascarpone");
       const ingredientName2 = getByDisplayValue("Mascarpone");
       expect(ingredientName2).toBeInTheDocument();
       const ingredientName1Absent = queryByDisplayValue("Epinards");
@@ -530,7 +528,7 @@ describe("functionalities work properly", () => {
         queryByText,
         queryByDisplayValue,
       } = await renderIngredients();
-      await clickOnEditIngredient(getByText, "Epinards");
+      clickOnEditIngredient(getByText, "Epinards");
       expect(getByText("Modifier un ingrédient frigo :")).toBeInTheDocument();
       expect(queryByText("Ajouter")).not.toBeInTheDocument();
       const ingredientNamePresent = getByDisplayValue("Epinards");
@@ -549,14 +547,14 @@ describe("functionalities work properly", () => {
         getByLabelText,
         findByText,
       } = await renderIngredients();
-      await clickOnEditIngredient(getByText, "Epinards");
+      clickOnEditIngredient(getByText, "Epinards");
       const axiosGetResponse = {
         data: [
           {
             id: 1,
             ingredient: "Epinards",
             expiration_date: "2200-05-03",
-            amount: 80 + "",
+            amount: String(80),
             unit: "kg",
           },
         ],
@@ -569,7 +567,7 @@ describe("functionalities work properly", () => {
       fireEvent.change(selectedUnit, { target: { value: "kg" } });
       const editButton = getByText("Modifier");
       mockedAxios.get.mockResolvedValue(axiosGetResponse);
-      await act(async () => {
+      await waitFor(() => {
         fireEvent.click(editButton);
       });
       expect(await findByText(/Epinards/)).toBeInTheDocument();
@@ -585,7 +583,7 @@ describe("functionalities work properly", () => {
         findByText,
         queryByText,
       } = await renderIngredients();
-      await clickOnEditIngredient(getByText, "Epinards");
+      clickOnEditIngredient(getByText, "Epinards");
       const axiosPutResponse = {};
       mockedAxios.put.mockRejectedValue(axiosPutResponse);
       const inputAmount = getByLabelText("Quantité :");
@@ -593,7 +591,7 @@ describe("functionalities work properly", () => {
       fireEvent.change(inputAmount, { target: { value: 80 } });
       fireEvent.change(inputDate, { target: { value: "2200-05-03" } });
       const editButton = getByText("Modifier");
-      await act(async () => {
+      await waitFor(() => {
         fireEvent.click(editButton);
       });
       expect(await findByText(/Epinards/)).toBeInTheDocument();
@@ -604,7 +602,7 @@ describe("functionalities work properly", () => {
       expect(getByText(errorMessage)).toBeInTheDocument();
     });
 
-    async function clickOnEditIngredient(
+    function clickOnEditIngredient(
       getByText: GetByType,
       ingredientText: string
     ) {

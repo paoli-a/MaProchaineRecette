@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, MutableRefObject, useState } from "react";
 import { ElementType } from "../../constants/types";
 
 type InputSuggestionsProps = {
@@ -17,6 +17,8 @@ type InputSuggestionsProps = {
    */
   onChangeValue?: (value: string) => string;
   value?: string;
+  onChange?: (event: ChangeEvent) => void;
+  customRef?: MutableRefObject<HTMLInputElement>;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [attributes: string]: any;
 };
@@ -71,7 +73,9 @@ const InputSuggestions = React.forwardRef<
       return true;
     });
     setElementsToPropose(elementsFiltered);
-    attributes && attributes.onChange && attributes.onChange(event);
+    if (attributes && attributes.onChange) {
+      attributes.onChange(event);
+    }
   };
 
   return (
@@ -87,7 +91,7 @@ const InputSuggestions = React.forwardRef<
           if (ref && ref instanceof Function) {
             ref(e);
           }
-          if (customRef) {
+          if (customRef && e) {
             customRef.current = e;
           }
         }}
