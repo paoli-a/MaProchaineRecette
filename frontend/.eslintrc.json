@@ -16,6 +16,11 @@
       "parserOptions": {
         "project": ["./tsconfig.json"]
       },
+      "rules": {
+        "@typescript-eslint/no-unsafe-assignment": "error",
+        "@typescript-eslint/no-unsafe-return": "error",
+        "@typescript-eslint/no-explicit-any": "error"
+      },
       "extends": [
         "plugin:@typescript-eslint/recommended-requiring-type-checking"
       ]
