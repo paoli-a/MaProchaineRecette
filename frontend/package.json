@@ -32,7 +32,7 @@
     "@babel/core": "^7.16.0",
     "@codeceptjs/configure": "^0.7.0",
     "@testing-library/dom": "^8.11.1",
-    "@testing-library/jest-dom": "^5.14.1",
+    "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/react": "^12.1.2",
     "@types/react": "^17.0.37",
     "@types/react-highlight-words": "^0.16.3",
