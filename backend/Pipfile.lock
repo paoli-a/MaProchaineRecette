@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "adb9892903da67caaf7a25c3f31401b68dc1155b136e5a562a46b6d5c56274c6"
+            "sha256": "10b545e63de0af32f03eba89afe84898c31a5ed82d73ff142a671b85a7b0e135"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -403,7 +403,7 @@
                 "sha256:4987c65554f7a2dbf30c18fd48778ef124af6fab771a377103da0585e2336ece",
                 "sha256:c4fdf4019605b6e5423637e01bc9fe4daef873709a7973e195ceba0a62bbc844"
             ],
-            "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4' and python_version < '4'",
+            "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4' and python_full_version < '4.0.0'",
             "version": "==1.26.7"
         }
     },
@@ -527,11 +527,11 @@
         },
         "faker": {
             "hashes": [
-                "sha256:3c997b505627e63eb54e7ec268d0669bc5b6b98c1822f632d2784d91664d5f11",
-                "sha256:76ad74cebe727affa1c108e17fc1d2c0be8f498ff71b25f464fb8241301fe6f2"
+                "sha256:049185d17ff95c4311557da6b72416c18732e5977dcfd116a323b6d620db5dca",
+                "sha256:7227703a3db36ed8241108547544445f45aa45db2f3f63e885cb9b5699383f0e"
             ],
             "markers": "python_version >= '3.6'",
-            "version": "==9.8.3"
+            "version": "==9.9.0"
         },
         "filelock": {
             "hashes": [
@@ -566,11 +566,11 @@
         },
         "flake8-bugbear": {
             "hashes": [
-                "sha256:4f7eaa6f05b7d7ea4cbbde93f7bcdc5438e79320fa1ec420d860c181af38b769",
-                "sha256:db9a09893a6c649a197f5350755100bb1dd84f110e60cf532fdfa07e41808ab2"
+                "sha256:179e41ddae5de5e3c20d1f61736feeb234e70958fbb56ab3c28a67739c8e9a82",
+                "sha256:8b04cb2fafc6a78e1a9d873bd3988e4282f7959bb6b0d7c1ae648ec09b937a7b"
             ],
             "index": "pypi",
-            "version": "==21.9.2"
+            "version": "==21.11.29"
         },
         "flake8-comprehensions": {
             "hashes": [
