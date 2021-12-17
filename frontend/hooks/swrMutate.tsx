@@ -8,13 +8,10 @@ import {
   isCorrectArrayResponse,
 } from "../constants/typeGuards";
 import {
-  CatalogIngredient,
   CatalogIngredientReceived,
   CatalogIngredientToSend,
-  CatalogRecipe,
   CatalogRecipeReceived,
   CatalogRecipeToSend,
-  FridgeIngredient,
   FridgeIngredientReceived,
 } from "../constants/types";
 
@@ -76,7 +73,10 @@ function useAddCatalogIngredient({
       }
       void mutate(
         key,
-        (current: CatalogIngredient[]) => [...current, input.ingredientToSend],
+        (current: CatalogIngredientReceived[]) => [
+          ...current,
+          input.ingredientToSend,
+        ],
         false
       );
       return () => mutate(key, oldData, false);
@@ -150,14 +150,14 @@ function useAddCatalogRecipe({
       }
       void mutate(
         key,
-        (current: CatalogRecipe[]) => [...current, input.recipeToSend],
+        (current: CatalogRecipeReceived[]) => [...current, input.recipeToSend],
         false
       );
       return () => mutate(key, oldData, false);
     },
     onSuccess({ data }: { data: unknown }) {
-      void mutate(key, (current: CatalogRecipe[]) =>
-        current.map((recipe: CatalogRecipe) => {
+      void mutate(key, (current: CatalogRecipeReceived[]) =>
+        current.map((recipe: CatalogRecipeReceived) => {
           if (recipe.id) {
             return recipe;
           } else if (isCatalogRecipeResponse(data)) {
@@ -166,7 +166,7 @@ function useAddCatalogRecipe({
             throw new Error(
               `The data sent back by the backend ${JSON.stringify(
                 data
-              )} is not of type CatalogRecipe`
+              )} is not of type CatalogRecipeReceived`
             );
           }
         })
@@ -246,13 +246,17 @@ function useUpdateCatalogRecipe({
       }
       void mutate(
         key,
-        (current: CatalogRecipe[]) => {
+        (current: CatalogRecipeReceived[]) => {
           const updatedRecipes = produce(
             current,
-            (draftState: CatalogRecipe[]) => {
-              const index = draftState.findIndex((recipe: CatalogRecipe) => {
-                return recipe.id === input.recipeToSend.id;
-              });
+            (draftState: CatalogRecipeReceived[]) => {
+              const index = draftState.findIndex(
+                (recipe: CatalogRecipeReceived) => {
+                  return recipe.id === input.recipeToSend.id;
+                }
+              );
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-ignore
               draftState.splice(index, 1, input.recipeToSend);
             }
           );
@@ -263,8 +267,8 @@ function useUpdateCatalogRecipe({
       return () => mutate(key, oldData, false);
     },
     onSuccess({ data }: { data: unknown }) {
-      void mutate(key, (current: CatalogRecipe[]) =>
-        current.map((recipe: CatalogRecipe) => {
+      void mutate(key, (current: CatalogRecipeReceived[]) =>
+        current.map((recipe: CatalogRecipeReceived) => {
           if (isCatalogRecipeResponse(data)) {
             if (recipe.id === data.data.id) return data.data;
             else return recipe;
@@ -272,7 +276,7 @@ function useUpdateCatalogRecipe({
             throw new Error(
               `The data sent back by the backend ${JSON.stringify(
                 data
-              )} is not of type CatalogRecipe`
+              )} is not of type CatalogRecipeReceived`
             );
           }
         })
@@ -287,15 +291,15 @@ function useUpdateCatalogRecipe({
 }
 
 type DeleteCatalogIngredientArgs = {
-  ingredientToSend: CatalogIngredientToSend;
+  ingredientToDeleteName: string;
 };
 
 async function deleteCatalogIngredient({
-  ingredientToSend,
+  ingredientToDeleteName,
 }: DeleteCatalogIngredientArgs) {
   try {
     const response = await axios.delete(
-      `${API_PATHS.catalogIngredients}${ingredientToSend.name}/`
+      `${API_PATHS.catalogIngredients}${ingredientToDeleteName}/`
     );
     return response;
   } catch (error) {
@@ -343,13 +347,13 @@ function useDeleteCatalogIngredient({
       }
       void mutate(
         key,
-        (current: CatalogIngredient[]) => {
+        (current: CatalogIngredientReceived[]) => {
           const ingredientsListUpdated = produce(
             current,
-            (draftState: CatalogIngredient[]) => {
+            (draftState: CatalogIngredientReceived[]) => {
               const index = draftState.findIndex(
-                (ingredient: CatalogIngredient) => {
-                  return ingredient.name === input.ingredientToSend.name;
+                (ingredient: CatalogIngredientReceived) => {
+                  return ingredient.name === input.ingredientToDeleteName;
                 }
               );
               draftState.splice(index, 1);
@@ -367,24 +371,26 @@ function useDeleteCatalogIngredient({
     },
     onFailure({ rollback, input }) {
       if (rollback) rollback();
-      if (handleFailure) handleFailure(input.ingredientToSend.name);
+      if (handleFailure) handleFailure(input.ingredientToDeleteName);
     },
   });
 }
 
 type DeleteCatalogRecipeArgs = {
-  recipeToSend: CatalogRecipeToSend;
+  recipeToDeleteID: string;
 };
 
-async function deleteCatalogRecipe({ recipeToSend }: DeleteCatalogRecipeArgs) {
-  if (recipeToSend.id === undefined) {
+async function deleteCatalogRecipe({
+  recipeToDeleteID,
+}: DeleteCatalogRecipeArgs) {
+  if (recipeToDeleteID === undefined) {
     throw new Error(
       "You're trying to delete a catalog recipe with an undefined id"
     );
   }
   try {
     const response = await axios.delete(
-      `${API_PATHS.catalogRecipes}${recipeToSend.id}/`
+      `${API_PATHS.catalogRecipes}${recipeToDeleteID}/`
     );
     return response;
   } catch (error) {
@@ -437,13 +443,15 @@ function useDeleteCatalogRecipe({
       }
       void mutate(
         key,
-        (current: CatalogRecipe[]) => {
+        (current: CatalogRecipeReceived[]) => {
           const updatedRecipes = produce(
             current,
-            (draftState: CatalogRecipe[]) => {
-              const index = draftState.findIndex((recipe: CatalogRecipe) => {
-                return recipe.id === input.recipeToSend.id;
-              });
+            (draftState: CatalogRecipeReceived[]) => {
+              const index = draftState.findIndex(
+                (recipe: CatalogRecipeReceived) => {
+                  return recipe.id === input.recipeToDeleteID;
+                }
+              );
               draftState.splice(index, 1);
             }
           );
@@ -454,13 +462,13 @@ function useDeleteCatalogRecipe({
       return () => mutate(key, oldData, false);
     },
     onSuccess() {
-      void mutate(key, (current: CatalogRecipe[]) => current);
+      void mutate(key, (current: CatalogRecipeReceived[]) => current);
       if (handleSuccess) handleSuccess();
     },
     onFailure({ rollback, input }) {
       if (rollback) rollback();
       if (handleFailure)
-        handleFailure(input.recipeToSend.id ? input.recipeToSend.id : "");
+        handleFailure(input.recipeToDeleteID ? input.recipeToDeleteID : "");
     },
   });
 }
@@ -527,12 +535,12 @@ function useDeleteFridgeIngredient({
       }
       void mutate(
         key,
-        (current: FridgeIngredient[]) => {
+        (current: FridgeIngredientReceived[]) => {
           const fridgeIngredientsUpdated = produce(
             current,
-            (draftState: FridgeIngredient[]) => {
+            (draftState: FridgeIngredientReceived[]) => {
               const index = draftState.findIndex(
-                (ingredient: FridgeIngredient) => {
+                (ingredient: FridgeIngredientReceived) => {
                   return ingredient.id === input.ingredientToDeleteID;
                 }
               );
@@ -546,7 +554,7 @@ function useDeleteFridgeIngredient({
       return () => mutate(key, oldData, false);
     },
     onSuccess() {
-      void mutate(key, (current: FridgeIngredient[]) => current);
+      void mutate(key, (current: FridgeIngredientReceived[]) => current);
       if (handleSuccess) handleSuccess();
     },
     onFailure({ rollback, input }) {

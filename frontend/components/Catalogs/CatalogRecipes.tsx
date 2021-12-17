@@ -54,11 +54,17 @@ function CatalogRecipes() {
   });
 
   const handleSupprClick = (id?: string) => {
-    const index = catalogRecipes.findIndex((recipe: CatalogRecipeToSend) => {
+    const index = catalogRecipes.findIndex((recipe: CatalogRecipe) => {
       return recipe.id === id;
     });
-    const recipeToSend = catalogRecipes[index];
-    void deleteCatalogRecipe({ recipeToSend });
+    const recipeToDelete = catalogRecipes[index];
+    if (recipeToDelete.id) {
+      void deleteCatalogRecipe({ recipeToDeleteID: recipeToDelete.id });
+    } else
+      setDeleteError({
+        id: undefined,
+        message: "La suppression a échoué. Veuillez réessayer ultérieurement.",
+      });
   };
 
   const handleEditClick = (id: string) => {

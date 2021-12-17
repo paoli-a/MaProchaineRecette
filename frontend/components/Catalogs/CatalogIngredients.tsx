@@ -66,8 +66,10 @@ function CatalogIngredients() {
         return ingredient.name === name;
       }
     );
-    const ingredientToSend = catalogIngredients[index];
-    void deleteCatalogIngredient({ ingredientToSend });
+    const ingredientToDelete = catalogIngredients[index];
+    void deleteCatalogIngredient({
+      ingredientToDeleteName: ingredientToDelete.name,
+    });
   };
 
   const handleChangeSearch = (event: ChangeEvent<HTMLInputElement>) => {
