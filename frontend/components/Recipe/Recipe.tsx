@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { CatalogRecipeType, RecipeType } from "../../constants/types";
+import { CatalogRecipe, FridgeRecipe } from "../../constants/types";
 import IngredientsList from "./IngredientsList";
 
 type RecipeProps<T> = {
@@ -35,7 +35,7 @@ type RecipeProps<T> = {
  *
  * @component
  */
-function Recipe<T extends CatalogRecipeType | RecipeType>({
+function Recipe<T extends CatalogRecipe | FridgeRecipe>({
   recipe,
   optionalButton,
   error,

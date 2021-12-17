@@ -4,17 +4,17 @@ import Highlighter from "react-highlight-words";
 import * as stopword from "stopword";
 import { mutate } from "swr";
 import { API_PATHS } from "../../constants/paths";
-import { RecipeType } from "../../constants/types";
+import { FridgeRecipe } from "../../constants/types";
 import { useFridgeRecipes } from "../../hooks/swrFetch";
 import Recipe from "../Recipe/Recipe";
 import RecipesToolbar from "../Recipe/RecipesToolbar";
 
-type ConsumeErrorType = {
+type ConsumeError = {
   id?: string;
   value?: string;
 };
 
-type CategoriesPossiblesType = {
+type CategoriesPossibles = {
   [key: string]: number;
 };
 
@@ -28,11 +28,11 @@ type CategoriesPossiblesType = {
 function FridgeRecipes() {
   const [categories, setCategories] = useState<string[]>([]);
   const [searchResults, setSearchResults] = useState("");
-  const [consumeError, setConsumeError] = useState<ConsumeErrorType>({});
+  const [consumeError, setConsumeError] = useState<ConsumeError>({});
   const { fridgeRecipes } = useFridgeRecipes();
 
   const categoriesPossibles = () => {
-    const categories: CategoriesPossiblesType | Record<string, never> = {};
+    const categories: CategoriesPossibles | Record<string, never> = {};
     for (const recipe of fridgeRecipes) {
       for (const categorie of recipe.categories)
         if (categorie in categories) {
@@ -60,7 +60,7 @@ function FridgeRecipes() {
   }, [searchResults]);
 
   const filteredRecipes = useMemo(() => {
-    const filterUtilCategories = function (recipe: RecipeType) {
+    const filterUtilCategories = function (recipe: FridgeRecipe) {
       for (const categorie of categories) {
         if (recipe.categories.includes(categorie)) {
           return true;
@@ -69,7 +69,7 @@ function FridgeRecipes() {
       return false;
     };
 
-    const filterRecipesCategories = (recipesToFilter: RecipeType[]) => {
+    const filterRecipesCategories = (recipesToFilter: FridgeRecipe[]) => {
       if (categories.length === 0) {
         return recipesToFilter;
       } else {
@@ -77,7 +77,7 @@ function FridgeRecipes() {
       }
     };
 
-    const lowerResults = (recipe: RecipeType) => {
+    const lowerResults = (recipe: FridgeRecipe) => {
       const ingredientsListLower = recipe.ingredients.map((ingredientInfos) => {
         return ingredientInfos.ingredient.toLowerCase();
       });
@@ -89,7 +89,7 @@ function FridgeRecipes() {
       return resultsLower;
     };
 
-    const filterUtilSearch = function (recipe: RecipeType) {
+    const filterUtilSearch = function (recipe: FridgeRecipe) {
       const { recipeTitle, description, ingredientsList } = lowerResults(
         recipe
       );
@@ -109,7 +109,7 @@ function FridgeRecipes() {
       return false;
     };
 
-    const filterRecipesSearch = function (recipesToFilter: RecipeType[]) {
+    const filterRecipesSearch = function (recipesToFilter: FridgeRecipe[]) {
       if (searchResults.length === 0) {
         return recipesToFilter;
       } else {
@@ -146,7 +146,7 @@ function FridgeRecipes() {
       });
   };
 
-  const displayedRecipes = filteredRecipes.map((myRecipe: RecipeType) => {
+  const displayedRecipes = filteredRecipes.map((myRecipe: FridgeRecipe) => {
     const consumeButton = (
       <button
         className="button fridge-recipes__consume-button"

@@ -1,6 +1,6 @@
 import { fireEvent, render } from "@testing-library/react";
 import React from "react";
-import { ElementType } from "../../constants/types";
+import { SuggestionElement } from "../../constants/types";
 import InputSuggestions from "./InputSuggestions";
 
 let catalogIngredients: { name: string }[];
@@ -33,7 +33,7 @@ it(`provides the right proposals when a letter is entered in the input of the in
       <InputSuggestions
         id="ingredients"
         elements={catalogIngredients}
-        getElementText={(ingredient: ElementType) => ingredient.name}
+        getElementText={(ingredient: SuggestionElement) => ingredient.name}
         onChangeValue={handleChange}
         value={value}
       />

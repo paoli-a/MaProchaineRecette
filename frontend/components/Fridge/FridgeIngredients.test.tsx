@@ -47,7 +47,9 @@ describe("correct display of an ingredient", () => {
     const { getByText } = await renderIngredients();
     const ingredient2 = getByText("Mascarpone", { exact: false });
     const parentListItem = ingredient2.parentElement!;
-    const expectedDateContent = fridgeIngredients[1].expiration_date.toLocaleDateString();
+    const expectedDateContent = new Date(
+      fridgeIngredients[1].expiration_date
+    ).toLocaleDateString();
     const expectedDate = within(parentListItem).getByText(expectedDateContent);
     expect(expectedDate).toBeInTheDocument();
   });

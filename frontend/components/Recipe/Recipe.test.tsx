@@ -1,10 +1,10 @@
 import { render } from "@testing-library/react";
 import React from "react";
-import { RecipeType } from "../../constants/types";
+import { FridgeRecipe } from "../../constants/types";
 import Recipe from "./Recipe";
 
-let recipe: RecipeType;
-let recipeNotUnsure: RecipeType;
+let recipe: FridgeRecipe;
+let recipeNotUnsure: FridgeRecipe;
 
 beforeEach(() => {
   recipe = {

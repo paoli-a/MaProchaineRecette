@@ -1,6 +1,6 @@
 import React, { ChangeEvent, useState } from "react";
 import { useForm } from "react-hook-form";
-import { IngredientType } from "../../constants/types";
+import { CatalogIngredient } from "../../constants/types";
 import { useCatalogIngredients } from "../../hooks/swrFetch";
 import {
   useAddCatalogIngredient,
@@ -8,7 +8,7 @@ import {
 } from "../../hooks/swrMutate";
 import useFilterSearch from "../useFilterSearch";
 
-type DeleteErrorType = {
+type DeleteError = {
   name?: string;
   message?: string;
 };
@@ -33,7 +33,7 @@ function CatalogIngredients() {
     setError,
   } = useForm<FormInputs>();
   const [searchResults, setSearchResults] = useState("");
-  const [deleteError, setDeleteError] = useState<DeleteErrorType>({});
+  const [deleteError, setDeleteError] = useState<DeleteError>({});
   const { catalogIngredients } = useCatalogIngredients();
   const [addCatalogIngredient] = useAddCatalogIngredient({
     onSuccess: () => reset(),
@@ -61,9 +61,11 @@ function CatalogIngredients() {
   };
 
   const handleSupprClick = (name: string) => {
-    const index = catalogIngredients.findIndex((ingredient: IngredientType) => {
-      return ingredient.name === name;
-    });
+    const index = catalogIngredients.findIndex(
+      (ingredient: CatalogIngredient) => {
+        return ingredient.name === name;
+      }
+    );
     const ingredientToSend = catalogIngredients[index];
     void deleteCatalogIngredient({ ingredientToSend });
   };
@@ -75,11 +77,11 @@ function CatalogIngredients() {
   const filteredIngredients = useFilterSearch({
     elementsToFilter: catalogIngredients,
     searchResults: searchResults,
-    getSearchElement: (ingredient: IngredientType) => ingredient.name,
+    getSearchElement: (ingredient: CatalogIngredient) => ingredient.name,
   });
 
   const ingredientsToDisplay = filteredIngredients.map(
-    (ingredient: IngredientType) => {
+    (ingredient: CatalogIngredient) => {
       return (
         <React.Fragment key={ingredient.name}>
           <li className="catalog-ingredients__ingredient" key={ingredient.name}>

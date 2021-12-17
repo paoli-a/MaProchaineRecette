@@ -3,23 +3,23 @@ import React, { useState } from "react";
 import { useSWRConfig } from "swr";
 import { API_PATHS } from "../../constants/paths";
 import {
-  FridgeIngredientType,
-  SubmitFridgeIngredientDataType,
+  FridgeIngredient,
+  FridgeIngredientToSend,
 } from "../../constants/types";
 import { useFridgeIngredients } from "../../hooks/swrFetch";
 import { useDeleteFridgeIngredient } from "../../hooks/swrMutate";
 import FridgeIngredientsForm from "./FridgeIngredientsForm";
 
-type DeleteErrorType = {
+type DeleteError = {
   id?: string;
   message?: string;
 };
 
-type NewIngredientType = {
-  ingredient: string;
-  expiration_date: string;
-  amount: string;
+type SubmitFridgeIngredient = {
+  ingredientName: string;
+  ingredientAmount: string;
   unit: string;
+  expirationDate: string;
 };
 
 /**
@@ -32,12 +32,12 @@ type NewIngredientType = {
 function FridgeIngredients() {
   const { mutate } = useSWRConfig();
   const [postError, setPostError] = useState("");
-  const [deleteError, setDeleteError] = useState<DeleteErrorType>({});
+  const [deleteError, setDeleteError] = useState<DeleteError>({});
   const { fridgeIngredients } = useFridgeIngredients();
   const [
     ingredientToEdit,
     setIngredientToEdit,
-  ] = useState<FridgeIngredientType | null>(null);
+  ] = useState<FridgeIngredient | null>(null);
   const [deleteFridgeIngredient] = useDeleteFridgeIngredient({
     onSuccess: () => {
       void mutate(API_PATHS.fridgeIngredients);
@@ -53,16 +53,18 @@ function FridgeIngredients() {
 
   const handleSupprClick = (id: string) => {
     const index = fridgeIngredients.findIndex(
-      (ingredient: FridgeIngredientType) => {
+      (ingredient: FridgeIngredient) => {
         return ingredient.id === id;
       }
     );
-    const ingredientToSend = fridgeIngredients[index];
-    void deleteFridgeIngredient({ ingredientToSend });
+    const ingredientToDelete = fridgeIngredients[index];
+    void deleteFridgeIngredient({
+      ingredientToDeleteID: ingredientToDelete.id,
+    });
   };
 
   const handleEditClick = (id: string) => {
-    fridgeIngredients.forEach((ingredientObject: FridgeIngredientType) => {
+    fridgeIngredients.forEach((ingredientObject: FridgeIngredient) => {
       for (const key in ingredientObject) {
         if (key === "id" && ingredientObject[key] === id) {
           setIngredientToEdit(ingredientObject);
@@ -71,7 +73,9 @@ function FridgeIngredients() {
     });
   };
 
-  const updateFridgeIngredients = async (newIngredient: NewIngredientType) => {
+  const updateFridgeIngredients = async (
+    newIngredient: FridgeIngredientToSend
+  ) => {
     if (ingredientToEdit) {
       await axios.put(
         `${API_PATHS.fridgeIngredients}${ingredientToEdit.id}`,
@@ -82,7 +86,7 @@ function FridgeIngredients() {
     }
   };
 
-  const handleSubmit = async (data: SubmitFridgeIngredientDataType) => {
+  const handleSubmit = async (data: SubmitFridgeIngredient) => {
     const newIngredient = {
       ingredient: data.ingredientName,
       expiration_date: data.expirationDate,
@@ -106,7 +110,7 @@ function FridgeIngredients() {
   };
 
   const ingredientElement = fridgeIngredients.map(
-    (ingredient: FridgeIngredientType) => {
+    (ingredient: FridgeIngredient) => {
       const formatedDate = ingredient.expirationDate.toLocaleDateString();
       return (
         <React.Fragment key={ingredient.id}>
@@ -178,3 +182,4 @@ function FridgeIngredients() {
 }
 
 export default FridgeIngredients;
+export type { SubmitFridgeIngredient };
