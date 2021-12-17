@@ -15,6 +15,9 @@
 /docs
 /.cache
 
+# typescript
+tsconfig.tsbuildinfo
+
 # next.js
 /.next/
 /out/

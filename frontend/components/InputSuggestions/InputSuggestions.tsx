@@ -1,16 +1,16 @@
 import React, { ChangeEvent, MutableRefObject, useState } from "react";
-import { ElementType } from "../../constants/types";
+import { SuggestionElement } from "../../constants/types";
 
 type InputSuggestionsProps = {
   /**
    * Il s'agit ici des objets contenant les textes qui seront suggérés.
    */
-  elements: ElementType[];
+  elements: SuggestionElement[];
   id: string;
   /**
    * Permet de récupérer le texte à suggérer à partir de l'élément
    */
-  getElementText: (element: ElementType) => string;
+  getElementText: (element: SuggestionElement) => string;
   /**
    * Donne la valeur tapée par l'utilisateur au composant parent pour
    * qu'il puisse controler la value de l'input.
@@ -52,7 +52,9 @@ const InputSuggestions = React.forwardRef<
   },
   ref
 ) {
-  const [elementsToPropose, setElementsToPropose] = useState<ElementType[]>([]);
+  const [elementsToPropose, setElementsToPropose] = useState<
+    SuggestionElement[]
+  >([]);
 
   const handleElement = (event: ChangeEvent<HTMLInputElement>) => {
     if (onChangeValue) {

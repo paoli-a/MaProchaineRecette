@@ -2,12 +2,10 @@ import produce from "immer";
 import React, { MouseEvent, useEffect, useState } from "react";
 import { FieldError, useForm } from "react-hook-form";
 import {
-  CatalogRecipeType,
-  ElementType,
-  RecipeDataType,
-  RecipeIngredientType,
-  RecipeType,
-  SubmitRecipeDataType,
+  CatalogRecipe,
+  FridgeRecipe,
+  RecipeIngredient,
+  SuggestionElement,
 } from "../../constants/types";
 import {
   useCatalogIngredients,
@@ -24,18 +22,29 @@ type FormInputs = {
   [category: string]: any;
 };
 
+type FormSubmit = {
+  recipeTitle: string;
+  recipeTime: string;
+  recipeDescription: string;
+  categories: (string | boolean)[];
+};
+
+interface SubmitRecipe extends FormSubmit {
+  ingredients: RecipeIngredient[];
+}
+
 type RecipesFormProps<T> = {
   /**
    * Cette fonction est exécutée au moment du submit de de la recette,
    * lorsque la validité de tous les éléments entrés a été vérifiée,
    * et permet de les récupérer.
    */
-  onSubmitRecipe: (newData: SubmitRecipeDataType) => void;
+  onSubmitRecipe: (newData: SubmitRecipe) => void;
   recipeToEdit: null | T;
   resetRecipeToEdit?: () => void;
 };
 
-function RecipesForm<T extends RecipeType | CatalogRecipeType>({
+function RecipesForm<T extends FridgeRecipe | CatalogRecipe>({
   onSubmitRecipe,
   recipeToEdit,
   resetRecipeToEdit,
@@ -50,7 +59,7 @@ function RecipesForm<T extends RecipeType | CatalogRecipeType>({
     setValue,
     setFocus,
   } = useForm<FormInputs>();
-  const [ingredients, setIngredients] = useState<RecipeIngredientType[]>([]);
+  const [ingredients, setIngredients] = useState<RecipeIngredient[]>([]);
   const [ingredientName, setIngredientName] = useState("");
   const [ingredientAmount, setIngredientAmount] = useState("");
   const [ingredientUnit, setIngredientUnit] = useState("");
@@ -81,7 +90,7 @@ function RecipesForm<T extends RecipeType | CatalogRecipeType>({
     }
   }, [recipeToEdit, setFocus, categories, setValue]);
 
-  const onSubmitForm = (data: RecipeDataType) => {
+  const onSubmitForm = (data: FormSubmit) => {
     if (ingredients.length === 0) {
       setIngredientError(
         "Au moins un ingrédient doit être présent dans la recette"
@@ -295,7 +304,9 @@ function RecipesForm<T extends RecipeType | CatalogRecipeType>({
               className="form__input"
               elements={catalogIngredients}
               id="ingredient"
-              getElementText={(ingredient: ElementType) => ingredient.name}
+              getElementText={(ingredient: SuggestionElement) =>
+                ingredient.name
+              }
               onChangeValue={(name: string) => setIngredientName(name)}
               value={ingredientName}
               name="ingredient"
@@ -413,3 +424,4 @@ function RecipesForm<T extends RecipeType | CatalogRecipeType>({
 }
 
 export default RecipesForm;
+export type { SubmitRecipe };

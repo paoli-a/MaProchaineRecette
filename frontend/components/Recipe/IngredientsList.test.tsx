@@ -1,9 +1,9 @@
 import { render } from "@testing-library/react";
 import React from "react";
-import { RecipeIngredientType } from "../../constants/types";
+import { RecipeIngredient } from "../../constants/types";
 import IngredientsList from "./IngredientsList";
 
-let ingredients: RecipeIngredientType[];
+let ingredients: RecipeIngredient[];
 let priorityIngredients: string[];
 let unsureIngredients: string[];
 

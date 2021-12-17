@@ -2,16 +2,17 @@ import { Matcher, SelectorMatcherOptions } from "@testing-library/react";
 import axios from "axios";
 import { API_PATHS } from "../constants/paths";
 import {
-  CatalogRecipeType,
-  FridgeIngredientBackendType,
-  IngredientType,
-  RecipeType,
+  CatalogIngredientReceived,
+  CatalogRecipeReceived,
+  FridgeIngredientReceived,
+  FridgeRecipe,
+  FridgeRecipeReceived,
 } from "../constants/types";
 
 jest.mock("axios");
 export const mockedAxios = axios as jest.Mocked<typeof axios>;
 
-export const recipeCrumble: RecipeType = {
+export const recipeCrumble: FridgeRecipe = {
   id: "5",
   categories: ["Dessert"],
   title: "Crumble aux poires",
@@ -126,21 +127,21 @@ export const fridgeIngredients = [
   {
     id: "1",
     ingredient: "Epinards",
-    expiration_date: new Date(2100, 4, 15),
+    expiration_date: "2100-4-15",
     amount: "60",
     unit: "g",
   },
   {
     id: "2",
     ingredient: "Mascarpone",
-    expiration_date: new Date(2100, 4, 15),
+    expiration_date: "2100-4-15",
     amount: "1",
     unit: "kg",
   },
   {
     id: "3",
     ingredient: "Poires",
-    expiration_date: new Date(2100, 3, 13),
+    expiration_date: "2100-3-13",
     amount: "1",
     unit: "kg",
   },
@@ -155,10 +156,10 @@ export const catalogIngredients = [
 ];
 export const catalogCategories = ["Entrée", "Plat", "Dessert", "Gouter"];
 export const units = ["kg", "g", "cl", "pièce(s)"];
-let axiosResponseIngredients: { data: IngredientType[] };
-let axiosResponseRecipes: { data: CatalogRecipeType[] };
-let axiosResponseFridgeRecipes: { data: RecipeType[] };
-let axiosResponseFridgeIngredients: { data: FridgeIngredientBackendType[] };
+let axiosResponseIngredients: { data: CatalogIngredientReceived[] };
+let axiosResponseRecipes: { data: CatalogRecipeReceived[] };
+let axiosResponseFridgeRecipes: { data: FridgeRecipeReceived[] };
+let axiosResponseFridgeIngredients: { data: FridgeIngredientReceived[] };
 let axiosResponseCategories: { data: string[] };
 let axiosResponseUnits: { data: string[] };
 

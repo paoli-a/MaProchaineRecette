@@ -2,10 +2,10 @@ import axios from "axios";
 import type { AppContext, AppProps } from "next/app";
 import { API_PATHS } from "../constants/paths";
 import type {
-  CatalogRecipeType,
-  FridgeIngredientBackendType,
-  IngredientType,
-  RecipeType,
+  CatalogIngredientReceived,
+  CatalogRecipeReceived,
+  FridgeIngredientReceived,
+  FridgeRecipeReceived,
 } from "../constants/types";
 import {
   useCatalogIngredients,
@@ -21,12 +21,12 @@ interface MyAppPros extends AppProps {
   props: {
     firstTime: boolean;
     initialFetchError: string;
-    initialCatalogIngredients: IngredientType[];
-    initialCatalogRecipes: CatalogRecipeType[];
-    initialFridgeIngredients: FridgeIngredientBackendType[];
+    initialCatalogIngredients: CatalogIngredientReceived[];
+    initialCatalogRecipes: CatalogRecipeReceived[];
+    initialFridgeIngredients: FridgeIngredientReceived[];
     initialCatalogCategories: string[];
     initialUnits: string[];
-    initialFridgeRecipes: RecipeType[];
+    initialFridgeRecipes: FridgeRecipeReceived[];
   };
 }
 
@@ -62,20 +62,22 @@ MyApp.getInitialProps = async (context: AppContext) => {
       // TODO: put a type guard here
       return result.data;
     };
-    const initialCatalogIngredients = await get<IngredientType>(
+    const initialCatalogIngredients = await get<CatalogIngredientReceived>(
       API_PATHS.catalogIngredients
     );
-    const initialCatalogRecipes = await get<CatalogRecipeType>(
+    const initialCatalogRecipes = await get<CatalogRecipeReceived>(
       API_PATHS.catalogRecipes
     );
-    const initialFridgeIngredients = await get<FridgeIngredientBackendType>(
+    const initialFridgeIngredients = await get<FridgeIngredientReceived>(
       API_PATHS.fridgeIngredients
     );
     const initialCatalogCategories = await get<string>(
       API_PATHS.catalogCategories
     );
     const initialUnits = await get<string>(API_PATHS.units);
-    const initialFridgeRecipes = await get<RecipeType>(API_PATHS.fridgeRecipes);
+    const initialFridgeRecipes = await get<FridgeRecipeReceived>(
+      API_PATHS.fridgeRecipes
+    );
     return {
       props: {
         firstTime: true,

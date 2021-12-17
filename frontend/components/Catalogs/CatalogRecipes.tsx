@@ -1,11 +1,7 @@
 import React, { ChangeEvent, useState } from "react";
 import { mutate } from "swr";
 import { API_PATHS } from "../../constants/paths";
-import {
-  CatalogRecipeType,
-  RecipeToSendType,
-  SubmitRecipeDataType,
-} from "../../constants/types";
+import { CatalogRecipe, CatalogRecipeToSend } from "../../constants/types";
 import { useCatalogRecipes } from "../../hooks/swrFetch";
 import {
   useAddCatalogRecipe,
@@ -13,10 +9,11 @@ import {
   useUpdateCatalogRecipe,
 } from "../../hooks/swrMutate";
 import Recipe from "../Recipe/Recipe";
+import type { SubmitRecipe } from "../Recipe/RecipesForm";
 import RecipesForm from "../Recipe/RecipesForm";
 import useFilterSearch from "../useFilterSearch";
 
-type DeleteErrorType = {
+type DeleteError = {
   id?: string;
   message?: string;
 };
@@ -30,11 +27,9 @@ type DeleteErrorType = {
  */
 function CatalogRecipes() {
   const [searchResults, setSearchResults] = useState("");
-  const [deleteError, setDeleteError] = useState<DeleteErrorType>({});
+  const [deleteError, setDeleteError] = useState<DeleteError>({});
   const [postError, setPostError] = useState("");
-  const [recipeToEdit, setRecipeToEdit] = useState<null | CatalogRecipeType>(
-    null
-  );
+  const [recipeToEdit, setRecipeToEdit] = useState<null | CatalogRecipe>(null);
   const { catalogRecipes } = useCatalogRecipes();
   const [addCatalogRecipe] = useAddCatalogRecipe({
     onSuccess: () => mutate(API_PATHS.fridgeRecipes),
@@ -59,15 +54,21 @@ function CatalogRecipes() {
   });
 
   const handleSupprClick = (id?: string) => {
-    const index = catalogRecipes.findIndex((recipe: RecipeToSendType) => {
+    const index = catalogRecipes.findIndex((recipe: CatalogRecipe) => {
       return recipe.id === id;
     });
-    const recipeToSend = catalogRecipes[index];
-    void deleteCatalogRecipe({ recipeToSend });
+    const recipeToDelete = catalogRecipes[index];
+    if (recipeToDelete.id) {
+      void deleteCatalogRecipe({ recipeToDeleteID: recipeToDelete.id });
+    } else
+      setDeleteError({
+        id: undefined,
+        message: "La suppression a échoué. Veuillez réessayer ultérieurement.",
+      });
   };
 
   const handleEditClick = (id: string) => {
-    catalogRecipes.forEach((recipeObject: CatalogRecipeType) => {
+    catalogRecipes.forEach((recipeObject: CatalogRecipe) => {
       for (const key in recipeObject) {
         if (key === "id" && recipeObject[key] === id) {
           setRecipeToEdit(recipeObject);
@@ -76,9 +77,9 @@ function CatalogRecipes() {
     });
   };
 
-  const handleSubmit = (data: SubmitRecipeDataType) => {
+  const handleSubmit = (data: SubmitRecipe) => {
     const categories = data.categories.filter(Boolean) as string[];
-    const recipeToSend: RecipeToSendType = {
+    const recipeToSend: CatalogRecipeToSend = {
       categories: categories,
       title: data.recipeTitle,
       ingredients: data.ingredients,
@@ -97,13 +98,13 @@ function CatalogRecipes() {
     setSearchResults(event.target.value);
   };
 
-  const filteredRecipes = useFilterSearch<CatalogRecipeType>({
+  const filteredRecipes = useFilterSearch<CatalogRecipe>({
     elementsToFilter: catalogRecipes,
     searchResults: searchResults,
-    getSearchElement: (recipe: CatalogRecipeType) => recipe.title,
+    getSearchElement: (recipe: CatalogRecipe) => recipe.title,
   });
 
-  const allMyRecipes = filteredRecipes.map((myRecipe: CatalogRecipeType) => {
+  const allMyRecipes = filteredRecipes.map((myRecipe: CatalogRecipe) => {
     const button = (
       <div className="buttons-container">
         <button

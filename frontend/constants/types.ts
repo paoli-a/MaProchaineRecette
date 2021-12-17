@@ -1,75 +1,79 @@
-interface RecipeType extends RecipeToSendType {
-  priority_ingredients: string[];
-  unsure_ingredients: string[];
-}
+type SuggestionElement = { name: string };
 
-type CatalogRecipeType = {
-  id?: string;
-  categories: string[];
-  title: string;
-  ingredients: RecipeIngredientType[];
-  duration: string;
-  description: string;
+type CatalogIngredient = {
+  name: string;
 };
+type CatalogIngredientReceived = CatalogIngredient;
+type CatalogIngredientToSend = CatalogIngredient;
 
-type RecipeToSendType = CatalogRecipeType;
-
-type RecipeIngredientType = {
+type RecipeIngredient = {
   ingredient: string;
   amount: string;
   unit: string;
 };
 
-interface SubmitRecipeDataType extends RecipeDataType {
-  ingredients: RecipeIngredientType[];
-}
-
-type RecipeDataType = {
-  recipeTitle: string;
-  recipeTime: string;
-  recipeDescription: string;
-  categories: (string | boolean)[];
+type CatalogRecipe = {
+  id?: string;
+  categories: string[];
+  title: string;
+  ingredients: RecipeIngredient[];
+  duration: string;
+  description: string;
 };
+type CatalogRecipeReceived = {
+  id: string;
+  title: string;
+  description: string;
+  duration: string;
+  ingredients: RecipeIngredient[];
+  categories: string[];
+};
+type CatalogRecipeToSend = CatalogRecipe;
 
-type FridgeIngredientType = {
+interface FridgeRecipe extends FridgeRecipeToSend {
+  priority_ingredients: string[];
+  unsure_ingredients: string[];
+}
+interface FridgeRecipeReceived extends CatalogRecipeReceived {
+  priority_ingredients: string[];
+  unsure_ingredients: string[];
+}
+type FridgeRecipeToSend = CatalogRecipeToSend;
+
+type FridgeIngredient = {
   id: string;
   name: string;
   expirationDate: Date;
   amount: string;
   unit: string;
 };
-
-type FridgeIngredientBackendType = {
+type FridgeIngredientReceived = {
   id: string;
   ingredient: string;
-  expiration_date: Date;
+  expiration_date: string;
+  amount: string;
+  unit: string;
+};
+type FridgeIngredientToSend = {
+  id?: string;
+  ingredient: string;
+  expiration_date: string;
   amount: string;
   unit: string;
 };
 
-type SubmitFridgeIngredientDataType = {
-  ingredientName: string;
-  ingredientAmount: string;
-  unit: string;
-  expirationDate: string;
-};
-
-type IngredientType = {
-  name: string;
-};
-
-type ElementType = { name: string };
-
 export type {
-  RecipeType,
-  RecipeToSendType,
-  RecipeIngredientType,
-  FridgeIngredientType,
-  IngredientType,
-  SubmitRecipeDataType,
-  RecipeDataType,
-  SubmitFridgeIngredientDataType,
-  FridgeIngredientBackendType,
-  ElementType,
-  CatalogRecipeType,
+  FridgeRecipe,
+  FridgeRecipeReceived,
+  CatalogRecipe,
+  CatalogRecipeReceived,
+  CatalogRecipeToSend,
+  RecipeIngredient,
+  FridgeIngredient,
+  CatalogIngredient,
+  CatalogIngredientReceived,
+  CatalogIngredientToSend,
+  FridgeIngredientToSend,
+  FridgeIngredientReceived,
+  SuggestionElement,
 };
