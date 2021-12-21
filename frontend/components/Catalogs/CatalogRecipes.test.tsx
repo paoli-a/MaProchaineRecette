@@ -1,3 +1,4 @@
+/* eslint-disable testing-library/no-wait-for-side-effects */
 /* eslint-disable @typescript-eslint/unbound-method */
 /* eslint-disable testing-library/no-await-sync-query */
 import {
@@ -27,13 +28,13 @@ afterEach(() => {
 });
 
 const renderCatalog = async (): Promise<RenderResult> => {
-  const app = render(
+  const view = render(
     <SWRConfig value={{ dedupingInterval: 0, provider: () => new Map() }}>
       <CatalogRecipes />
     </SWRConfig>
   );
-  await waitFor(() => app);
-  return app;
+  await waitFor(() => view);
+  return view;
 };
 
 describe("initial display is correct", () => {

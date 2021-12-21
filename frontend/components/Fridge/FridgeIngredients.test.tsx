@@ -1,3 +1,4 @@
+/* eslint-disable testing-library/no-wait-for-side-effects */
 /* eslint-disable @typescript-eslint/unbound-method */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable testing-library/no-await-sync-query */
@@ -27,13 +28,13 @@ afterEach(() => {
 });
 
 const renderIngredients = async (): Promise<RenderResult> => {
-  const app = render(
+  const view = render(
     <SWRConfig value={{ dedupingInterval: 0, provider: () => new Map() }}>
       <FridgeIngredients />
     </SWRConfig>
   );
-  await waitFor(() => app);
-  return app;
+  await waitFor(() => view);
+  return view;
 };
 
 describe("correct display of an ingredient", () => {
