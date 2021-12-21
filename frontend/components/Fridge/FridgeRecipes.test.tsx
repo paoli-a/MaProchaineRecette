@@ -1,3 +1,4 @@
+/* eslint-disable testing-library/no-wait-for-side-effects */
 /* eslint-disable testing-library/no-await-sync-query */
 import {
   fireEvent,
@@ -20,13 +21,13 @@ afterEach(() => {
 });
 
 const renderFridgeRecipes = async (): Promise<RenderResult> => {
-  const app = render(
+  const view = render(
     <SWRConfig value={{ dedupingInterval: 0, provider: () => new Map() }}>
       <FridgeRecipes />
     </SWRConfig>
   );
-  await waitFor(() => app);
-  return app;
+  await waitFor(() => view);
+  return view;
 };
 
 describe("Renders correctly each recipe", () => {
@@ -299,16 +300,14 @@ describe("the search filtration functionality works properly", () => {
 describe("Consuming functionnality", () => {
   it(`displays an error message when clicking on the consume button if the
   modification was not successful on backend side`, async () => {
-    const { getAllByText, getByText } = await renderFridgeRecipes();
+    const { getAllByText, findByText } = await renderFridgeRecipes();
     mockedAxios.post.mockRejectedValue({});
     const consumeButton = getAllByText("Consommer la recette")[0];
     fireEvent.click(consumeButton);
-    await waitFor(() =>
-      expect(
-        getByText(
-          "La recette n'a pas pu être consommée, veuillez réessayer plus tard"
-        )
-      ).toBeInTheDocument()
-    );
+    expect(
+      await findByText(
+        "La recette n'a pas pu être consommée, veuillez réessayer plus tard"
+      )
+    ).toBeInTheDocument();
   });
 });

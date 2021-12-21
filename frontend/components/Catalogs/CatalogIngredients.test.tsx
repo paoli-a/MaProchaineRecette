@@ -20,13 +20,13 @@ afterEach(() => {
 });
 
 const renderCatalog = async (): Promise<RenderResult> => {
-  const app = render(
+  const view = render(
     <SWRConfig value={{ dedupingInterval: 0, provider: () => new Map() }}>
       <CatalogIngredients />
     </SWRConfig>
   );
-  await waitFor(() => app);
-  return app;
+  await waitFor(() => view);
+  return view;
 };
 
 it("removes the correct ingredient when clicking on remove button", async () => {

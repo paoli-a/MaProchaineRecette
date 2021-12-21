@@ -8,6 +8,10 @@
     "react-app/jest",
     "prettier"
   ],
+  "rules": {
+    "testing-library/prefer-screen-queries": "off",
+    "testing-library/no-node-access": "off"
+  },
   "plugins": ["jsx-a11y"],
   "parser": "@typescript-eslint/parser",
   "overrides": [
