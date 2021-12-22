@@ -1,7 +1,7 @@
 import Head from "next/head";
-import { Menu } from "../components/MyNextRecipe";
 import { CatalogRecipes } from "../components/Catalogs";
-import { useCatalogRecipes } from "../hooks/swrFetch";
+import { Menu } from "../components/MyNextRecipe";
+import { useCatalogRecipes } from "../hooks";
 
 /**
  * Cette page affiche le catalogue de recettes possibles.

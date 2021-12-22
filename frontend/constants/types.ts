@@ -5,6 +5,9 @@ type CatalogIngredient = {
 };
 type CatalogIngredientReceived = CatalogIngredient;
 type CatalogIngredientToSend = CatalogIngredient;
+type CatalogIngredientInMemory =
+  | CatalogIngredientReceived
+  | CatalogIngredientToSend;
 
 type RecipeIngredient = {
   ingredient: string;
@@ -29,6 +32,7 @@ type CatalogRecipeReceived = {
   categories: string[];
 };
 type CatalogRecipeToSend = CatalogRecipe;
+type CatalogRecipeInMemory = CatalogRecipeToSend | CatalogRecipeReceived;
 
 interface FridgeRecipe extends FridgeRecipeToSend {
   priority_ingredients: string[];
@@ -41,7 +45,7 @@ interface FridgeRecipeReceived extends CatalogRecipeReceived {
 type FridgeRecipeToSend = CatalogRecipeToSend;
 
 type FridgeIngredient = {
-  id: string;
+  id?: string;
   name: string;
   expirationDate: Date;
   amount: string;
@@ -61,19 +65,25 @@ type FridgeIngredientToSend = {
   amount: string;
   unit: string;
 };
+type FridgeIngredientInMemory =
+  | FridgeIngredientToSend
+  | FridgeIngredientReceived;
 
 export type {
+  SuggestionElement,
+  RecipeIngredient,
   FridgeRecipe,
   FridgeRecipeReceived,
   CatalogRecipe,
   CatalogRecipeReceived,
   CatalogRecipeToSend,
-  RecipeIngredient,
-  FridgeIngredient,
+  CatalogRecipeInMemory,
   CatalogIngredient,
   CatalogIngredientReceived,
   CatalogIngredientToSend,
+  CatalogIngredientInMemory,
+  FridgeIngredient,
   FridgeIngredientToSend,
   FridgeIngredientReceived,
-  SuggestionElement,
+  FridgeIngredientInMemory,
 };

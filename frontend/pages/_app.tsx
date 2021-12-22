@@ -14,7 +14,7 @@ import {
   useFridgeIngredients,
   useFridgeRecipes,
   useUnits,
-} from "../hooks/swrFetch";
+} from "../hooks";
 import "../styles/main.scss";
 
 interface MyAppPros extends AppProps {

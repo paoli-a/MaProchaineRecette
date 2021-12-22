@@ -1,7 +1,7 @@
 import Head from "next/head";
 import { FridgeIngredients, FridgeRecipes } from "../components/Fridge";
 import { Menu } from "../components/MyNextRecipe";
-import { useFridgeIngredients, useFridgeRecipes } from "../hooks/swrFetch";
+import { useFridgeIngredients, useFridgeRecipes } from "../hooks/";
 
 /**
  * Cette page affiche les ingrédients du frigo et les recettes

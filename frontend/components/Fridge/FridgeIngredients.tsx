@@ -6,8 +6,7 @@ import {
   FridgeIngredient,
   FridgeIngredientToSend,
 } from "../../constants/types";
-import { useFridgeIngredients } from "../../hooks/swrFetch";
-import { useDeleteFridgeIngredient } from "../../hooks/swrMutate";
+import { useDeleteFridgeIngredient, useFridgeIngredients } from "../../hooks/";
 import FridgeIngredientsForm from "./FridgeIngredientsForm";
 
 type DeleteError = {
@@ -51,36 +50,34 @@ function FridgeIngredients() {
     },
   });
 
-  const handleSupprClick = (id: string) => {
-    const index = fridgeIngredients.findIndex(
-      (ingredient: FridgeIngredient) => {
-        return ingredient.id === id;
-      }
-    );
-    const ingredientToDelete = fridgeIngredients[index];
-    void deleteFridgeIngredient({
-      ingredientToDeleteID: ingredientToDelete.id,
-    });
+  const handleSupprClick = (ingredient: FridgeIngredient) => {
+    if (ingredient.id) {
+      void deleteFridgeIngredient({
+        ingredientToDeleteID: ingredient.id,
+      });
+    } else
+      setDeleteError({
+        id: undefined,
+        message: "La suppression a échoué. Veuillez réessayer ultérieurement.",
+      });
   };
 
-  const handleEditClick = (id: string) => {
-    fridgeIngredients.forEach((ingredientObject: FridgeIngredient) => {
-      for (const key in ingredientObject) {
-        if (key === "id" && ingredientObject[key] === id) {
-          setIngredientToEdit(ingredientObject);
-        }
-      }
-    });
+  const handleEditClick = (ingredient: FridgeIngredient) => {
+    setIngredientToEdit(ingredient);
   };
 
   const updateFridgeIngredients = async (
     newIngredient: FridgeIngredientToSend
   ) => {
     if (ingredientToEdit) {
-      await axios.put(
-        `${API_PATHS.fridgeIngredients}${ingredientToEdit.id}`,
-        newIngredient
-      );
+      if (ingredientToEdit.id) {
+        await axios.put(
+          `${API_PATHS.fridgeIngredients}${ingredientToEdit.id}`,
+          newIngredient
+        );
+      } else {
+        setPostError("La modification de l'ingrédient a échoué.");
+      }
     } else {
       await axios.post(API_PATHS.fridgeIngredients, newIngredient);
     }
@@ -138,7 +135,7 @@ function FridgeIngredients() {
             </ul>
             <button
               className="button fridge-ingredient-details__edit"
-              onClick={() => handleEditClick(ingredient.id)}
+              onClick={() => handleEditClick(ingredient)}
             >
               <img
                 className="fridge-ingredient-details__edit-img"
@@ -148,7 +145,7 @@ function FridgeIngredients() {
             </button>
             <button
               className="button fridge-ingredient-details__delete"
-              onClick={() => handleSupprClick(ingredient.id)}
+              onClick={() => handleSupprClick(ingredient)}
             >
               <img
                 className="fridge-ingredient-details__delete-img"

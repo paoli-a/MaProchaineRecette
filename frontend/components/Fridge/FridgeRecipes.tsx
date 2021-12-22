@@ -5,7 +5,7 @@ import * as stopword from "stopword";
 import { mutate } from "swr";
 import { API_PATHS } from "../../constants/paths";
 import { FridgeRecipe } from "../../constants/types";
-import { useFridgeRecipes } from "../../hooks/swrFetch";
+import { useFridgeRecipes } from "../../hooks";
 import Recipe from "../Recipe/Recipe";
 import RecipesToolbar from "../Recipe/RecipesToolbar";
 
