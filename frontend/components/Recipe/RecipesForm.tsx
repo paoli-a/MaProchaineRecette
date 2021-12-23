@@ -7,11 +7,7 @@ import {
   RecipeIngredient,
   SuggestionElement,
 } from "../../constants/types";
-import {
-  useCatalogIngredients,
-  useCategories,
-  useUnits,
-} from "../../hooks/swrFetch";
+import { useCatalogIngredients, useCategories, useUnits } from "../../hooks";
 import InputSuggestions from "../InputSuggestions/InputSuggestions";
 
 type FormInputs = {

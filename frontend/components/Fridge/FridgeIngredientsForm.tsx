@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { FridgeIngredient, SuggestionElement } from "../../constants/types";
-import { useCatalogIngredients, useUnits } from "../../hooks/swrFetch";
+import { useCatalogIngredients, useUnits } from "../../hooks";
 import InputSuggestions from "../InputSuggestions/InputSuggestions";
 import type { SubmitFridgeIngredient } from "./FridgeIngredients";
 

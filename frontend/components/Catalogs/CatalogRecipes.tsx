@@ -2,12 +2,12 @@ import React, { ChangeEvent, useState } from "react";
 import { mutate } from "swr";
 import { API_PATHS } from "../../constants/paths";
 import { CatalogRecipe, CatalogRecipeToSend } from "../../constants/types";
-import { useCatalogRecipes } from "../../hooks/swrFetch";
 import {
   useAddCatalogRecipe,
+  useCatalogRecipes,
   useDeleteCatalogRecipe,
   useUpdateCatalogRecipe,
-} from "../../hooks/swrMutate";
+} from "../../hooks/";
 import Recipe from "../Recipe/Recipe";
 import type { SubmitRecipe } from "../Recipe/RecipesForm";
 import RecipesForm from "../Recipe/RecipesForm";

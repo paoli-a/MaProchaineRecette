@@ -1,11 +1,11 @@
 import React, { ChangeEvent, useState } from "react";
 import { useForm } from "react-hook-form";
 import { CatalogIngredient } from "../../constants/types";
-import { useCatalogIngredients } from "../../hooks/swrFetch";
 import {
   useAddCatalogIngredient,
+  useCatalogIngredients,
   useDeleteCatalogIngredient,
-} from "../../hooks/swrMutate";
+} from "../../hooks/";
 import useFilterSearch from "../useFilterSearch";
 
 type DeleteError = {
