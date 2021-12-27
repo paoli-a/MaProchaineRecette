@@ -150,11 +150,11 @@ Scenario(
 
 Scenario(
   "Consume correctly fridge ingredients when clicking on the consume button of a recipe",
-  ({ I }) => {
+  async ({ I }) => {
     I.amOnPage("/");
     I.see("Marinade");
     I.click("Consommer la recette");
-    within(".fridge-ingredients__list", () => {
+    await within(".fridge-ingredients__list", () => {
       I.see("saumon fumé");
       I.see("200");
       I.see("g");
@@ -166,3 +166,5 @@ Scenario(
     });
   }
 );
+
+export {};

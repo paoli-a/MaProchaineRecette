@@ -27,14 +27,14 @@ Scenario("See existing fridge ingredient", ({ I }) => {
   I.see("citron vert");
 });
 
-Scenario("Add new fridge ingredient", ({ I }) => {
+Scenario("Add new fridge ingredient", async ({ I }) => {
   I.amOnPage("/");
   I.fillField("Nom de l'ingrédient :", "herbes fraiches");
   I.fillField("Quantité :", "1");
   I.selectOption("Unité", "pièce(s)");
   I.fillField("Date de péremption :", "10102030");
   I.click("Ajouter");
-  within(".fridge-ingredients__list", () => {
+  await within(".fridge-ingredients__list", () => {
     I.see("échalotte");
     I.see("herbes fraiches");
   });
@@ -56,7 +56,7 @@ Scenario("Remove fridge ingredient", ({ I }) => {
 Scenario(
   `Add new fridge ingredient, and navigate between tabs : the ingredient is
 still there`,
-  ({ I }) => {
+  async ({ I }) => {
     I.amOnPage("/");
     I.fillField("Nom de l'ingrédient :", "herbes fraiches");
     I.fillField("Quantité :", "1");
@@ -65,7 +65,7 @@ still there`,
     I.click("Ajouter");
     I.click("Catalogue des recettes");
     I.click("Ma prochaine recette");
-    within(".fridge-ingredients__list", () => {
+    await within(".fridge-ingredients__list", () => {
       I.see("échalotte");
       I.see("herbes fraiches");
     });
@@ -74,7 +74,7 @@ still there`,
   }
 );
 
-Scenario("Edit existing fridge ingredient", ({ I }) => {
+Scenario("Edit existing fridge ingredient", async ({ I }) => {
   I.amOnPage("/");
   I.click(
     locate("img")
@@ -90,7 +90,7 @@ Scenario("Edit existing fridge ingredient", ({ I }) => {
   I.selectOption("Unité", "g");
   I.fillField("Date de péremption :", "10102033");
   I.click("Modifier");
-  within(".fridge-ingredients__list", () => {
+  await within(".fridge-ingredients__list", () => {
     I.see("citron vert");
     I.see("6");
     I.see("g");
@@ -98,3 +98,5 @@ Scenario("Edit existing fridge ingredient", ({ I }) => {
     I.see("1");
   });
 });
+
+export {};

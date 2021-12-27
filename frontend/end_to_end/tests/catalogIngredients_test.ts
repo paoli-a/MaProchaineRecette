@@ -10,12 +10,12 @@ Scenario("See existing ingredient", ({ I }) => {
   I.see("Carottes");
 });
 
-Scenario("Add new ingredient", ({ I }) => {
+Scenario("Add new ingredient", async ({ I }) => {
   I.amOnPage("/");
   I.click("Catalogue des ingrédients");
   I.fillField("Nom de l'ingrédient à ajouter :", "Navets");
   I.click("Envoyer");
-  within(".catalog-ingredients", () => {
+  await within(".catalog-ingredients", () => {
     I.see("Carottes");
     I.see("Navets");
   });
@@ -32,7 +32,7 @@ Scenario("Remove ingredient", ({ I }) => {
 Scenario(
   `Add new ingredient, and navigate between tabs : the ingredient is
 still there`,
-  ({ I }) => {
+  async ({ I }) => {
     I.amOnPage("/");
     I.click("Catalogue des ingrédients");
     I.fillField("Nom de l'ingrédient à ajouter :", "Navets");
@@ -40,7 +40,7 @@ still there`,
     I.click("Ma prochaine recette");
     I.click("Catalogue des recettes");
     I.click("Catalogue des ingrédients");
-    within(".catalog-ingredients", () => {
+    await within(".catalog-ingredients", () => {
       I.see("Carottes");
       I.see("Navets");
     });
@@ -81,3 +81,5 @@ suggestions when an ingredient name is being entered in CatalogRecipes`,
     I.click("X");
   }
 ).retry(2);
+
+export {};

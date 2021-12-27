@@ -1,13 +1,14 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
+require("ts-node/register");
 const { setHeadlessWhen } = require("@codeceptjs/configure");
 
 setHeadlessWhen(process.env.CI);
 
-var server = require("./end_to_end/end_to_end_server");
+var server = require("./config/end_to_end_server");
 
 exports.config = {
-  tests: "./end_to_end/*_test.js",
-  output: "./end_to_end/output",
+  tests: "./tests/*_test.ts",
+  output: "./output",
   helpers: {
     Playwright: {
       url: "http://localhost:3502",
@@ -30,32 +31,32 @@ exports.config = {
       factories: {
         catalogIngredient: {
           uri: "/catalogs/ingredients/",
-          factory: "./end_to_end/factories/catalogIngredient",
+          factory: "./factories/catalogIngredient",
           delete: { delete: "/catalogs/ingredients/{id}/" },
           fetchId: (data) => data.name,
         },
         catalogRecipe: {
           uri: "/catalogs/recipes/",
-          factory: "./end_to_end/factories/catalogRecipe",
+          factory: "./factories/catalogRecipe",
           delete: { delete: "/catalogs/recipes/{id}/" },
           fetchId: (data) => data.id,
         },
         fridgeIngredient: {
           uri: "/fridge/ingredients/",
-          factory: "./end_to_end/factories/fridgeIngredient",
+          factory: "./factories/fridgeIngredient",
           delete: { delete: "/fridge/ingredients/{id}/" },
           fetchId: (data) => data.id,
         },
       },
     },
     DjangoHelper: {
-      require: "./end_to_end/django_helper.js",
+      require: "./helpers/django_helper.ts",
       databaseFile: "sqlite:///end_to_end_db.sqlite3",
       backendPath: "../backend/maprochainerecette",
     },
   },
   include: {
-    I: "./steps_file.js",
+    I: "./config/steps_file.js",
   },
   bootstrap: server.start,
   teardown: server.stop,
