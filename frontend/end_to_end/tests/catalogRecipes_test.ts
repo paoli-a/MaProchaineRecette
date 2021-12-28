@@ -59,7 +59,7 @@ Scenario("See existing recipe", ({ I }) => {
   I.see("Marinade de saumon fumé");
 });
 
-Scenario("Add new recipe", ({ I }) => {
+Scenario("Add new recipe", async ({ I }) => {
   I.amOnPage("/");
   I.click("Catalogue des recettes");
   I.fillField("Titre de la recette :", "Salade légère");
@@ -74,10 +74,10 @@ Scenario("Add new recipe", ({ I }) => {
   I.selectOption("Unité", "pièce(s)");
   I.click("Ajouter");
   I.fillField("Corps de la recette :", "Mélanger les ingrédients.");
-  within(".form__paragraph", () => {
+  await within(".form__paragraph", () => {
     I.click(".form__submit");
   });
-  within(".display-catalog-recipe", () => {
+  await within(".display-catalog-recipe", () => {
     I.see("Marinade");
     I.see("Salade légère");
   });
@@ -96,7 +96,7 @@ Scenario("Remove recipe", ({ I }) => {
 Scenario(
   `Add new recipe, and navigate between tabs : the recipe is still
 there`,
-  ({ I }) => {
+  async ({ I }) => {
     I.amOnPage("/");
     I.click("Catalogue des recettes");
     I.fillField("Titre de la recette :", "Salade légère");
@@ -111,12 +111,12 @@ there`,
     I.selectOption("Unité", "pièce(s)");
     I.click("Ajouter");
     I.fillField("Corps de la recette :", "Mélanger les ingrédients.");
-    within(".form__paragraph", () => {
+    await within(".form__paragraph", () => {
       I.click(".form__submit");
     });
     I.click("Ma prochaine recette");
     I.click("Catalogue des recettes");
-    within(".display-catalog-recipe", () => {
+    await within(".display-catalog-recipe", () => {
       I.see("Marinade");
       I.see("Salade légère");
     });
@@ -125,7 +125,7 @@ there`,
   }
 );
 
-Scenario("Edit existing catalog recipe", ({ I }) => {
+Scenario("Edit existing catalog recipe", async ({ I }) => {
   I.amOnPage("/");
   I.click("Catalogue des recettes");
   I.click(locate("img").withAttr({ alt: "Modifier" }));
@@ -138,14 +138,16 @@ Scenario("Edit existing catalog recipe", ({ I }) => {
     "Corps de la recette :",
     "Emincez l'échalotte, le saumon et le persil."
   );
-  within(".form__paragraph", () => {
+  await within(".form__paragraph", () => {
     I.click(".form__submit");
   });
   I.click("Modifier");
   I.click("Marinade de saumon express");
-  within(".display-catalog-recipe", () => {
+  await within(".display-catalog-recipe", () => {
     I.see("Marinade de saumon express");
     I.see("ciboulette");
     I.see("Emincez l'échalotte, le saumon et le persil.");
   });
 });
+
+export {};

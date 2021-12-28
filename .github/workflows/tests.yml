@@ -53,7 +53,7 @@ jobs:
         env:
           CI: true
       - name: Run type checking
-        run: yarn type-check
+        run: yarn type-check && yarn type-check:e2e
         working-directory: ./frontend
         env:
           CI: true
