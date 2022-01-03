@@ -1,7 +1,7 @@
 import axios, { AxiosError } from "axios";
 import useSWR from "swr";
 import { API_PATHS } from "../constants/paths";
-import { isCorrectArrayResponse } from "../constants/typeGuards";
+import { isCatalogIngredients } from "../constants/typeGuards";
 import {
   CatalogIngredient,
   CatalogIngredientInMemory,
@@ -18,13 +18,7 @@ function fetcherCatalogIngredients(
   url: string
 ): Promise<CatalogIngredientReceived[]> {
   return axios.get(url).then((res): CatalogIngredientReceived[] => {
-    if (
-      isCorrectArrayResponse(
-        res.data,
-        (element: CatalogIngredientReceived) =>
-          typeof element === "object" && "name" in element
-      )
-    ) {
+    if (isCatalogIngredients(res.data)) {
       return res.data;
     } else {
       return [];

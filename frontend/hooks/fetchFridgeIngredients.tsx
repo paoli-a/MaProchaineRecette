@@ -1,8 +1,12 @@
 import axios, { AxiosError } from "axios";
 import useSWR from "swr";
 import { API_PATHS } from "../constants/paths";
-import { isCorrectArrayResponse } from "../constants/typeGuards";
-import { FridgeIngredient, FridgeIngredientReceived } from "../constants/types";
+import { isFridgeIngredientsResponse } from "../constants/typeGuards";
+import {
+  FridgeIngredient,
+  FridgeIngredientInMemory,
+  FridgeIngredientReceived,
+} from "../constants/types";
 
 type UseFridgeIngredients = {
   fridgeIngredients: FridgeIngredient[];
@@ -14,18 +18,7 @@ function fetcherFridgeIngredients(
   url: string
 ): Promise<FridgeIngredientReceived[]> {
   return axios.get(url).then((res): FridgeIngredientReceived[] => {
-    if (
-      isCorrectArrayResponse(res.data, (element: FridgeIngredientReceived) => {
-        return (
-          typeof element === "object" &&
-          "id" in element &&
-          "ingredient" in element &&
-          "expiration_date" in element &&
-          "amount" in element &&
-          "unit" in element
-        );
-      })
-    ) {
+    if (isFridgeIngredientsResponse(res.data)) {
       return res.data;
     } else {
       return [];
@@ -36,7 +29,7 @@ function fetcherFridgeIngredients(
 function useFridgeIngredients(
   fallbackData?: FridgeIngredientReceived[]
 ): UseFridgeIngredients {
-  const { data, error } = useSWR<FridgeIngredientReceived[], AxiosError<Error>>(
+  const { data, error } = useSWR<FridgeIngredientInMemory[], AxiosError<Error>>(
     API_PATHS.fridgeIngredients,
     fetcherFridgeIngredients,
     {
@@ -46,7 +39,7 @@ function useFridgeIngredients(
   let fridgeIngredients: FridgeIngredient[] = [];
   if (data) {
     fridgeIngredients = data.map(
-      (fridgeIngredient: FridgeIngredientReceived): FridgeIngredient => {
+      (fridgeIngredient: FridgeIngredientInMemory): FridgeIngredient => {
         return {
           id: fridgeIngredient.id,
           name: fridgeIngredient.ingredient,

@@ -1,9 +1,9 @@
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import produce from "immer";
 import { useSWRConfig } from "swr";
 import useMutation from "use-mutation";
 import { API_PATHS } from "../constants/paths";
-import { isCorrectArrayResponse } from "../constants/typeGuards";
+import { isFridgeIngredients } from "../constants/typeGuards";
 import {
   FridgeIngredientInMemory,
   FridgeIngredientReceived,
@@ -51,25 +51,14 @@ function useDeleteFridgeIngredient({
 }: UseDeleteFridgeIngredientArgs) {
   const { cache, mutate } = useSWRConfig();
   const key = API_PATHS.fridgeIngredients;
-  return useMutation(deleteFridgeIngredient, {
+  return useMutation<
+    DeleteFridgeIngredientArgs,
+    AxiosResponse<FridgeIngredientReceived>
+  >(deleteFridgeIngredient, {
     onMutate({ input }) {
       const uncheckedData: unknown = cache.get(key);
       let oldData: FridgeIngredientInMemory[] = [];
-      if (
-        isCorrectArrayResponse(
-          uncheckedData,
-          (element: FridgeIngredientReceived) => {
-            return (
-              typeof element === "object" &&
-              "id" in element &&
-              "ingredient" in element &&
-              "expiration_date" in element &&
-              "amount" in element &&
-              "unit" in element
-            );
-          }
-        )
-      ) {
+      if (isFridgeIngredients(uncheckedData)) {
         oldData = uncheckedData;
       }
       void mutate(

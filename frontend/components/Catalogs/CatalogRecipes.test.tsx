@@ -66,16 +66,14 @@ describe("initial display is correct", () => {
 
 describe("the adding recipe functionality works properly", () => {
   it("adds the correct recipe when filling the form and clicking on submit", async () => {
-    const { getByLabelText, getByText, getByTestId } = await renderCatalog();
+    const { getByLabelText, getByText } = await renderCatalog();
     mockedAxios.get.mockResolvedValue({
       data: [...catalogRecipes, recipeCrumble],
     });
     await addRecipe(getByLabelText, getByText);
     const recipe = getByText("Crumble aux poires", { exact: false });
-    const poires = getByTestId("strong-tag");
     const beurre = getByText(/beurre :/);
     expect(recipe).toBeInTheDocument();
-    expect(poires).toBeInTheDocument();
     expect(beurre).toBeInTheDocument();
   });
 
@@ -466,7 +464,7 @@ describe("edit functionality", () => {
   it(`modify the recipe when clicking on the edit button`, async () => {
     const { getByText, getByLabelText, findByText } = await renderCatalog();
     clickOnEditRecipe(getByText, "Salade de pommes de terre radis");
-    const modifiedReipe = {
+    const modifiedRecipe = {
       id: "1",
       categories: ["Plat", "Entrée"],
       title: "Salade de pommes de terre avec radis",
@@ -485,10 +483,10 @@ describe("edit functionality", () => {
       description: "Description modifiée",
     };
     const axiosGetResponse = {
-      data: [modifiedReipe],
+      data: [modifiedRecipe],
     };
     const axiosPutResponse = {
-      data: modifiedReipe,
+      data: modifiedRecipe,
     };
     const inputTitle = getByLabelText("Titre de la recette :");
     const inputDescription = getByLabelText("Corps de la recette :");

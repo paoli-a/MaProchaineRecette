@@ -1,11 +1,11 @@
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import produce from "immer";
 import { useSWRConfig } from "swr";
 import useMutation from "use-mutation";
 import { API_PATHS } from "../constants/paths";
 import {
   isCatalogRecipeResponse,
-  isCorrectArrayResponse,
+  isCatalogRecipes,
 } from "../constants/typeGuards";
 import {
   CatalogRecipeInMemory,
@@ -51,25 +51,14 @@ function useAddCatalogRecipe({
 }: UseAddCatalogRecipeArgs) {
   const { cache, mutate } = useSWRConfig();
   const key = API_PATHS.catalogRecipes;
-  return useMutation(addCatalogRecipe, {
+  return useMutation<
+    AddCatalogRecipeArgs,
+    AxiosResponse<CatalogRecipeReceived>
+  >(addCatalogRecipe, {
     onMutate({ input }) {
       const uncheckedData: unknown = cache.get(key);
       let oldData: CatalogRecipeInMemory[] = [];
-      if (
-        isCorrectArrayResponse(
-          uncheckedData,
-          (element: CatalogRecipeReceived) => {
-            return (
-              typeof element === "object" &&
-              "categories" in element &&
-              "title" in element &&
-              "ingredients" in element &&
-              "duration" in element &&
-              "description" in element
-            );
-          }
-        )
-      ) {
+      if (isCatalogRecipes(uncheckedData)) {
         oldData = uncheckedData;
       }
       void mutate(
@@ -79,17 +68,17 @@ function useAddCatalogRecipe({
       );
       return () => mutate(key, oldData, false);
     },
-    onSuccess({ data }: { data: unknown }) {
+    onSuccess({ data }) {
       void mutate(key, (current: CatalogRecipeInMemory[]) =>
         current.map((recipe: CatalogRecipeInMemory) => {
           if (recipe.id) {
             return recipe;
-          } else if (isCatalogRecipeResponse(data)) {
+          } else if (isCatalogRecipeResponse(data.data)) {
             return data.data;
           } else {
             throw new Error(
               `The data sent back by the backend ${JSON.stringify(
-                data
+                data.data
               )} is not of type CatalogRecipeReceived`
             );
           }
@@ -147,25 +136,14 @@ function useUpdateCatalogRecipe({
 }: UseUpdateCatalogRecipeArgs) {
   const { cache, mutate } = useSWRConfig();
   const key = API_PATHS.catalogRecipes;
-  return useMutation(updateCatalogRecipe, {
+  return useMutation<
+    UpdateCatalogRecipeArgs,
+    AxiosResponse<CatalogRecipeReceived>
+  >(updateCatalogRecipe, {
     onMutate({ input }) {
       const uncheckedData: unknown = cache.get(key);
       let oldData: CatalogRecipeInMemory[] = [];
-      if (
-        isCorrectArrayResponse(
-          uncheckedData,
-          (element: CatalogRecipeReceived) => {
-            return (
-              typeof element === "object" &&
-              "categories" in element &&
-              "title" in element &&
-              "ingredients" in element &&
-              "duration" in element &&
-              "description" in element
-            );
-          }
-        )
-      ) {
+      if (isCatalogRecipes(uncheckedData)) {
         oldData = uncheckedData;
       }
       void mutate(
@@ -188,10 +166,10 @@ function useUpdateCatalogRecipe({
       );
       return () => mutate(key, oldData, false);
     },
-    onSuccess({ data }: { data: unknown }) {
+    onSuccess({ data }) {
       void mutate(key, (current: CatalogRecipeInMemory[]) =>
         current.map((recipe: CatalogRecipeInMemory) => {
-          if (isCatalogRecipeResponse(data)) {
+          if (isCatalogRecipeResponse(data.data)) {
             if (recipe.id === data.data.id) return data.data;
             else return recipe;
           } else {
@@ -259,25 +237,14 @@ function useDeleteCatalogRecipe({
 }: UseDeleteCatalogRecipeArgs) {
   const { cache, mutate } = useSWRConfig();
   const key = API_PATHS.catalogRecipes;
-  return useMutation(deleteCatalogRecipe, {
+  return useMutation<
+    DeleteCatalogRecipeArgs,
+    AxiosResponse<CatalogRecipeReceived>
+  >(deleteCatalogRecipe, {
     onMutate({ input }) {
       const uncheckedData: unknown = cache.get(key);
       let oldData: CatalogRecipeInMemory[] = [];
-      if (
-        isCorrectArrayResponse(
-          uncheckedData,
-          (element: CatalogRecipeReceived) => {
-            return (
-              typeof element === "object" &&
-              "categories" in element &&
-              "title" in element &&
-              "ingredients" in element &&
-              "duration" in element &&
-              "description" in element
-            );
-          }
-        )
-      ) {
+      if (isCatalogRecipes(uncheckedData)) {
         oldData = uncheckedData;
       }
       void mutate(

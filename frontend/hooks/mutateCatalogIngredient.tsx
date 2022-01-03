@@ -1,9 +1,9 @@
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import produce from "immer";
 import { useSWRConfig } from "swr";
 import useMutation from "use-mutation";
 import { API_PATHS } from "../constants/paths";
-import { isCorrectArrayResponse } from "../constants/typeGuards";
+import { isCatalogIngredients } from "../constants/typeGuards";
 import {
   CatalogIngredientInMemory,
   CatalogIngredientReceived,
@@ -53,17 +53,14 @@ function useAddCatalogIngredient({
 }: UseAddCatalogIngredientArgs) {
   const { cache, mutate } = useSWRConfig();
   const key = API_PATHS.catalogIngredients;
-  return useMutation(addCatalogIngredient, {
+  return useMutation<
+    AddCatalogIngredientArgs,
+    AxiosResponse<CatalogIngredientReceived>
+  >(addCatalogIngredient, {
     onMutate({ input }) {
       const uncheckedData: unknown = cache.get(key);
       let oldData: CatalogIngredientInMemory[] = [];
-      if (
-        isCorrectArrayResponse(
-          uncheckedData,
-          (element: CatalogIngredientReceived) =>
-            typeof element === "object" && "name" in element
-        )
-      ) {
+      if (isCatalogIngredients(uncheckedData)) {
         oldData = uncheckedData;
       }
       void mutate(
@@ -129,17 +126,14 @@ function useDeleteCatalogIngredient({
 }: UseDeleteCatalogIngredientArgs) {
   const { cache, mutate } = useSWRConfig();
   const key = API_PATHS.catalogIngredients;
-  return useMutation(deleteCatalogIngredient, {
+  return useMutation<
+    DeleteCatalogIngredientArgs,
+    AxiosResponse<CatalogIngredientReceived>
+  >(deleteCatalogIngredient, {
     onMutate({ input }) {
       const uncheckedData: unknown = cache.get(key);
       let oldData: CatalogIngredientInMemory[] = [];
-      if (
-        isCorrectArrayResponse(
-          uncheckedData,
-          (element: CatalogIngredientReceived) =>
-            typeof element === "object" && "name" in element
-        )
-      ) {
+      if (isCatalogIngredients(uncheckedData)) {
         oldData = uncheckedData;
       }
       void mutate(
