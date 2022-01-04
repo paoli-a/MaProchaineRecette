@@ -1,5 +1,6 @@
 import {
   CatalogIngredientInMemory,
+  CatalogIngredientReceived,
   CatalogRecipeInMemory,
   CatalogRecipeReceived,
   FridgeIngredientInMemory,
@@ -64,6 +65,11 @@ function isCatalogIngredients(
     ckeckCatalogIngredientShape(element)
   );
 }
+function isCatalogIngredientsResponse(
+  data: unknown
+): data is CatalogIngredientReceived[] {
+  return isCatalogIngredients(data);
+}
 
 function ckeckFridgeIngredientShape(
   ingredient: FridgeIngredientInMemory
@@ -118,6 +124,7 @@ export {
   isCatalogRecipesResponse,
   isCatalogRecipeResponse,
   isCatalogIngredients,
+  isCatalogIngredientsResponse,
   isFridgeIngredients,
   isFridgeIngredientsResponse,
   isFridgeRecipesResponse,

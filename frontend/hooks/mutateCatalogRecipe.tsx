@@ -175,7 +175,7 @@ function useUpdateCatalogRecipe({
           } else {
             throw new Error(
               `The data sent back by the backend ${JSON.stringify(
-                data
+                data.data
               )} is not of type CatalogRecipeReceived`
             );
           }

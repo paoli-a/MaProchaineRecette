@@ -1,7 +1,7 @@
 import axios, { AxiosError } from "axios";
 import useSWR from "swr";
 import { API_PATHS } from "../constants/paths";
-import { isCatalogIngredients } from "../constants/typeGuards";
+import { isCatalogIngredientsResponse } from "../constants/typeGuards";
 import {
   CatalogIngredient,
   CatalogIngredientInMemory,
@@ -18,7 +18,7 @@ function fetcherCatalogIngredients(
   url: string
 ): Promise<CatalogIngredientReceived[]> {
   return axios.get(url).then((res): CatalogIngredientReceived[] => {
-    if (isCatalogIngredients(res.data)) {
+    if (isCatalogIngredientsResponse(res.data)) {
       return res.data;
     } else {
       return [];
