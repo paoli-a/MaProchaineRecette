@@ -1,7 +1,7 @@
 import axios, { AxiosError } from "axios";
 import useSWR from "swr";
 import { API_PATHS } from "../constants/paths";
-import { isCorrectArrayResponse } from "../constants/typeGuards";
+import { isCatalogRecipesResponse } from "../constants/typeGuards";
 import {
   CatalogRecipe,
   CatalogRecipeInMemory,
@@ -16,18 +16,7 @@ type UseCatalogRecipes = {
 
 function fetcherCatalogRecipes(url: string): Promise<CatalogRecipeReceived[]> {
   return axios.get(url).then((res): CatalogRecipeReceived[] => {
-    if (
-      isCorrectArrayResponse(res.data, (element: CatalogRecipeReceived) => {
-        return (
-          typeof element === "object" &&
-          "categories" in element &&
-          "title" in element &&
-          "ingredients" in element &&
-          "duration" in element &&
-          "description" in element
-        );
-      })
-    ) {
+    if (isCatalogRecipesResponse(res.data)) {
       return res.data;
     } else {
       return [];

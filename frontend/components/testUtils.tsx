@@ -5,14 +5,13 @@ import {
   CatalogIngredientReceived,
   CatalogRecipeReceived,
   FridgeIngredientReceived,
-  FridgeRecipe,
   FridgeRecipeReceived,
 } from "../constants/types";
 
 jest.mock("axios");
 export const mockedAxios = axios as jest.Mocked<typeof axios>;
 
-export const recipeCrumble: FridgeRecipe = {
+export const recipeCrumble: CatalogRecipeReceived = {
   id: "5",
   categories: ["Dessert"],
   title: "Crumble aux poires",
@@ -25,8 +24,6 @@ export const recipeCrumble: FridgeRecipe = {
   duration: "1 h",
   description:
     "Épluchez et épépinez les poires. Coupez-les en dés. Faites-les revenir 10 min dans 40 g de beurre et 40 g de cassonade. Préchauffez le four à 210 °C. Mélangez la farine avec le reste de cassonade, 80 g de beurre mou en dés et 1 pincée de sel afin d'obtenir une pâte sableuse. Disposez les poires dans un plat à gratin beurré. Parsemez de pâte en l'effritant du bout des doigts. Enfournez 30 min. Servez chaud ou tiède.",
-  priority_ingredients: ["poires"],
-  unsure_ingredients: [],
 };
 
 export const catalogRecipes = [
