@@ -1,6 +1,6 @@
 import produce from "immer";
 import React, { MouseEvent, useEffect, useState } from "react";
-import { FieldError, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import {
   CatalogRecipe,
   FridgeRecipe,
@@ -284,7 +284,7 @@ function RecipesForm<T extends FridgeRecipe | CatalogRecipe>({
             />
             {errors.recipeTime && (
               <p className="form__error-message" role="alert">
-                {(errors.recipeTime as FieldError).message}
+                {errors.recipeTime.message}
               </p>
             )}
           </div>
