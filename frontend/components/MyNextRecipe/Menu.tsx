@@ -1,5 +1,9 @@
+import CloseIcon from "@mui/icons-material/Close";
+import MenuIcon from "@mui/icons-material/Menu";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import styles from "./Menu.module.scss";
 
 /**
  * Menu principal du site.
@@ -9,18 +13,68 @@ import { useRouter } from "next/router";
 function Menu() {
   const router = useRouter();
   /* eslint-disable jsx-a11y/anchor-is-valid */
+  const [burgerMenuVisible, setBurgerMenuVisibile] = useState<boolean | null>(
+    null
+  );
+
+  const showMenu = () => {
+    setBurgerMenuVisibile(true);
+  };
+
+  const hideMenu = () => {
+    setBurgerMenuVisibile(false);
+  };
+
+  useEffect(() => {
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        if (burgerMenuVisible) {
+          hideMenu();
+        }
+      }
+    };
+    document.addEventListener("keydown", handleEscape);
+    return () => {
+      document.removeEventListener("keydown", handleEscape);
+    };
+  }, [burgerMenuVisible]);
+
   return (
-    <div>
-      <nav className="nav">
+    <nav className={styles.nav}>
+      <button
+        className={`${styles.menuIcon} ${
+          burgerMenuVisible ? styles.menuOpened : styles.menuClosed
+        }`}
+        aria-label={burgerMenuVisible ? "Fermer le menu" : "Ouvrir le menu"}
+        aria-expanded={burgerMenuVisible ? true : false}
+        aria-controls="nav-buttons"
+        onClick={burgerMenuVisible ? hideMenu : showMenu}
+      >
+        {burgerMenuVisible ? (
+          <CloseIcon fontSize="large" />
+        ) : (
+          <MenuIcon fontSize="large" />
+        )}
+      </button>
+      <div
+        className={`${styles.navButtons} ${
+          burgerMenuVisible ? styles.menuOpened : styles.menuClosed
+        }`}
+        id="nav-buttons"
+      >
         <Link href="/">
-          <a className={`nav__link ${router.pathname === "/" ? "active" : ""}`}>
+          <a
+            className={`${styles.navLink} ${
+              router.pathname === "/" ? styles.active : ""
+            }`}
+          >
             Ma prochaine recette
           </a>
         </Link>
         <Link href="/recipes">
           <a
-            className={`nav__link ${
-              router.pathname === "/recipes" ? "active" : ""
+            className={`${styles.navLink} ${
+              router.pathname === "/recipes" ? styles.active : ""
             }`}
           >
             Catalogue des recettes
@@ -28,15 +82,15 @@ function Menu() {
         </Link>
         <Link href="/ingredients">
           <a
-            className={`nav__link ${
-              router.pathname === "/ingredients" ? "active" : ""
+            className={`${styles.navLink} ${
+              router.pathname === "/ingredients" ? styles.active : ""
             }`}
           >
             Catalogue des ingrédients
           </a>
         </Link>
-      </nav>
-    </div>
+      </div>
+    </nav>
   );
   /* eslint-enable jsx-a11y/anchor-is-valid */
 }
