@@ -16,6 +16,10 @@
     "docs": "jsdoc -c jsdoc.conf.json"
   },
   "dependencies": {
+    "@emotion/react": "^11.7.1",
+    "@emotion/styled": "^11.6.0",
+    "@mui/icons-material": "^5.2.5",
+    "@mui/material": "^5.2.7",
     "axios": "^0.24.0",
     "immer": "^9.0.7",
     "next": "^12.0.7",
