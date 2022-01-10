@@ -65,7 +65,7 @@
     "jsdoc": "^3.6.7",
     "mutationobserver-shim": "^0.3.7",
     "parcel-bundler": "^1.12.5",
-    "playwright": "^1.17.1",
+    "playwright": "^1.17.2",
     "pm2": "^5.1.2",
     "prettier": "^2.5.1",
     "prettier-plugin-organize-imports": "^2.3.4",
