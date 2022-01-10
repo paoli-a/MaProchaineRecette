@@ -1,0 +1,53 @@
+.navButtons {
+  display: flex;
+  transition: all ease 0.3s;
+  position: fixed;
+  top: 0;
+  right: 0;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+  background-color: $background-color;
+  z-index: 10;
+  padding-top: 10rem;
+
+  &.menuOpened {
+    visibility: visible;
+    display: block;
+    opacity: 1;
+    transform: translateX(0px);
+    display: flex;
+    flex-direction: column;
+    .navLink {
+      text-decoration: none;
+      color: $primary-color;
+      font-weight: 600;
+      border-top: 1px solid $accent-color;
+      padding: 1.7rem 2rem 1.7rem 2.5rem;
+      &:last-child {
+        border-bottom: 1px solid $accent-color;
+      }
+    }
+  }
+  &.menuClosed {
+    visibility: hidden;
+    display: none;
+    opacity: 0;
+    transform: translateX(100%);
+  }
+}
+
+.menuIcon {
+  background: none;
+  border: unset;
+  cursor: pointer;
+  position: absolute;
+  z-index: 11;
+  top: 0.75rem;
+  right: 1rem;
+  &.menuOpened {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+  }
+}
