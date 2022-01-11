@@ -10,28 +10,24 @@
   background-color: $background-color;
   z-index: 10;
   padding-top: 10rem;
+  .navLink {
+    text-decoration: none;
+    color: $primary-color;
+    font-weight: 600;
+    border-top: 1px solid $accent-color;
+    padding: 1.7rem 2rem 1.7rem 2.5rem;
+    &:last-child {
+      border-bottom: 1px solid $accent-color;
+    }
+  }
 
   &.menuOpened {
     visibility: visible;
-    display: block;
     opacity: 1;
     transform: translateX(0px);
-    display: flex;
-    flex-direction: column;
-    .navLink {
-      text-decoration: none;
-      color: $primary-color;
-      font-weight: 600;
-      border-top: 1px solid $accent-color;
-      padding: 1.7rem 2rem 1.7rem 2.5rem;
-      &:last-child {
-        border-bottom: 1px solid $accent-color;
-      }
-    }
   }
   &.menuClosed {
     visibility: hidden;
-    display: none;
     opacity: 0;
     transform: translateX(100%);
   }
