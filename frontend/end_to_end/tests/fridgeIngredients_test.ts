@@ -63,8 +63,10 @@ still there`,
     I.selectOption("Unité", "pièce(s)");
     I.fillField("Date de péremption :", "10102030");
     I.click("Ajouter");
-    I.click("Catalogue des recettes");
-    I.click("Ma prochaine recette");
+    I.click("Ouvrir le menu");
+    I.click("Catalogue recettes");
+    I.click("Ouvrir le menu");
+    I.click("Recettes possibles");
     await within(".fridge-ingredients__list", () => {
       I.see("échalotte");
       I.see("herbes fraiches");
