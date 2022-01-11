@@ -68,7 +68,7 @@ function Menu() {
               router.pathname === "/" ? styles.active : ""
             }`}
           >
-            Ma prochaine recette
+            Recettes possibles
           </a>
         </Link>
         <Link href="/recipes">
@@ -77,7 +77,7 @@ function Menu() {
               router.pathname === "/recipes" ? styles.active : ""
             }`}
           >
-            Catalogue des recettes
+            Catalogue recettes
           </a>
         </Link>
         <Link href="/ingredients">
@@ -86,7 +86,7 @@ function Menu() {
               router.pathname === "/ingredients" ? styles.active : ""
             }`}
           >
-            Catalogue des ingrédients
+            Catalogue ingrédients
           </a>
         </Link>
       </div>

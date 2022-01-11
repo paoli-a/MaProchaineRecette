@@ -6,13 +6,15 @@ Before(({ I }) => {
 
 Scenario("See existing ingredient", ({ I }) => {
   I.amOnPage("/");
-  I.click("Catalogue des ingrédients");
+  I.click("Ouvrir le menu");
+  I.click("Catalogue ingrédients");
   I.see("Carottes");
 });
 
 Scenario("Add new ingredient", async ({ I }) => {
   I.amOnPage("/");
-  I.click("Catalogue des ingrédients");
+  I.click("Ouvrir le menu");
+  I.click("Catalogue ingrédients");
   I.fillField("Nom de l'ingrédient à ajouter :", "Navets");
   I.click("Envoyer");
   await within(".catalog-ingredients", () => {
@@ -24,7 +26,8 @@ Scenario("Add new ingredient", async ({ I }) => {
 
 Scenario("Remove ingredient", ({ I }) => {
   I.amOnPage("/");
-  I.click("Catalogue des ingrédients");
+  I.click("Ouvrir le menu");
+  I.click("Catalogue ingrédients");
   I.click("X");
   I.dontSee("Carottes");
 });
@@ -34,12 +37,16 @@ Scenario(
 still there`,
   async ({ I }) => {
     I.amOnPage("/");
-    I.click("Catalogue des ingrédients");
+    I.click("Ouvrir le menu");
+    I.click("Catalogue ingrédients");
     I.fillField("Nom de l'ingrédient à ajouter :", "Navets");
     I.click("Envoyer");
-    I.click("Ma prochaine recette");
-    I.click("Catalogue des recettes");
-    I.click("Catalogue des ingrédients");
+    I.click("Ouvrir le menu");
+    I.click("Recettes possibles");
+    I.click("Ouvrir le menu");
+    I.click("Catalogue recettes");
+    I.click("Ouvrir le menu");
+    I.click("Catalogue ingrédients");
     await within(".catalog-ingredients", () => {
       I.see("Carottes");
       I.see("Navets");
@@ -53,13 +60,16 @@ Scenario(
 suggestions when an ingredient name is being entered in FridgeIngredients`,
   ({ I }) => {
     I.amOnPage("/");
-    I.click("Catalogue des ingrédients");
+    I.click("Ouvrir le menu");
+    I.click("Catalogue ingrédients");
     I.fillField("Nom de l'ingrédient à ajouter :", "Navets");
     I.click("Envoyer");
-    I.click("Ma prochaine recette");
+    I.click("Ouvrir le menu");
+    I.click("Recettes possibles");
     I.fillField("Nom de l'ingrédient :", "Nav");
     I.seeElementInDOM("option[value='Navets']");
-    I.click("Catalogue des ingrédients");
+    I.click("Ouvrir le menu");
+    I.click("Catalogue ingrédients");
     I.click("X");
     I.click("X");
   }
@@ -70,13 +80,16 @@ Scenario(
 suggestions when an ingredient name is being entered in CatalogRecipes`,
   ({ I }) => {
     I.amOnPage("/");
-    I.click("Catalogue des ingrédients");
+    I.click("Ouvrir le menu");
+    I.click("Catalogue ingrédients");
     I.fillField("Nom de l'ingrédient à ajouter :", "Navets");
     I.click("Envoyer");
-    I.click("Catalogue des recettes");
+    I.click("Ouvrir le menu");
+    I.click("Catalogue recettes");
     I.fillField("Nom :", "Nav");
     I.seeElementInDOM("option[value='Navets']");
-    I.click("Catalogue des ingrédients");
+    I.click("Ouvrir le menu");
+    I.click("Catalogue ingrédients");
     I.click("X");
     I.click("X");
   }

@@ -1,4 +1,6 @@
 const target = process.env.NEXT_PUBLIC_PROXY_HOST || "http://localhost:8000";
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const path = require("path");
 
 module.exports = {
   async rewrites() {
@@ -11,5 +13,9 @@ module.exports = {
         destination: `${target}/api/:path*/`,
       },
     ];
+  },
+  sassOptions: {
+    includePaths: [path.join(__dirname, "styles")],
+    prependData: `@import "utils/_variables.scss";`,
   },
 };
