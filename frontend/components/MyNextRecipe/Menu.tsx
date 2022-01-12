@@ -67,6 +67,7 @@ function Menu() {
             className={`${styles.navLink} ${
               router.pathname === "/" ? styles.active : ""
             }`}
+            aria-current={router.pathname === "/" ? "page" : undefined}
           >
             Recettes possibles
           </a>
@@ -76,6 +77,7 @@ function Menu() {
             className={`${styles.navLink} ${
               router.pathname === "/recipes" ? styles.active : ""
             }`}
+            aria-current={router.pathname === "/recipes" ? "page" : undefined}
           >
             Catalogue recettes
           </a>
@@ -85,6 +87,9 @@ function Menu() {
             className={`${styles.navLink} ${
               router.pathname === "/ingredients" ? styles.active : ""
             }`}
+            aria-current={
+              router.pathname === "/ingredients" ? "page" : undefined
+            }
           >
             Catalogue ingrédients
           </a>
