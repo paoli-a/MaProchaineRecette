@@ -19,6 +19,9 @@
     &:last-child {
       border-bottom: 1px solid $accent-color;
     }
+    &.active {
+      color: $accent-color;
+    }
   }
 
   &.menuOpened {
