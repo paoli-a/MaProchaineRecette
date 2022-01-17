@@ -1,8 +1,8 @@
 import axios, { AxiosError } from "axios";
 import useSWR from "swr";
-import { API_PATHS } from "../constants/paths";
-import { isFridgeRecipesResponse } from "../constants/typeGuards";
-import { FridgeRecipe, FridgeRecipeReceived } from "../constants/types";
+import { API_PATHS } from "../../constants/paths";
+import { isFridgeRecipesResponse } from "../../constants/typeGuards";
+import { FridgeRecipe, FridgeRecipeReceived } from "../../constants/types";
 
 type UseFridgeRecipes = {
   fridgeRecipes: FridgeRecipe[];

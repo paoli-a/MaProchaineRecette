@@ -1,25 +1,3 @@
-.navButtons {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  width: 100vw;
-  background-color: $background-color;
-  padding-top: 10rem;
-  .navLink {
-    text-decoration: none;
-    color: $primary-color;
-    font-weight: 600;
-    border-top: 1px solid $accent-color;
-    padding: 1.7rem 2rem 1.7rem 2.5rem;
-    &:last-child {
-      border-bottom: 1px solid $accent-color;
-    }
-    &.active {
-      color: $accent-color;
-    }
-  }
-}
-
 .menuIcon {
   background: none;
   border: unset;

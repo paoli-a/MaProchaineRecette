@@ -1,12 +1,12 @@
 import axios, { AxiosError } from "axios";
 import useSWR from "swr";
-import { API_PATHS } from "../constants/paths";
-import { isFridgeIngredientsResponse } from "../constants/typeGuards";
+import { API_PATHS } from "../../constants/paths";
+import { isFridgeIngredientsResponse } from "../../constants/typeGuards";
 import {
   FridgeIngredient,
   FridgeIngredientInMemory,
   FridgeIngredientReceived,
-} from "../constants/types";
+} from "../../constants/types";
 
 type UseFridgeIngredients = {
   fridgeIngredients: FridgeIngredient[];

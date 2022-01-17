@@ -1,12 +1,12 @@
 import axios, { AxiosError } from "axios";
 import useSWR from "swr";
-import { API_PATHS } from "../constants/paths";
-import { isCatalogIngredientsResponse } from "../constants/typeGuards";
+import { API_PATHS } from "../../constants/paths";
+import { isCatalogIngredientsResponse } from "../../constants/typeGuards";
 import {
   CatalogIngredient,
   CatalogIngredientInMemory,
   CatalogIngredientReceived,
-} from "../constants/types";
+} from "../../constants/types";
 
 type UseCatalogIngredients = {
   catalogIngredients: CatalogIngredient[];

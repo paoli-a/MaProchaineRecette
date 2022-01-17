@@ -1,4 +1,4 @@
-import { fireEvent, render } from "@testing-library/react";
+import { act, fireEvent, render } from "@testing-library/react";
 import * as NextRouter from "next/router";
 import React from "react";
 import Menu from "./Menu";
@@ -14,6 +14,19 @@ useRouter.mockReturnValue({
 });
 
 describe("Burger menu", () => {
+  beforeAll(() => {
+    act(() => {
+      global.innerWidth = 500;
+      global.dispatchEvent(new Event("resize"));
+    });
+  });
+  afterAll(() => {
+    act(() => {
+      global.innerWidth = 1000;
+      global.dispatchEvent(new Event("resize"));
+    });
+  });
+
   it(`sets the focus on the close icon when clicking on the burger icon and
   sets it back on the burger icon when clicking on the close icon`, () => {
     const { getByLabelText } = render(<Menu />);

@@ -1,6 +1,6 @@
 import { AxiosError } from "axios";
 import useSWR from "swr";
-import { API_PATHS } from "../constants/paths";
+import { API_PATHS } from "../../constants/paths";
 import { fetcherArrayOfStrings } from "./fetchCategories";
 
 type UseUnits = {
