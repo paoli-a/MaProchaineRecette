@@ -129,10 +129,8 @@ Scenario(
 Scenario("Refetch feasible recipes when changing existing recipes", ({ I }) => {
   I.amOnPage("/");
   I.see("Marinade");
-  I.click("Ouvrir le menu");
   I.click("Catalogue recettes");
   I.click(locate("img").withAttr({ alt: "Supprimer" }));
-  I.click("Ouvrir le menu");
   I.click("Recettes possibles");
   I.dontSee("Marinade");
   I.dontSee("Salade");
@@ -144,7 +142,6 @@ Scenario(
     I.amOnPage("/");
     I.see("Marinade");
     I.click(locate("img").withAttr({ alt: "Supprimer" }));
-    I.click("Ouvrir le menu");
     I.click("Recettes possibles");
     I.dontSee("Marinade");
     I.dontSee("Salade");

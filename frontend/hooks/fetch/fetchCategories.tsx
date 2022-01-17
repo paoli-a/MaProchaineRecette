@@ -1,7 +1,7 @@
 import axios, { AxiosError } from "axios";
 import useSWR from "swr";
-import { API_PATHS } from "../constants/paths";
-import { isCorrectArrayResponse } from "../constants/typeGuards";
+import { API_PATHS } from "../../constants/paths";
+import { isCorrectArrayResponse } from "../../constants/typeGuards";
 
 type UseCategories = {
   categories: string[];

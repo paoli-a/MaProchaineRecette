@@ -55,14 +55,12 @@ Before(({ I }) => {
 
 Scenario("See existing recipe", ({ I }) => {
   I.amOnPage("/");
-  I.click("Ouvrir le menu");
   I.click("Catalogue recettes");
   I.see("Marinade de saumon fumé");
 });
 
 Scenario("Add new recipe", async ({ I }) => {
   I.amOnPage("/");
-  I.click("Ouvrir le menu");
   I.click("Catalogue recettes");
   I.fillField("Titre de la recette :", "Salade légère");
   I.checkOption("Entrée");
@@ -89,7 +87,6 @@ Scenario("Add new recipe", async ({ I }) => {
 
 Scenario("Remove recipe", ({ I }) => {
   I.amOnPage("/");
-  I.click("Ouvrir le menu");
   I.click("Catalogue recettes");
   I.see("Marinade");
   I.click(locate("img").withAttr({ alt: "Supprimer" }));
@@ -101,7 +98,6 @@ Scenario(
 there`,
   async ({ I }) => {
     I.amOnPage("/");
-    I.click("Ouvrir le menu");
     I.click("Catalogue recettes");
     I.fillField("Titre de la recette :", "Salade légère");
     I.checkOption("Entrée");
@@ -118,9 +114,7 @@ there`,
     await within(".form__paragraph", () => {
       I.click(".form__submit");
     });
-    I.click("Ouvrir le menu");
     I.click("Recettes possibles");
-    I.click("Ouvrir le menu");
     I.click("Catalogue recettes");
     await within(".display-catalog-recipe", () => {
       I.see("Marinade");
@@ -133,7 +127,6 @@ there`,
 
 Scenario("Edit existing catalog recipe", async ({ I }) => {
   I.amOnPage("/");
-  I.click("Ouvrir le menu");
   I.click("Catalogue recettes");
   I.click(locate("img").withAttr({ alt: "Modifier" }));
   I.fillField("Titre de la recette :", "Marinade de saumon express");

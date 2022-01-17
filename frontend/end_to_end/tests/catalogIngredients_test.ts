@@ -6,14 +6,12 @@ Before(({ I }) => {
 
 Scenario("See existing ingredient", ({ I }) => {
   I.amOnPage("/");
-  I.click("Ouvrir le menu");
   I.click("Catalogue ingrédients");
   I.see("Carottes");
 });
 
 Scenario("Add new ingredient", async ({ I }) => {
   I.amOnPage("/");
-  I.click("Ouvrir le menu");
   I.click("Catalogue ingrédients");
   I.fillField("Nom de l'ingrédient à ajouter :", "Navets");
   I.click("Envoyer");
@@ -26,7 +24,6 @@ Scenario("Add new ingredient", async ({ I }) => {
 
 Scenario("Remove ingredient", ({ I }) => {
   I.amOnPage("/");
-  I.click("Ouvrir le menu");
   I.click("Catalogue ingrédients");
   I.click("X");
   I.dontSee("Carottes");
@@ -37,15 +34,11 @@ Scenario(
 still there`,
   async ({ I }) => {
     I.amOnPage("/");
-    I.click("Ouvrir le menu");
     I.click("Catalogue ingrédients");
     I.fillField("Nom de l'ingrédient à ajouter :", "Navets");
     I.click("Envoyer");
-    I.click("Ouvrir le menu");
     I.click("Recettes possibles");
-    I.click("Ouvrir le menu");
     I.click("Catalogue recettes");
-    I.click("Ouvrir le menu");
     I.click("Catalogue ingrédients");
     await within(".catalog-ingredients", () => {
       I.see("Carottes");
@@ -60,15 +53,12 @@ Scenario(
 suggestions when an ingredient name is being entered in FridgeIngredients`,
   ({ I }) => {
     I.amOnPage("/");
-    I.click("Ouvrir le menu");
     I.click("Catalogue ingrédients");
     I.fillField("Nom de l'ingrédient à ajouter :", "Navets");
     I.click("Envoyer");
-    I.click("Ouvrir le menu");
     I.click("Recettes possibles");
     I.fillField("Nom de l'ingrédient :", "Nav");
     I.seeElementInDOM("option[value='Navets']");
-    I.click("Ouvrir le menu");
     I.click("Catalogue ingrédients");
     I.click("X");
     I.click("X");
@@ -80,15 +70,12 @@ Scenario(
 suggestions when an ingredient name is being entered in CatalogRecipes`,
   ({ I }) => {
     I.amOnPage("/");
-    I.click("Ouvrir le menu");
     I.click("Catalogue ingrédients");
     I.fillField("Nom de l'ingrédient à ajouter :", "Navets");
     I.click("Envoyer");
-    I.click("Ouvrir le menu");
     I.click("Catalogue recettes");
     I.fillField("Nom :", "Nav");
     I.seeElementInDOM("option[value='Navets']");
-    I.click("Ouvrir le menu");
     I.click("Catalogue ingrédients");
     I.click("X");
     I.click("X");
