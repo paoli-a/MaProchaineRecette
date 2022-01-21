@@ -8,6 +8,7 @@ import { FridgeRecipe } from "../../constants/types";
 import { useFridgeRecipes } from "../../hooks";
 import Recipe from "../Recipe/Recipe";
 import RecipesToolbar from "../Recipe/RecipesToolbar";
+import styles from "./FridgeRecipe.module.scss";
 
 type ConsumeError = {
   id?: string;
@@ -90,9 +91,8 @@ function FridgeRecipes() {
     };
 
     const filterUtilSearch = function (recipe: FridgeRecipe) {
-      const { recipeTitle, description, ingredientsList } = lowerResults(
-        recipe
-      );
+      const { recipeTitle, description, ingredientsList } =
+        lowerResults(recipe);
       for (const mot of searchedWords) {
         if (mot.length > 1) {
           if (recipeTitle.includes(mot) || description.includes(mot)) {
@@ -149,7 +149,10 @@ function FridgeRecipes() {
   const displayedRecipes = filteredRecipes.map((myRecipe: FridgeRecipe) => {
     const consumeButton = (
       <button
-        className="button fridge-recipes__consume-button"
+        className={`${
+          styles.consumeButton
+        } ${"button"} ${"secondaryButtonAccent"}
+        `}
         onClick={() => myRecipe.id && handleConsume(myRecipe.id)}
       >
         Consommer la recette
@@ -175,14 +178,16 @@ function FridgeRecipes() {
   };
 
   return (
-    <section className="fridge-recipes">
-      <h1 className="fridge-recipes__title">Mes prochaines recettes</h1>
-      <RecipesToolbar
-        onChangeCategories={handleChangeCategories}
-        onChangeSearch={handleChangeSearch}
-        categories={categoriesPossibles()}
-      />
-      <div className="fridge-recipes">{displayedRecipes}</div>
+    <section className={styles.fridgeRecipesSection}>
+      <h1 className={styles.title}>Recettes possibles</h1>
+      <div className={styles.fridgeRecipesWrapper}>
+        <RecipesToolbar
+          onChangeCategories={handleChangeCategories}
+          onChangeSearch={handleChangeSearch}
+          categories={categoriesPossibles()}
+        />
+        <div className={styles.fridgeRecipes}>{displayedRecipes}</div>
+      </div>
     </section>
   );
 }

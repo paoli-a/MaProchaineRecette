@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { CatalogRecipe, FridgeRecipe } from "../../constants/types";
 import IngredientsList from "./IngredientsList";
+import styles from "./Recipe.module.scss";
 
 type RecipeProps<T> = {
   recipe: T;
@@ -58,7 +59,7 @@ function Recipe<T extends CatalogRecipe | FridgeRecipe>({
   const title = () => {
     if (activateClick) {
       return (
-        <h2 className="Recipe__title">
+        <h2 className={styles.title}>
           <button
             className="collapsible-with-title__button"
             onClick={handleTitleClick}
@@ -69,7 +70,7 @@ function Recipe<T extends CatalogRecipe | FridgeRecipe>({
         </h2>
       );
     } else {
-      return <h2 className="Recipe__title"> {highlight(recipe.title)}</h2>;
+      return <h2 className={styles.title}> {highlight(recipe.title)}</h2>;
     }
   };
   const isRecipeUnsure = Boolean(
@@ -80,24 +81,14 @@ function Recipe<T extends CatalogRecipe | FridgeRecipe>({
 
   return (
     <article
-      className={
-        isRecipeUnsure
-          ? "Recipe unsure collapsible-with-title"
-          : "Recipe collapsible-with-title"
-      }
+      className={`${styles.recipe} ${isRecipeUnsure ? styles.unsure : ""}`}
     >
       {error}
-      <div className="Recipe__header">
+      <div className={styles.header}>
         {title()}
         {!isRecipeUnsure && optionalButton}
       </div>
-      <div
-        className={
-          isRecipeOpen
-            ? "collapsible-with-title__content"
-            : "collapsible-with-title__content hidden"
-        }
-      >
+      <div className={styles.contentWrapper}>
         <IngredientsList
           ingredients={recipe.ingredients}
           priorityIngredients={
@@ -112,7 +103,9 @@ function Recipe<T extends CatalogRecipe | FridgeRecipe>({
           }
           highlight={highlight}
         />
-        <p className="Recipe__description">{highlight(recipe.description)}</p>
+        <p className={styles.recipeDescription}>
+          {highlight(recipe.description)}
+        </p>
       </div>
     </article>
   );

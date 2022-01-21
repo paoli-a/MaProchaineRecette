@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import styles from "./RecipesToolbar.module.scss"
 
 type RecipesToolbarProps = {
   /**
@@ -74,11 +75,11 @@ function RecipesToolbar({
   const categoriesCheckbox = categoriesKeys.map((category) => {
     return (
       <li
-        className="collapsible-with-button__list-container collapsible-checkbox"
+        className={styles.collapsibleCategoryListItem}
         key={category}
       >
         <input
-          className="collapsible-with-button__list-container collapsible-checkbox__input"
+          className={styles.collapsibleCheckboxInput}
           type="checkbox"
           value={category}
           aria-label={category}
@@ -86,7 +87,7 @@ function RecipesToolbar({
           {...registerCategories(category)}
         />
         {category}
-        <span className="collapsible-with-button__list-container collapsible-checkbox__span">
+        <span className={styles.collapsibleCheckboxSpan}>
           {categories[category]}
         </span>
       </li>
@@ -94,40 +95,15 @@ function RecipesToolbar({
   });
 
   return (
-    <fieldset className="toolbar">
-      <div className="toolbar__container">
-        <div className="collapsible-with-button">
-          <button
-            className={
-              isPannelOpen
-                ? "collapsible-with-button__button open"
-                : "collapsible-with-button__button closed"
-            }
-            aria-expanded="false"
-            aria-controls="collapsible-panel"
-            onClick={handlePannelClick}
-          >
-            Catégories
-          </button>
-          <form
-            className={
-              isPannelOpen
-                ? "collapsible-with-button__panel"
-                : "collapsible-with-button__panel hidden"
-            }
-          >
-            <ul className="collapsible-with-button__list-container">
-              {categoriesCheckbox}
-            </ul>
-          </form>
-        </div>
+    <fieldset className={styles.toolbar}>
+      <div className={styles.toolbarContainer}>
         <form
           role="search"
           onSubmit={handleSubmitSearch(handleSearch)}
-          className="searchbox"
+          className={styles.searchbox}
         >
           <input
-            className="searchbox__input"
+            className={styles.searchboxInput}
             type="search"
             placeholder="Recherche..."
             spellCheck="true"
@@ -135,10 +111,31 @@ function RecipesToolbar({
             {...registerSearch("q")}
           />
           <button
-            className=" searchbox__button button"
+            className={styles.searchboxButton}
             data-testid="search-button"
           ></button>
         </form>
+        <div className={styles.collapsibleWithButton}>
+          <button
+            className={`${styles.categoryButton} ${"button"} ${"collapsibleButton"} ${"secondaryButton"} ${
+              isPannelOpen ? "collapsibleButtonOpened" : "collapsibleButtonClosed"
+            }`}
+            aria-expanded="false"
+            aria-controls="collapsible-panel"
+            onClick={handlePannelClick}
+          >
+            Catégories
+          </button>
+          <form
+          className={`${styles.categoryPanel} ${
+            isPannelOpen ? styles.categoryPanelOpened : "hidden"
+          }`}
+          >
+            <ul className={styles.collapsibleCategoryListContainer}>
+              {categoriesCheckbox}
+            </ul>
+          </form>
+        </div>
       </div>
     </fieldset>
   );
