@@ -55,51 +55,13 @@
   }
 }
 
-.fridge-recipes {
-  margin-left: 20px;
-  &__title {
-    margin-bottom: 6%;
-    padding-bottom: 30px;
-  }
-  .Recipe {
-    border: 3px RGBa(235, 117, 105, 0.6) ridge;
-    margin: 15px 0;
-  }
-  .Recipe.unsure {
-    border: 3px #ddd ridge;
-  }
-}
 
-.my-next-recipes {
-  display: grid;
-  margin-top: 80px;
-}
 
 @media (min-width: 948px) {
-  .my-next-recipes {
-    grid-template-columns: 0.5fr minmax(420px, 540px) minmax(440px, 900px) 1fr;
-    grid-template-areas: ". ingredients recipes .";
-  }
-
   .fridge-ingredients {
     grid-area: ingredients;
     margin-left: 10px;
     margin-right: 20%;
   }
-
-  .fridge-recipes {
-    grid-area: recipes;
-    margin-right: 10px;
-  }
 }
 
-@media (max-width: 947px) {
-  .my-next-recipes {
-    grid-template-columns: minmax(0px, 460px);
-    grid-template-areas:
-      "ingredients"
-      "recipes";
-    justify-content: center;
-    gap: 60px;
-  }
-}

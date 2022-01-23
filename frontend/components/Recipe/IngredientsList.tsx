@@ -1,5 +1,6 @@
 import React from "react";
 import { RecipeIngredient } from "../../constants/types";
+import styles from "./IngredientsList.module.scss";
 
 type IngredientsListProps = {
   /**
@@ -58,7 +59,7 @@ function IngredientsList({
       return (
         <em
           title="Il n'y a peut-être pas la bonne quantité de cet ingredient"
-          className="unsure-ingredient"
+          className={styles.unsureIngredient}
         >
           {renderName(ingredient)} : {amount} {unit}
         </em>
@@ -79,7 +80,9 @@ function IngredientsList({
     );
   }
 
-  return <ul className="Recipe__ingredients-container">{ingredientsList}</ul>;
+  return (
+    <ul className={styles.ingredientRecipeContainer}>{ingredientsList}</ul>
+  );
 }
 
 export default IngredientsList;

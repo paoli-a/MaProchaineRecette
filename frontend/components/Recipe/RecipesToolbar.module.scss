@@ -1,0 +1,42 @@
+.toolbar {
+  margin-top: 3rem;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.collapsibleWithButton {
+  margin-top: 1.5rem;
+  .collapsibleCategoryListContainer {
+    padding: 0;
+    .collapsibleCategoryListItem {
+      display: flex;
+      list-style: none;
+      .collapsibleCheckboxSpan {
+        margin-left: auto;
+      }
+    }
+  }
+}
+
+.searchbox {
+  display: flex;
+  flex-wrap: wrap;
+  .searchboxInput {
+    font-size: 13px;
+    letter-spacing: 0.03rem;
+    border: 1px solid $primary-color;
+    border-radius: 3px;
+    width: 81%;
+    padding: 0.3rem 0.3rem 0.3rem 0.6rem;
+  }
+  .searchboxButton {
+    width: 50px;
+    height: 25px;
+    background-image: url("../../public/images/loupe2.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: $background-color;
+    border: none;
+    box-shadow: none;
+  }
+}

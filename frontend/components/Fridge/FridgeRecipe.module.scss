@@ -1,0 +1,25 @@
+.fridgeRecipesSection {
+  margin-top: 5rem;
+  .title {
+    text-align: center;
+    position: relative;
+    &::before {
+      content: "";
+      position: absolute;
+      z-index: -1;
+      top: 58%;
+      left: 0;
+      background-color: $secondary-color;
+      height: 1.7rem;
+      width: 100vw;
+    }
+  }
+  .fridgeRecipesWrapper {
+    padding: 0 1.5rem;
+  }
+
+  .consumeButton {
+    font-size: 11px;
+    padding: 5px 10px;
+  }
+}

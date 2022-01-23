@@ -27,8 +27,8 @@ function MyNextRecipe() {
         ) : (
           ""
         )}
-        <FridgeIngredients />
         <FridgeRecipes />
+        <FridgeIngredients />
       </main>
     </>
   );
