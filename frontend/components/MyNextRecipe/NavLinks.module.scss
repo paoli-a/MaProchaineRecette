@@ -43,9 +43,28 @@
       border: none;
       padding: 1rem;
       padding-right: 1.2rem;
+      font-weight: 500;
       &:last-child {
         border-bottom: none;
       }
+    }
+  }
+}
+
+@media (min-width: 1450px) {
+  .navButtons {
+    padding-right: 3rem;
+    .navLink {
+      padding-right: 2rem;
+    }
+  }
+}
+
+@media (min-width: 1600px) {
+  .navButtons {
+    padding-right: 4rem;
+    .navLink {
+      padding-right: 3rem;
     }
   }
 }

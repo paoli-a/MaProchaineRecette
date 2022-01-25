@@ -40,3 +40,71 @@
     box-shadow: none;
   }
 }
+
+@media (min-width: 500px) {
+  .searchbox {
+    .searchboxInput {
+      width: 65%;
+    }
+  }
+}
+
+@media (min-width: 750px) {
+  .toolbar {
+    margin-top: 5rem;
+  }
+  .toolbarContainer {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: start;
+    justify-content: space-between;
+  }
+  .collapsibleWithButton {
+    margin-top: 0;
+  }
+  .searchbox {
+    justify-content: end;
+  }
+  .categoryButton {
+    font-size: 14px;
+    height: 30px;
+    padding: 0.5rem 2.5rem 1.5rem 0.7rem;
+  }
+  .searchbox {
+    .searchboxInput {
+      font-size: 14px;
+      padding: 0.52rem 0.3rem 0.42rem 0.7rem;
+    }
+    .searchboxButton {
+      height: 30px;
+    }
+  }
+}
+
+@media (min-width: 1150px) {
+  .categoryButton {
+    font-size: 16px;
+    padding: 0.5rem 2.7rem 1.7rem 0.7rem;
+  }
+  .searchbox {
+    .searchboxInput {
+      font-size: 16px;
+      padding: 0.59rem 0.3rem 0.42rem 0.7rem;
+    }
+    .searchboxButton {
+      height: 35px;
+    }
+  }
+}
+
+@media (min-width: 1450px) {
+  .toolbar {
+    margin-top: 5.5rem;
+  }
+}
+
+@media (min-width: 1600px) {
+  .toolbar {
+    margin-top: 6rem;
+  }
+}

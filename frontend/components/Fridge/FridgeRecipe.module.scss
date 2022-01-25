@@ -23,3 +23,98 @@
     padding: 5px 10px;
   }
 }
+
+@media (min-width: 750px) {
+  .fridgeRecipesSection {
+    margin-top: 4rem;
+    .title {
+      font-size: 35px;
+      &::before {
+        height: 2.2rem;
+      }
+    }
+    .fridgeRecipesWrapper {
+      padding: 0 3rem;
+    }
+    .consumeButton {
+      font-size: 12px;
+      padding: 6px 12px;
+    }
+  }
+}
+
+@media (min-width: 1150px) {
+  .fridgeRecipesSection {
+    .fridgeRecipes {
+      display: flex;
+      justify-content: space-between;
+    }
+    .title {
+      font-size: 40px;
+      text-align: start;
+      padding-left: 25%;
+      &::before {
+        height: 2.5rem;
+      }
+    }
+    .consumeButton {
+      font-size: 13px;
+      padding: 7px 13px;
+    }
+  }
+}
+
+@media (min-width: 1250px) {
+  .fridgeRecipesSection {
+    .title {
+      font-size: 45px;
+      &::before {
+        height: 2.8rem;
+      }
+    }
+  }
+}
+
+@media (min-width: 1450px) {
+  .fridgeRecipesSection {
+    margin-top: 3rem;
+    .title {
+      font-size: 50px;
+      padding-left: 17%;
+      &::before {
+        height: 3rem;
+      }
+    }
+    .fridgeRecipesWrapper {
+      padding: 0 5rem;
+    }
+  }
+}
+
+@media (min-width: 1600px) {
+  .fridgeRecipesSection {
+    margin-top: 2rem;
+    .title {
+      padding-left: 7%;
+    }
+    .fridgeRecipesWrapper {
+      padding: 0 7rem;
+    }
+  }
+}
+
+@media (min-width: 1750px) {
+  .fridgeRecipesSection {
+    .title {
+      padding-left: 6.5%;
+    }
+  }
+}
+
+@media (min-width: 1800px) {
+  .fridgeRecipesSection {
+    .title {
+      padding-left: 6%;
+    }
+  }
+}
