@@ -14,9 +14,8 @@ import NavLinks from "./NavLinks";
  */
 function Menu() {
   const [burgerMenuVisible, setBurgerMenuVisibile] = useState<boolean>(false);
-  const [shouldFocusCloseButton, setShouldFocusCloseButton] = useState<boolean>(
-    false
-  );
+  const [shouldFocusCloseButton, setShouldFocusCloseButton] =
+    useState<boolean>(false);
   const { width: windowWidth } = useWindowDimensions();
   const mobileMenu = windowWidth <= 750;
   const closeButtonRef = useRef<HTMLButtonElement>(null);
@@ -56,7 +55,7 @@ function Menu() {
             aria-controls="nav-buttons"
             onClick={showMenu}
           >
-            <MenuIcon fontSize="large" />
+            <MenuIcon sx={{ width: "35rem", height: "35rem" }} />
           </button>
           <Modal
             open={burgerMenuVisible}
@@ -79,7 +78,10 @@ function Menu() {
                   onClick={hideMenu}
                   ref={closeButtonRef}
                 >
-                  <CloseIcon fontSize="large" />
+                  <CloseIcon
+                    fontSize="large"
+                    sx={{ width: "35rem", height: "35rem" }}
+                  />
                 </button>
                 <NavLinks burgerMenuVisible={burgerMenuVisible} />
               </div>

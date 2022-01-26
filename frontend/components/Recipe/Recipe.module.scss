@@ -63,7 +63,13 @@
 
 @media (min-width: 1700px) {
   .recipe {
-    flex-basis: 42%;
+    flex-basis: 26%;
     padding: 32rem 25rem 20rem 40rem;
+  }
+}
+
+@media (min-width: 2200px) {
+  .recipe {
+    flex-basis: 27%;
   }
 }

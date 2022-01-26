@@ -48,6 +48,7 @@
     .fridgeRecipes {
       display: flex;
       justify-content: space-between;
+      flex-wrap: wrap;
     }
     .title {
       font-size: 40rem;
