@@ -1,11 +1,11 @@
 .toolbar {
-  margin-top: 3rem;
+  margin-top: 48px;
   padding-left: 0;
   padding-right: 0;
 }
 
 .collapsibleWithButton {
-  margin-top: 1.5rem;
+  margin-top: 24px;
   .collapsibleCategoryListContainer {
     padding: 0;
     .collapsibleCategoryListItem {
@@ -23,11 +23,11 @@
   flex-wrap: wrap;
   .searchboxInput {
     font-size: 13px;
-    letter-spacing: 0.03rem;
+    letter-spacing: 0.48px;
     border: 1px solid $primary-color;
     border-radius: 3px;
     width: 81%;
-    padding: 0.3rem 0.3rem 0.3rem 0.6rem;
+    padding: 4.8px 4.8px 4.8px 9.6px;
   }
   .searchboxButton {
     width: 50px;
@@ -38,6 +38,7 @@
     background-color: $background-color;
     border: none;
     box-shadow: none;
+    z-index: -1;
   }
 }
 
@@ -51,12 +52,12 @@
 
 @media (min-width: 750px) {
   .toolbar {
-    margin-top: 5rem;
+    margin-top: 80px;
   }
   .toolbarContainer {
     display: flex;
     flex-direction: row-reverse;
-    align-items: start;
+    align-items: flex-start;
     justify-content: space-between;
   }
   .collapsibleWithButton {
@@ -68,12 +69,12 @@
   .categoryButton {
     font-size: 14px;
     height: 30px;
-    padding: 0.5rem 2.5rem 1.5rem 0.7rem;
+    padding: 8px 40px 24px 11.2px;
   }
   .searchbox {
     .searchboxInput {
       font-size: 14px;
-      padding: 0.52rem 0.3rem 0.42rem 0.7rem;
+      padding: 8.32px 4.8px 6.72px 11.2px;
     }
     .searchboxButton {
       height: 30px;
@@ -84,12 +85,12 @@
 @media (min-width: 1150px) {
   .categoryButton {
     font-size: 16px;
-    padding: 0.5rem 2.7rem 1.7rem 0.7rem;
+    padding: 8px 43.2px 27.2px 11.2px;
   }
   .searchbox {
     .searchboxInput {
       font-size: 16px;
-      padding: 0.59rem 0.3rem 0.42rem 0.7rem;
+      padding: 9.44px 4.8px 6.72px 11.2px;
     }
     .searchboxButton {
       height: 35px;
@@ -99,12 +100,12 @@
 
 @media (min-width: 1450px) {
   .toolbar {
-    margin-top: 5.5rem;
+    margin-top: 88px;
   }
 }
 
 @media (min-width: 1600px) {
   .toolbar {
-    margin-top: 6rem;
+    margin-top: 96px;
   }
 }

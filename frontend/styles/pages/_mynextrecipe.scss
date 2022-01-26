@@ -14,10 +14,10 @@
   &__ingredient {
     display: grid;
     grid-template-columns: 7fr 1fr 1fr;
-    margin-top: 2rem;
+    margin-top: 32px;
   }
   &__ingredient-name {
-    margin-bottom: 0.8rem;
+    margin-bottom: 12.8px;
     margin-top: 0;
   }
 }
@@ -27,11 +27,11 @@
   padding: 0;
 
   &__label {
-    font-size: 0.9rem;
+    font-size: 14.4px;
     opacity: 0.8;
   }
   &__expiration {
-    margin-top: 0.3rem;
+    margin-top: 4.8px;
   }
   &__delete {
     grid-column: 3 / 4;
@@ -42,20 +42,18 @@
   &__delete,
   &__edit {
     grid-row: 1 / 2;
-    width: 2.3rem;
-    height: 2.3rem;
+    width: 36.8px;
+    height: 36.8px;
     border: none;
     background: none;
-    padding: 0.1rem;
+    padding: 1.6px;
   }
   &__delete-img,
   &__edit-img {
-    width: 1.5rem;
-    height: 1.5rem;
+    width: 24px;
+    height: 24px;
   }
 }
-
-
 
 @media (min-width: 948px) {
   .fridge-ingredients {
@@ -64,4 +62,3 @@
     margin-right: 20%;
   }
 }
-

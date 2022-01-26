@@ -1,5 +1,5 @@
 .fridgeRecipesSection {
-  margin-top: 5rem;
+  margin-top: 80px;
   .title {
     text-align: center;
     position: relative;
@@ -10,12 +10,12 @@
       top: 58%;
       left: 0;
       background-color: $secondary-color;
-      height: 1.7rem;
+      height: 27.2px;
       width: 100vw;
     }
   }
   .fridgeRecipesWrapper {
-    padding: 0 1.5rem;
+    padding: 0 24px;
   }
 
   .consumeButton {
@@ -26,15 +26,15 @@
 
 @media (min-width: 750px) {
   .fridgeRecipesSection {
-    margin-top: 4rem;
+    margin-top: 64px;
     .title {
       font-size: 35px;
       &::before {
-        height: 2.2rem;
+        height: 35.2px;
       }
     }
     .fridgeRecipesWrapper {
-      padding: 0 3rem;
+      padding: 0 48px;
     }
     .consumeButton {
       font-size: 12px;
@@ -54,7 +54,7 @@
       text-align: start;
       padding-left: 25%;
       &::before {
-        height: 2.5rem;
+        height: 40px;
       }
     }
     .consumeButton {
@@ -69,7 +69,7 @@
     .title {
       font-size: 45px;
       &::before {
-        height: 2.8rem;
+        height: 44.8px;
       }
     }
   }
@@ -77,28 +77,28 @@
 
 @media (min-width: 1450px) {
   .fridgeRecipesSection {
-    margin-top: 3rem;
+    margin-top: 48px;
     .title {
       font-size: 50px;
       padding-left: 17%;
       &::before {
-        height: 3rem;
+        height: 48px;
       }
     }
     .fridgeRecipesWrapper {
-      padding: 0 5rem;
+      padding: 0 80px;
     }
   }
 }
 
 @media (min-width: 1600px) {
   .fridgeRecipesSection {
-    margin-top: 2rem;
+    margin-top: 32px;
     .title {
       padding-left: 7%;
     }
     .fridgeRecipesWrapper {
-      padding: 0 7rem;
+      padding: 0 112px;
     }
   }
 }

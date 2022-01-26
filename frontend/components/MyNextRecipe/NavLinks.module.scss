@@ -4,13 +4,13 @@
   height: 100vh;
   width: 100vw;
   background-color: $background-color;
-  padding-top: 10rem;
+  padding-top: 160px;
   .navLink {
     text-decoration: none;
     color: $primary-color;
     font-weight: 600;
     border-top: 1px solid $accent-color;
-    padding: 1.7rem 2rem 1.7rem 2.5rem;
+    padding: 27.2px 32px 27.2px 40px;
     &:last-child {
       border-bottom: 1px solid $accent-color;
     }
@@ -24,8 +24,8 @@
   .navButtons {
     text-align: center;
     .navLink {
-      padding-left: 0rem;
-      padding-right: 0rem;
+      padding-left: 0px;
+      padding-right: 0px;
     }
   }
 }
@@ -37,12 +37,12 @@
     width: unset;
     background-color: none;
     justify-content: end;
-    padding-top: 1rem;
-    padding-right: 2rem;
+    padding-top: 16px;
+    padding-right: 32px;
     .navLink {
       border: none;
-      padding: 1rem;
-      padding-right: 1.2rem;
+      padding: 16px;
+      padding-right: 19.2px;
       font-weight: 500;
       &:last-child {
         border-bottom: none;
@@ -53,18 +53,18 @@
 
 @media (min-width: 1450px) {
   .navButtons {
-    padding-right: 3rem;
+    padding-right: 48px;
     .navLink {
-      padding-right: 2rem;
+      padding-right: 32px;
     }
   }
 }
 
 @media (min-width: 1600px) {
   .navButtons {
-    padding-right: 4rem;
+    padding-right: 64px;
     .navLink {
-      padding-right: 3rem;
+      padding-right: 48px;
     }
   }
 }
