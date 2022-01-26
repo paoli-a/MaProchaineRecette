@@ -1,28 +1,28 @@
 .button {
   background: none;
   cursor: pointer;
-  padding: 5px 13px 5px 13px;
-  font-size: 13px;
+  padding: 5rem 13rem 5rem 13rem;
+  font-size: 13rem;
   font-weight: 500;
 }
 
 .secondaryButton {
-  border-radius: 3px;
-  border: 1px solid $primary-color;
+  border-radius: 3rem;
+  border: 1rem solid $primary-color;
 }
 
 .secondaryButtonAccent {
-  border-radius: 15px;
-  border: 1px solid $accent-color;
+  border-radius: 15rem;
+  border: 1rem solid $accent-color;
   color: $accent-color;
 }
 
 .collapsibleButton {
-  height: 25px;
+  height: 25rem;
   background-repeat: no-repeat;
   background-position: 91% 60%;
-  padding: 0.3rem 2rem 1.4rem 0.6rem;
-  background-size: 14px 14px;
+  padding: 4.8rem 32rem 22.4rem 9.6rem;
+  background-size: 14rem 14rem;
   &.collapsibleButtonOpened {
     background-image: url(../../public/images/fleche_dropdown_haut.png);
   }

@@ -1,16 +1,38 @@
+:root {
+  font-size: 6.25%;
+}
+
+@media (min-width: 2000px) {
+  :root {
+    font-size: 7%;
+  }
+}
+
+@media (min-width: 2400px) {
+  :root {
+    font-size: 7.75%;
+  }
+}
+
+@media (min-width: 2800px) {
+  :root {
+    font-size: 8.5%;
+  }
+}
+
 body {
   margin: 0;
   font-family: "Montserrat", sans-serif;
-  font-size: 16px;
+  font-size: 16rem;
   color: $primary-color;
 }
 
 h1 {
-  font-size: 28px;
+  font-size: 28rem;
 }
 
 h2 {
-  font-size: 22px;
+  font-size: 22rem;
 }
 
 fieldset {
@@ -24,7 +46,7 @@ fieldset legend {
 }
 
 select {
-  border: 1px solid #d3d3d3;
+  border: 1rem solid #d3d3d3;
   background-color: rgb(248, 248, 248);
 }
 

@@ -4,15 +4,15 @@
   height: 100vh;
   width: 100vw;
   background-color: $background-color;
-  padding-top: 10rem;
+  padding-top: 160rem;
   .navLink {
     text-decoration: none;
     color: $primary-color;
     font-weight: 600;
-    border-top: 1px solid $accent-color;
-    padding: 1.7rem 2rem 1.7rem 2.5rem;
+    border-top: 1rem solid $accent-color;
+    padding: 27.2rem 32rem 27.2rem 40rem;
     &:last-child {
-      border-bottom: 1px solid $accent-color;
+      border-bottom: 1rem solid $accent-color;
     }
     &.active {
       color: $accent-color;
@@ -37,12 +37,12 @@
     width: unset;
     background-color: none;
     justify-content: end;
-    padding-top: 1rem;
-    padding-right: 2rem;
+    padding-top: 16rem;
+    padding-right: 32rem;
     .navLink {
       border: none;
-      padding: 1rem;
-      padding-right: 1.2rem;
+      padding: 16rem;
+      padding-right: 19.2rem;
       font-weight: 500;
       &:last-child {
         border-bottom: none;
@@ -53,18 +53,18 @@
 
 @media (min-width: 1450px) {
   .navButtons {
-    padding-right: 3rem;
+    padding-right: 48rem;
     .navLink {
-      padding-right: 2rem;
+      padding-right: 32rem;
     }
   }
 }
 
 @media (min-width: 1600px) {
   .navButtons {
-    padding-right: 4rem;
+    padding-right: 64rem;
     .navLink {
-      padding-right: 3rem;
+      padding-right: 48rem;
     }
   }
 }

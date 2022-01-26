@@ -1,9 +1,9 @@
 .recipe {
-  padding: 20px 20px 20px 25px;
-  box-shadow: 2px 2px 4px 2px rgba(0, 0, 0, 0.1);
+  padding: 20rem 20rem 20rem 25rem;
+  box-shadow: 2rem 2rem 4rem 2rem rgba(0, 0, 0, 0.1);
   background-color: #fafafa;
-  border-radius: 10px;
-  margin-top: 2rem;
+  border-radius: 10rem;
+  margin-top: 32rem;
 
   .header {
     display: flex;
@@ -14,13 +14,13 @@
   .title {
     margin-top: 0;
     margin-bottom: 0;
-    padding: 0 1.2rem 0.5rem 0;
+    padding: 0 19.2rem 8rem 0;
   }
 
   .contentWrapper {
     font-weight: 500;
-    letter-spacing: 0.3px;
-    font-size: 13px;
+    letter-spacing: 0.3rem;
+    font-size: 13rem;
 
     .recipeDescription {
       line-height: 1.4;
@@ -30,14 +30,14 @@
 
 @media (min-width: 750px) {
   .recipe {
-    padding: 25px 20px 20px 30px;
+    padding: 25rem 20rem 20rem 30rem;
     .title {
-      font-size: 28px;
-      margin-bottom: 0.9rem;
-      padding-right: 2.5rem;
+      font-size: 28rem;
+      margin-bottom: 14.4rem;
+      padding-right: 40rem;
     }
     .contentWrapper {
-      font-size: 14px;
+      font-size: 14rem;
     }
   }
 }
@@ -46,10 +46,10 @@
   .recipe {
     flex-basis: 44%;
     .title {
-      font-size: 30px;
+      font-size: 30rem;
     }
     .contentWrapper {
-      font-size: 16px;
+      font-size: 16rem;
     }
   }
 }
@@ -57,13 +57,19 @@
 @media (min-width: 1600px) {
   .recipe {
     flex-basis: 43%;
-    padding: 32px 25px 20px 40px;
+    padding: 32rem 25rem 20rem 40rem;
   }
 }
 
 @media (min-width: 1700px) {
   .recipe {
-    flex-basis: 42%;
-    padding: 32px 25px 20px 40px;
+    flex-basis: 26%;
+    padding: 32rem 25rem 20rem 40rem;
+  }
+}
+
+@media (min-width: 2200px) {
+  .recipe {
+    flex-basis: 27%;
   }
 }

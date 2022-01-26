@@ -1,5 +1,5 @@
 .fridgeRecipesSection {
-  margin-top: 5rem;
+  margin-top: 80rem;
   .title {
     text-align: center;
     position: relative;
@@ -10,35 +10,35 @@
       top: 58%;
       left: 0;
       background-color: $secondary-color;
-      height: 1.7rem;
+      height: 27.2rem;
       width: 100vw;
     }
   }
   .fridgeRecipesWrapper {
-    padding: 0 1.5rem;
+    padding: 0 24rem;
   }
 
   .consumeButton {
-    font-size: 11px;
-    padding: 5px 10px;
+    font-size: 11rem;
+    padding: 5rem 10rem;
   }
 }
 
 @media (min-width: 750px) {
   .fridgeRecipesSection {
-    margin-top: 4rem;
+    margin-top: 64rem;
     .title {
-      font-size: 35px;
+      font-size: 35rem;
       &::before {
-        height: 2.2rem;
+        height: 35.2rem;
       }
     }
     .fridgeRecipesWrapper {
-      padding: 0 3rem;
+      padding: 0 48rem;
     }
     .consumeButton {
-      font-size: 12px;
-      padding: 6px 12px;
+      font-size: 12rem;
+      padding: 6rem 12rem;
     }
   }
 }
@@ -48,18 +48,19 @@
     .fridgeRecipes {
       display: flex;
       justify-content: space-between;
+      flex-wrap: wrap;
     }
     .title {
-      font-size: 40px;
+      font-size: 40rem;
       text-align: start;
       padding-left: 25%;
       &::before {
-        height: 2.5rem;
+        height: 40rem;
       }
     }
     .consumeButton {
-      font-size: 13px;
-      padding: 7px 13px;
+      font-size: 13rem;
+      padding: 7rem 13rem;
     }
   }
 }
@@ -67,9 +68,9 @@
 @media (min-width: 1250px) {
   .fridgeRecipesSection {
     .title {
-      font-size: 45px;
+      font-size: 45rem;
       &::before {
-        height: 2.8rem;
+        height: 44.8rem;
       }
     }
   }
@@ -77,28 +78,28 @@
 
 @media (min-width: 1450px) {
   .fridgeRecipesSection {
-    margin-top: 3rem;
+    margin-top: 48rem;
     .title {
-      font-size: 50px;
+      font-size: 50rem;
       padding-left: 17%;
       &::before {
-        height: 3rem;
+        height: 48rem;
       }
     }
     .fridgeRecipesWrapper {
-      padding: 0 5rem;
+      padding: 0 80rem;
     }
   }
 }
 
 @media (min-width: 1600px) {
   .fridgeRecipesSection {
-    margin-top: 2rem;
+    margin-top: 32rem;
     .title {
       padding-left: 7%;
     }
     .fridgeRecipesWrapper {
-      padding: 0 7rem;
+      padding: 0 112rem;
     }
   }
 }

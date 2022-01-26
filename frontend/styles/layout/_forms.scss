@@ -7,8 +7,8 @@
   &__paragraph {
     display: flex;
     flex-wrap: wrap;
-    margin-top: 16px;
-    margin-bottom: 16px;
+    margin-top: 16rem;
+    margin-bottom: 16rem;
   }
   &__combined-container {
     flex: 1;
@@ -16,22 +16,22 @@
     align-items: stretch;
   }
   &__combined-select {
-    padding: 2px;
-    padding-left: 7px;
+    padding: 2rem;
+    padding-left: 7rem;
     letter-spacing: 0.06em;
   }
   &__combined-input {
-    padding: 2px;
-    padding-left: 7px;
+    padding: 2rem;
+    padding-left: 7rem;
   }
   &__input {
     flex: 1;
-    padding: 2px;
-    padding-left: 7px;
+    padding: 2rem;
+    padding-left: 7rem;
   }
   &__checkbox-container {
-    margin-top: 16px;
-    margin-bottom: 16px;
+    margin-top: 16rem;
+    margin-bottom: 16rem;
   }
   &__submit {
     margin-left: auto;
@@ -39,7 +39,7 @@
   }
   &__cancel {
     margin-top: 3%;
-    margin-left: 1rem;
+    margin-left: 16rem;
   }
   &__textarea-container {
     display: flex;
@@ -51,10 +51,10 @@
   }
   &__error-message {
     color: #d14642;
-    margin-top: 3px;
-    margin-left: 5px;
-    margin-right: 5px;
-    font-size: 0.75rem;
+    margin-top: 3rem;
+    margin-left: 5rem;
+    margin-right: 5rem;
+    font-size: 12rem;
     letter-spacing: 0.03333em;
   }
   .container-error {
@@ -62,7 +62,7 @@
     flex-direction: column;
   }
   .field-error {
-    border: solid 1.5px #d14642;
+    border: solid 1.5rem #d14642;
     color: #d14642;
   }
 }
