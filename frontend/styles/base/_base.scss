@@ -2,6 +2,24 @@
   font-size: 6.25%;
 }
 
+@media (min-width: 2000px) {
+  :root {
+    font-size: 7%;
+  }
+}
+
+@media (min-width: 2400px) {
+  :root {
+    font-size: 7.75%;
+  }
+}
+
+@media (min-width: 2800px) {
+  :root {
+    font-size: 8.5%;
+  }
+}
+
 body {
   margin: 0;
   font-family: "Montserrat", sans-serif;
