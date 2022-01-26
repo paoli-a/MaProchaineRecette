@@ -1,11 +1,11 @@
 .toolbar {
-  margin-top: 48px;
+  margin-top: 48rem;
   padding-left: 0;
   padding-right: 0;
 }
 
 .collapsibleWithButton {
-  margin-top: 24px;
+  margin-top: 24rem;
   .collapsibleCategoryListContainer {
     padding: 0;
     .collapsibleCategoryListItem {
@@ -22,16 +22,16 @@
   display: flex;
   flex-wrap: wrap;
   .searchboxInput {
-    font-size: 13px;
-    letter-spacing: 0.48px;
-    border: 1px solid $primary-color;
-    border-radius: 3px;
+    font-size: 13rem;
+    letter-spacing: 0.48rem;
+    border: 1rem solid $primary-color;
+    border-radius: 3rem;
     width: 81%;
-    padding: 4.8px 4.8px 4.8px 9.6px;
+    padding: 4.8rem 4.8rem 4.8rem 9.6rem;
   }
   .searchboxButton {
-    width: 50px;
-    height: 25px;
+    width: 50rem;
+    height: 25rem;
     background-image: url("../../public/images/loupe2.png");
     background-repeat: no-repeat;
     background-position: center;
@@ -52,7 +52,7 @@
 
 @media (min-width: 750px) {
   .toolbar {
-    margin-top: 80px;
+    margin-top: 80rem;
   }
   .toolbarContainer {
     display: flex;
@@ -67,45 +67,45 @@
     justify-content: end;
   }
   .categoryButton {
-    font-size: 14px;
-    height: 30px;
-    padding: 8px 40px 24px 11.2px;
+    font-size: 14rem;
+    height: 30rem;
+    padding: 8rem 40rem 24rem 11.2rem;
   }
   .searchbox {
     .searchboxInput {
-      font-size: 14px;
-      padding: 8.32px 4.8px 6.72px 11.2px;
+      font-size: 14rem;
+      padding: 8.32rem 4.8rem 6.72rem 11.2rem;
     }
     .searchboxButton {
-      height: 30px;
+      height: 30rem;
     }
   }
 }
 
 @media (min-width: 1150px) {
   .categoryButton {
-    font-size: 16px;
-    padding: 8px 43.2px 27.2px 11.2px;
+    font-size: 16rem;
+    padding: 8rem 43.2rem 27.2rem 11.2rem;
   }
   .searchbox {
     .searchboxInput {
-      font-size: 16px;
-      padding: 9.44px 4.8px 6.72px 11.2px;
+      font-size: 16rem;
+      padding: 9.44rem 4.8rem 6.72rem 11.2rem;
     }
     .searchboxButton {
-      height: 35px;
+      height: 35rem;
     }
   }
 }
 
 @media (min-width: 1450px) {
   .toolbar {
-    margin-top: 88px;
+    margin-top: 88rem;
   }
 }
 
 @media (min-width: 1600px) {
   .toolbar {
-    margin-top: 96px;
+    margin-top: 96rem;
   }
 }
