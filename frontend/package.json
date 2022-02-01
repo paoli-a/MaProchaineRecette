@@ -59,7 +59,7 @@
     "eslint-plugin-jsx-a11y": "^6.5.1",
     "eslint-plugin-react": "^7.28.0",
     "eslint-plugin-react-hooks": "^4.3.0",
-    "eslint-plugin-testing-library": "^5.0.4",
+    "eslint-plugin-testing-library": "^5.0.5",
     "faker": "^5.5.3",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^27.4.7",
