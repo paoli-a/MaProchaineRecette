@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import styles from "./RecipesToolbar.module.scss"
+import styles from "./RecipesToolbar.module.scss";
 
 type RecipesToolbarProps = {
   /**
@@ -42,14 +42,10 @@ function RecipesToolbar({
   onChangeSearch,
   categories,
 }: RecipesToolbarProps): JSX.Element {
-  const {
-    register: registerCategories,
-    getValues: getCategoriesValues,
-  } = useForm<CategoryInput>();
-  const {
-    register: registerSearch,
-    handleSubmit: handleSubmitSearch,
-  } = useForm<SearchInput>();
+  const { register: registerCategories, getValues: getCategoriesValues } =
+    useForm<CategoryInput>();
+  const { register: registerSearch, handleSubmit: handleSubmitSearch } =
+    useForm<SearchInput>();
   const [isPannelOpen, setPannelOpen] = useState(false);
   const [categoryValuesUpdated, setCategoryValuesUpdated] = useState(0);
 
@@ -74,10 +70,7 @@ function RecipesToolbar({
   const categoriesKeys = Object.keys(categories);
   const categoriesCheckbox = categoriesKeys.map((category) => {
     return (
-      <li
-        className={styles.collapsibleCategoryListItem}
-        key={category}
-      >
+      <li className={styles.collapsibleCategoryListItem} key={category}>
         <input
           className={styles.collapsibleCheckboxInput}
           type="checkbox"
@@ -113,12 +106,22 @@ function RecipesToolbar({
           <button
             className={styles.searchboxButton}
             data-testid="search-button"
-          ></button>
+          >
+            <img
+              className={styles.searchboxButtonSVG}
+              src="images/loupeSvg.svg"
+              alt="Rechercher"
+            />
+          </button>
         </form>
         <div className={styles.collapsibleWithButton}>
           <button
-            className={`${styles.categoryButton} ${"button"} ${"collapsibleButton"} ${"secondaryButton"} ${
-              isPannelOpen ? "collapsibleButtonOpened" : "collapsibleButtonClosed"
+            className={`${
+              styles.categoryButton
+            } ${"button"} ${"collapsibleButton"} ${"secondaryButton"} ${
+              isPannelOpen
+                ? "collapsibleButtonOpened"
+                : "collapsibleButtonClosed"
             }`}
             aria-expanded="false"
             aria-controls="collapsible-panel"
@@ -127,9 +130,9 @@ function RecipesToolbar({
             Catégories
           </button>
           <form
-          className={`${styles.categoryPanel} ${
-            isPannelOpen ? styles.categoryPanelOpened : "hidden"
-          }`}
+            className={`${styles.categoryPanel} ${
+              isPannelOpen ? styles.categoryPanelOpened : "hidden"
+            }`}
           >
             <ul className={styles.collapsibleCategoryListContainer}>
               {categoriesCheckbox}
