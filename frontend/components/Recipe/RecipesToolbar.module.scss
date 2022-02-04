@@ -1,7 +1,7 @@
 .toolbar {
-  margin-top: 48rem;
   padding-left: 0;
   padding-right: 0;
+  margin: 48rem 0 0 0;
 }
 
 .collapsibleWithButton {
@@ -20,17 +20,17 @@
 
 .searchbox {
   display: flex;
-  flex-wrap: wrap;
   .searchboxInput {
     font-size: 13rem;
     letter-spacing: 0.48rem;
     border: 1rem solid $primary-color;
     border-radius: 3rem;
-    width: 79%;
+    width: 100%;
     padding: 4.8rem 4.8rem 4.8rem 9.6rem;
   }
   .searchboxButton {
-    width: 55rem;
+    padding: 0 3rem 0 0;
+    width: 50rem;
     height: 25rem;
     background-color: $background-color;
     border: none;
@@ -38,7 +38,7 @@
     z-index: -1;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-end;
   }
   .searchboxButtonSVG {
     width: 21rem;
@@ -68,7 +68,7 @@
     margin-top: 0;
   }
   .searchbox {
-    justify-content: end;
+    justify-content: flex-end;
   }
   .categoryButton {
     font-size: 14rem;

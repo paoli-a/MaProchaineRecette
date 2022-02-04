@@ -8,14 +8,11 @@
       position: absolute;
       z-index: -1;
       top: 58%;
-      left: 0;
+      left: -24rem;
       background-color: $secondary-color;
       height: 27.2rem;
       width: 100vw;
     }
-  }
-  .fridgeRecipesWrapper {
-    padding: 0 24rem;
   }
   .fridgeRecipes {
     margin-top: 32rem;
@@ -35,10 +32,8 @@
       font-size: 35rem;
       &::before {
         height: 35.2rem;
+        left: -48rem;
       }
-    }
-    .fridgeRecipesWrapper {
-      padding: 0 48rem;
     }
     .consumeButton {
       margin-top: 3rem;
@@ -59,7 +54,7 @@
     .title {
       font-size: 40rem;
       text-align: start;
-      padding-left: 25%;
+      padding-left: 22%;
       &::before {
         height: 40rem;
       }
@@ -88,13 +83,11 @@
     margin-top: 48rem;
     .title {
       font-size: 50rem;
-      padding-left: 17%;
+      padding-left: 13%;
       &::before {
         height: 48rem;
+        left: -80rem;
       }
-    }
-    .fridgeRecipesWrapper {
-      padding: 0 80rem;
     }
   }
 }
@@ -103,26 +96,10 @@
   .fridgeRecipesSection {
     margin-top: 32rem;
     .title {
-      padding-left: 7%;
-    }
-    .fridgeRecipesWrapper {
-      padding: 0 112rem;
-    }
-  }
-}
-
-@media (min-width: 1750px) {
-  .fridgeRecipesSection {
-    .title {
-      padding-left: 6.5%;
-    }
-  }
-}
-
-@media (min-width: 1800px) {
-  .fridgeRecipesSection {
-    .title {
-      padding-left: 6%;
+      padding-left: 0;
+      &::before {
+        left: -112rem;
+      }
     }
   }
 }
