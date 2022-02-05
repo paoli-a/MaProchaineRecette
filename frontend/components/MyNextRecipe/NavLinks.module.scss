@@ -38,11 +38,10 @@
     background-color: none;
     justify-content: end;
     padding-top: 16rem;
-    padding-right: 32rem;
     .navLink {
       border: none;
-      padding: 16rem;
-      padding-right: 19.2rem;
+      padding: 16rem 0;
+      margin-left: 32rem;
       font-weight: 500;
       &:last-child {
         border-bottom: none;
@@ -53,18 +52,16 @@
 
 @media (min-width: 1450px) {
   .navButtons {
-    padding-right: 48rem;
     .navLink {
-      padding-right: 32rem;
+      margin-left: 64rem;
     }
   }
 }
 
 @media (min-width: 1600px) {
   .navButtons {
-    padding-right: 64rem;
     .navLink {
-      padding-right: 48rem;
+      margin-left: 96rem;
     }
   }
 }

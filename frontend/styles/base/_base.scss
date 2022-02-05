@@ -22,9 +22,28 @@
 
 body {
   margin: 0;
+  padding: 0 24rem;
   font-family: "Montserrat", sans-serif;
   font-size: 16rem;
   color: $primary-color;
+}
+
+@media (min-width: 750px) {
+  body {
+    padding: 0 48rem;
+  }
+}
+
+@media (min-width: 1450px) {
+  body {
+    padding: 0 80rem;
+  }
+}
+
+@media (min-width: 1600px) {
+  body {
+    padding: 0 112rem;
+  }
 }
 
 h1 {
