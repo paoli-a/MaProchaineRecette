@@ -14,18 +14,9 @@ type FormInputs = {
   recipeTitle: string;
   recipeTime: string;
   recipeDescription: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  [category: string]: any;
+  categories: string[];
 };
-
-type FormSubmit = {
-  recipeTitle: string;
-  recipeTime: string;
-  recipeDescription: string;
-  categories: (string | boolean)[];
-};
-
-interface SubmitRecipe extends FormSubmit {
+interface SubmitRecipe extends FormInputs {
   ingredients: RecipeIngredient[];
 }
 
@@ -55,6 +46,7 @@ function RecipesForm<T extends FridgeRecipe | CatalogRecipe>({
     setValue,
     setFocus,
   } = useForm<FormInputs>();
+
   const [ingredients, setIngredients] = useState<RecipeIngredient[]>([]);
   const [ingredientName, setIngredientName] = useState("");
   const [ingredientAmount, setIngredientAmount] = useState("");
@@ -70,12 +62,12 @@ function RecipesForm<T extends FridgeRecipe | CatalogRecipe>({
     if (recipeToEdit) {
       setFocus("recipeTitle");
       setValue("recipeTitle", recipeToEdit.title);
-      const categoriesToEdit: (string | boolean)[] = [];
+      const categoriesToEdit: string[] = [];
       categories.forEach((category: string) => {
         if (recipeToEdit.categories.includes(category)) {
           categoriesToEdit.push(category);
         } else {
-          categoriesToEdit.push(false);
+          categoriesToEdit.push("");
         }
         return categoriesToEdit;
       });
@@ -86,7 +78,7 @@ function RecipesForm<T extends FridgeRecipe | CatalogRecipe>({
     }
   }, [recipeToEdit, setFocus, categories, setValue]);
 
-  const onSubmitForm = (data: FormSubmit) => {
+  const onSubmitForm = (data: FormInputs) => {
     if (ingredients.length === 0) {
       setIngredientError(
         "Au moins un ingrédient doit être présent dans la recette"
@@ -187,7 +179,7 @@ function RecipesForm<T extends FridgeRecipe | CatalogRecipe>({
 
   const validateCategories = () => {
     for (let i = 0; i < categories.length; i++) {
-      if (watch(`categories[${i}]`)) {
+      if (watch(`categories.${i}`)) {
         return true;
       }
     }
@@ -226,7 +218,7 @@ function RecipesForm<T extends FridgeRecipe | CatalogRecipe>({
               id="recipeTitle"
               defaultValue=""
               {...register("recipeTitle", { required: true })}
-              aria-invalid={errors.ingredientName ? "true" : "false"}
+              aria-invalid={errors.recipeTitle ? "true" : "false"}
               aria-required="true"
             />
             {errors.recipeTitle && (
@@ -246,7 +238,7 @@ function RecipesForm<T extends FridgeRecipe | CatalogRecipe>({
                     type="checkbox"
                     value={category}
                     aria-label={category}
-                    {...register(`categories[${index}]`, {
+                    {...register(`categories.${index}`, {
                       validate: validateCategories,
                     })}
                     aria-invalid={errors.categories ? "true" : "false"}
