@@ -78,7 +78,7 @@ function CatalogRecipes() {
   };
 
   const handleSubmit = (data: SubmitRecipe) => {
-    const categories = data.categories.filter(Boolean) as string[];
+    const categories = data.categories.filter(Boolean);
     const recipeToSend: CatalogRecipeToSend = {
       categories: categories,
       title: data.recipeTitle,
