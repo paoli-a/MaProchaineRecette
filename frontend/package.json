@@ -35,7 +35,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.16.12",
-    "@codeceptjs/configure": "^0.7.0",
+    "@codeceptjs/configure": "^0.8.0",
     "@testing-library/dom": "^8.11.3",
     "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/react": "^12.1.2",
