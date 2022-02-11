@@ -1,0 +1,22 @@
+.fridgeIngredients {
+  margin-top: 100rem;
+  position: relative;
+}
+
+.title {
+  &::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    top: 1.7%;
+    left: -24rem;
+    background-color: $secondary-color;
+    height: 12rem;
+    width: 100vw;
+  }
+}
+
+.ingredientDetails {
+  list-style-type: none;
+  padding: 0;
+}
