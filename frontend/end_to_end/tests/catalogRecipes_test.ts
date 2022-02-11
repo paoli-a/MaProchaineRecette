@@ -81,15 +81,15 @@ Scenario("Add new recipe", async ({ I }) => {
     I.see("Marinade");
     I.see("Salade légère");
   });
-  I.click(locate("img").withAttr({ alt: "Supprimer" }));
-  I.click(locate("img").withAttr({ alt: "Supprimer" }));
+  I.click("Supprimer la recette");
+  I.click("Supprimer la recette");
 });
 
 Scenario("Remove recipe", ({ I }) => {
   I.amOnPage("/");
   I.click("Catalogue recettes");
   I.see("Marinade");
-  I.click(locate("img").withAttr({ alt: "Supprimer" }));
+  I.click("Supprimer la recette");
   I.dontSee("Marinade");
 });
 
@@ -120,15 +120,15 @@ there`,
       I.see("Marinade");
       I.see("Salade légère");
     });
-    I.click(locate("img").withAttr({ alt: "Supprimer" }));
-    I.click(locate("img").withAttr({ alt: "Supprimer" }));
+    I.click("Supprimer la recette");
+    I.click("Supprimer la recette");
   }
 );
 
 Scenario("Edit existing catalog recipe", async ({ I }) => {
   I.amOnPage("/");
   I.click("Catalogue recettes");
-  I.click(locate("img").withAttr({ alt: "Modifier" }));
+  I.click("Modifier la recette");
   I.fillField("Titre de la recette :", "Marinade de saumon express");
   I.fillField("Nom :", "ciboulette");
   I.fillField("Quantité nécessaire :", "1");

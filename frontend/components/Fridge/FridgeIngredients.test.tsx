@@ -90,18 +90,17 @@ it("displays provided units", async () => {
 describe("functionalities work properly", () => {
   describe("remove functionality", () => {
     it("removes the correct ingredient when clicking on remove button", async () => {
-      const {
-        getByText,
-        getAllByRole,
-        queryByText,
-      } = await renderIngredients();
+      const { getByText, getAllByRole, queryByText } =
+        await renderIngredients();
       const ingredientPresent = getByText("Epinards", {
         exact: false,
       });
       const axiosDeleteResponse = { data: "" };
       mockedAxios.delete.mockResolvedValue(axiosDeleteResponse);
       const parentListItem = ingredientPresent.parentElement!;
-      const button = within(parentListItem).getByAltText("Supprimer");
+      const button = within(parentListItem).getByLabelText(
+        "Supprimer l'ingrédient"
+      );
       mockedAxios.get.mockResolvedValue({
         data: [
           {
@@ -139,7 +138,9 @@ describe("functionalities work properly", () => {
       );
       let ingredientToRemoved = getByText("Epinards", { exact: false });
       const parentListItem = ingredientToRemoved.parentElement!;
-      const button = within(parentListItem).getByAltText("Supprimer");
+      const button = within(parentListItem).getByLabelText(
+        "Supprimer l'ingrédient"
+      );
       fireEvent.click(button);
       await waitFor(() => expect(mockedAxios.delete).toHaveBeenCalledTimes(1));
       ingredientToRemoved = getByText("Epinards", { exact: false });
@@ -153,11 +154,8 @@ describe("functionalities work properly", () => {
 
   describe("adding functionality", () => {
     it("adds the correct ingredient when filling the form and clicking on submit", async () => {
-      const {
-        getByLabelText,
-        getByText,
-        getAllByRole,
-      } = await renderIngredients();
+      const { getByLabelText, getByText, getAllByRole } =
+        await renderIngredients();
       mockedAxios.get.mockResolvedValue({
         data: [
           {
@@ -218,11 +216,8 @@ describe("functionalities work properly", () => {
     });
 
     async function checkMissingInput(inputName: string) {
-      const {
-        getByLabelText,
-        getByText,
-        queryByText,
-      } = await renderIngredients();
+      const { getByLabelText, getByText, queryByText } =
+        await renderIngredients();
       await addIngredient(
         getByLabelText,
         getByText,
@@ -234,11 +229,8 @@ describe("functionalities work properly", () => {
     }
 
     it(`does not add the ingredient if no name was provided`, async () => {
-      const {
-        getByLabelText,
-        getByText,
-        queryByText,
-      } = await renderIngredients();
+      const { getByLabelText, getByText, queryByText } =
+        await renderIngredients();
       await addIngredient(
         getByLabelText,
         getByText,
@@ -252,11 +244,8 @@ describe("functionalities work properly", () => {
     });
 
     it(`does not add the ingredient if amount is negative or null`, async () => {
-      const {
-        getByLabelText,
-        getByText,
-        queryByText,
-      } = await renderIngredients();
+      const { getByLabelText, getByText, queryByText } =
+        await renderIngredients();
       const values = ["kiwi", -1, "2100-04-03", "kg"];
       await addIngredient(getByLabelText, getByText, values);
       let kiwi = queryByText(/kiwi/);
@@ -272,11 +261,8 @@ describe("functionalities work properly", () => {
     });
 
     it(`does not add the ingredient if the given date is older than the current date`, async () => {
-      const {
-        getByLabelText,
-        getByText,
-        queryByText,
-      } = await renderIngredients();
+      const { getByLabelText, getByText, queryByText } =
+        await renderIngredients();
       const values = ["kiwi", 5, "2019-04-03", "g"];
       await addIngredient(getByLabelText, getByText, values);
       const kiwi = queryByText(/kiwi/);
@@ -284,11 +270,8 @@ describe("functionalities work properly", () => {
     });
 
     it(`does not add the ingredient if the ingredient is not in catalogIngredients`, async () => {
-      const {
-        getByLabelText,
-        getByText,
-        queryByText,
-      } = await renderIngredients();
+      const { getByLabelText, getByText, queryByText } =
+        await renderIngredients();
       await addIngredient(getByLabelText, getByText, [
         "Poireaux",
         50,
@@ -305,11 +288,8 @@ describe("functionalities work properly", () => {
 
     it(`adds the ingredient returned by the backend and removes the ingredient that
    have the same id if there is one`, async () => {
-      const {
-        getByLabelText,
-        getByText,
-        queryByText,
-      } = await renderIngredients();
+      const { getByLabelText, getByText, queryByText } =
+        await renderIngredients();
       mockedAxios.get.mockResolvedValue({
         data: [
           {
@@ -360,9 +340,9 @@ describe("functionalities work properly", () => {
         },
       };
       mockedAxios.post.mockResolvedValue(axiosPostResponse);
-      const inputName = getByLabelText("Nom de l'ingrédient :");
-      const inputAmount = getByLabelText("Quantité :");
-      const inputDate = getByLabelText("Date de péremption :");
+      const inputName = getByLabelText("Nom de l'ingrédient");
+      const inputAmount = getByLabelText("Quantité");
+      const inputDate = getByLabelText("Date de péremption");
       const selectedUnit = getByLabelText("Unité");
       const submitButton = getByText("Ajouter");
       fireEvent.change(inputName, { target: { value: "Fraises" } });
@@ -414,16 +394,13 @@ describe("functionalities work properly", () => {
 
     it(`displays an error message and does not add the ingredient if the ingredient adding
       was not successful on backend side`, async () => {
-      const {
-        getByLabelText,
-        getByText,
-        queryByText,
-      } = await renderIngredients();
+      const { getByLabelText, getByText, queryByText } =
+        await renderIngredients();
       const axiosPostResponse = {};
       mockedAxios.post.mockRejectedValue(axiosPostResponse);
-      const inputName = getByLabelText("Nom de l'ingrédient :");
-      const inputAmount = getByLabelText("Quantité :");
-      const inputDate = getByLabelText("Date de péremption :");
+      const inputName = getByLabelText("Nom de l'ingrédient");
+      const inputAmount = getByLabelText("Quantité");
+      const inputDate = getByLabelText("Date de péremption");
       const selectedUnit = getByLabelText("Unité");
       const submitButton = getByText("Ajouter");
       fireEvent.change(inputName, { target: { value: "Beurre" } });
@@ -456,9 +433,9 @@ describe("functionalities work properly", () => {
         },
       };
       mockedAxios.post.mockResolvedValue(axiosPostResponse);
-      const inputName = getByLabelText("Nom de l'ingrédient :");
-      const inputAmount = getByLabelText("Quantité :");
-      const inputDate = getByLabelText("Date de péremption :");
+      const inputName = getByLabelText("Nom de l'ingrédient");
+      const inputAmount = getByLabelText("Quantité");
+      const inputDate = getByLabelText("Date de péremption");
       const selectedUnit = getByLabelText("Unité");
       const submitButton = getByText("Ajouter");
       if (!missingFields.includes("name")) {
@@ -483,17 +460,14 @@ describe("functionalities work properly", () => {
   });
 
   describe("edit functionality", () => {
-    it(`transforms the firdge ingredient add form to an edit form when
+    it(`transforms the fridge ingredient add form to an edit form when
      clicking on an edit button`, async () => {
-      const {
-        getByText,
-        queryByText,
-        getByDisplayValue,
-      } = await renderIngredients();
+      const { getByText, queryByText, getByDisplayValue } =
+        await renderIngredients();
       clickOnEditIngredient(getByText, "Epinards");
-      expect(getByText("Modifier un ingrédient frigo :")).toBeInTheDocument();
+      expect(getByText("Modifier un ingrédient frigo")).toBeInTheDocument();
       expect(
-        queryByText("Ajouter un ingrédient frigo :")
+        queryByText("Ajouter un ingrédient frigo")
       ).not.toBeInTheDocument();
       expect(getByText("Modifier")).toBeInTheDocument();
       expect(queryByText("Ajouter")).not.toBeInTheDocument();
@@ -507,13 +481,10 @@ describe("functionalities work properly", () => {
 
     it(`keeps the edit mode but changes the form values when clicking on
     another edit button`, async () => {
-      const {
-        getByText,
-        getByDisplayValue,
-        queryByDisplayValue,
-      } = await renderIngredients();
+      const { getByText, getByDisplayValue, queryByDisplayValue } =
+        await renderIngredients();
       clickOnEditIngredient(getByText, "Epinards");
-      expect(getByText("Modifier un ingrédient frigo :")).toBeInTheDocument();
+      expect(getByText("Modifier un ingrédient frigo")).toBeInTheDocument();
       const ingredientName1Present = getByDisplayValue("Epinards");
       expect(ingredientName1Present).toBeInTheDocument();
       clickOnEditIngredient(getByText, "Mascarpone");
@@ -525,31 +496,24 @@ describe("functionalities work properly", () => {
 
     it(`transforms the fridge ingredient edit form to an add form and reset
     the values when clicking on the cancel button`, async () => {
-      const {
-        getByText,
-        getByDisplayValue,
-        queryByText,
-        queryByDisplayValue,
-      } = await renderIngredients();
+      const { getByText, getByDisplayValue, queryByText, queryByDisplayValue } =
+        await renderIngredients();
       clickOnEditIngredient(getByText, "Epinards");
-      expect(getByText("Modifier un ingrédient frigo :")).toBeInTheDocument();
+      expect(getByText("Modifier un ingrédient frigo")).toBeInTheDocument();
       expect(queryByText("Ajouter")).not.toBeInTheDocument();
       const ingredientNamePresent = getByDisplayValue("Epinards");
       expect(ingredientNamePresent).toBeInTheDocument();
       const cancelButton = getByText("Annuler");
       fireEvent.click(cancelButton);
-      expect(getByText("Ajouter un ingrédient frigo :")).toBeInTheDocument();
+      expect(getByText("Ajouter un ingrédient frigo")).toBeInTheDocument();
       expect(queryByText("Modifier")).not.toBeInTheDocument();
       const ingredientNameAbsent = queryByDisplayValue("Epinards");
       expect(ingredientNameAbsent).not.toBeInTheDocument();
     });
 
     it(`modify the ingredient when clicking on the edit button`, async () => {
-      const {
-        getByText,
-        getByLabelText,
-        findByText,
-      } = await renderIngredients();
+      const { getByText, getByLabelText, findByText } =
+        await renderIngredients();
       clickOnEditIngredient(getByText, "Epinards");
       const axiosGetResponse = {
         data: [
@@ -562,8 +526,8 @@ describe("functionalities work properly", () => {
           },
         ],
       };
-      const inputAmount = getByLabelText("Quantité :");
-      const inputDate = getByLabelText("Date de péremption :");
+      const inputAmount = getByLabelText("Quantité");
+      const inputDate = getByLabelText("Date de péremption");
       const selectedUnit = getByLabelText("Unité");
       fireEvent.change(inputAmount, { target: { value: 80 } });
       fireEvent.change(inputDate, { target: { value: "2200-05-03" } });
@@ -580,17 +544,13 @@ describe("functionalities work properly", () => {
 
     it(`displays an error message and does not modify the ingredient if the
     ingredient modification was not successful on backend side`, async () => {
-      const {
-        getByText,
-        getByLabelText,
-        findByText,
-        queryByText,
-      } = await renderIngredients();
+      const { getByText, getByLabelText, findByText, queryByText } =
+        await renderIngredients();
       clickOnEditIngredient(getByText, "Epinards");
       const axiosPutResponse = {};
       mockedAxios.put.mockRejectedValue(axiosPutResponse);
-      const inputAmount = getByLabelText("Quantité :");
-      const inputDate = getByLabelText("Date de péremption :");
+      const inputAmount = getByLabelText("Quantité");
+      const inputDate = getByLabelText("Date de péremption");
       fireEvent.change(inputAmount, { target: { value: 80 } });
       fireEvent.change(inputDate, { target: { value: "2200-05-03" } });
       const editButton = getByText("Modifier");
@@ -611,14 +571,16 @@ describe("functionalities work properly", () => {
     ) {
       const ingredient = getByText(ingredientText, { exact: false });
       const parentListItem = ingredient.parentElement!;
-      const button = within(parentListItem).getByAltText("Modifier");
+      const button = within(parentListItem).getByLabelText(
+        "Modifier l'ingrédient"
+      );
       fireEvent.click(button);
     }
   });
 
   it(`provides the right proposals when a letter is entered in the input of the ingredient name`, async () => {
     const { getByLabelText, getAllByTestId } = await renderIngredients();
-    const inputIngredientName = getByLabelText("Nom de l'ingrédient :");
+    const inputIngredientName = getByLabelText("Nom de l'ingrédient");
     fireEvent.change(inputIngredientName, { target: { value: "f" } });
     const options = getAllByTestId("suggestions");
     const fraises = options[0] as HTMLOptionElement;

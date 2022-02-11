@@ -4,6 +4,24 @@
   padding: 5rem 13rem 5rem 13rem;
   font-size: 13rem;
   font-weight: 500;
+  font-family: "Montserrat", sans-serif;
+}
+
+.select {
+  background: transparent;
+  border: 1px solid $primary-color;
+  border-radius: 3rem;
+  padding: 4.8rem 10rem 4.8rem 8rem;
+}
+
+.primaryButton {
+  background-color: $accent-color;
+  border-radius: 13rem;
+  color: $background-color;
+  border: 1rem solid $accent-color;
+  font-size: 15rem;
+  font-weight: 600;
+  padding: 6rem 15rem;
 }
 
 .secondaryButton {

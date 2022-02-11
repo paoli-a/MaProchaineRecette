@@ -4,6 +4,7 @@ import { FridgeIngredient, SuggestionElement } from "../../constants/types";
 import { useCatalogIngredients, useUnits } from "../../hooks";
 import InputSuggestions from "../InputSuggestions/InputSuggestions";
 import type { SubmitFridgeIngredient } from "./FridgeIngredients";
+import styles from "./FridgeIngredientsForm.module.scss";
 
 type FormInputs = {
   ingredientName: string;
@@ -108,19 +109,19 @@ function FridgeIngredientsForm({
   }, [ingredientToEdit]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    <form className="form" onSubmit={handleSubmit(onSubmitWrapper)}>
+    <form className={styles.form} onSubmit={handleSubmit(onSubmitWrapper)}>
       <fieldset>
-        <legend>
+        <legend className={styles.legend}>
           {" "}
           {ingredientToEdit
-            ? "Modifier un ingrédient frigo :"
-            : "Ajouter un ingrédient frigo :"}
+            ? "Modifier un ingrédient frigo"
+            : "Ajouter un ingrédient frigo"}
         </legend>
-        <div className="form__paragraph">
-          <label className="form__label" htmlFor="ingredientName">
-            Nom de l'ingrédient :{" "}
+        <div className={styles.paragraph}>
+          <label className={styles.label} htmlFor="ingredientName">
+            Nom de l'ingrédient{" "}
           </label>
-          <div className="container-error">
+          <div className={styles.containerError}>
             <InputSuggestions
               elements={catalogIngredients}
               id="ingredientName"
@@ -130,8 +131,8 @@ function FridgeIngredientsForm({
               type="text"
               className={
                 errors.ingredientName
-                  ? "form__input field-error"
-                  : "form__input"
+                  ? `${styles.input} ${styles.inputIngredientName} ${styles.fieldError}`
+                  : `${styles.input} ${styles.inputIngredientName}`
               }
               aria-invalid={errors.ingredientName ? "true" : "false"}
               aria-required="true"
@@ -142,23 +143,25 @@ function FridgeIngredientsForm({
               })}
             />
             {errors.ingredientName && (
-              <p className="form__error-message" role="alert">
+              <p className={styles.errorMessage} role="alert">
                 {errors.ingredientName.message}
               </p>
             )}
           </div>
         </div>
-        <div className="form__paragraph">
-          <label className="form__label" htmlFor="ingredientAmount">
-            Quantité :{" "}
+        <div className={styles.paragraph}>
+          <label className={styles.label} htmlFor="ingredientAmount">
+            Quantité{" "}
           </label>
-          <span className="form__combined-container">
-            <div className="container-error">
+          <span className={styles.combinedContainer}>
+            <div
+              className={`${styles.containerError} ${styles.amountInputContainer}`}
+            >
               <input
                 className={
                   errors.ingredientAmount
-                    ? "form__combined-input field-error"
-                    : "form__combined-input"
+                    ? `${styles.input} ${styles.inputAmount} ${styles.fieldError}`
+                    : `${styles.input} ${styles.inputAmount}`
                 }
                 type="number"
                 id="ingredientAmount"
@@ -171,17 +174,19 @@ function FridgeIngredientsForm({
                 aria-required="true"
               />
               {errors.ingredientAmount && (
-                <p className="form__error-message" role="alert">
+                <p className={styles.errorMessage} role="alert">
                   {errors.ingredientAmount.message}{" "}
                 </p>
               )}
             </div>
-            <div className="container-error">
+            <div
+              className={`${styles.containerError} ${styles.unitSelectContainer}`}
+            >
               <select
                 className={
                   errors.unit
-                    ? "form__combined-select field-error"
-                    : "form__combined-select"
+                    ? `select fieldError ${styles.select}`
+                    : `select ${styles.select}`
                 }
                 defaultValue=""
                 {...register("unit", { required: true })}
@@ -199,23 +204,23 @@ function FridgeIngredientsForm({
                 })}
               </select>
               {errors.unit && (
-                <p className="form__error-message" role="alert">
+                <p className={styles.errorMessage} role="alert">
                   Ce champ est obligatoire
                 </p>
               )}
             </div>
           </span>
         </div>
-        <div className="form__paragraph">
-          <label className="form__label" htmlFor="expirationDate">
-            Date de péremption :{" "}
+        <div className={styles.paragraph}>
+          <label className={styles.label} htmlFor="expirationDate">
+            Date de péremption{" "}
           </label>
-          <div className="container-error">
+          <div className={styles.containerError}>
             <input
               className={
                 errors.expirationDate
-                  ? "form__input field-error"
-                  : "form__input"
+                  ? `${styles.input} ${styles.fieldError}`
+                  : styles.input
               }
               type="date"
               id="expirationDate"
@@ -227,21 +232,23 @@ function FridgeIngredientsForm({
               })}
             />
             {errors.expirationDate && (
-              <p className="form__error-message" role="alert">
+              <p className={styles.errorMessage} role="alert">
                 {errors.expirationDate.message}
               </p>
             )}
           </div>
         </div>
-        <p className="form__paragraph">
+        <p className={`${styles.paragraph} ${styles.buttonContainer}`}>
           <input
-            className="button form__submit"
+            className={`${styles.submitButton} button primaryButton
+            `}
             type="submit"
             value={ingredientToEdit ? "Modifier" : "Ajouter"}
           />
           {ingredientToEdit && (
             <button
-              className="button form__cancel"
+              className={`${styles.cancelButton} ${"button"}
+              `}
               type="reset"
               onClick={() => handleCancelClick()}
             >

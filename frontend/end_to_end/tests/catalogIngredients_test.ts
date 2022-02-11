@@ -57,7 +57,7 @@ suggestions when an ingredient name is being entered in FridgeIngredients`,
     I.fillField("Nom de l'ingrédient à ajouter :", "Navets");
     I.click("Envoyer");
     I.click("Recettes possibles");
-    I.fillField("Nom de l'ingrédient :", "Nav");
+    I.fillField("Nom de l'ingrédient", "Nav");
     I.seeElementInDOM("option[value='Navets']");
     I.click("Catalogue ingrédients");
     I.click("X");

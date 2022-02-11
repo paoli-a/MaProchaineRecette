@@ -51,22 +51,17 @@ h1 {
 }
 
 h2 {
-  font-size: 22rem;
+  font-size: 24rem;
 }
 
 fieldset {
   border: 0;
+  padding: 0;
+  margin: 0;
 }
 
-fieldset legend {
-  margin-bottom: 5%;
-  margin-top: 3%;
-  text-decoration: underline;
-}
-
-select {
-  border: 1rem solid #d3d3d3;
-  background-color: rgb(248, 248, 248);
+legend {
+  padding: 0;
 }
 
 .hidden {

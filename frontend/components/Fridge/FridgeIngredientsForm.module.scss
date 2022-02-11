@@ -1,0 +1,56 @@
+.legend {
+  margin-top: 50rem;
+  margin-bottom: 38rem;
+  font-size: 18rem;
+}
+
+.label {
+  font-size: 15rem;
+  margin-bottom: 2rem;
+}
+
+.containerError {
+  margin-top: 5rem;
+}
+
+.input {
+  border: 1px solid $primary-color;
+  border-radius: 3rem;
+  padding: 4.8rem;
+}
+
+.paragraph {
+  margin-bottom: 25rem;
+}
+
+.combinedContainer {
+  display: flex;
+}
+
+.amountInputContainer {
+  max-width: 100rem;
+  margin-right: 15rem;
+}
+
+.unitSelectContainer {
+  max-width: 60rem;
+}
+
+.buttonContainer {
+  margin-top: 35rem;
+}
+
+.select {
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.inputIngredientName {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.inputAmount {
+  width: 100%;
+  box-sizing: border-box;
+}
