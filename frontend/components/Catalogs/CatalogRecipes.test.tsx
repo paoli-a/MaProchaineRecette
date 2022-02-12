@@ -346,11 +346,8 @@ was not successful on backend side`, async () => {
 describe("the search bar functionality works properly", () => {
   it(`displays the correct recipes according to their title when a letter
     is entered in the search bar`, async () => {
-    const {
-      getByText,
-      queryByText,
-      getByPlaceholderText,
-    } = await renderCatalog();
+    const { getByText, queryByText, getByPlaceholderText } =
+      await renderCatalog();
     const searchBar = getByPlaceholderText("Recherche par titre...");
     fireEvent.change(searchBar, { target: { value: "M" } });
     expect(getByText("Marinade de saumon fumé")).toBeInTheDocument();
@@ -363,11 +360,8 @@ describe("the search bar functionality works properly", () => {
   });
 
   it("redisplays all the recipes of the catalog after a search", async () => {
-    const {
-      getByText,
-      queryByText,
-      getByPlaceholderText,
-    } = await renderCatalog();
+    const { getByText, queryByText, getByPlaceholderText } =
+      await renderCatalog();
     const searchBar = getByPlaceholderText("Recherche par titre...");
     fireEvent.change(searchBar, { target: { value: "sa" } });
     expect(getByText("Salade de pommes de terre radis")).toBeInTheDocument();
@@ -381,12 +375,8 @@ describe("the search bar functionality works properly", () => {
 describe("edit functionality", () => {
   it(`transforms the catalog recipe add form to an edit form when
    clicking on an edit button`, async () => {
-    const {
-      getByText,
-      queryByText,
-      getByDisplayValue,
-      queryByLabelText,
-    } = await renderCatalog();
+    const { getByText, queryByText, getByDisplayValue, queryByLabelText } =
+      await renderCatalog();
     clickOnEditRecipe(getByText, "Salade de pommes de terre radis");
     expect(
       getByText("Modifier une recette de mon catalogue :")
@@ -408,11 +398,8 @@ describe("edit functionality", () => {
 
   it(`keeps the edit mode but changes the form values when clicking on
     another edit button`, async () => {
-    const {
-      getByText,
-      getByDisplayValue,
-      queryByDisplayValue,
-    } = await renderCatalog();
+    const { getByText, getByDisplayValue, queryByDisplayValue } =
+      await renderCatalog();
     clickOnEditRecipe(getByText, "Salade de pommes de terre radis");
     expect(
       getByText("Modifier une recette de mon catalogue :")
@@ -536,7 +523,7 @@ describe("edit functionality", () => {
     const recipe = getByText(titleRecipe, { exact: false });
     const divButton = recipe.closest("div");
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const button = within(divButton!).getByAltText("Modifier");
+    const button = within(divButton!).getByLabelText("Modifier la recette");
     fireEvent.click(button);
   }
 });

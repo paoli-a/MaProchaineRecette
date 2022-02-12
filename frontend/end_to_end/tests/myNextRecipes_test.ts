@@ -130,7 +130,7 @@ Scenario("Refetch feasible recipes when changing existing recipes", ({ I }) => {
   I.amOnPage("/");
   I.see("Marinade");
   I.click("Catalogue recettes");
-  I.click(locate("img").withAttr({ alt: "Supprimer" }));
+  I.click("Supprimer la recette");
   I.click("Recettes possibles");
   I.dontSee("Marinade");
   I.dontSee("Salade");
@@ -141,7 +141,7 @@ Scenario(
   ({ I }) => {
     I.amOnPage("/");
     I.see("Marinade");
-    I.click(locate("img").withAttr({ alt: "Supprimer" }));
+    I.click("Supprimer l'ingrédient");
     I.click("Recettes possibles");
     I.dontSee("Marinade");
     I.dontSee("Salade");
@@ -154,7 +154,7 @@ Scenario(
     I.amOnPage("/");
     I.see("Marinade");
     I.click("Consommer la recette");
-    await within(".fridge-ingredients__list", () => {
+    await within(".fridgeIngredientsList", () => {
       I.see("saumon fumé");
       I.see("200");
       I.see("g");

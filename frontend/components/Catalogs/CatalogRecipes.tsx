@@ -110,11 +110,12 @@ function CatalogRecipes() {
         <button
           className="button fridge-ingredient-details__edit"
           onClick={() => myRecipe.id && handleEditClick(myRecipe.id)}
+          aria-label="Modifier la recette"
         >
           <img
             className="fridge-ingredient-details__edit-img"
             src="images/edit.svg"
-            alt="Modifier"
+            alt=""
           />
         </button>
         <button
@@ -125,7 +126,7 @@ function CatalogRecipes() {
           <img
             className="fridge-ingredient-details__delete-img"
             src="images/delete.svg"
-            alt="Supprimer"
+            alt=""
           />
         </button>
       </div>

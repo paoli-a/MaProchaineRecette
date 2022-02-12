@@ -7,6 +7,7 @@ import {
   FridgeIngredientToSend,
 } from "../../constants/types";
 import { useDeleteFridgeIngredient, useFridgeIngredients } from "../../hooks/";
+import styles from "./FridgeIngredients.module.scss";
 import FridgeIngredientsForm from "./FridgeIngredientsForm";
 
 type DeleteError = {
@@ -33,10 +34,8 @@ function FridgeIngredients() {
   const [postError, setPostError] = useState("");
   const [deleteError, setDeleteError] = useState<DeleteError>({});
   const { fridgeIngredients } = useFridgeIngredients();
-  const [
-    ingredientToEdit,
-    setIngredientToEdit,
-  ] = useState<FridgeIngredient | null>(null);
+  const [ingredientToEdit, setIngredientToEdit] =
+    useState<FridgeIngredient | null>(null);
   const [deleteFridgeIngredient] = useDeleteFridgeIngredient({
     onSuccess: () => {
       void mutate(API_PATHS.fridgeIngredients);
@@ -111,46 +110,42 @@ function FridgeIngredients() {
       const formatedDate = ingredient.expirationDate.toLocaleDateString();
       return (
         <React.Fragment key={ingredient.id}>
-          <li className="fridge-ingredients__ingredient" key={ingredient.id}>
-            <h3 className="fridge-ingredients__ingredient-name">
-              {ingredient.name}
-            </h3>
-            <ul className="fridge-ingredients__details fridge-ingredient-details">
-              <li className="fridge-ingredient-details__amount">
-                <span className="fridge-ingredient-details__label">
+          <li className={styles.ingredientItem} key={ingredient.id}>
+            <h3 className={styles.ingredientName}>{ingredient.name}</h3>
+            <ul className={styles.ingredientDetails}>
+              <li className={styles.ingredientAmount}>
+                <span className={styles.ingredientDetailsLabel}>
                   Quantité :
                 </span>{" "}
-                <span className="fridge-ingredient-details__value">
+                <span className={styles.ingredientValue}>
                   {ingredient.amount} {ingredient.unit}
                 </span>
               </li>
-              <li className="fridge-ingredient-details__expiration">
-                <span className="fridge-ingredient-details__label">
+              <li className={styles.ingredientExpiration}>
+                <span className={styles.ingredientDetailsLabel}>
                   Expiration :
                 </span>{" "}
-                <span className="fridge-ingredient-details__value">
-                  {formatedDate}
-                </span>
+                <span className={styles.ingredientValue}>{formatedDate}</span>
               </li>
             </ul>
             <button
-              className="button fridge-ingredient-details__edit"
+              className={`${styles.editButton} ${"button"}
+              `}
               onClick={() => handleEditClick(ingredient)}
+              aria-label="Modifier l'ingrédient"
             >
-              <img
-                className="fridge-ingredient-details__edit-img"
-                src="images/edit.svg"
-                alt="Modifier"
-              />
+              <img className={styles.editImg} src="images/edit.svg" alt="" />
             </button>
             <button
-              className="button fridge-ingredient-details__delete"
+              className={`${styles.deleteButton} ${"button"}
+              `}
               onClick={() => handleSupprClick(ingredient)}
+              aria-label="Supprimer l'ingrédient"
             >
               <img
-                className="fridge-ingredient-details__delete-img"
+                className={styles.deleteImg}
                 src="images/delete.svg"
-                alt="Supprimer"
+                alt=""
               />
             </button>
           </li>
@@ -163,17 +158,15 @@ function FridgeIngredients() {
   );
 
   return (
-    <section className="fridge-ingredients">
-      <h2 className="fridge-ingredients__title-h2">
-        Voici les ingrédients du frigo !
-      </h2>
+    <section className={styles.fridgeIngredients}>
+      <h2 className={styles.title}>Ingrédients du frigo</h2>
       <FridgeIngredientsForm
         onSubmit={handleSubmit}
         ingredientToEdit={ingredientToEdit}
         resetIngredientToEdit={() => setIngredientToEdit(null)}
       />
       {postError && <span>{postError}</span>}
-      <ul className="fridge-ingredients__list">{ingredientElement}</ul>
+      <ul className="fridgeIngredientsList">{ingredientElement}</ul>
     </section>
   );
 }
