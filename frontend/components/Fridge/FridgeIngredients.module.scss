@@ -8,7 +8,7 @@
     content: "";
     position: absolute;
     z-index: -1;
-    top: 1.7%;
+    top: 3.2%;
     left: -24rem;
     background-color: $secondary-color;
     height: 12rem;
@@ -16,7 +16,60 @@
   }
 }
 
+.fridgeIngredientsList {
+  margin-top: 50rem;
+  padding: 0;
+}
+
+.ingredientItem {
+  display: grid;
+  grid-template-columns: 7fr 1fr 1fr;
+  margin-top: 40rem;
+}
+
+.ingredientName {
+  margin-bottom: 12.8rem;
+  margin-top: 0;
+}
+
 .ingredientDetails {
   list-style-type: none;
   padding: 0;
+}
+
+.ingredientDetailsLabel {
+  font-size: 13rem;
+  opacity: 0.7;
+}
+
+.ingredientValue {
+  font-size: 15rem;
+}
+
+.ingredientExpiration {
+  margin-top: 4.8rem;
+}
+
+.deleteButton {
+  grid-column: 3 / 4;
+}
+
+.editButton {
+  grid-column: 2 / 3;
+}
+
+.deleteButton,
+.editButton {
+  grid-row: 1 / 2;
+  width: 36.8rem;
+  height: 36.8rem;
+  border: none;
+  background: none;
+  padding: 1.6rem;
+}
+
+.deleteImg,
+.editImg {
+  width: 24rem;
+  height: 24rem;
 }
