@@ -166,7 +166,9 @@ function FridgeIngredients() {
         resetIngredientToEdit={() => setIngredientToEdit(null)}
       />
       {postError && <span>{postError}</span>}
-      <ul className="fridgeIngredientsList">{ingredientElement}</ul>
+      <ul className={`${styles.fridgeIngredientsList} fridgeIngredientsList`}>
+        {ingredientElement}
+      </ul>
     </section>
   );
 }
