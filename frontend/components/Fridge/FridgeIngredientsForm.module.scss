@@ -54,3 +54,63 @@
   width: 100%;
   box-sizing: border-box;
 }
+
+.inputExpiration {
+  width: 145rem;
+  text-align: center;
+}
+
+@media (min-width: 500px) {
+  .inputIngredientName {
+    width: 75%;
+    max-width: 382rem;
+  }
+}
+
+@media (min-width: 750px) {
+  .fieldsContainer {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .ingredientNameContainer {
+    flex-basis: 100%;
+  }
+  .ingredientAmountContainer {
+    margin-right: 50rem;
+  }
+  .buttonContainer {
+    flex-basis: 100%;
+    margin-top: 20rem;
+  }
+  .legend {
+    font-size: 20rem;
+  }
+}
+
+@media (min-width: 850px) {
+  .ingredientNameContainer {
+    flex-basis: 300rem;
+    margin-right: 50rem;
+  }
+  .inputIngredientName {
+    width: 100%;
+  }
+  .buttonContainer {
+    flex-basis: auto;
+  }
+}
+
+@media (min-width: 900px) {
+  .expirationContainer {
+    margin-right: 50rem;
+  }
+}
+
+@media (min-width: 1150px) {
+  .legend {
+    font-size: 22rem;
+  }
+  .paragraph {
+    margin-right: 60rem;
+  }
+}

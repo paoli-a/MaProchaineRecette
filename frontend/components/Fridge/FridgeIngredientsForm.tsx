@@ -117,145 +117,151 @@ function FridgeIngredientsForm({
             ? "Modifier un ingrédient frigo"
             : "Ajouter un ingrédient frigo"}
         </legend>
-        <div className={styles.paragraph}>
-          <label className={styles.label} htmlFor="ingredientName">
-            Nom de l'ingrédient{" "}
-          </label>
-          <div className={styles.containerError}>
-            <InputSuggestions
-              elements={catalogIngredients}
-              id="ingredientName"
-              getElementText={(ingredient: SuggestionElement) =>
-                ingredient.name
-              }
-              type="text"
-              className={
-                errors.ingredientName
-                  ? `${styles.input} ${styles.inputIngredientName} ${styles.fieldError}`
-                  : `${styles.input} ${styles.inputIngredientName}`
-              }
-              aria-invalid={errors.ingredientName ? "true" : "false"}
-              aria-required="true"
-              customRef={inputSuggestionsRef}
-              {...register("ingredientName", {
-                required: "Ce champ est obligatoire",
-                validate: validateIngredientName,
-              })}
-            />
-            {errors.ingredientName && (
-              <p className={styles.errorMessage} role="alert">
-                {errors.ingredientName.message}
-              </p>
-            )}
+        <div className={styles.fieldsContainer}>
+          <div
+            className={`${styles.paragraph} ${styles.ingredientNameContainer}`}
+          >
+            <label className={styles.label} htmlFor="ingredientName">
+              Nom de l'ingrédient{" "}
+            </label>
+            <div className={styles.containerError}>
+              <InputSuggestions
+                elements={catalogIngredients}
+                id="ingredientName"
+                getElementText={(ingredient: SuggestionElement) =>
+                  ingredient.name
+                }
+                type="text"
+                className={
+                  errors.ingredientName
+                    ? `${styles.input} ${styles.inputIngredientName} ${styles.fieldError}`
+                    : `${styles.input} ${styles.inputIngredientName}`
+                }
+                aria-invalid={errors.ingredientName ? "true" : "false"}
+                aria-required="true"
+                customRef={inputSuggestionsRef}
+                {...register("ingredientName", {
+                  required: "Ce champ est obligatoire",
+                  validate: validateIngredientName,
+                })}
+              />
+              {errors.ingredientName && (
+                <p className={styles.errorMessage} role="alert">
+                  {errors.ingredientName.message}
+                </p>
+              )}
+            </div>
           </div>
-        </div>
-        <div className={styles.paragraph}>
-          <label className={styles.label} htmlFor="ingredientAmount">
-            Quantité{" "}
-          </label>
-          <span className={styles.combinedContainer}>
-            <div
-              className={`${styles.containerError} ${styles.amountInputContainer}`}
-            >
+          <div
+            className={`${styles.paragraph} ${styles.ingredientAmountContainer}`}
+          >
+            <label className={styles.label} htmlFor="ingredientAmount">
+              Quantité{" "}
+            </label>
+            <span className={styles.combinedContainer}>
+              <div
+                className={`${styles.containerError} ${styles.amountInputContainer}`}
+              >
+                <input
+                  className={
+                    errors.ingredientAmount
+                      ? `${styles.input} ${styles.inputAmount} ${styles.fieldError}`
+                      : `${styles.input} ${styles.inputAmount}`
+                  }
+                  type="number"
+                  id="ingredientAmount"
+                  defaultValue=""
+                  {...register("ingredientAmount", {
+                    required: "Ce champ est obligatoire",
+                    validate: validateAmount,
+                  })}
+                  aria-invalid={errors.ingredientName ? "true" : "false"}
+                  aria-required="true"
+                />
+                {errors.ingredientAmount && (
+                  <p className={styles.errorMessage} role="alert">
+                    {errors.ingredientAmount.message}{" "}
+                  </p>
+                )}
+              </div>
+              <div
+                className={`${styles.containerError} ${styles.unitSelectContainer}`}
+              >
+                <select
+                  className={
+                    errors.unit
+                      ? `select fieldError ${styles.select}`
+                      : `select ${styles.select}`
+                  }
+                  defaultValue=""
+                  {...register("unit", { required: true })}
+                  aria-label="Unité"
+                  aria-invalid={errors.ingredientName ? "true" : "false"}
+                  aria-required="true"
+                >
+                  <option value="">...</option>
+                  {units.map((unit: string) => {
+                    return (
+                      <option value={unit} key={unit}>
+                        {unit}
+                      </option>
+                    );
+                  })}
+                </select>
+                {errors.unit && (
+                  <p className={styles.errorMessage} role="alert">
+                    Ce champ est obligatoire
+                  </p>
+                )}
+              </div>
+            </span>
+          </div>
+          <div className={`${styles.paragraph} ${styles.expirationContainer}`}>
+            <label className={styles.label} htmlFor="expirationDate">
+              Date de péremption{" "}
+            </label>
+            <div className={styles.containerError}>
               <input
                 className={
-                  errors.ingredientAmount
-                    ? `${styles.input} ${styles.inputAmount} ${styles.fieldError}`
-                    : `${styles.input} ${styles.inputAmount}`
+                  errors.expirationDate
+                    ? `${styles.input} ${styles.inputExpiration} ${styles.fieldError}`
+                    : `${styles.input} ${styles.inputExpiration}`
                 }
-                type="number"
-                id="ingredientAmount"
-                defaultValue=""
-                {...register("ingredientAmount", {
+                type="date"
+                id="expirationDate"
+                aria-invalid={errors.ingredientName ? "true" : "false"}
+                aria-required="true"
+                {...register("expirationDate", {
                   required: "Ce champ est obligatoire",
-                  validate: validateAmount,
+                  validate: validateDate,
                 })}
-                aria-invalid={errors.ingredientName ? "true" : "false"}
-                aria-required="true"
               />
-              {errors.ingredientAmount && (
+              {errors.expirationDate && (
                 <p className={styles.errorMessage} role="alert">
-                  {errors.ingredientAmount.message}{" "}
+                  {errors.expirationDate.message}
                 </p>
               )}
             </div>
-            <div
-              className={`${styles.containerError} ${styles.unitSelectContainer}`}
-            >
-              <select
-                className={
-                  errors.unit
-                    ? `select fieldError ${styles.select}`
-                    : `select ${styles.select}`
-                }
-                defaultValue=""
-                {...register("unit", { required: true })}
-                aria-label="Unité"
-                aria-invalid={errors.ingredientName ? "true" : "false"}
-                aria-required="true"
-              >
-                <option value="">...</option>
-                {units.map((unit: string) => {
-                  return (
-                    <option value={unit} key={unit}>
-                      {unit}
-                    </option>
-                  );
-                })}
-              </select>
-              {errors.unit && (
-                <p className={styles.errorMessage} role="alert">
-                  Ce champ est obligatoire
-                </p>
-              )}
-            </div>
-          </span>
-        </div>
-        <div className={styles.paragraph}>
-          <label className={styles.label} htmlFor="expirationDate">
-            Date de péremption{" "}
-          </label>
-          <div className={styles.containerError}>
-            <input
-              className={
-                errors.expirationDate
-                  ? `${styles.input} ${styles.fieldError}`
-                  : styles.input
-              }
-              type="date"
-              id="expirationDate"
-              aria-invalid={errors.ingredientName ? "true" : "false"}
-              aria-required="true"
-              {...register("expirationDate", {
-                required: "Ce champ est obligatoire",
-                validate: validateDate,
-              })}
-            />
-            {errors.expirationDate && (
-              <p className={styles.errorMessage} role="alert">
-                {errors.expirationDate.message}
-              </p>
-            )}
           </div>
-        </div>
-        <p className={`${styles.paragraph} ${styles.buttonContainer}`}>
-          <input
-            className={`${styles.submitButton} button primaryButton
+          <p className={`${styles.paragraph} ${styles.buttonContainer}`}>
+            <input
+              className={`${styles.submitButton} button primaryButton
             `}
-            type="submit"
-            value={ingredientToEdit ? "Modifier" : "Ajouter"}
-          />
-          {ingredientToEdit && (
-            <button
-              className={`${styles.cancelButton} ${"button"}
+              type="submit"
+              value={ingredientToEdit ? "Modifier" : "Ajouter"}
+            />
+            {ingredientToEdit && (
+              <button
+                className={`${styles.cancelButton} ${"button"}
               `}
-              type="reset"
-              onClick={() => handleCancelClick()}
-            >
-              Annuler
-            </button>
-          )}
-        </p>
+                type="reset"
+                onClick={() => handleCancelClick()}
+              >
+                Annuler
+              </button>
+            )}
+          </p>
+        </div>
       </fieldset>
     </form>
   );

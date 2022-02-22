@@ -1,5 +1,6 @@
 .fridgeIngredients {
   margin-top: 100rem;
+  margin-bottom: 50rem;
   position: relative;
 }
 
@@ -8,7 +9,7 @@
     content: "";
     position: absolute;
     z-index: -1;
-    top: 3.2%;
+    top: 22rem;
     left: -24rem;
     background-color: $secondary-color;
     height: 12rem;
@@ -72,4 +73,68 @@
 .editImg {
   width: 24rem;
   height: 24rem;
+}
+
+@media (min-width: 500px) {
+  .title {
+    &::before {
+      top: 10rem;
+      left: 270rem;
+      width: calc(100vw - 270rem - 24rem);
+    }
+  }
+}
+
+@media (min-width: 750px) {
+  .title {
+    font-size: 28rem;
+    &::before {
+      top: 13rem;
+      left: 312rem;
+      width: calc(100vw - 312rem - 48rem);
+    }
+  }
+  .fridgeIngredientsList {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 50rem;
+    margin-top: 30rem;
+  }
+}
+
+@media (min-width: 1150px) {
+  .title {
+    font-size: 30rem;
+    &::before {
+      top: 15rem;
+      left: 332rem;
+      width: calc(100vw - 332rem - 48rem);
+    }
+  }
+  .ingredientName {
+    font-size: 20rem;
+  }
+}
+
+@media (min-width: 1450px) {
+  .title {
+    &::before {
+      width: calc(100vw - 332rem - 80rem);
+    }
+  }
+  .fridgeIngredientsList {
+    grid-template-columns: 1fr 1fr 1fr;
+    column-gap: 70rem;
+  }
+  .ingredientItem {
+    margin-top: 50rem;
+  }
+}
+
+@media (min-width: 1600px) {
+  .title {
+    &::before {
+      width: calc(100vw - 332rem - 112rem);
+    }
+  }
 }
