@@ -68,7 +68,7 @@
     "mutationobserver-shim": "^0.3.7",
     "parcel-bundler": "^1.12.5",
     "playwright": "^1.19.1",
-    "pm2": "^5.1.2",
+    "pm2": "^5.2.0",
     "prettier": "^2.5.1",
     "prettier-plugin-organize-imports": "^2.3.4",
     "rosie": "^2.1.0",
