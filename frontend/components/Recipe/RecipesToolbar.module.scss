@@ -1,7 +1,7 @@
 .toolbar {
   padding-left: 0;
   padding-right: 0;
-  margin: 48rem 0 0 0;
+  margin: 48rem var(--body-side-margin) 0 var(--body-side-margin);
 }
 
 .collapsibleWithButton {

@@ -1,5 +1,25 @@
 :root {
+  --body-side-margin: 24rem;
+  @media (min-width: 750px) {
+    --body-side-margin: 48rem;
+  }
+  @media (min-width: 1450px) {
+    --body-side-margin: 80rem;
+  }
+  @media (min-width: 1600px) {
+    --body-side-margin: 112rem;
+  }
+
   font-size: 6.25%;
+  @media (min-width: 2000px) {
+    font-size: 7%;
+  }
+  @media (min-width: 2400px) {
+    font-size: 7.75%;
+  }
+  @media (min-width: 2800px) {
+    font-size: 8.5%;
+  }
 }
 
 @media (min-width: 2000px) {
@@ -22,28 +42,9 @@
 
 body {
   margin: 0;
-  padding: 0 24rem;
   font-family: "Montserrat", sans-serif;
   font-size: 16rem;
   color: $primary-color;
-}
-
-@media (min-width: 750px) {
-  body {
-    padding: 0 48rem;
-  }
-}
-
-@media (min-width: 1450px) {
-  body {
-    padding: 0 80rem;
-  }
-}
-
-@media (min-width: 1600px) {
-  body {
-    padding: 0 112rem;
-  }
 }
 
 h1 {

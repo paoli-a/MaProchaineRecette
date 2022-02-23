@@ -5,20 +5,21 @@
 }
 
 .title {
+  padding: 0 var(--body-side-margin);
   &::before {
     content: "";
     position: absolute;
     z-index: -1;
     top: 22rem;
-    left: -24rem;
+    left: 0;
     background-color: $secondary-color;
     height: 12rem;
-    width: 100vw;
+    width: 100%;
   }
 }
 
 .fridgeIngredientsList {
-  margin-top: 50rem;
+  margin: 50rem var(--body-side-margin) 0 var(--body-side-margin);
   padding: 0;
 }
 
@@ -79,8 +80,8 @@
   .title {
     &::before {
       top: 10rem;
-      left: 270rem;
-      width: calc(100vw - 270rem - 24rem);
+      left: calc(270rem + var(--body-side-margin));
+      width: calc(100% - calc(270rem + var(--body-side-margin)));
     }
   }
 }
@@ -90,8 +91,8 @@
     font-size: 28rem;
     &::before {
       top: 13rem;
-      left: 312rem;
-      width: calc(100vw - 312rem - 48rem);
+      left: calc(312rem + var(--body-side-margin));
+      width: calc(100% - calc(312rem + var(--body-side-margin)));
     }
   }
   .fridgeIngredientsList {
@@ -107,8 +108,8 @@
     font-size: 30rem;
     &::before {
       top: 15rem;
-      left: 332rem;
-      width: calc(100vw - 332rem - 48rem);
+      left: calc(332rem + var(--body-side-margin));
+      width: calc(100% - calc(332rem + var(--body-side-margin)));
     }
   }
   .ingredientName {
@@ -117,24 +118,11 @@
 }
 
 @media (min-width: 1450px) {
-  .title {
-    &::before {
-      width: calc(100vw - 332rem - 80rem);
-    }
-  }
   .fridgeIngredientsList {
     grid-template-columns: 1fr 1fr 1fr;
     column-gap: 70rem;
   }
   .ingredientItem {
     margin-top: 50rem;
-  }
-}
-
-@media (min-width: 1600px) {
-  .title {
-    &::before {
-      width: calc(100vw - 332rem - 112rem);
-    }
   }
 }
