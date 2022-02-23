@@ -3,19 +3,20 @@
   .title {
     text-align: center;
     position: relative;
+    padding: 0 var(--body-side-margin);
     &::before {
       content: "";
       position: absolute;
       z-index: -1;
       top: 58%;
-      left: -24rem;
+      left: 0rem;
       background-color: $secondary-color;
       height: 27.2rem;
-      width: 100vw;
+      width: 100%;
     }
   }
   .fridgeRecipes {
-    margin-top: 32rem;
+    margin: 32rem var(--body-side-margin) 0 var(--body-side-margin);
   }
 
   .consumeButton {
@@ -32,7 +33,6 @@
       font-size: 35rem;
       &::before {
         height: 35.2rem;
-        left: -48rem;
       }
     }
     .consumeButton {
@@ -54,7 +54,6 @@
     .title {
       font-size: 40rem;
       text-align: start;
-      padding-left: 22%;
       &::before {
         height: 40rem;
       }
@@ -83,10 +82,8 @@
     margin-top: 48rem;
     .title {
       font-size: 50rem;
-      padding-left: 13%;
       &::before {
         height: 48rem;
-        left: -80rem;
       }
     }
   }
@@ -95,12 +92,6 @@
 @media (min-width: 1600px) {
   .fridgeRecipesSection {
     margin-top: 32rem;
-    .title {
-      padding-left: 0;
-      &::before {
-        left: -112rem;
-      }
-    }
   }
 }
 
