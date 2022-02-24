@@ -159,7 +159,10 @@ function FridgeIngredients() {
 
   return (
     <section className={styles.fridgeIngredients}>
-      <h2 className={styles.title}>Ingrédients du frigo</h2>
+      <h2 className={styles.title}>
+        <span className={styles.titleName}>Ingrédients du frigo</span>
+        <span className={styles.titleBar}></span>
+      </h2>
       <FridgeIngredientsForm
         onSubmit={handleSubmit}
         ingredientToEdit={ingredientToEdit}
