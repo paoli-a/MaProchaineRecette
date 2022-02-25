@@ -6,8 +6,8 @@
 
 .title {
   padding: 0 var(--body-side-margin);
-  &::before {
-    content: "";
+  display: flex;
+  .titleBar {
     position: absolute;
     z-index: -1;
     top: 22rem;
@@ -78,10 +78,16 @@
 
 @media (min-width: 500px) {
   .title {
-    &::before {
-      top: 10rem;
-      left: calc(270rem + var(--body-side-margin));
-      width: calc(100% - calc(270rem + var(--body-side-margin)));
+    padding-right: 0;
+    align-items: center;
+    .titleName {
+      flex-basis: max-content;
+    }
+    .titleBar {
+      position: static;
+      width: unset;
+      flex: 1;
+      margin-left: 20rem;
     }
   }
 }
@@ -89,11 +95,6 @@
 @media (min-width: 750px) {
   .title {
     font-size: 28rem;
-    &::before {
-      top: 13rem;
-      left: calc(312rem + var(--body-side-margin));
-      width: calc(100% - calc(312rem + var(--body-side-margin)));
-    }
   }
   .fridgeIngredientsList {
     display: grid;
@@ -106,11 +107,6 @@
 @media (min-width: 1150px) {
   .title {
     font-size: 30rem;
-    &::before {
-      top: 15rem;
-      left: calc(332rem + var(--body-side-margin));
-      width: calc(100% - calc(332rem + var(--body-side-margin)));
-    }
   }
   .ingredientName {
     font-size: 20rem;
