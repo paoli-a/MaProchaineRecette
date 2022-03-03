@@ -5,6 +5,7 @@ import {
   fireEvent,
   render,
   RenderResult,
+  screen,
   waitFor,
   within,
 } from "@testing-library/react";
@@ -65,12 +66,12 @@ describe("initial display is correct", () => {
 });
 
 describe("the adding recipe functionality works properly", () => {
-  it("adds the correct recipe when filling the form and clicking on submit", async () => {
-    const { getByLabelText, getByText } = await renderCatalog();
+  fit("adds the correct recipe when filling the form and clicking on submit", async () => {
+    const { getByText } = await renderCatalog();
     mockedAxios.get.mockResolvedValue({
       data: [...catalogRecipes, recipeCrumble],
     });
-    await addRecipe(getByLabelText, getByText);
+    await addRecipe();
     const recipe = getByText("Crumble aux poires", { exact: false });
     const beurre = getByText(/beurre :/);
     expect(recipe).toBeInTheDocument();
@@ -119,35 +120,59 @@ describe("the adding recipe functionality works properly", () => {
   });
 
   describe("the adding of ingredient on the recipe form works properly", () => {
-    it(`does not add the ingredient if an ingredient with the same name
+    fit(`does not validate the recipe if an ingredient with the same name
       was already provided`, async () => {
-      const { getByLabelText, getAllByText } = await renderCatalog();
-      addIngredient(getByLabelText, ["Fraises", "5", "g"]);
-      addIngredient(getByLabelText, ["Fraises", "5", "g"]);
-      const ingredient = getAllByText(/Fraises :/);
-      expect(ingredient).toHaveLength(1);
+      const { getAllByText } = await renderCatalog();
+      mockedAxios.get.mockResolvedValue({
+        data: [...catalogRecipes, recipeCrumble],
+      });
+      addIngredient(["Fraises", "5", "g"]);
+      addIngredient(["Fraises", "5", "g"]);
+      await checkRecipeValidationFails();
+      const errorMessage = getAllByText(
+        "Vous ne pouvez pas ajouter plusieurs fois le même ingrédient"
+      );
+      expect(errorMessage).toHaveLength(2);
     });
 
-    it(`does not add the ingredient if amount is negative or null`, async () => {
-      const { getByLabelText, queryByText } = await renderCatalog();
-      addIngredient(getByLabelText, ["Fraises", "-1", "g"]);
-      let fraises = queryByText(/Fraises :/);
-      expect(fraises).not.toBeInTheDocument();
-      addIngredient(getByLabelText, ["Fraises", "0", "g"]);
-      fraises = queryByText(/Fraises :/);
-      expect(fraises).not.toBeInTheDocument();
+    fit(`does not validate the recipe if amount is negative`, async () => {
+      const { getByText } = await renderCatalog();
+      mockedAxios.get.mockResolvedValue({
+        data: [...catalogRecipes, recipeCrumble],
+      });
+      addIngredient(["Fraises", "-1", "g"]);
+      await checkRecipeValidationFails();
+      const errorMessage = getByText("La quantité doit être supérieure à 0");
+      expect(errorMessage).toBeInTheDocument;
     });
 
-    it(`does not add the ingredient if the ingredient is not in catalogIngredients`, async () => {
-      const { getByLabelText, queryByText } = await renderCatalog();
-      addIngredient(getByLabelText, ["Poireaux", "50", "g"]);
-      const poireaux = queryByText(/Poireaux : /);
-      expect(poireaux).not.toBeInTheDocument();
+    fit(`does not validate the recipe if amount is null`, async () => {
+      const { getByText } = await renderCatalog();
+      mockedAxios.get.mockResolvedValue({
+        data: [...catalogRecipes, recipeCrumble],
+      });
+      addIngredient(["Fraises", "0", "g"]);
+      await checkRecipeValidationFails();
+      const errorMessage = getByText("La quantité doit être supérieure à 0");
+      expect(errorMessage).toBeInTheDocument;
     });
 
-    it(`provides the right proposals when a letter is entered in the input of the ingredient name`, async () => {
+    fit(`does not validate the recipe if the ingredient is not in catalogIngredients`, async () => {
+      const { getByText } = await renderCatalog();
+      mockedAxios.get.mockResolvedValue({
+        data: [...catalogRecipes, recipeCrumble],
+      });
+      addIngredient(["Poireaux", "50", "g"]);
+      await checkRecipeValidationFails();
+      const errorMessage = getByText(
+        "Cet ingrédient n'existe pas dans le catalogue d'ingrédients. Vous pouvez l'y ajouter"
+      );
+      expect(errorMessage).toBeInTheDocument;
+    });
+
+    fit(`provides the right proposals when a letter is entered in the input of the ingredient name`, async () => {
       const { getByLabelText, getAllByTestId } = await renderCatalog();
-      const inputIngredientName = getByLabelText("Nom :");
+      const inputIngredientName = getByLabelText("Nom");
       fireEvent.change(inputIngredientName, { target: { value: "f" } });
       const options = getAllByTestId("suggestions");
       const fraises = options[0] as HTMLOptionElement;
@@ -157,33 +182,46 @@ describe("the adding recipe functionality works properly", () => {
       expect(framboises.value).toEqual("Framboises");
     });
 
-    it(`removes ingredient on the form when clicking on the
-      remove button`, async () => {
-      const { getByLabelText, getByText } = await renderCatalog();
-      addIngredient(getByLabelText, ["Poires", "1", "kg"]);
-      addIngredient(getByLabelText, ["Beurre", "30", "g"]);
-      const poires = getByText(/Poires : /);
-      const beurre = getByText(/Beurre : /);
-      const removeButton = within(poires).getByText("X");
-      fireEvent.click(removeButton);
-      expect(poires).not.toBeInTheDocument();
-      expect(beurre).toBeInTheDocument();
+    it(`removes ingredient fields on the form when clicking on the
+      minus button`, async () => {
+      await renderCatalog();
+      const plusButton = screen.getByLabelText(
+        "Ingredient supplémentaire (plus)"
+      );
+      fireEvent.click(plusButton);
+      checkIngredientFieldsCount(2);
+      const minusButton = screen.getByLabelText(
+        "Supprimer cet ingredient (moins)"
+      );
+      fireEvent.click(minusButton);
+      checkIngredientFieldsCount(1);
     });
 
-    it(`adds ingredients on the form when they are validated`, async () => {
-      const { getByLabelText, getByText } = await renderCatalog();
-      addIngredient(getByLabelText, ["Poires", "1", "kg"]);
-      addIngredient(getByLabelText, ["Beurre", "30", "g"]);
-      const poires = getByText(/Poires :/);
-      const beurre = getByText(/Beurre :/);
-      expect(poires).toBeInTheDocument();
-      expect(beurre).toBeInTheDocument();
+    fit(`adds another ingredient fields on the form when clicking
+    on plus button`, async () => {
+      await renderCatalog();
+      const plusButton = screen.getByLabelText(
+        "Ingredient supplémentaire (plus)"
+      );
+      fireEvent.click(plusButton);
+      checkIngredientFieldsCount(2);
     });
+
+    function checkIngredientFieldsCount(count: number) {
+      const nameFields = screen.getAllByLabelText("Nom");
+      const amountFields = screen.getAllByLabelText("Quantité nécessaire");
+      expect(nameFields).toHaveLength(count);
+      expect(amountFields).toHaveLength(count);
+    }
+
+    async function checkRecipeValidationFails() {
+      await addRecipe();
+      const recipe = screen.queryByText(/Crumble aux poires/);
+      expect(recipe).not.toBeInTheDocument();
+    }
   });
 
   async function addRecipe(
-    getByLabelText: GetByType,
-    getByText: GetByType,
     missingFields: string[] = [],
     customFields = { duration: "00:10:00" }
   ) {
@@ -201,11 +239,11 @@ describe("the adding recipe functionality works properly", () => {
       },
     };
     mockedAxios.post.mockResolvedValue(axiosPostResponse);
-    const inputTitle = getByLabelText("Titre de la recette :");
-    const entree = getByLabelText("Entrée");
-    const inputDuration = getByLabelText("Temps total de la recette :");
-    const inputDescription = getByLabelText("Corps de la recette :");
-    const submitButton = getByLabelText("Ajouter la recette");
+    const inputTitle = screen.getByLabelText("Titre de la recette :");
+    const entree = screen.getByLabelText("Entrée");
+    const inputDuration = screen.getByLabelText("Temps total de la recette :");
+    const inputDescription = screen.getByLabelText("Corps de la recette :");
+    const submitButton = screen.getByLabelText("Ajouter la recette");
     if (!missingFields.includes("title")) {
       fireEvent.change(inputTitle, { target: { value: "Crumble aux poires" } });
     }
@@ -217,8 +255,8 @@ describe("the adding recipe functionality works properly", () => {
       fireEvent.change(inputDuration, { target: { value: duration } });
     }
     if (!missingFields.includes("ingredients")) {
-      addIngredient(getByLabelText, ["Poires", "1", "kg"]);
-      addIngredient(getByLabelText, ["Beurre", "30", "g"]);
+      addIngredient(["Poires", "1", "kg"]);
+      addIngredient(["Beurre", "30", "g"]);
     }
     if (!missingFields.includes("description")) {
       fireEvent.change(inputDescription, {
@@ -235,15 +273,23 @@ describe("the adding recipe functionality works properly", () => {
     }
   }
 
-  function addIngredient(getByLabelText: GetByType, value: string[]) {
-    const inputIngredientName = getByLabelText("Nom :");
-    const inputAmount = getByLabelText("Quantité nécessaire :");
-    const selectedUnit = getByLabelText("Unité");
-    const addButton = getByLabelText("Ajouter l'ingrédient");
-    fireEvent.change(inputIngredientName, { target: { value: value[0] } });
-    fireEvent.change(inputAmount, { target: { value: value[1] } });
-    fireEvent.change(selectedUnit, { target: { value: value[2] } });
-    fireEvent.click(addButton);
+  function addIngredient(value: string[]) {
+    const inputIngredientName = screen.getAllByLabelText("Nom");
+    const inputAmount = screen.getAllByLabelText("Quantité nécessaire");
+    const selectedUnit = screen.getAllByLabelText("Unité");
+    fireEvent.change(inputIngredientName[inputIngredientName.length - 1], {
+      target: { value: value[0] },
+    });
+    fireEvent.change(inputAmount[inputAmount.length - 1], {
+      target: { value: value[1] },
+    });
+    fireEvent.change(selectedUnit[selectedUnit.length - 1], {
+      target: { value: value[2] },
+    });
+    const plusButton = screen.getByLabelText(
+      "Ingredient supplémentaire (plus)"
+    );
+    fireEvent.click(plusButton);
   }
 
   it(`displays an error message and does not add the recipe if the recipe adding
