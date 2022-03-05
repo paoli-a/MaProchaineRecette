@@ -118,7 +118,12 @@ function RecipesForm<T extends FridgeRecipe | CatalogRecipe>({
 
   function validateIngredients(index: number) {
     const ingredients = getCleanedIngredients();
-    if (ingredients[index] === null) {
+    const noIngredientsFilledAtAll = ingredients.every(
+      (ingredient) => ingredient === null
+    );
+    if (noIngredientsFilledAtAll) {
+      return "Il faut au moins un ingrédient dans la recette";
+    } else if (ingredients[index] === null) {
       return true;
     }
 
@@ -126,10 +131,6 @@ function RecipesForm<T extends FridgeRecipe | CatalogRecipe>({
       .map((recipeIngredients) => recipeIngredients?.ingredient)
       .slice();
     const ingredient = ingredientNames[index];
-    ingredientNames.splice(index, 1);
-    if (ingredientNames.includes(ingredient)) {
-      return "Vous ne pouvez pas ajouter plusieurs fois le même ingrédient";
-    }
 
     let authorized = false;
     console.log("catalogIngredients ", catalogIngredients);
@@ -144,17 +145,48 @@ function RecipesForm<T extends FridgeRecipe | CatalogRecipe>({
       return "Cet ingrédient n'existe pas dans le catalogue d'ingrédients. Vous pouvez l'y ajouter ";
     }
 
+    ingredientNames.splice(index, 1);
+    if (ingredientNames.includes(ingredient)) {
+      return "Vous ne pouvez pas ajouter plusieurs fois le même ingrédient";
+    }
+
     return true;
   }
 
   function validateAmounts(index: number) {
     const amount = watch(`recipeIngredients.${index}.amount`);
+    const ingredients = getCleanedIngredients();
+    const noIngredientsFilledAtAll = ingredients.every(
+      (ingredient) => ingredient === null
+    );
+    if (noIngredientsFilledAtAll) {
+      return false;
+    } else if (ingredients[index] === null) {
+      return true;
+    }
+    if (amount === "") {
+      return "Ce champ est obligatoire";
+    }
+
     if (parseInt(amount, 10) <= 0) {
       return "La quantité doit être supérieure à 0";
     } else return true;
   }
 
-  function validateUnits() {
+  function validateUnits(index: number) {
+    const unit = watch(`recipeIngredients.${index}.unit`);
+    const ingredients = getCleanedIngredients();
+    const noIngredientsFilledAtAll = ingredients.every(
+      (ingredient) => ingredient === null
+    );
+    if (noIngredientsFilledAtAll) {
+      return false;
+    } else if (ingredients[index] === null) {
+      return true;
+    }
+    if (unit === "") {
+      return "Ce champ est obligatoire";
+    }
     return true;
   }
 
@@ -369,7 +401,8 @@ function RecipesForm<T extends FridgeRecipe | CatalogRecipe>({
                       aria-required="true"
                     />
                     {errors.recipeIngredients &&
-                      errors[`recipeIngredients`][index] && (
+                      errors[`recipeIngredients`][index] &&
+                      errors[`recipeIngredients`][index].ingredient && (
                         <p className="form__error-message" role="alert">
                           {
                             errors[`recipeIngredients`][index].ingredient
@@ -395,7 +428,8 @@ function RecipesForm<T extends FridgeRecipe | CatalogRecipe>({
                         aria-required="true"
                       />
                       {errors.recipeIngredients &&
-                        errors[`recipeIngredients`][index] && (
+                        errors[`recipeIngredients`][index] &&
+                        errors[`recipeIngredients`][index].amount && (
                           <p className="form__error-message" role="alert">
                             {errors[`recipeIngredients`][index].amount?.message}
                           </p>
@@ -404,7 +438,7 @@ function RecipesForm<T extends FridgeRecipe | CatalogRecipe>({
                         className="form__combined-select"
                         aria-label="Unité"
                         {...register(`recipeIngredients.${index}.unit`, {
-                          validate: validateUnits,
+                          validate: () => validateUnits(index),
                         })}
                         aria-required="true"
                       >
@@ -417,6 +451,13 @@ function RecipesForm<T extends FridgeRecipe | CatalogRecipe>({
                           );
                         })}
                       </select>
+                      {errors.recipeIngredients &&
+                        errors[`recipeIngredients`][index] &&
+                        errors[`recipeIngredients`][index].unit && (
+                          <p className="form__error-message" role="alert">
+                            {errors[`recipeIngredients`][index].unit?.message}
+                          </p>
+                        )}
                     </span>
                     {index === fields.length - 1 ? (
                       <button

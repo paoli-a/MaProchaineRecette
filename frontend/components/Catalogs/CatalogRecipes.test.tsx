@@ -39,7 +39,7 @@ const renderCatalog = async (): Promise<RenderResult> => {
 };
 
 describe("initial display is correct", () => {
-  it("displays provided categories", async () => {
+  fit("displays provided categories", async () => {
     const { getByText } = await renderCatalog();
     const entree = getByText(/Entrée/);
     const gouter = getByText(/Gouter/);
@@ -47,7 +47,7 @@ describe("initial display is correct", () => {
     expect(gouter).toBeInTheDocument();
   });
 
-  it("displays provided units", async () => {
+  fit("displays provided units", async () => {
     const { getByLabelText } = await renderCatalog();
     const unitSelect = getByLabelText("Unité");
     const kg = within(unitSelect).getByText("kg");
@@ -56,7 +56,7 @@ describe("initial display is correct", () => {
     expect(pieces).toBeInTheDocument();
   });
 
-  it("displays provided recipes", async () => {
+  fit("displays provided recipes", async () => {
     const { getByText } = await renderCatalog();
     const salade = getByText(/Salade de pommes de terre radis/);
     const marinade = getByText(/Marinade de saumon fumé/);
@@ -78,43 +78,90 @@ describe("the adding recipe functionality works properly", () => {
     expect(beurre).toBeInTheDocument();
   });
 
-  it(`does not add the recipe if no ingredient was provided`, async () => {
-    await checkMissingInput("ingredients");
+  fit(`does not add the recipe if no ingredient was provided`, async () => {
+    const { queryByText, getAllByText } = await renderCatalog();
+    mockedAxios.get.mockResolvedValue({
+      data: [...catalogRecipes, recipeCrumble],
+    });
+    await addRecipe(["ingredients"]);
+    let recipe = queryByText("Crumble aux poires", { exact: false });
+    expect(recipe).not.toBeInTheDocument();
+    expect(
+      getAllByText("Il faut au moins un ingrédient dans la recette")
+    ).toHaveLength(1);
+    addIngredient(["", "", ""]);
+    await addRecipe(["ingredients"]);
+    recipe = queryByText("Crumble aux poires", { exact: false });
+    expect(recipe).not.toBeInTheDocument();
+    expect(
+      getAllByText("Il faut au moins un ingrédient dans la recette")
+    ).toHaveLength(2);
   });
 
-  it(`does not add the recipe if no category was provided`, async () => {
+  fit(`does not add the recipe if an incomplete ingredient was provided
+  (missing name)`, async () => {
+    await checkMissingInput("ingredientName");
+    expect(
+      screen.getAllByText(
+        "Cet ingrédient n'existe pas dans le catalogue d'ingrédients. Vous pouvez l'y ajouter"
+      )
+    ).toHaveLength(2);
+  });
+
+  fit(`does not add the recipe if an incomplete ingredient was provided
+  (missing amount)`, async () => {
+    await checkMissingInput("ingredientAmount");
+    expect(screen.getAllByText("Ce champ est obligatoire")).toHaveLength(2);
+  });
+
+  fit(`does not add the recipe if an incomplete ingredient was provided
+  (missing unit)`, async () => {
+    await checkMissingInput("ingredientUnit");
+    expect(screen.getAllByText("Ce champ est obligatoire")).toHaveLength(2);
+  });
+
+  fit(`does not add the recipe if no category was provided`, async () => {
     await checkMissingInput("categories");
   });
 
-  it(`does not add the recipe if no duration was provided`, async () => {
+  fit(`does not add the recipe if no duration was provided`, async () => {
     await checkMissingInput("duration");
   });
 
-  it(`does not add the recipe if no description was provided`, async () => {
+  fit(`does not add the recipe if no description was provided`, async () => {
     await checkMissingInput("description");
   });
 
   async function checkMissingInput(inputName: string) {
-    const { getByLabelText, getByText, queryByText } = await renderCatalog();
-    await addRecipe(getByLabelText, getByText, [inputName]);
+    const { queryByText } = await renderCatalog();
+    mockedAxios.get.mockResolvedValue({
+      data: [...catalogRecipes, recipeCrumble],
+    });
+    await addRecipe([inputName]);
     const recipe = queryByText("Crumble aux poires", { exact: false });
     expect(recipe).not.toBeInTheDocument();
   }
 
-  it(`does not add the recipe if no title was provided`, async () => {
-    const { getByLabelText, getByText, queryByText } = await renderCatalog();
-    await addRecipe(getByLabelText, getByText, ["title"]);
+  fit(`does not add the recipe if no title was provided`, async () => {
+    const { queryByText } = await renderCatalog();
+    mockedAxios.get.mockResolvedValue({
+      data: [...catalogRecipes, recipeCrumble],
+    });
+    await addRecipe(["title"]);
     const recipe = queryByText("Épluchez et épépinez", { exact: false });
     expect(recipe).not.toBeInTheDocument();
   });
 
-  it(`does not add the recipe if the duration for the recipe is negative or null`, async () => {
-    const { getByLabelText, getByText, queryByText } = await renderCatalog();
-    await addRecipe(getByLabelText, getByText, [], { duration: "00:00" });
+  fit(`does not add the recipe if the duration for the recipe is negative or null`, async () => {
+    const { queryByText } = await renderCatalog();
+    mockedAxios.get.mockResolvedValue({
+      data: [...catalogRecipes, recipeCrumble],
+    });
+    await addRecipe([], { duration: "00:00" });
     let recipe = queryByText("Crumble aux poires", { exact: false });
     expect(recipe).not.toBeInTheDocument();
 
-    await addRecipe(getByLabelText, getByText, [], { duration: "-01:00" });
+    await addRecipe([], { duration: "-01:00" });
     recipe = queryByText("Crumble aux poires", { exact: false });
     expect(recipe).not.toBeInTheDocument();
   });
@@ -255,9 +302,21 @@ describe("the adding recipe functionality works properly", () => {
       fireEvent.change(inputDuration, { target: { value: duration } });
     }
     if (!missingFields.includes("ingredients")) {
-      addIngredient(["Poires", "1", "kg"]);
-      addIngredient(["Beurre", "30", "g"]);
+      if (missingFields.includes("ingredientName")) {
+        addIngredient(["", "1", "kg"]);
+        addIngredient(["", "30", "g"]);
+      } else if (missingFields.includes("ingredientAmount")) {
+        addIngredient(["Poires", "", "kg"]);
+        addIngredient(["Beurre", "", "g"]);
+      } else if (missingFields.includes("ingredientUnit")) {
+        addIngredient(["Poires", "1", ""]);
+        addIngredient(["Beurre", "30", ""]);
+      } else {
+        addIngredient(["Poires", "1", "kg"]);
+        addIngredient(["Beurre", "30", "g"]);
+      }
     }
+
     if (!missingFields.includes("description")) {
       fireEvent.change(inputDescription, {
         target: {
@@ -292,7 +351,7 @@ describe("the adding recipe functionality works properly", () => {
     fireEvent.click(plusButton);
   }
 
-  it(`displays an error message and does not add the recipe if the recipe adding
+  fit(`displays an error message and does not add the recipe if the recipe adding
 was not successful on backend side`, async () => {
     const { getByLabelText, getByText, queryByText } = await renderCatalog();
     const axiosPostResponse = {};
@@ -305,7 +364,7 @@ was not successful on backend side`, async () => {
     fireEvent.change(inputTitle, { target: { value: "Crumble aux poires" } });
     fireEvent.click(entree);
     fireEvent.change(inputDuration, { target: { value: "00:10" } });
-    addIngredient(getByLabelText, ["Poires", "1", "kg"]);
+    addIngredient(["Poires", "1", "kg"]);
     fireEvent.change(inputDescription, {
       target: {
         value: "Épluchez et épépinez les poires. Coupez-les en dés.",
@@ -323,7 +382,7 @@ was not successful on backend side`, async () => {
 });
 
 describe("the removing recipe functionality works properly", () => {
-  it("removes the recipe when clicking on the button", async () => {
+  fit("removes the recipe when clicking on the button", async () => {
     const { getByText, getAllByLabelText } = await renderCatalog();
     const axiosDeleteResponse = { data: "" };
     mockedAxios.delete.mockResolvedValue(axiosDeleteResponse);
@@ -363,7 +422,7 @@ describe("the removing recipe functionality works properly", () => {
     expect(recipe).toBeInTheDocument();
   });
 
-  it(`displays an error message and keeps the recipe if the recipe removal
+  fit(`displays an error message and keeps the recipe if the recipe removal
 was not successful on backend side`, async () => {
     const { getByText, getAllByLabelText } = await renderCatalog();
     const axiosDeleteResponse = { data: "" };
@@ -390,7 +449,7 @@ was not successful on backend side`, async () => {
 });
 
 describe("the search bar functionality works properly", () => {
-  it(`displays the correct recipes according to their title when a letter
+  fit(`displays the correct recipes according to their title when a letter
     is entered in the search bar`, async () => {
     const { getByText, queryByText, getByPlaceholderText } =
       await renderCatalog();
@@ -405,7 +464,7 @@ describe("the search bar functionality works properly", () => {
     expect(queryByText("Marinade de saumon fumé")).not.toBeInTheDocument();
   });
 
-  it("redisplays all the recipes of the catalog after a search", async () => {
+  fit("redisplays all the recipes of the catalog after a search", async () => {
     const { getByText, queryByText, getByPlaceholderText } =
       await renderCatalog();
     const searchBar = getByPlaceholderText("Recherche par titre...");
@@ -419,7 +478,7 @@ describe("the search bar functionality works properly", () => {
 });
 
 describe("edit functionality", () => {
-  it(`transforms the catalog recipe add form to an edit form when
+  fit(`transforms the catalog recipe add form to an edit form when
    clicking on an edit button`, async () => {
     const { getByText, queryByText, getByDisplayValue, queryByLabelText } =
       await renderCatalog();
@@ -442,7 +501,7 @@ describe("edit functionality", () => {
     ).toBeInTheDocument();
   });
 
-  it(`keeps the edit mode but changes the form values when clicking on
+  fit(`keeps the edit mode but changes the form values when clicking on
     another edit button`, async () => {
     const { getByText, getByDisplayValue, queryByDisplayValue } =
       await renderCatalog();
@@ -463,7 +522,7 @@ describe("edit functionality", () => {
     expect(recipeTitle1Absent).not.toBeInTheDocument();
   });
 
-  it(`transforms the catalog recipes edit form to an add form and reset
+  fit(`transforms the catalog recipes edit form to an add form and reset
   the values when clicking on the cancel button`, async () => {
     const {
       getByText,
