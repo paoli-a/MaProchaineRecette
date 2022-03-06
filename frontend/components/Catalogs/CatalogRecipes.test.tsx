@@ -39,7 +39,7 @@ const renderCatalog = async (): Promise<RenderResult> => {
 };
 
 describe("initial display is correct", () => {
-  fit("displays provided categories", async () => {
+  it("displays provided categories", async () => {
     const { getByText } = await renderCatalog();
     const entree = getByText(/Entrée/);
     const gouter = getByText(/Gouter/);
@@ -47,7 +47,7 @@ describe("initial display is correct", () => {
     expect(gouter).toBeInTheDocument();
   });
 
-  fit("displays provided units", async () => {
+  it("displays provided units", async () => {
     const { getByLabelText } = await renderCatalog();
     const unitSelect = getByLabelText("Unité");
     const kg = within(unitSelect).getByText("kg");
@@ -56,7 +56,7 @@ describe("initial display is correct", () => {
     expect(pieces).toBeInTheDocument();
   });
 
-  fit("displays provided recipes", async () => {
+  it("displays provided recipes", async () => {
     const { getByText } = await renderCatalog();
     const salade = getByText(/Salade de pommes de terre radis/);
     const marinade = getByText(/Marinade de saumon fumé/);
@@ -66,19 +66,19 @@ describe("initial display is correct", () => {
 });
 
 describe("the adding recipe functionality works properly", () => {
-  fit("adds the correct recipe when filling the form and clicking on submit", async () => {
+  it("adds the correct recipe when filling the form and clicking on submit", async () => {
     const { getByText } = await renderCatalog();
     mockedAxios.get.mockResolvedValue({
       data: [...catalogRecipes, recipeCrumble],
     });
     await addRecipe();
     const recipe = getByText("Crumble aux poires", { exact: false });
-    const beurre = getByText(/beurre :/);
+    const beurre = getByText(/Beurre :/);
     expect(recipe).toBeInTheDocument();
     expect(beurre).toBeInTheDocument();
   });
 
-  fit(`does not add the recipe if no ingredient was provided`, async () => {
+  it(`does not add the recipe if no ingredient was provided`, async () => {
     const { queryByText, getAllByText } = await renderCatalog();
     mockedAxios.get.mockResolvedValue({
       data: [...catalogRecipes, recipeCrumble],
@@ -98,7 +98,7 @@ describe("the adding recipe functionality works properly", () => {
     ).toHaveLength(2);
   });
 
-  fit(`does not add the recipe if an incomplete ingredient was provided
+  it(`does not add the recipe if an incomplete ingredient was provided
   (missing name)`, async () => {
     await checkMissingInput("ingredientName");
     expect(
@@ -108,27 +108,27 @@ describe("the adding recipe functionality works properly", () => {
     ).toHaveLength(2);
   });
 
-  fit(`does not add the recipe if an incomplete ingredient was provided
+  it(`does not add the recipe if an incomplete ingredient was provided
   (missing amount)`, async () => {
     await checkMissingInput("ingredientAmount");
     expect(screen.getAllByText("Ce champ est obligatoire")).toHaveLength(2);
   });
 
-  fit(`does not add the recipe if an incomplete ingredient was provided
+  it(`does not add the recipe if an incomplete ingredient was provided
   (missing unit)`, async () => {
     await checkMissingInput("ingredientUnit");
     expect(screen.getAllByText("Ce champ est obligatoire")).toHaveLength(2);
   });
 
-  fit(`does not add the recipe if no category was provided`, async () => {
+  it(`does not add the recipe if no category was provided`, async () => {
     await checkMissingInput("categories");
   });
 
-  fit(`does not add the recipe if no duration was provided`, async () => {
+  it(`does not add the recipe if no duration was provided`, async () => {
     await checkMissingInput("duration");
   });
 
-  fit(`does not add the recipe if no description was provided`, async () => {
+  it(`does not add the recipe if no description was provided`, async () => {
     await checkMissingInput("description");
   });
 
@@ -142,7 +142,7 @@ describe("the adding recipe functionality works properly", () => {
     expect(recipe).not.toBeInTheDocument();
   }
 
-  fit(`does not add the recipe if no title was provided`, async () => {
+  it(`does not add the recipe if no title was provided`, async () => {
     const { queryByText } = await renderCatalog();
     mockedAxios.get.mockResolvedValue({
       data: [...catalogRecipes, recipeCrumble],
@@ -152,7 +152,7 @@ describe("the adding recipe functionality works properly", () => {
     expect(recipe).not.toBeInTheDocument();
   });
 
-  fit(`does not add the recipe if the duration for the recipe is negative or null`, async () => {
+  it(`does not add the recipe if the duration for the recipe is negative or null`, async () => {
     const { queryByText } = await renderCatalog();
     mockedAxios.get.mockResolvedValue({
       data: [...catalogRecipes, recipeCrumble],
@@ -167,7 +167,7 @@ describe("the adding recipe functionality works properly", () => {
   });
 
   describe("the adding of ingredient on the recipe form works properly", () => {
-    fit(`does not validate the recipe if an ingredient with the same name
+    it(`does not validate the recipe if an ingredient with the same name
       was already provided`, async () => {
       const { getAllByText } = await renderCatalog();
       mockedAxios.get.mockResolvedValue({
@@ -182,7 +182,7 @@ describe("the adding recipe functionality works properly", () => {
       expect(errorMessage).toHaveLength(2);
     });
 
-    fit(`does not validate the recipe if amount is negative`, async () => {
+    it(`does not validate the recipe if amount is negative`, async () => {
       const { getByText } = await renderCatalog();
       mockedAxios.get.mockResolvedValue({
         data: [...catalogRecipes, recipeCrumble],
@@ -190,10 +190,10 @@ describe("the adding recipe functionality works properly", () => {
       addIngredient(["Fraises", "-1", "g"]);
       await checkRecipeValidationFails();
       const errorMessage = getByText("La quantité doit être supérieure à 0");
-      expect(errorMessage).toBeInTheDocument;
+      expect(errorMessage).toBeInTheDocument();
     });
 
-    fit(`does not validate the recipe if amount is null`, async () => {
+    it(`does not validate the recipe if amount is null`, async () => {
       const { getByText } = await renderCatalog();
       mockedAxios.get.mockResolvedValue({
         data: [...catalogRecipes, recipeCrumble],
@@ -201,10 +201,10 @@ describe("the adding recipe functionality works properly", () => {
       addIngredient(["Fraises", "0", "g"]);
       await checkRecipeValidationFails();
       const errorMessage = getByText("La quantité doit être supérieure à 0");
-      expect(errorMessage).toBeInTheDocument;
+      expect(errorMessage).toBeInTheDocument();
     });
 
-    fit(`does not validate the recipe if the ingredient is not in catalogIngredients`, async () => {
+    it(`does not validate the recipe if the ingredient is not in catalogIngredients`, async () => {
       const { getByText } = await renderCatalog();
       mockedAxios.get.mockResolvedValue({
         data: [...catalogRecipes, recipeCrumble],
@@ -214,19 +214,21 @@ describe("the adding recipe functionality works properly", () => {
       const errorMessage = getByText(
         "Cet ingrédient n'existe pas dans le catalogue d'ingrédients. Vous pouvez l'y ajouter"
       );
-      expect(errorMessage).toBeInTheDocument;
+      expect(errorMessage).toBeInTheDocument();
     });
 
-    fit(`provides the right proposals when a letter is entered in the input of the ingredient name`, async () => {
+    it(`provides the right proposals when a letter is entered in the input of the ingredient name`, async () => {
       const { getByLabelText, getAllByTestId } = await renderCatalog();
       const inputIngredientName = getByLabelText("Nom");
       fireEvent.change(inputIngredientName, { target: { value: "f" } });
       const options = getAllByTestId("suggestions");
       const fraises = options[0] as HTMLOptionElement;
       const framboises = options[1] as HTMLOptionElement;
-      expect(options).toHaveLength(2);
+      const farine = options[2] as HTMLOptionElement;
+      expect(options).toHaveLength(3);
       expect(fraises.value).toEqual("Fraises");
       expect(framboises.value).toEqual("Framboises");
+      expect(farine.value).toEqual("Farine");
     });
 
     it(`removes ingredient fields on the form when clicking on the
@@ -244,7 +246,7 @@ describe("the adding recipe functionality works properly", () => {
       checkIngredientFieldsCount(1);
     });
 
-    fit(`adds another ingredient fields on the form when clicking
+    it(`adds another ingredient fields on the form when clicking
     on plus button`, async () => {
       await renderCatalog();
       const plusButton = screen.getByLabelText(
@@ -252,6 +254,30 @@ describe("the adding recipe functionality works properly", () => {
       );
       fireEvent.click(plusButton);
       checkIngredientFieldsCount(2);
+    });
+
+    it(`displays a plus button only for the last ingredient fields,
+     and displays a minus button for the others`, async () => {
+      await renderCatalog();
+      const ingredientFieldset = screen.getByRole("group", {
+        name: "Ingrédients :",
+      });
+      let buttons = within(ingredientFieldset).getAllByRole("button");
+      expect(buttons).toHaveLength(1);
+      expect(buttons[0].textContent).toBe("+");
+
+      fireEvent.click(buttons[0]);
+      buttons = within(ingredientFieldset).getAllByRole("button");
+      expect(buttons).toHaveLength(2);
+      expect(buttons[0].textContent).toBe("-");
+      expect(buttons[1].textContent).toBe("+");
+
+      fireEvent.click(buttons[1]);
+      buttons = within(ingredientFieldset).getAllByRole("button");
+      expect(buttons).toHaveLength(3);
+      expect(buttons[0].textContent).toBe("-");
+      expect(buttons[1].textContent).toBe("-");
+      expect(buttons[2].textContent).toBe("+");
     });
 
     function checkIngredientFieldsCount(count: number) {
@@ -351,7 +377,7 @@ describe("the adding recipe functionality works properly", () => {
     fireEvent.click(plusButton);
   }
 
-  fit(`displays an error message and does not add the recipe if the recipe adding
+  it(`displays an error message and does not add the recipe if the recipe adding
 was not successful on backend side`, async () => {
     const { getByLabelText, getByText, queryByText } = await renderCatalog();
     const axiosPostResponse = {};
@@ -382,7 +408,7 @@ was not successful on backend side`, async () => {
 });
 
 describe("the removing recipe functionality works properly", () => {
-  fit("removes the recipe when clicking on the button", async () => {
+  it("removes the recipe when clicking on the button", async () => {
     const { getByText, getAllByLabelText } = await renderCatalog();
     const axiosDeleteResponse = { data: "" };
     mockedAxios.delete.mockResolvedValue(axiosDeleteResponse);
@@ -401,15 +427,15 @@ describe("the removing recipe functionality works properly", () => {
           categories: ["Plat"],
           title: "Salade de pommes de terre radis",
           ingredients: [
-            { ingredient: "pommes de terre", amount: "1", unit: "kg" },
-            { ingredient: "oeufs", amount: "3", unit: "pièce(s)" },
-            { ingredient: "vinaigre non balsamique", amount: "1", unit: "cas" },
-            { ingredient: "radis", amount: "2", unit: "botte(s)" },
-            { ingredient: "oignons bottes", amount: "2", unit: "pièce(s)" },
-            { ingredient: "yaourt grec", amount: "1", unit: "pièce(s)" },
-            { ingredient: "mayonnaise", amount: "1", unit: "cas" },
-            { ingredient: "moutarde", amount: "0.5", unit: "cas" },
-            { ingredient: "ail", amount: "1", unit: "gousse(s)" },
+            { ingredient: "Pommes de terre", amount: "1", unit: "kg" },
+            { ingredient: "Oeufs", amount: "3", unit: "pièce(s)" },
+            { ingredient: "Vinaigre non balsamique", amount: "1", unit: "cas" },
+            { ingredient: "Radis", amount: "2", unit: "botte(s)" },
+            { ingredient: "Oignons bottes", amount: "2", unit: "pièce(s)" },
+            { ingredient: "Yaourt grec", amount: "1", unit: "pièce(s)" },
+            { ingredient: "Mayonnaise", amount: "1", unit: "cas" },
+            { ingredient: "Moutarde", amount: "0.5", unit: "cas" },
+            { ingredient: "Ail", amount: "1", unit: "gousse(s)" },
           ],
           duration: "35 min",
           description:
@@ -422,7 +448,7 @@ describe("the removing recipe functionality works properly", () => {
     expect(recipe).toBeInTheDocument();
   });
 
-  fit(`displays an error message and keeps the recipe if the recipe removal
+  it(`displays an error message and keeps the recipe if the recipe removal
 was not successful on backend side`, async () => {
     const { getByText, getAllByLabelText } = await renderCatalog();
     const axiosDeleteResponse = { data: "" };
@@ -449,7 +475,7 @@ was not successful on backend side`, async () => {
 });
 
 describe("the search bar functionality works properly", () => {
-  fit(`displays the correct recipes according to their title when a letter
+  it(`displays the correct recipes according to their title when a letter
     is entered in the search bar`, async () => {
     const { getByText, queryByText, getByPlaceholderText } =
       await renderCatalog();
@@ -464,7 +490,7 @@ describe("the search bar functionality works properly", () => {
     expect(queryByText("Marinade de saumon fumé")).not.toBeInTheDocument();
   });
 
-  fit("redisplays all the recipes of the catalog after a search", async () => {
+  it("redisplays all the recipes of the catalog after a search", async () => {
     const { getByText, queryByText, getByPlaceholderText } =
       await renderCatalog();
     const searchBar = getByPlaceholderText("Recherche par titre...");
@@ -478,7 +504,7 @@ describe("the search bar functionality works properly", () => {
 });
 
 describe("edit functionality", () => {
-  fit(`transforms the catalog recipe add form to an edit form when
+  it(`transforms the catalog recipe add form to an edit form when
    clicking on an edit button`, async () => {
     const { getByText, queryByText, getByDisplayValue, queryByLabelText } =
       await renderCatalog();
@@ -501,7 +527,7 @@ describe("edit functionality", () => {
     ).toBeInTheDocument();
   });
 
-  fit(`keeps the edit mode but changes the form values when clicking on
+  it(`keeps the edit mode but changes the form values when clicking on
     another edit button`, async () => {
     const { getByText, getByDisplayValue, queryByDisplayValue } =
       await renderCatalog();
@@ -522,7 +548,7 @@ describe("edit functionality", () => {
     expect(recipeTitle1Absent).not.toBeInTheDocument();
   });
 
-  fit(`transforms the catalog recipes edit form to an add form and reset
+  it(`transforms the catalog recipes edit form to an add form and reset
   the values when clicking on the cancel button`, async () => {
     const {
       getByText,
@@ -561,15 +587,15 @@ describe("edit functionality", () => {
       categories: ["Plat", "Entrée"],
       title: "Salade de pommes de terre avec radis",
       ingredients: [
-        { ingredient: "pommes de terre", amount: "1", unit: "kg" },
-        { ingredient: "oeufs", amount: "3", unit: "pièce(s)" },
-        { ingredient: "vinaigre non balsamique", amount: "1", unit: "cas" },
-        { ingredient: "radis", amount: "2", unit: "botte(s)" },
-        { ingredient: "oignons bottes", amount: "2", unit: "pièce(s)" },
-        { ingredient: "yaourt grec", amount: "1", unit: "pièce(s)" },
-        { ingredient: "mayonnaise", amount: "1", unit: "cas" },
-        { ingredient: "moutarde", amount: "0.5", unit: "cas" },
-        { ingredient: "ail", amount: "1", unit: "gousse(s)" },
+        { ingredient: "Pommes de terre", amount: "1", unit: "kg" },
+        { ingredient: "Oeufs", amount: "3", unit: "pièce(s)" },
+        { ingredient: "Vinaigre non balsamique", amount: "1", unit: "cas" },
+        { ingredient: "Radis", amount: "2", unit: "botte(s)" },
+        { ingredient: "Oignons bottes", amount: "2", unit: "pièce(s)" },
+        { ingredient: "Yaourt grec", amount: "1", unit: "pièce(s)" },
+        { ingredient: "Mayonnaise", amount: "1", unit: "cas" },
+        { ingredient: "Moutarde", amount: "0.5", unit: "cas" },
+        { ingredient: "Ail", amount: "1", unit: "gousse(s)" },
       ],
       duration: "35 min",
       description: "Description modifiée",

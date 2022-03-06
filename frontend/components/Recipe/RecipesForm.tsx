@@ -1,5 +1,4 @@
-import produce from "immer";
-import React, { MouseEvent, useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import {
   CatalogRecipe,
@@ -50,18 +49,11 @@ function RecipesForm<T extends FridgeRecipe | CatalogRecipe>({
     },
   });
 
-  const { fields, append, remove } = useFieldArray({
+  const { fields, append, remove, replace } = useFieldArray({
     control,
     name: "recipeIngredients",
   });
 
-  const [ingredients, setIngredients] = useState<RecipeIngredient[]>([]);
-  const [ingredientName, setIngredientName] = useState("");
-  const [ingredientAmount, setIngredientAmount] = useState("");
-  const [ingredientUnit, setIngredientUnit] = useState("");
-  const [ingredientError, setIngredientError] = useState<JSX.Element | string>(
-    ""
-  );
   const { catalogIngredients } = useCatalogIngredients();
   const { categories } = useCategories();
   const { units } = useUnits();
@@ -82,30 +74,14 @@ function RecipesForm<T extends FridgeRecipe | CatalogRecipe>({
       setValue(`categories`, categoriesToEdit);
       setValue("recipeTime", recipeToEdit.duration);
       setValue("recipeDescription", recipeToEdit.description);
-      setIngredients(recipeToEdit.ingredients);
+      replace(recipeToEdit.ingredients);
     }
-  }, [recipeToEdit, setFocus, categories, setValue]);
+  }, [recipeToEdit, setFocus, categories, setValue, replace]);
 
   const onSubmitForm = (data: FormInputs) => {
-    /*if (ingredients.length === 0) {
-      setIngredientError(
-        "Au moins un ingrédient doit être présent dans la recette"
-      );
-      return;
-    }*/
-
     onSubmitRecipe(data);
     reset();
   };
-
-  const resetIngredient = () => {
-    setIngredientName("");
-    setIngredientAmount("");
-    setIngredientUnit("");
-    setIngredientError("");
-  };
-
-  class UnauthorizedIngredient extends Error {}
 
   function getCleanedIngredients() {
     const ingredients = watch(`recipeIngredients`);
@@ -133,8 +109,6 @@ function RecipesForm<T extends FridgeRecipe | CatalogRecipe>({
     const ingredient = ingredientNames[index];
 
     let authorized = false;
-    console.log("catalogIngredients ", catalogIngredients);
-    console.log("ingredient ", ingredient);
     for (const ingredientPossible of catalogIngredients) {
       if (ingredientPossible.name === ingredient) {
         authorized = true;
@@ -168,7 +142,7 @@ function RecipesForm<T extends FridgeRecipe | CatalogRecipe>({
       return "Ce champ est obligatoire";
     }
 
-    if (parseInt(amount, 10) <= 0) {
+    if (parseFloat(amount) <= 0) {
       return "La quantité doit être supérieure à 0";
     } else return true;
   }
@@ -190,79 +164,9 @@ function RecipesForm<T extends FridgeRecipe | CatalogRecipe>({
     return true;
   }
 
-  const validateNewIngredient = () => {
-    if (!ingredientName || !ingredientAmount || !ingredientUnit) {
-      throw new Error(
-        "Tous les champs concernant l'ingrédient doivent être remplis"
-      );
-    }
-    let authorized = false;
-    for (const ingredientPossible of catalogIngredients) {
-      if (ingredientPossible.name === ingredientName) {
-        authorized = true;
-        break;
-      }
-    }
-    if (!authorized) {
-      throw new UnauthorizedIngredient(
-        "Cet ingrédient n'existe pas dans le catalogue d'ingrédients. Vous pouvez l'y ajouter "
-      );
-    }
-    for (const ingredientExistant of ingredients) {
-      if (ingredientExistant.ingredient === ingredientName) {
-        throw new Error("Cet ingrédient a déjà été ajouté");
-      }
-    }
-    if (parseInt(ingredientAmount, 10) <= 0) {
-      throw new Error("La quantité doit être supérieure à 0");
-    }
-  };
-
-  const handleAddIngredient = (event: MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-    try {
-      validateNewIngredient();
-      const newIngredients = produce(ingredients, (draftState) => {
-        draftState.push({
-          ingredient: ingredientName,
-          amount: ingredientAmount,
-          unit: ingredientUnit,
-        });
-      });
-      setIngredients(newIngredients);
-      resetIngredient();
-    } catch (error) {
-      if (error instanceof UnauthorizedIngredient) {
-        const message = (
-          <>
-            {error.message}
-            <a href="/#">ici</a>.
-          </>
-        );
-        setIngredientError(message);
-      } else if (error instanceof Error) {
-        setIngredientError(error.message);
-      }
-    }
-  };
-
-  const handleSupprIngredient = (name: string) => {
-    const ingredientsListUpdated = produce(ingredients, (draftState) => {
-      for (let i = 0; i < draftState.length; i++) {
-        if (draftState[i].ingredient === name) {
-          draftState.splice(i, 1);
-          return;
-        }
-      }
-    });
-    setIngredients(ingredientsListUpdated);
-  };
-
   const handleCancelClick = () => {
     resetRecipeToEdit && resetRecipeToEdit();
     reset();
-    setIngredients([]);
-    resetIngredient();
   };
 
   const validateCategories = () => {
@@ -283,6 +187,7 @@ function RecipesForm<T extends FridgeRecipe | CatalogRecipe>({
       return "Le temps nécessaire pour la recette doit être supérieur à 0";
     } else return undefined;
   };
+
   return (
     <form className="form form-recipe" onSubmit={handleSubmit(onSubmitForm)}>
       <fieldset>
@@ -369,7 +274,7 @@ function RecipesForm<T extends FridgeRecipe | CatalogRecipe>({
           </div>
         </div>
         <fieldset className="form form-ingredient-recipe">
-          <legend> Ingrédients : </legend>
+          <legend>Ingrédients :</legend>
           <div className="form__paragraph">
             <ul>
               {fields.map((item, index) => {
@@ -481,32 +386,6 @@ function RecipesForm<T extends FridgeRecipe | CatalogRecipe>({
               })}
             </ul>
           </div>
-          <div className="form__paragraph">
-            <button
-              className="button"
-              onClick={handleAddIngredient}
-              aria-label="Ajouter l'ingrédient"
-            >
-              Ajouter
-            </button>
-            {ingredientError && <p role="alert">{ingredientError}</p>}
-          </div>
-          <ul>
-            {ingredients.map((ingredient) => {
-              return (
-                <li key={ingredient.ingredient}>
-                  {ingredient.ingredient} : {ingredient.amount}{" "}
-                  {ingredient.unit}
-                  <button
-                    className="button"
-                    onClick={() => handleSupprIngredient(ingredient.ingredient)}
-                  >
-                    X
-                  </button>
-                </li>
-              );
-            })}
-          </ul>
         </fieldset>
         <div className="form__textarea-container">
           <label className="form__label" htmlFor="recipeDescription">

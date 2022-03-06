@@ -63,7 +63,7 @@ was not successful on backend side`, async () => {
   ingredient = getByText("Fraises", { exact: false });
   const listItems = getAllByRole("listitem");
   expect(ingredient).toBeInTheDocument();
-  expect(listItems).toHaveLength(6);
+  expect(listItems).toHaveLength(23);
   const error = getByText(/La suppression a échoué/);
   expect(error).toBeInTheDocument();
 });
@@ -97,12 +97,8 @@ it(`adds the correct ingredient when filling the form and clicking
 
 it(`displays an error message and does not add the ingredient if the ingredient adding
 was not successful on backend side`, async () => {
-  const {
-    getByLabelText,
-    getByText,
-    queryByText,
-    getAllByRole,
-  } = await renderCatalog();
+  const { getByLabelText, getByText, queryByText, getAllByRole } =
+    await renderCatalog();
   const axiosPostResponse = {};
   mockedAxios.post.mockRejectedValue(axiosPostResponse);
   const inputName = getByLabelText("Nom de l'ingrédient à ajouter :");
@@ -112,7 +108,7 @@ was not successful on backend side`, async () => {
   await waitFor(() => expect(mockedAxios.post).toHaveBeenCalledTimes(1));
   const ingredient = queryByText("Chocolat", { exact: false });
   const listItems = getAllByRole("listitem");
-  expect(listItems).toHaveLength(6);
+  expect(listItems).toHaveLength(23);
   expect(ingredient).not.toBeInTheDocument();
   const error = getByText(/L'ajout a échoué/);
   expect(error).toBeInTheDocument();
@@ -121,11 +117,8 @@ was not successful on backend side`, async () => {
 describe("the search bar functionality works properly", () => {
   it(`displays the correct ingredients when a letter is entered in the
     search bar`, async () => {
-    const {
-      getByText,
-      queryByText,
-      getByPlaceholderText,
-    } = await renderCatalog();
+    const { getByText, queryByText, getByPlaceholderText } =
+      await renderCatalog();
     const searchBar = getByPlaceholderText("Recherche...");
     fireEvent.change(searchBar, { target: { value: "M" } });
     expect(getByText("Mascarpone")).toBeInTheDocument();
@@ -136,11 +129,8 @@ describe("the search bar functionality works properly", () => {
   });
 
   it("redisplays all the ingredient of the catalog after a search", async () => {
-    const {
-      getByText,
-      queryByText,
-      getByPlaceholderText,
-    } = await renderCatalog();
+    const { getByText, queryByText, getByPlaceholderText } =
+      await renderCatalog();
     const searchBar = getByPlaceholderText("Recherche...");
     fireEvent.change(searchBar, { target: { value: "fr" } });
     expect(getByText("Fraises")).toBeInTheDocument();

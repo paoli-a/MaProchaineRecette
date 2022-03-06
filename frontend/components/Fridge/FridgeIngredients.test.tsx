@@ -585,8 +585,10 @@ describe("functionalities work properly", () => {
     const options = getAllByTestId("suggestions");
     const fraises = options[0] as HTMLOptionElement;
     const framboises = options[1] as HTMLOptionElement;
-    expect(options).toHaveLength(2);
+    const farine = options[2] as HTMLOptionElement;
+    expect(options).toHaveLength(3);
     expect(fraises.value).toEqual("Fraises");
     expect(framboises.value).toEqual("Framboises");
+    expect(farine.value).toEqual("Farine");
   });
 });
