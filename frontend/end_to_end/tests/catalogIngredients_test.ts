@@ -74,7 +74,7 @@ suggestions when an ingredient name is being entered in CatalogRecipes`,
     I.fillField("Nom de l'ingrédient à ajouter :", "Navets");
     I.click("Envoyer");
     I.click("Catalogue recettes");
-    I.fillField("Nom :", "Nav");
+    I.fillField("Nom", "Nav");
     I.seeElementInDOM("option[value='Navets']");
     I.click("Catalogue ingrédients");
     I.click("X");

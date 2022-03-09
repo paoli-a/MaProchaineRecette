@@ -65,14 +65,13 @@ Scenario("Add new recipe", async ({ I }) => {
   I.fillField("Titre de la recette :", "Salade légère");
   I.checkOption("Entrée");
   I.fillField("Temps total de la recette :", "010101");
-  I.fillField("Nom :", "échalotte");
-  I.fillField("Quantité nécessaire :", "1");
+  I.fillField("Nom", "échalotte");
+  I.fillField("Quantité nécessaire", "1");
   I.selectOption("Unité", "pièce(s)");
-  I.click("Ajouter");
-  I.fillField("Nom :", "herbes fraiches");
-  I.fillField("Quantité nécessaire :", "1");
-  I.selectOption("Unité", "pièce(s)");
-  I.click("Ajouter");
+  I.click("+");
+  I.fillField("#ingredient1", "herbes fraiches");
+  I.fillField("#ingredientAmount1", "1");
+  I.selectOption("recipeIngredients.1.unit", "pièce(s)");
   I.fillField("Corps de la recette :", "Mélanger les ingrédients.");
   await within(".form__paragraph", () => {
     I.click(".form__submit");
@@ -102,14 +101,13 @@ there`,
     I.fillField("Titre de la recette :", "Salade légère");
     I.checkOption("Entrée");
     I.fillField("Temps total de la recette :", "010101");
-    I.fillField("Nom :", "échalotte");
-    I.fillField("Quantité nécessaire :", "1");
+    I.fillField("Nom", "échalotte");
+    I.fillField("Quantité nécessaire", "1");
     I.selectOption("Unité", "pièce(s)");
-    I.click("Ajouter");
-    I.fillField("Nom :", "herbes fraiches");
-    I.fillField("Quantité nécessaire :", "1");
-    I.selectOption("Unité", "pièce(s)");
-    I.click("Ajouter");
+    I.click("+");
+    I.fillField("#ingredient1", "herbes fraiches");
+    I.fillField("#ingredientAmount1", "1");
+    I.selectOption("recipeIngredients.1.unit", "pièce(s)");
     I.fillField("Corps de la recette :", "Mélanger les ingrédients.");
     await within(".form__paragraph", () => {
       I.click(".form__submit");
@@ -130,10 +128,9 @@ Scenario("Edit existing catalog recipe", async ({ I }) => {
   I.click("Catalogue recettes");
   I.click("Modifier la recette");
   I.fillField("Titre de la recette :", "Marinade de saumon express");
-  I.fillField("Nom :", "ciboulette");
-  I.fillField("Quantité nécessaire :", "1");
+  I.fillField("Nom", "ciboulette");
+  I.fillField("Quantité nécessaire", "1");
   I.selectOption("Unité", "pièce(s)");
-  I.click("Ajouter");
   I.fillField(
     "Corps de la recette :",
     "Emincez l'échalotte, le saumon et le persil."

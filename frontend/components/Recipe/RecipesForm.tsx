@@ -79,7 +79,15 @@ function RecipesForm<T extends FridgeRecipe | CatalogRecipe>({
   }, [recipeToEdit, setFocus, categories, setValue, replace]);
 
   const onSubmitForm = (data: FormInputs) => {
-    onSubmitRecipe(data);
+    const clearedIngredients = data.recipeIngredients.filter(
+      function filterEmptyIngredient(ingredient) {
+        if (!ingredient.ingredient && !ingredient.amount && !ingredient.unit) {
+          return false;
+        } else return true;
+      }
+    );
+    const clearedData = { ...data, recipeIngredients: clearedIngredients };
+    onSubmitRecipe(clearedData);
     reset();
   };
 
@@ -327,6 +335,7 @@ function RecipesForm<T extends FridgeRecipe | CatalogRecipe>({
                         type="number"
                         id={`ingredientAmount${index}`}
                         min="0"
+                        step=".01"
                         {...register(`recipeIngredients.${index}.amount`, {
                           validate: () => validateAmounts(index),
                         })}
