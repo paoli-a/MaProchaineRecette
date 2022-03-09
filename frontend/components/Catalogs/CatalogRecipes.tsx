@@ -9,7 +9,7 @@ import {
   useUpdateCatalogRecipe,
 } from "../../hooks/";
 import Recipe from "../Recipe/Recipe";
-import type { SubmitRecipe } from "../Recipe/RecipesForm";
+import type { FormInputs } from "../Recipe/RecipesForm";
 import RecipesForm from "../Recipe/RecipesForm";
 import useFilterSearch from "../useFilterSearch";
 
@@ -77,12 +77,12 @@ function CatalogRecipes() {
     });
   };
 
-  const handleSubmit = (data: SubmitRecipe) => {
+  const handleSubmit = (data: FormInputs) => {
     const categories = data.categories.filter(Boolean);
     const recipeToSend: CatalogRecipeToSend = {
       categories: categories,
       title: data.recipeTitle,
-      ingredients: data.ingredients,
+      ingredients: data.recipeIngredients,
       duration: data.recipeTime,
       description: data.recipeDescription,
     };

@@ -1,6 +1,5 @@
-import produce from "immer";
-import React, { MouseEvent, useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import React, { useEffect } from "react";
+import { useFieldArray, useForm } from "react-hook-form";
 import {
   CatalogRecipe,
   FridgeRecipe,
@@ -15,10 +14,8 @@ type FormInputs = {
   recipeTime: string;
   recipeDescription: string;
   categories: string[];
+  recipeIngredients: RecipeIngredient[];
 };
-interface SubmitRecipe extends FormInputs {
-  ingredients: RecipeIngredient[];
-}
 
 type RecipesFormProps<T> = {
   /**
@@ -26,7 +23,7 @@ type RecipesFormProps<T> = {
    * lorsque la validité de tous les éléments entrés a été vérifiée,
    * et permet de les récupérer.
    */
-  onSubmitRecipe: (newData: SubmitRecipe) => void;
+  onSubmitRecipe: (newData: FormInputs) => void;
   recipeToEdit: null | T;
   resetRecipeToEdit?: () => void;
 };
@@ -45,15 +42,18 @@ function RecipesForm<T extends FridgeRecipe | CatalogRecipe>({
     getValues,
     setValue,
     setFocus,
-  } = useForm<FormInputs>();
+    control,
+  } = useForm<FormInputs>({
+    defaultValues: {
+      recipeIngredients: [{}],
+    },
+  });
 
-  const [ingredients, setIngredients] = useState<RecipeIngredient[]>([]);
-  const [ingredientName, setIngredientName] = useState("");
-  const [ingredientAmount, setIngredientAmount] = useState("");
-  const [ingredientUnit, setIngredientUnit] = useState("");
-  const [ingredientError, setIngredientError] = useState<JSX.Element | string>(
-    ""
-  );
+  const { fields, append, remove, replace } = useFieldArray({
+    control,
+    name: "recipeIngredients",
+  });
+
   const { catalogIngredients } = useCatalogIngredients();
   const { categories } = useCategories();
   const { units } = useUnits();
@@ -74,107 +74,107 @@ function RecipesForm<T extends FridgeRecipe | CatalogRecipe>({
       setValue(`categories`, categoriesToEdit);
       setValue("recipeTime", recipeToEdit.duration);
       setValue("recipeDescription", recipeToEdit.description);
-      setIngredients(recipeToEdit.ingredients);
+      replace(recipeToEdit.ingredients);
     }
-  }, [recipeToEdit, setFocus, categories, setValue]);
+  }, [recipeToEdit, setFocus, categories, setValue, replace]);
 
   const onSubmitForm = (data: FormInputs) => {
-    if (ingredients.length === 0) {
-      setIngredientError(
-        "Au moins un ingrédient doit être présent dans la recette"
-      );
-      return;
-    }
-    const newData = { ...data, ingredients };
-
-    onSubmitRecipe(newData);
+    const clearedIngredients = data.recipeIngredients.filter(
+      function filterEmptyIngredient(ingredient) {
+        if (!ingredient.ingredient && !ingredient.amount && !ingredient.unit) {
+          return false;
+        } else return true;
+      }
+    );
+    const clearedData = { ...data, recipeIngredients: clearedIngredients };
+    onSubmitRecipe(clearedData);
     reset();
-    setIngredients([]);
-    resetIngredient();
   };
 
-  const resetIngredient = () => {
-    setIngredientName("");
-    setIngredientAmount("");
-    setIngredientUnit("");
-    setIngredientError("");
-  };
+  function getCleanedIngredients() {
+    const ingredients = watch(`recipeIngredients`);
+    return ingredients.map(function eliminateEmptyIngredient(ingredient) {
+      if (!ingredient.ingredient && !ingredient.amount && !ingredient.unit) {
+        return null;
+      } else return ingredient;
+    });
+  }
 
-  class UnauthorizedIngredient extends Error {}
-
-  const validateNewIngredient = () => {
-    if (!ingredientName || !ingredientAmount || !ingredientUnit) {
-      throw new Error(
-        "Tous les champs concernant l'ingrédient doivent être remplis"
-      );
+  function validateIngredients(index: number) {
+    const ingredients = getCleanedIngredients();
+    const noIngredientsFilledAtAll = ingredients.every(
+      (ingredient) => ingredient === null
+    );
+    if (noIngredientsFilledAtAll) {
+      return "Il faut au moins un ingrédient dans la recette";
+    } else if (ingredients[index] === null) {
+      return true;
     }
+
+    const ingredientNames = ingredients
+      .map((recipeIngredients) => recipeIngredients?.ingredient)
+      .slice();
+    const ingredient = ingredientNames[index];
+
     let authorized = false;
     for (const ingredientPossible of catalogIngredients) {
-      if (ingredientPossible.name === ingredientName) {
+      if (ingredientPossible.name === ingredient) {
         authorized = true;
         break;
       }
     }
     if (!authorized) {
-      throw new UnauthorizedIngredient(
-        "Cet ingrédient n'existe pas dans le catalogue d'ingrédients. Vous pouvez l'y ajouter "
-      );
+      return "Cet ingrédient n'existe pas dans le catalogue d'ingrédients. Vous pouvez l'y ajouter ";
     }
-    for (const ingredientExistant of ingredients) {
-      if (ingredientExistant.ingredient === ingredientName) {
-        throw new Error("Cet ingrédient a déjà été ajouté");
-      }
-    }
-    if (parseInt(ingredientAmount, 10) <= 0) {
-      throw new Error("La quantité doit être supérieure à 0");
-    }
-  };
 
-  const handleAddIngredient = (event: MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-    try {
-      validateNewIngredient();
-      const newIngredients = produce(ingredients, (draftState) => {
-        draftState.push({
-          ingredient: ingredientName,
-          amount: ingredientAmount,
-          unit: ingredientUnit,
-        });
-      });
-      setIngredients(newIngredients);
-      resetIngredient();
-    } catch (error) {
-      if (error instanceof UnauthorizedIngredient) {
-        const message = (
-          <>
-            {error.message}
-            <a href="/#">ici</a>.
-          </>
-        );
-        setIngredientError(message);
-      } else if (error instanceof Error) {
-        setIngredientError(error.message);
-      }
+    ingredientNames.splice(index, 1);
+    if (ingredientNames.includes(ingredient)) {
+      return "Vous ne pouvez pas ajouter plusieurs fois le même ingrédient";
     }
-  };
 
-  const handleSupprIngredient = (name: string) => {
-    const ingredientsListUpdated = produce(ingredients, (draftState) => {
-      for (let i = 0; i < draftState.length; i++) {
-        if (draftState[i].ingredient === name) {
-          draftState.splice(i, 1);
-          return;
-        }
-      }
-    });
-    setIngredients(ingredientsListUpdated);
-  };
+    return true;
+  }
+
+  function validateAmounts(index: number) {
+    const amount = watch(`recipeIngredients.${index}.amount`);
+    const ingredients = getCleanedIngredients();
+    const noIngredientsFilledAtAll = ingredients.every(
+      (ingredient) => ingredient === null
+    );
+    if (noIngredientsFilledAtAll) {
+      return false;
+    } else if (ingredients[index] === null) {
+      return true;
+    }
+    if (amount === "") {
+      return "Ce champ est obligatoire";
+    }
+
+    if (parseFloat(amount) <= 0) {
+      return "La quantité doit être supérieure à 0";
+    } else return true;
+  }
+
+  function validateUnits(index: number) {
+    const unit = watch(`recipeIngredients.${index}.unit`);
+    const ingredients = getCleanedIngredients();
+    const noIngredientsFilledAtAll = ingredients.every(
+      (ingredient) => ingredient === null
+    );
+    if (noIngredientsFilledAtAll) {
+      return false;
+    } else if (ingredients[index] === null) {
+      return true;
+    }
+    if (unit === "") {
+      return "Ce champ est obligatoire";
+    }
+    return true;
+  }
 
   const handleCancelClick = () => {
     resetRecipeToEdit && resetRecipeToEdit();
     reset();
-    setIngredients([]);
-    resetIngredient();
   };
 
   const validateCategories = () => {
@@ -282,88 +282,119 @@ function RecipesForm<T extends FridgeRecipe | CatalogRecipe>({
           </div>
         </div>
         <fieldset className="form form-ingredient-recipe">
-          <legend> Ingrédients : </legend>
+          <legend>Ingrédients :</legend>
           <div className="form__paragraph">
-            <label className="form__label" htmlFor="ingredient">
-              {" "}
-              Nom :{" "}
-            </label>
-            <InputSuggestions
-              className="form__input"
-              elements={catalogIngredients}
-              id="ingredient"
-              getElementText={(ingredient: SuggestionElement) =>
-                ingredient.name
-              }
-              onChangeValue={(name: string) => setIngredientName(name)}
-              value={ingredientName}
-              name="ingredient"
-              type="text"
-              aria-required="true"
-            />
+            <ul>
+              {fields.map((item, index) => {
+                return (
+                  <li key={item.id}>
+                    <label
+                      className="form__label"
+                      htmlFor={`ingredient${index}`}
+                    >
+                      Nom
+                    </label>
+                    <InputSuggestions
+                      className={
+                        errors[`recipeIngredients`] &&
+                        errors[`recipeIngredients`][index] &&
+                        errors[`recipeIngredients`][index].ingredient
+                          ? "form__input field-error"
+                          : "form__input"
+                      }
+                      elements={catalogIngredients}
+                      id={`ingredient${index}`}
+                      getElementText={(ingredient: SuggestionElement) =>
+                        ingredient.name
+                      }
+                      {...register(`recipeIngredients.${index}.ingredient`, {
+                        validate: () => validateIngredients(index),
+                      })}
+                      type="text"
+                      aria-required="true"
+                    />
+                    {errors.recipeIngredients &&
+                      errors[`recipeIngredients`][index] &&
+                      errors[`recipeIngredients`][index].ingredient && (
+                        <p className="form__error-message" role="alert">
+                          {
+                            errors[`recipeIngredients`][index].ingredient
+                              ?.message
+                          }
+                        </p>
+                      )}
+                    <label
+                      className="form__label"
+                      htmlFor={`ingredientAmount${index}`}
+                    >
+                      Quantité nécessaire
+                    </label>
+                    <span className="form__combined-container">
+                      <input
+                        className="form__combined-input"
+                        type="number"
+                        id={`ingredientAmount${index}`}
+                        min="0"
+                        step=".01"
+                        {...register(`recipeIngredients.${index}.amount`, {
+                          validate: () => validateAmounts(index),
+                        })}
+                        aria-required="true"
+                      />
+                      {errors.recipeIngredients &&
+                        errors[`recipeIngredients`][index] &&
+                        errors[`recipeIngredients`][index].amount && (
+                          <p className="form__error-message" role="alert">
+                            {errors[`recipeIngredients`][index].amount?.message}
+                          </p>
+                        )}
+                      <select
+                        className="form__combined-select"
+                        aria-label="Unité"
+                        {...register(`recipeIngredients.${index}.unit`, {
+                          validate: () => validateUnits(index),
+                        })}
+                        aria-required="true"
+                      >
+                        <option value="">...</option>
+                        {units.map((unit: string) => {
+                          return (
+                            <option value={unit} key={unit}>
+                              {unit}
+                            </option>
+                          );
+                        })}
+                      </select>
+                      {errors.recipeIngredients &&
+                        errors[`recipeIngredients`][index] &&
+                        errors[`recipeIngredients`][index].unit && (
+                          <p className="form__error-message" role="alert">
+                            {errors[`recipeIngredients`][index].unit?.message}
+                          </p>
+                        )}
+                    </span>
+                    {index === fields.length - 1 ? (
+                      <button
+                        aria-label="Ingredient supplémentaire (plus)"
+                        type="button"
+                        onClick={() => append({})}
+                      >
+                        +
+                      </button>
+                    ) : (
+                      <button
+                        aria-label="Supprimer cet ingredient (moins)"
+                        type="button"
+                        onClick={() => remove(index)}
+                      >
+                        -
+                      </button>
+                    )}
+                  </li>
+                );
+              })}
+            </ul>
           </div>
-          <p className="form__paragraph">
-            <label className="form__label" htmlFor="ingredientAmount">
-              {" "}
-              Quantité nécessaire :{" "}
-            </label>
-            <span className="form__combined-container">
-              <input
-                className="form__combined-input"
-                type="number"
-                name="ingredientAmount"
-                id="ingredientAmount"
-                min="0"
-                onChange={(e) => setIngredientAmount(e.target.value)}
-                value={ingredientAmount}
-                aria-required="true"
-              />
-              <select
-                className="form__combined-select"
-                name="unit"
-                aria-label="Unité"
-                onChange={(e) => setIngredientUnit(e.target.value)}
-                onBlur={(e) => setIngredientUnit(e.target.value)}
-                value={ingredientUnit}
-                aria-required="true"
-              >
-                <option value="">...</option>
-                {units.map((unit: string) => {
-                  return (
-                    <option value={unit} key={unit}>
-                      {unit}
-                    </option>
-                  );
-                })}
-              </select>
-            </span>
-          </p>
-          <div className="form__paragraph">
-            <button
-              className="button"
-              onClick={handleAddIngredient}
-              aria-label="Ajouter l'ingrédient"
-            >
-              Ajouter
-            </button>
-            {ingredientError && <p role="alert">{ingredientError}</p>}
-          </div>
-          <ul>
-            {ingredients.map((ingredient) => {
-              return (
-                <li key={ingredient.ingredient}>
-                  {ingredient.ingredient} : {ingredient.amount}{" "}
-                  {ingredient.unit}
-                  <button
-                    className="button"
-                    onClick={() => handleSupprIngredient(ingredient.ingredient)}
-                  >
-                    X
-                  </button>
-                </li>
-              );
-            })}
-          </ul>
         </fieldset>
         <div className="form__textarea-container">
           <label className="form__label" htmlFor="recipeDescription">
@@ -412,4 +443,4 @@ function RecipesForm<T extends FridgeRecipe | CatalogRecipe>({
 }
 
 export default RecipesForm;
-export type { SubmitRecipe };
+export type { FormInputs };
