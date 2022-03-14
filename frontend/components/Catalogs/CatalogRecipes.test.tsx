@@ -38,6 +38,13 @@ const renderCatalog = async (): Promise<RenderResult> => {
   return view;
 };
 
+async function renderCatalogWithMock() {
+  await renderCatalog();
+  mockedAxios.get.mockResolvedValue({
+    data: [...catalogRecipes, recipeCrumble],
+  });
+}
+
 describe("initial display is correct", () => {
   it("displays provided categories", async () => {
     const { getByText } = await renderCatalog();
@@ -67,34 +74,24 @@ describe("initial display is correct", () => {
 
 describe("the adding recipe functionality works properly", () => {
   it("adds the correct recipe when filling the form and clicking on submit", async () => {
-    const { getByText } = await renderCatalog();
-    mockedAxios.get.mockResolvedValue({
-      data: [...catalogRecipes, recipeCrumble],
-    });
+    await renderCatalogWithMock();
     await addRecipe();
-    const recipe = getByText("Crumble aux poires", { exact: false });
-    const beurre = getByText(/Beurre :/);
+    const recipe = screen.getByText("Crumble aux poires", { exact: false });
+    const beurre = screen.getByText(/Beurre :/);
     expect(recipe).toBeInTheDocument();
     expect(beurre).toBeInTheDocument();
   });
 
   it(`does not add the recipe if no ingredient was provided`, async () => {
-    const { queryByText, getAllByText } = await renderCatalog();
-    mockedAxios.get.mockResolvedValue({
-      data: [...catalogRecipes, recipeCrumble],
-    });
-    await addRecipe(["ingredients"]);
-    let recipe = queryByText("Crumble aux poires", { exact: false });
-    expect(recipe).not.toBeInTheDocument();
+    await renderCatalogWithMock();
+    await addRecipeAndCheckNotPresent([["ingredients"]]);
     expect(
-      getAllByText("Il faut au moins un ingrédient dans la recette")
+      screen.getAllByText("Il faut au moins un ingrédient dans la recette")
     ).toHaveLength(1);
     addIngredient(["", "", ""]);
-    await addRecipe(["ingredients"]);
-    recipe = queryByText("Crumble aux poires", { exact: false });
-    expect(recipe).not.toBeInTheDocument();
+    await addRecipeAndCheckNotPresent([["ingredients"]]);
     expect(
-      getAllByText("Il faut au moins un ingrédient dans la recette")
+      screen.getAllByText("Il faut au moins un ingrédient dans la recette")
     ).toHaveLength(2);
   });
 
@@ -133,85 +130,67 @@ describe("the adding recipe functionality works properly", () => {
   });
 
   async function checkMissingInput(inputName: string) {
-    const { queryByText } = await renderCatalog();
-    mockedAxios.get.mockResolvedValue({
-      data: [...catalogRecipes, recipeCrumble],
-    });
-    await addRecipe([inputName]);
-    const recipe = queryByText("Crumble aux poires", { exact: false });
-    expect(recipe).not.toBeInTheDocument();
+    await renderCatalogWithMock();
+    await addRecipeAndCheckNotPresent([[inputName]]);
   }
 
   it(`does not add the recipe if no title was provided`, async () => {
-    const { queryByText } = await renderCatalog();
-    mockedAxios.get.mockResolvedValue({
-      data: [...catalogRecipes, recipeCrumble],
-    });
-    await addRecipe(["title"]);
-    const recipe = queryByText("Épluchez et épépinez", { exact: false });
-    expect(recipe).not.toBeInTheDocument();
+    await renderCatalogWithMock();
+    await addRecipeAndCheckNotPresent([["title"]]);
   });
 
   it(`does not add the recipe if the duration for the recipe is negative or null`, async () => {
-    const { queryByText } = await renderCatalog();
-    mockedAxios.get.mockResolvedValue({
-      data: [...catalogRecipes, recipeCrumble],
-    });
-    await addRecipe([], { duration: "00:00" });
-    let recipe = queryByText("Crumble aux poires", { exact: false });
-    expect(recipe).not.toBeInTheDocument();
-
-    await addRecipe([], { duration: "-01:00" });
-    recipe = queryByText("Crumble aux poires", { exact: false });
-    expect(recipe).not.toBeInTheDocument();
+    await renderCatalogWithMock();
+    await addRecipeAndCheckNotPresent([[], { duration: "00:00" }]);
+    await addRecipeAndCheckNotPresent([[], { duration: "-01:00" }]);
   });
+
+  async function addRecipeAndCheckNotPresent(
+    args: Parameters<typeof addRecipe>
+  ) {
+    await addRecipe(...args);
+    const recipe = screen.queryByText("Crumble aux poires", { exact: false });
+    expect(recipe).not.toBeInTheDocument();
+  }
 
   describe("the adding of ingredient on the recipe form works properly", () => {
     it(`does not validate the recipe if an ingredient with the same name
       was already provided`, async () => {
-      const { getAllByText } = await renderCatalog();
-      mockedAxios.get.mockResolvedValue({
-        data: [...catalogRecipes, recipeCrumble],
-      });
+      await renderCatalogWithMock();
       addIngredient(["Fraises", "5", "g"]);
       addIngredient(["Fraises", "5", "g"]);
       await checkRecipeValidationFails();
-      const errorMessage = getAllByText(
+      const errorMessage = screen.getAllByText(
         "Vous ne pouvez pas ajouter plusieurs fois le même ingrédient"
       );
       expect(errorMessage).toHaveLength(2);
     });
 
     it(`does not validate the recipe if amount is negative`, async () => {
-      const { getByText } = await renderCatalog();
-      mockedAxios.get.mockResolvedValue({
-        data: [...catalogRecipes, recipeCrumble],
-      });
+      await renderCatalogWithMock();
       addIngredient(["Fraises", "-1", "g"]);
       await checkRecipeValidationFails();
-      const errorMessage = getByText("La quantité doit être supérieure à 0");
+      const errorMessage = screen.getByText(
+        "La quantité doit être supérieure à 0"
+      );
       expect(errorMessage).toBeInTheDocument();
     });
 
     it(`does not validate the recipe if amount is null`, async () => {
-      const { getByText } = await renderCatalog();
-      mockedAxios.get.mockResolvedValue({
-        data: [...catalogRecipes, recipeCrumble],
-      });
+      await renderCatalogWithMock();
       addIngredient(["Fraises", "0", "g"]);
       await checkRecipeValidationFails();
-      const errorMessage = getByText("La quantité doit être supérieure à 0");
+      const errorMessage = screen.getByText(
+        "La quantité doit être supérieure à 0"
+      );
       expect(errorMessage).toBeInTheDocument();
     });
 
     it(`does not validate the recipe if the ingredient is not in catalogIngredients`, async () => {
-      const { getByText } = await renderCatalog();
-      mockedAxios.get.mockResolvedValue({
-        data: [...catalogRecipes, recipeCrumble],
-      });
+      await renderCatalogWithMock();
       addIngredient(["Poireaux", "50", "g"]);
       await checkRecipeValidationFails();
-      const errorMessage = getByText(
+      const errorMessage = screen.getByText(
         "Cet ingrédient n'existe pas dans le catalogue d'ingrédients. Vous pouvez l'y ajouter"
       );
       expect(errorMessage).toBeInTheDocument();
