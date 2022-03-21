@@ -134,9 +134,7 @@ function RecipeIngredientForm({
                 </label>
                 <InputSuggestions
                   className={
-                    errors[`recipeIngredients`] &&
-                    errors[`recipeIngredients`][index] &&
-                    errors[`recipeIngredients`][index].ingredient
+                    errors?.[`recipeIngredients`]?.[index]?.ingredient
                       ? "form__input field-error"
                       : "form__input"
                   }
@@ -151,13 +149,11 @@ function RecipeIngredientForm({
                   type="text"
                   aria-required="true"
                 />
-                {errors.recipeIngredients &&
-                  errors[`recipeIngredients`][index] &&
-                  errors[`recipeIngredients`][index].ingredient && (
-                    <p className="form__error-message" role="alert">
-                      {errors[`recipeIngredients`][index].ingredient?.message}
-                    </p>
-                  )}
+                {errors?.[`recipeIngredients`]?.[index]?.ingredient && (
+                  <p className="form__error-message" role="alert">
+                    {errors[`recipeIngredients`][index].ingredient?.message}
+                  </p>
+                )}
                 <label
                   className="form__label"
                   htmlFor={`ingredientAmount${index}`}
@@ -176,13 +172,11 @@ function RecipeIngredientForm({
                     })}
                     aria-required="true"
                   />
-                  {errors.recipeIngredients &&
-                    errors[`recipeIngredients`][index] &&
-                    errors[`recipeIngredients`][index].amount && (
-                      <p className="form__error-message" role="alert">
-                        {errors[`recipeIngredients`][index].amount?.message}
-                      </p>
-                    )}
+                  {errors?.[`recipeIngredients`]?.[index]?.amount && (
+                    <p className="form__error-message" role="alert">
+                      {errors[`recipeIngredients`][index].amount?.message}
+                    </p>
+                  )}
                   <select
                     className="form__combined-select"
                     aria-label="Unité"
@@ -200,13 +194,11 @@ function RecipeIngredientForm({
                       );
                     })}
                   </select>
-                  {errors.recipeIngredients &&
-                    errors[`recipeIngredients`][index] &&
-                    errors[`recipeIngredients`][index].unit && (
-                      <p className="form__error-message" role="alert">
-                        {errors[`recipeIngredients`][index].unit?.message}
-                      </p>
-                    )}
+                  {errors?.[`recipeIngredients`]?.[index]?.unit && (
+                    <p className="form__error-message" role="alert">
+                      {errors[`recipeIngredients`][index].unit?.message}
+                    </p>
+                  )}
                 </span>
                 {index === fields.length - 1 ? (
                   <button
