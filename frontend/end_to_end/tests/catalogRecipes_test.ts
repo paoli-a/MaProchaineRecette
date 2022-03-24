@@ -62,9 +62,9 @@ Scenario("See existing recipe", ({ I }) => {
 Scenario("Add new recipe", async ({ I }) => {
   I.amOnPage("/");
   I.click("Catalogue recettes");
-  I.fillField("Titre de la recette :", "Salade légère");
+  I.fillField("Titre de la recette", "Salade légère");
   I.checkOption("Entrée");
-  I.fillField("Temps total de la recette :", "010101");
+  I.fillField("Temps total de la recette", "010101");
   I.fillField("Nom", "échalotte");
   I.fillField("Quantité nécessaire", "1");
   I.selectOption("Unité", "pièce(s)");
@@ -72,11 +72,9 @@ Scenario("Add new recipe", async ({ I }) => {
   I.fillField("#ingredient1", "herbes fraiches");
   I.fillField("#ingredientAmount1", "1");
   I.selectOption("recipeIngredients.1.unit", "pièce(s)");
-  I.fillField("Corps de la recette :", "Mélanger les ingrédients.");
-  await within(".form__paragraph", () => {
-    I.click(".form__submit");
-  });
-  await within(".display-catalog-recipe", () => {
+  I.fillField("Corps de la recette", "Mélanger les ingrédients.");
+  I.click("Ajouter");
+  await within("$catalogRecipesList", () => {
     I.see("Marinade");
     I.see("Salade légère");
   });
@@ -98,9 +96,9 @@ there`,
   async ({ I }) => {
     I.amOnPage("/");
     I.click("Catalogue recettes");
-    I.fillField("Titre de la recette :", "Salade légère");
+    I.fillField("Titre de la recette", "Salade légère");
     I.checkOption("Entrée");
-    I.fillField("Temps total de la recette :", "010101");
+    I.fillField("Temps total de la recette", "010101");
     I.fillField("Nom", "échalotte");
     I.fillField("Quantité nécessaire", "1");
     I.selectOption("Unité", "pièce(s)");
@@ -108,13 +106,11 @@ there`,
     I.fillField("#ingredient1", "herbes fraiches");
     I.fillField("#ingredientAmount1", "1");
     I.selectOption("recipeIngredients.1.unit", "pièce(s)");
-    I.fillField("Corps de la recette :", "Mélanger les ingrédients.");
-    await within(".form__paragraph", () => {
-      I.click(".form__submit");
-    });
+    I.fillField("Corps de la recette", "Mélanger les ingrédients.");
+    I.click("Ajouter");
     I.click("Recettes possibles");
     I.click("Catalogue recettes");
-    await within(".display-catalog-recipe", () => {
+    await within("$catalogRecipesList", () => {
       I.see("Marinade");
       I.see("Salade légère");
     });
@@ -127,20 +123,18 @@ Scenario("Edit existing catalog recipe", async ({ I }) => {
   I.amOnPage("/");
   I.click("Catalogue recettes");
   I.click("Modifier la recette");
-  I.fillField("Titre de la recette :", "Marinade de saumon express");
+  I.fillField("Titre de la recette", "Marinade de saumon express");
   I.fillField("Nom", "ciboulette");
   I.fillField("Quantité nécessaire", "1");
   I.selectOption("Unité", "pièce(s)");
   I.fillField(
-    "Corps de la recette :",
+    "Corps de la recette",
     "Emincez l'échalotte, le saumon et le persil."
   );
-  await within(".form__paragraph", () => {
-    I.click(".form__submit");
-  });
+  I.click("Modifier");
   I.click("Modifier");
   I.click("Marinade de saumon express");
-  await within(".display-catalog-recipe", () => {
+  await within("$catalogRecipesList", () => {
     I.see("Marinade de saumon express");
     I.see("ciboulette");
     I.see("Emincez l'échalotte, le saumon et le persil.");

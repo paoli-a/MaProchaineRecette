@@ -1,0 +1,66 @@
+.recipeForm {
+  margin: 5rem var(--body-side-margin) 20rem var(--body-side-margin);
+  margin-top: 50rem;
+}
+
+.legend {
+  margin-bottom: 35rem;
+  font-size: 18rem;
+}
+
+.label {
+  font-size: 15rem;
+  margin-bottom: 2rem;
+}
+
+.checkboxContainer {
+  font-size: 15rem;
+}
+
+.categoriesList {
+  margin-top: 7rem;
+  margin-bottom: 20rem;
+  padding-left: 30rem;
+}
+
+.categorieItemLabel {
+  margin-left: 4rem;
+}
+
+.containerError {
+  margin-top: 5rem;
+}
+
+.recipeTitleContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.textareaContainerError {
+  display: flex;
+  flex-direction: column;
+}
+
+.textArea {
+  border: 1px solid $primary-color;
+  border-radius: 3rem;
+}
+
+.input {
+  border: 1px solid $primary-color;
+  border-radius: 3rem;
+  padding: 4.8rem;
+}
+
+.inputRecipeTime {
+  width: 63rem;
+  text-align: center;
+}
+
+.paragraph {
+  margin-bottom: 20rem;
+}
+
+.buttonContainer {
+  margin-top: 35rem;
+}

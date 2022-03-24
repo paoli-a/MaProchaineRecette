@@ -42,8 +42,15 @@
 
 body {
   margin: 0;
-  font-family: "Montserrat", sans-serif;
   font-size: 16rem;
+}
+
+body,
+button,
+input,
+textarea,
+select {
+  font-family: "Montserrat", sans-serif;
   color: $primary-color;
 }
 
@@ -53,6 +60,10 @@ h1 {
 
 h2 {
   font-size: 24rem;
+}
+
+ul {
+  list-style-type: none;
 }
 
 fieldset {
