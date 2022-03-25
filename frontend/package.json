@@ -69,7 +69,7 @@
     "parcel-bundler": "^1.12.5",
     "playwright": "^1.20.0",
     "pm2": "^5.2.0",
-    "prettier": "^2.5.1",
+    "prettier": "^2.6.0",
     "prettier-plugin-organize-imports": "^2.3.4",
     "rosie": "^2.1.0",
     "ts-node": "^10.7.0",
