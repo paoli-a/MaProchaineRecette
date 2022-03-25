@@ -239,7 +239,7 @@ describe("the adding recipe functionality works properly", () => {
      and displays a minus button for the others`, async () => {
       await renderCatalog();
       const ingredientFieldset = screen.getByRole("group", {
-        name: "Ingrédients :",
+        name: "Ingrédients de la recette",
       });
       let buttons = within(ingredientFieldset).getAllByRole("button");
       expect(buttons).toHaveLength(1);
@@ -291,10 +291,10 @@ describe("the adding recipe functionality works properly", () => {
       },
     };
     mockedAxios.post.mockResolvedValue(axiosPostResponse);
-    const inputTitle = screen.getByLabelText("Titre de la recette :");
+    const inputTitle = screen.getByLabelText("Titre de la recette");
     const entree = screen.getByLabelText("Entrée");
-    const inputDuration = screen.getByLabelText("Temps total de la recette :");
-    const inputDescription = screen.getByLabelText("Corps de la recette :");
+    const inputDuration = screen.getByLabelText("Temps total de la recette");
+    const inputDescription = screen.getByLabelText("Corps de la recette");
     const submitButton = screen.getByLabelText("Ajouter la recette");
     if (!missingFields.includes("title")) {
       fireEvent.change(inputTitle, { target: { value: "Crumble aux poires" } });
@@ -361,10 +361,10 @@ was not successful on backend side`, async () => {
     const { getByLabelText, getByText, queryByText } = await renderCatalog();
     const axiosPostResponse = {};
     mockedAxios.post.mockRejectedValue(axiosPostResponse);
-    const inputTitle = getByLabelText("Titre de la recette :");
+    const inputTitle = getByLabelText("Titre de la recette");
     const entree = getByLabelText("Entrée");
-    const inputDuration = getByLabelText("Temps total de la recette :");
-    const inputDescription = getByLabelText("Corps de la recette :");
+    const inputDuration = getByLabelText("Temps total de la recette");
+    const inputDescription = getByLabelText("Corps de la recette");
     const submitButton = getByLabelText("Ajouter la recette");
     fireEvent.change(inputTitle, { target: { value: "Crumble aux poires" } });
     fireEvent.click(entree);
@@ -489,10 +489,10 @@ describe("edit functionality", () => {
       await renderCatalog();
     clickOnEditRecipe(getByText, "Salade de pommes de terre radis");
     expect(
-      getByText("Modifier une recette de mon catalogue :")
+      getByText("Modifier une recette de mon catalogue")
     ).toBeInTheDocument();
     expect(
-      queryByText("Ajouter une recette dans mon catalogue :")
+      queryByText("Ajouter une recette dans mon catalogue")
     ).not.toBeInTheDocument();
     expect(getByText("Modifier")).toBeInTheDocument();
     expect(queryByLabelText("Ajouter la recette")).not.toBeInTheDocument();
@@ -512,7 +512,7 @@ describe("edit functionality", () => {
       await renderCatalog();
     clickOnEditRecipe(getByText, "Salade de pommes de terre radis");
     expect(
-      getByText("Modifier une recette de mon catalogue :")
+      getByText("Modifier une recette de mon catalogue")
     ).toBeInTheDocument();
     const recipeTitle1Present = getByDisplayValue(
       "Salade de pommes de terre radis"
@@ -538,7 +538,7 @@ describe("edit functionality", () => {
     } = await renderCatalog();
     clickOnEditRecipe(getByText, "Salade de pommes de terre radis");
     expect(
-      getByText("Modifier une recette de mon catalogue :")
+      getByText("Modifier une recette de mon catalogue")
     ).toBeInTheDocument();
     expect(queryByLabelText("Ajouter la recette")).not.toBeInTheDocument();
     const recipeTitlePresent = getByDisplayValue(
@@ -548,7 +548,7 @@ describe("edit functionality", () => {
     const cancelButton = getByText("Annuler");
     fireEvent.click(cancelButton);
     expect(
-      getByText("Ajouter une recette dans mon catalogue :")
+      getByText("Ajouter une recette dans mon catalogue")
     ).toBeInTheDocument();
     expect(queryByText("Modifier")).not.toBeInTheDocument();
     const recipeTitleAbsent = queryByDisplayValue(
@@ -585,8 +585,8 @@ describe("edit functionality", () => {
     const axiosPutResponse = {
       data: modifiedRecipe,
     };
-    const inputTitle = getByLabelText("Titre de la recette :");
-    const inputDescription = getByLabelText("Corps de la recette :");
+    const inputTitle = getByLabelText("Titre de la recette");
+    const inputDescription = getByLabelText("Corps de la recette");
     fireEvent.change(inputTitle, {
       target: { value: "Salade de pommes de terre avec radis" },
     });
@@ -611,8 +611,8 @@ describe("edit functionality", () => {
     clickOnEditRecipe(getByText, "Salade de pommes de terre radis");
     const axiosPutResponse = {};
     mockedAxios.put.mockRejectedValue(axiosPutResponse);
-    const inputTitle = getByLabelText("Titre de la recette :");
-    const inputDescription = getByLabelText("Corps de la recette :");
+    const inputTitle = getByLabelText("Titre de la recette");
+    const inputDescription = getByLabelText("Corps de la recette");
     fireEvent.change(inputTitle, {
       target: { value: "Salade de pommes de terre avec radis" },
     });

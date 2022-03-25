@@ -7,6 +7,7 @@ import {
 } from "../../constants/types";
 import { useCategories } from "../../hooks";
 import RecipeIngredientForm from "./RecipeIngredientForm";
+import styles from "./RecipesForm.module.scss";
 
 type FormInputs = {
   recipeTitle: string;
@@ -108,22 +109,26 @@ function RecipesForm<T extends FridgeRecipe | CatalogRecipe>({
 
   return (
     <FormProvider {...methods}>
-      <form className="form form-recipe" onSubmit={handleSubmit(onSubmitForm)}>
+      <form className={styles.recipeForm} onSubmit={handleSubmit(onSubmitForm)}>
         <fieldset>
-          <legend>
+          <legend className={styles.legend}>
             {recipeToEdit
-              ? "Modifier une recette de mon catalogue :"
-              : "Ajouter une recette dans mon catalogue :"}
+              ? "Modifier une recette de mon catalogue"
+              : "Ajouter une recette dans mon catalogue"}
           </legend>
-          <div className="form__paragraph">
-            <label className="form__label" htmlFor="recipeTitle">
+          <div className={styles.paragraph}>
+            <label className={styles.label} htmlFor="recipeTitle">
               {" "}
-              Titre de la recette :{" "}
+              Titre de la recette{" "}
             </label>
-            <div className="container-error">
+            <div
+              className={`${styles.recipeTitleContainer} ${styles.containerError}`}
+            >
               <input
                 className={
-                  errors.recipeTitle ? "form__input field-error" : "form__input"
+                  errors.recipeTitle
+                    ? `${styles.input} ${styles.inputRecipeTitle} ${styles.fieldError}`
+                    : `${styles.input} ${styles.inputRecipeTitle}`
                 }
                 type="text"
                 id="recipeTitle"
@@ -133,15 +138,15 @@ function RecipesForm<T extends FridgeRecipe | CatalogRecipe>({
                 aria-required="true"
               />
               {errors.recipeTitle && (
-                <p className="form__error-message" role="alert">
+                <p className={styles.errorMessage} role="alert">
                   Ce champ est obligatoire
                 </p>
               )}
             </div>
           </div>
-          <div className="form__checkbox-container">
-            Catégories :
-            <ul>
+          <div className={styles.checkboxContainer}>
+            Catégories
+            <ul className={styles.categoriesList}>
               {categories.map((category: string, index: number) => {
                 return (
                   <li key={category}>
@@ -155,26 +160,33 @@ function RecipesForm<T extends FridgeRecipe | CatalogRecipe>({
                       aria-invalid={errors.categories ? "true" : "false"}
                       id={`category-${index}`}
                     />
-                    <label htmlFor={`category-${index}`}>{category}</label>
+                    <label
+                      className={styles.categorieItemLabel}
+                      htmlFor={`category-${index}`}
+                    >
+                      {category}
+                    </label>
                   </li>
                 );
               })}
             </ul>
             {errors.categories && (
-              <p className="form__error-message" role="alert">
+              <p className={styles.errorMessage} role="alert">
                 Au moins une catégorie doit être sélectionnée
               </p>
             )}
           </div>
-          <div className="form__paragraph">
-            <label className="form__label" htmlFor="recipeTime">
+          <div className={styles.paragraph}>
+            <label className={styles.label} htmlFor="recipeTime">
               {" "}
-              Temps total de la recette :{" "}
+              Temps total de la recette{" "}
             </label>
-            <div className="container-error">
+            <div className={styles.containerError}>
               <input
                 className={
-                  errors.recipeTime ? "form__input field-error" : "form__input"
+                  errors.recipeTime
+                    ? `${styles.input} ${styles.inputRecipeTime} ${styles.fieldError}`
+                    : `${styles.input} ${styles.inputRecipeTime}`
                 }
                 type="time"
                 id="recipeTime"
@@ -186,38 +198,44 @@ function RecipesForm<T extends FridgeRecipe | CatalogRecipe>({
                 aria-required="true"
               />
               {errors.recipeTime && (
-                <p className="form__error-message" role="alert">
+                <p className={styles.errorMessage} role="alert">
                   {errors.recipeTime.message}
                 </p>
               )}
             </div>
           </div>
           <RecipeIngredientForm recipeToEdit={recipeToEdit} />
-          <div className="form__textarea-container">
-            <label className="form__label" htmlFor="recipeDescription">
-              Corps de la recette :{" "}
+          <div className={styles.textareaContainer}>
+            <label className={styles.label} htmlFor="recipeDescription">
+              Corps de la recette{" "}
             </label>
-            <textarea
-              className={
-                errors.recipeTime
-                  ? "form__textarea field-error"
-                  : "form__textarea"
-              }
-              id="recipeDescription"
-              spellCheck="true"
-              {...register("recipeDescription", { required: true })}
-              aria-invalid={errors.recipeDescription ? "true" : "false"}
-              aria-required="true"
-            ></textarea>
-            {errors.recipeDescription && (
-              <p className="form__error-message" role="alert">
-                Ce champ est obligatoire
-              </p>
-            )}
+            <div
+              className={`${styles.textareaContainerError} ${styles.containerError}`}
+            >
+              <textarea
+                className={
+                  errors.recipeTime
+                    ? `${styles.textArea} ${styles.textAreaRecipeDescription} ${styles.fieldError}`
+                    : `${styles.textArea} ${styles.textAreaRecipeDescription}`
+                }
+                id="recipeDescription"
+                spellCheck="true"
+                {...register("recipeDescription", { required: true })}
+                aria-invalid={errors.recipeDescription ? "true" : "false"}
+                aria-required="true"
+                rows={5}
+              ></textarea>
+              {errors.recipeDescription && (
+                <p className={styles.errorMessage} role="alert">
+                  Ce champ est obligatoire
+                </p>
+              )}
+            </div>
           </div>
-          <p className="form__paragraph">
+          <p className={`${styles.paragraph} ${styles.buttonContainer}`}>
             <input
-              className="button form__submit"
+              className={`${styles.submitButton} button primaryButton
+              `}
               type="submit"
               aria-label={
                 recipeToEdit ? "Modifier la recette" : "Ajouter la recette"
@@ -226,7 +244,8 @@ function RecipesForm<T extends FridgeRecipe | CatalogRecipe>({
             />
             {recipeToEdit && (
               <button
-                className="button form__cancel"
+                className={`${styles.cancelButton} ${"button"}
+                `}
                 type="reset"
                 onClick={() => handleCancelClick()}
               >

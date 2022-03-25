@@ -1,0 +1,18 @@
+.catalogRecipesComponent {
+  margin-top: 64rem;
+  .title {
+    text-align: center;
+    position: relative;
+    padding: 0 var(--body-side-margin);
+    &::before {
+      content: "";
+      position: absolute;
+      z-index: -1;
+      top: 58%;
+      left: 0rem;
+      background-color: $secondary-color;
+      height: 27.2rem;
+      width: 100%;
+    }
+  }
+}

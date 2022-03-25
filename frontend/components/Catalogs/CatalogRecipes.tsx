@@ -12,6 +12,7 @@ import Recipe from "../Recipe/Recipe";
 import type { FormInputs } from "../Recipe/RecipesForm";
 import RecipesForm from "../Recipe/RecipesForm";
 import useFilterSearch from "../useFilterSearch";
+import styles from "./CatalogRecipe.module.scss";
 
 type DeleteError = {
   id?: string;
@@ -106,28 +107,20 @@ function CatalogRecipes() {
 
   const allMyRecipes = filteredRecipes.map((myRecipe: CatalogRecipe) => {
     const button = (
-      <div className="buttons-container">
+      <div className={styles.buttonsContainer}>
         <button
-          className="button fridge-ingredient-details__edit"
+          className={styles.editButton}
           onClick={() => myRecipe.id && handleEditClick(myRecipe.id)}
           aria-label="Modifier la recette"
         >
-          <img
-            className="fridge-ingredient-details__edit-img"
-            src="images/edit.svg"
-            alt=""
-          />
+          <img className={styles.editImg} src="images/edit.svg" alt="" />
         </button>
         <button
-          className="button fridge-ingredient-details__delete"
+          className={styles.deleteButton}
           onClick={() => handleSupprClick(myRecipe.id)}
           aria-label="Supprimer la recette"
         >
-          <img
-            className="fridge-ingredient-details__delete-img"
-            src="images/delete.svg"
-            alt=""
-          />
+          <img className={styles.deleteImg} src="images/delete.svg" alt="" />
         </button>
       </div>
     );
@@ -148,27 +141,28 @@ function CatalogRecipes() {
   });
 
   return (
-    <main className="component-catalog-recipe">
-      <h1 className="component-catalog-recipe__title">
-        Catalogue de toutes mes recettes
-      </h1>
-      <section className="add-recipe">
+    <main className={styles.catalogRecipesComponent}>
+      <h1 className={styles.title}>Catalogue de toutes mes recettes</h1>
+      <section className={styles.addRecipesSection}>
         <RecipesForm
           onSubmitRecipe={handleSubmit}
           recipeToEdit={recipeToEdit}
           resetRecipeToEdit={() => setRecipeToEdit(null)}
         />
         {postError && (
-          <p role="alert" className="recipe__error-message">
+          <p role="alert" className={styles.errorMessage}>
             {postError}
           </p>
         )}
       </section>
-      <section className="display-catalog-recipe">
-        <form className="searchbox">
+      <section
+        className={styles.displayCatalogRecipeSection}
+        data-testid="catalogRecipesList"
+      >
+        <form className={styles.searchbox}>
           <input
             type="search"
-            className="searchbox__input"
+            className={styles.searchboxInput}
             name="q"
             value={searchResults}
             placeholder="Recherche par titre..."
