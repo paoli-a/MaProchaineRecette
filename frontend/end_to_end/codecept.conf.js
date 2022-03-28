@@ -14,6 +14,8 @@ exports.config = {
       url: "http://localhost:3502",
       show: true,
       browser: "chromium",
+      waitForAction: 30,
+      pressKeyDelay: 3,
     },
     REST: {
       endpoint: "http://localhost:3501/api/",
