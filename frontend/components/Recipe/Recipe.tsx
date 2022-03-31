@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { CatalogRecipe, FridgeRecipe } from "../../constants/types";
 import IngredientsList from "./IngredientsList";
 import styles from "./Recipe.module.scss";
@@ -43,32 +43,9 @@ function Recipe<T extends CatalogRecipe | FridgeRecipe>({
   activateClick,
   highlight = (texte) => texte,
 }: RecipeProps<T>) {
-  const [isRecipeOpen, setRecipeOpen] = useState(false);
-  useEffect(() => {
-    if (activateClick === true) {
-      setRecipeOpen(false);
-    } else {
-      setRecipeOpen(true);
-    }
-  }, [activateClick]);
-
-  const handleTitleClick = () => {
-    setRecipeOpen(!isRecipeOpen);
-  };
-
   const title = () => {
     if (activateClick) {
-      return (
-        <h2 className={styles.title}>
-          <button
-            className="collapsible-with-title__button"
-            onClick={handleTitleClick}
-          >
-            {" "}
-            {highlight(recipe.title)}
-          </button>{" "}
-        </h2>
-      );
+      return <h2 className={styles.title}> {highlight(recipe.title)}</h2>;
     } else {
       return <h2 className={styles.title}> {highlight(recipe.title)}</h2>;
     }
