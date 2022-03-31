@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "e92030317e35f164761b0fc7438a35cf0c9da79c8f648b025b043691c665749f"
+            "sha256": "77c7c4d4df666c57f09eceba7eb7dbb16d40ca9e87aa2db7d03be3df15a403ff"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -449,11 +449,11 @@
         },
         "click": {
             "hashes": [
-                "sha256:19a4baa64da924c5e0cd889aba8e947f280309f1a2ce0947a3e3a7bcb7cc72d6",
-                "sha256:977c213473c7665d3aa092b41ff12063227751c41d7b17165013e10069cc5cd2"
+                "sha256:5e0d195c2067da3136efb897449ec1e9e6c98282fbf30d7f9e164af9be901a6b",
+                "sha256:7ab900e38149c9872376e8f9b5986ddcaf68c0f413cf73678a0bca5547e6f976"
             ],
             "markers": "python_version >= '3.7'",
-            "version": "==8.1.0"
+            "version": "==8.1.1"
         },
         "dill": {
             "hashes": [
@@ -897,11 +897,11 @@
         },
         "pylint-django": {
             "hashes": [
-                "sha256:1933d82b4a92538a3b12aef91adfd7d866befd051d7a02d6245b0f965587d97c",
-                "sha256:286dce8a31bc8ed5a523e8d8742b5a0e083b87f5f140ea4cde9aad612c03bd2d"
+                "sha256:0ac090d106c62fe33782a1d01bda1610b761bb1c9bf5035ced9d5f23a13d8591",
+                "sha256:56b12b6adf56d548412445bd35483034394a1a94901c3f8571980a13882299d5"
             ],
             "index": "pypi",
-            "version": "==2.5.2"
+            "version": "==2.5.3"
         },
         "pylint-plugin-utils": {
             "hashes": [
@@ -1062,7 +1062,7 @@
                 "sha256:939de3e7a6161af0c887ef91b7d41a53e7c5a1ca976325f429cb46ea9bc30ecc",
                 "sha256:de526c12914f0c550d15924c62d72abc48d6fe7364aa87328337a31007fe8a4f"
             ],
-            "markers": "python_version < '3.11'",
+            "markers": "python_version >= '3.7'",
             "version": "==2.0.1"
         },
         "types-pytz": {
@@ -1084,7 +1084,7 @@
                 "sha256:1a9462dcc3347a79b1f1c0271fbe79e844580bb598bafa1ed208b94da3cdcd42",
                 "sha256:21c85e0fe4b9a155d0799430b0ad741cdce7e359660ccbd8b530613e8df88ce2"
             ],
-            "markers": "python_version < '3.10'",
+            "markers": "python_version >= '3.6'",
             "version": "==4.1.1"
         },
         "virtualenv": {
