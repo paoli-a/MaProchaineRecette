@@ -133,7 +133,6 @@ Scenario("Edit existing catalog recipe", async ({ I }) => {
   );
   I.click("Modifier");
   I.click("Modifier");
-  I.click("Marinade de saumon express");
   await within("$catalogRecipesList", () => {
     I.see("Marinade de saumon express");
     I.see("ciboulette");
