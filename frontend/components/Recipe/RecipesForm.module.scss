@@ -64,3 +64,43 @@
 .buttonContainer {
   margin-top: 35rem;
 }
+
+@media (min-width: 500px) {
+  .recipeForm {
+    margin-top: 80rem;
+  }
+  .inputRecipeTitle {
+    width: 75%;
+    max-width: 382rem;
+  }
+}
+
+@media (min-width: 850px) {
+  .recipeForm {
+    margin-top: 100rem;
+  }
+  .firstPartFormContainer {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .legend {
+    font-size: 20rem;
+  }
+  .recipeTitleParagraph,
+  .checkboxContainer {
+    margin-right: 89rem;
+  }
+  .inputRecipeTitle {
+    min-width: 383rem;
+  }
+  .textAreaRecipeDescription {
+    max-width: 868rem;
+  }
+}
+
+@media (min-width: 1150px) {
+  .legend {
+    font-size: 22rem;
+    margin-bottom: 50rem;
+  }
+}

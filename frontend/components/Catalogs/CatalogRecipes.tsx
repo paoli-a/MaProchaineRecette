@@ -171,7 +171,7 @@ function CatalogRecipes() {
             onChange={handleChangeSearch}
           />
         </form>
-        {allMyRecipes}
+        <div className={styles.displayCatalogRecipe}>{allMyRecipes}</div>
       </section>
     </main>
   );
