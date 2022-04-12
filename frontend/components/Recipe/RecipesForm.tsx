@@ -116,92 +116,96 @@ function RecipesForm<T extends FridgeRecipe | CatalogRecipe>({
               ? "Modifier une recette de mon catalogue"
               : "Ajouter une recette dans mon catalogue"}
           </legend>
-          <div className={styles.paragraph}>
-            <label className={styles.label} htmlFor="recipeTitle">
-              {" "}
-              Titre de la recette{" "}
-            </label>
+          <div className={styles.firstPartFormContainer}>
             <div
-              className={`${styles.recipeTitleContainer} ${styles.containerError}`}
+              className={`${styles.recipeTitleParagraph} ${styles.paragraph}`}
             >
-              <input
-                className={
-                  errors.recipeTitle
-                    ? `${styles.input} ${styles.inputRecipeTitle} ${styles.fieldError}`
-                    : `${styles.input} ${styles.inputRecipeTitle}`
-                }
-                type="text"
-                id="recipeTitle"
-                defaultValue=""
-                {...register("recipeTitle", { required: true })}
-                aria-invalid={errors.recipeTitle ? "true" : "false"}
-                aria-required="true"
-              />
-              {errors.recipeTitle && (
+              <label className={styles.label} htmlFor="recipeTitle">
+                {" "}
+                Titre de la recette{" "}
+              </label>
+              <div
+                className={`${styles.recipeTitleContainer} ${styles.containerError}`}
+              >
+                <input
+                  className={
+                    errors.recipeTitle
+                      ? `${styles.input} ${styles.inputRecipeTitle} ${styles.fieldError}`
+                      : `${styles.input} ${styles.inputRecipeTitle}`
+                  }
+                  type="text"
+                  id="recipeTitle"
+                  defaultValue=""
+                  {...register("recipeTitle", { required: true })}
+                  aria-invalid={errors.recipeTitle ? "true" : "false"}
+                  aria-required="true"
+                />
+                {errors.recipeTitle && (
+                  <p className={styles.errorMessage} role="alert">
+                    Ce champ est obligatoire
+                  </p>
+                )}
+              </div>
+            </div>
+            <div className={styles.checkboxContainer}>
+              Catégories
+              <ul className={styles.categoriesList}>
+                {categories.map((category: string, index: number) => {
+                  return (
+                    <li key={category}>
+                      <input
+                        type="checkbox"
+                        value={category}
+                        aria-label={category}
+                        {...register(`categories.${index}`, {
+                          validate: validateCategories,
+                        })}
+                        aria-invalid={errors.categories ? "true" : "false"}
+                        id={`category-${index}`}
+                      />
+                      <label
+                        className={styles.categorieItemLabel}
+                        htmlFor={`category-${index}`}
+                      >
+                        {category}
+                      </label>
+                    </li>
+                  );
+                })}
+              </ul>
+              {errors.categories && (
                 <p className={styles.errorMessage} role="alert">
-                  Ce champ est obligatoire
+                  Au moins une catégorie doit être sélectionnée
                 </p>
               )}
             </div>
-          </div>
-          <div className={styles.checkboxContainer}>
-            Catégories
-            <ul className={styles.categoriesList}>
-              {categories.map((category: string, index: number) => {
-                return (
-                  <li key={category}>
-                    <input
-                      type="checkbox"
-                      value={category}
-                      aria-label={category}
-                      {...register(`categories.${index}`, {
-                        validate: validateCategories,
-                      })}
-                      aria-invalid={errors.categories ? "true" : "false"}
-                      id={`category-${index}`}
-                    />
-                    <label
-                      className={styles.categorieItemLabel}
-                      htmlFor={`category-${index}`}
-                    >
-                      {category}
-                    </label>
-                  </li>
-                );
-              })}
-            </ul>
-            {errors.categories && (
-              <p className={styles.errorMessage} role="alert">
-                Au moins une catégorie doit être sélectionnée
-              </p>
-            )}
-          </div>
-          <div className={styles.paragraph}>
-            <label className={styles.label} htmlFor="recipeTime">
-              {" "}
-              Temps total de la recette{" "}
-            </label>
-            <div className={styles.containerError}>
-              <input
-                className={
-                  errors.recipeTime
-                    ? `${styles.input} ${styles.inputRecipeTime} ${styles.fieldError}`
-                    : `${styles.input} ${styles.inputRecipeTime}`
-                }
-                type="time"
-                id="recipeTime"
-                {...register("recipeTime", {
-                  required: "Ce champ est obligatoire",
-                  validate: validateTime,
-                })}
-                aria-invalid={errors.recipeTime ? "true" : "false"}
-                aria-required="true"
-              />
-              {errors.recipeTime && (
-                <p className={styles.errorMessage} role="alert">
-                  {errors.recipeTime.message}
-                </p>
-              )}
+            <div className={styles.paragraph}>
+              <label className={styles.label} htmlFor="recipeTime">
+                {" "}
+                Temps total de la recette{" "}
+              </label>
+              <div className={styles.containerError}>
+                <input
+                  className={
+                    errors.recipeTime
+                      ? `${styles.input} ${styles.inputRecipeTime} ${styles.fieldError}`
+                      : `${styles.input} ${styles.inputRecipeTime}`
+                  }
+                  type="time"
+                  id="recipeTime"
+                  {...register("recipeTime", {
+                    required: "Ce champ est obligatoire",
+                    validate: validateTime,
+                  })}
+                  aria-invalid={errors.recipeTime ? "true" : "false"}
+                  aria-required="true"
+                />
+                {errors.recipeTime && (
+                  <p className={styles.errorMessage} role="alert">
+                    {errors.recipeTime.message}
+                  </p>
+                )}
+              </div>
             </div>
           </div>
           <RecipeIngredientForm recipeToEdit={recipeToEdit} />

@@ -129,86 +129,98 @@ function RecipeIngredientForm({
         <ul className={styles.ingredientFieldList}>
           {fields.map((item, index) => {
             return (
-              <li key={item.id}>
-                <label className={styles.label} htmlFor={`ingredient${index}`}>
-                  Nom
-                </label>
-                <div
-                  className={`${styles.containerError} ${styles.ingredientNameContainer}`}
-                >
-                  <InputSuggestions
-                    className={
-                      errors?.[`recipeIngredients`]?.[index]?.ingredient
-                        ? `${styles.input} ${styles.fieldError}`
-                        : styles.input
-                    }
-                    elements={catalogIngredients}
-                    id={`ingredient${index}`}
-                    getElementText={(ingredient: SuggestionElement) =>
-                      ingredient.name
-                    }
-                    {...register(`recipeIngredients.${index}.ingredient`, {
-                      validate: () => validateIngredients(index),
-                    })}
-                    type="text"
-                    aria-required="true"
-                  />
-                  {errors?.[`recipeIngredients`]?.[index]?.ingredient && (
-                    <p className={styles.errorMessage} role="alert">
-                      {errors[`recipeIngredients`][index].ingredient?.message}
-                    </p>
-                  )}
-                </div>
-                <label
-                  className={styles.label}
-                  htmlFor={`ingredientAmount${index}`}
-                >
-                  Quantité nécessaire
-                </label>
-                <span className={styles.combinedContainer}>
-                  <div className={styles.containerError}>
-                    <input
-                      className={`${styles.input} ${styles.combinedInput}`}
-                      type="number"
-                      id={`ingredientAmount${index}`}
-                      min="0"
-                      step=".01"
-                      {...register(`recipeIngredients.${index}.amount`, {
-                        validate: () => validateAmounts(index),
-                      })}
-                      aria-required="true"
-                    />
-                    {errors?.[`recipeIngredients`]?.[index]?.amount && (
-                      <p className={styles.errorMessage} role="alert">
-                        {errors[`recipeIngredients`][index].amount?.message}
-                      </p>
-                    )}
-                  </div>
-                  <div className={styles.containerError}>
-                    <select
-                      className={`${styles.combinedSelect} select ${styles.select}`}
-                      aria-label="Unité"
-                      {...register(`recipeIngredients.${index}.unit`, {
-                        validate: () => validateUnits(index),
-                      })}
-                      aria-required="true"
+              <li key={item.id} className={styles.fieldItem}>
+                <div className={styles.ingredientInfoContainer}>
+                  <div className={styles.fieldContainer}>
+                    <label
+                      className={styles.label}
+                      htmlFor={`ingredient${index}`}
                     >
-                      <option value="">...</option>
-                      {units.map((unit: string) => {
-                        return (
-                          <option value={unit} key={unit}>
-                            {unit}
-                          </option>
-                        );
-                      })}
-                    </select>
-                    {errors?.[`recipeIngredients`]?.[index]?.unit && (
-                      <p className={styles.errorMessage} role="alert">
-                        {errors[`recipeIngredients`][index].unit?.message}
-                      </p>
-                    )}
+                      Nom
+                    </label>
+                    <div
+                      className={`${styles.containerError} ${styles.ingredientNameContainer}`}
+                    >
+                      <InputSuggestions
+                        className={
+                          errors?.[`recipeIngredients`]?.[index]?.ingredient
+                            ? `${styles.input} ${styles.inputIngredientName} ${styles.fieldError}`
+                            : `${styles.input} ${styles.inputIngredientName}`
+                        }
+                        elements={catalogIngredients}
+                        id={`ingredient${index}`}
+                        getElementText={(ingredient: SuggestionElement) =>
+                          ingredient.name
+                        }
+                        {...register(`recipeIngredients.${index}.ingredient`, {
+                          validate: () => validateIngredients(index),
+                        })}
+                        type="text"
+                        aria-required="true"
+                      />
+                      {errors?.[`recipeIngredients`]?.[index]?.ingredient && (
+                        <p className={styles.errorMessage} role="alert">
+                          {
+                            errors[`recipeIngredients`][index].ingredient
+                              ?.message
+                          }
+                        </p>
+                      )}
+                    </div>
                   </div>
-                </span>
+                  <div className={styles.fieldsContainer}>
+                    <label
+                      className={styles.label}
+                      htmlFor={`ingredientAmount${index}`}
+                    >
+                      Quantité nécessaire
+                    </label>
+                    <span className={styles.combinedContainer}>
+                      <div className={styles.containerError}>
+                        <input
+                          className={`${styles.input} ${styles.combinedInput}`}
+                          type="number"
+                          id={`ingredientAmount${index}`}
+                          min="0"
+                          step=".01"
+                          {...register(`recipeIngredients.${index}.amount`, {
+                            validate: () => validateAmounts(index),
+                          })}
+                          aria-required="true"
+                        />
+                        {errors?.[`recipeIngredients`]?.[index]?.amount && (
+                          <p className={styles.errorMessage} role="alert">
+                            {errors[`recipeIngredients`][index].amount?.message}
+                          </p>
+                        )}
+                      </div>
+                      <div className={styles.containerError}>
+                        <select
+                          className={`${styles.combinedSelect} select ${styles.select}`}
+                          aria-label="Unité"
+                          {...register(`recipeIngredients.${index}.unit`, {
+                            validate: () => validateUnits(index),
+                          })}
+                          aria-required="true"
+                        >
+                          <option value="">...</option>
+                          {units.map((unit: string) => {
+                            return (
+                              <option value={unit} key={unit}>
+                                {unit}
+                              </option>
+                            );
+                          })}
+                        </select>
+                        {errors?.[`recipeIngredients`]?.[index]?.unit && (
+                          <p className={styles.errorMessage} role="alert">
+                            {errors[`recipeIngredients`][index].unit?.message}
+                          </p>
+                        )}
+                      </div>
+                    </span>
+                  </div>
+                </div>
                 {index === fields.length - 1 ? (
                   <button
                     className={`${styles.recipeIngredientButton} secondaryButtonAccent`}

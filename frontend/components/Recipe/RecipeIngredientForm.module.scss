@@ -46,8 +46,41 @@
   padding-left: 0rem;
 }
 
+.ingredientInfoContainer {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.fieldContainer {
+  margin-right: 50rem;
+}
+
+.fieldsContainer {
+  margin-right: 50rem;
+}
+
+.inputIngredientName {
+  max-width: 382rem;
+}
+
 .recipeIngredientButton {
   border-radius: 5rem;
   padding: 0rem 12rem;
   font-size: 20rem;
+  height: 29rem;
+  margin-top: 8rem;
+}
+
+@media (min-width: 500px) {
+  .fieldContainer {
+    min-width: 394rem;
+  }
+}
+
+@media (min-width: 850px) {
+  .fieldItem {
+    display: flex;
+    align-items: center;
+  }
 }

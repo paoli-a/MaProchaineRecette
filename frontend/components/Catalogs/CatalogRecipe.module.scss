@@ -31,6 +31,7 @@
     border-radius: 3rem;
     width: 100%;
     padding: 4.8rem 4.8rem 4.8rem 9.6rem;
+    max-width: 392rem;
   }
 }
 
@@ -48,4 +49,22 @@
 .deleteImg {
   width: 24rem;
   height: 24rem;
+}
+
+@media (min-width: 750px) {
+  .searchbox {
+    .searchboxInput {
+      font-size: 14rem;
+      padding: 8.32rem 4.8rem 6.72rem 11.2rem;
+    }
+  }
+}
+
+@media (min-width: 1150px) {
+  .displayCatalogRecipe {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    row-gap: 40rem;
+    column-gap: 40rem;
+  }
 }
