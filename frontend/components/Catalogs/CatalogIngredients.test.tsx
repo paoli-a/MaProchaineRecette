@@ -34,7 +34,7 @@ it("removes the correct ingredient when clicking on remove button", async () => 
   const axiosDeleteResponse = { data: "" };
   mockedAxios.delete.mockResolvedValue(axiosDeleteResponse);
   const ingredient = getByText("Fraises", { exact: false });
-  const button = within(ingredient).getByText("X");
+  const button = within(ingredient).getByLabelText("Supprimer l'ingrédient");
   fireEvent.click(button);
   mockedAxios.get.mockResolvedValue({
     data: [
@@ -57,7 +57,7 @@ was not successful on backend side`, async () => {
   const axiosDeleteResponse = { data: "" };
   mockedAxios.delete.mockRejectedValue(axiosDeleteResponse);
   let ingredient = getByText("Fraises", { exact: false });
-  const button = within(ingredient).getByText("X");
+  const button = within(ingredient).getByLabelText("Supprimer l'ingrédient");
   fireEvent.click(button);
   await waitFor(() => expect(mockedAxios.delete).toHaveBeenCalledTimes(1));
   ingredient = getByText("Fraises", { exact: false });
@@ -73,8 +73,8 @@ it(`adds the correct ingredient when filling the form and clicking
   const { getByLabelText, getByText, getAllByRole } = await renderCatalog();
   const axiosPostResponse = { data: { name: "Chocolat" } };
   mockedAxios.post.mockResolvedValue(axiosPostResponse);
-  const inputName = getByLabelText("Nom de l'ingrédient à ajouter :");
-  const submitButton = getByText("Envoyer");
+  const inputName = getByLabelText("Nom de l'ingrédient");
+  const submitButton = getByText("Ajouter");
   fireEvent.change(inputName, { target: { value: "Chocolat" } });
   fireEvent.click(submitButton);
   mockedAxios.get.mockResolvedValue({
@@ -101,8 +101,8 @@ was not successful on backend side`, async () => {
     await renderCatalog();
   const axiosPostResponse = {};
   mockedAxios.post.mockRejectedValue(axiosPostResponse);
-  const inputName = getByLabelText("Nom de l'ingrédient à ajouter :");
-  const submitButton = getByText("Envoyer");
+  const inputName = getByLabelText("Nom de l'ingrédient");
+  const submitButton = getByText("Ajouter");
   fireEvent.change(inputName, { target: { value: "Chocolat" } });
   fireEvent.click(submitButton);
   await waitFor(() => expect(mockedAxios.post).toHaveBeenCalledTimes(1));
