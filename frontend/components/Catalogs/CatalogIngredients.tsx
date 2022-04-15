@@ -7,6 +7,7 @@ import {
   useDeleteCatalogIngredient,
 } from "../../hooks/";
 import useFilterSearch from "../useFilterSearch";
+import styles from "./CatalogIngredients.module.scss";
 
 type DeleteError = {
   name?: string;
@@ -86,17 +87,23 @@ function CatalogIngredients() {
     (ingredient: CatalogIngredient) => {
       return (
         <React.Fragment key={ingredient.name}>
-          <li className="catalog-ingredients__ingredient" key={ingredient.name}>
+          <li className={styles.ingredientName} key={ingredient.name}>
             {ingredient.name}
             <button
-              className="button"
+              className={`${styles.deleteButton} ${"button"}
+              `}
               onClick={() => handleSupprClick(ingredient.name)}
+              aria-label="Supprimer l'ingrédient"
             >
-              X
+              <img
+                className={styles.deleteImg}
+                src="images/delete.svg"
+                alt=""
+              />
             </button>
           </li>
           {deleteError.name === ingredient.name && (
-            <p className="ingredient__error-message" role="alert">
+            <p className={styles.errorMessage} role="alert">
               {deleteError.message}
             </p>
           )}
@@ -106,25 +113,28 @@ function CatalogIngredients() {
   );
 
   return (
-    <main className="component-catalog-ingredients">
-      <h1 className="component-catalog-ingredients__title-h1">
-        Catalogue de tous mes ingrédients
-      </h1>
-      <section className="add-catalog-ingredient">
-        <fieldset className="add-catalog-ingredient__form-container">
-          <legend>Ajouter un ingredient dans le catalogue :</legend>
-          <form className="form" onSubmit={handleSubmit(onSubmitWrapper)}>
-            <div className="form__paragraph">
-              <label className="form__label" htmlFor="ingredientName">
+    <main className={styles.catalogIngredientsComponent}>
+      <h1 className={styles.title}>Catalogue de tous mes ingrédients</h1>
+      <section className={styles.addIngredientsSection}>
+        <fieldset className={styles.formContainer}>
+          <legend className={styles.legend}>
+            Ajouter un ingredient dans le catalogue
+          </legend>
+          <form
+            className={styles.form}
+            onSubmit={handleSubmit(onSubmitWrapper)}
+          >
+            <div className={styles.paragraph}>
+              <label className={styles.label} htmlFor="ingredientName">
                 {" "}
-                Nom de l'ingrédient à ajouter :{" "}
+                Nom de l'ingrédient
               </label>
-              <div className="container-error">
+              <div className={styles.containerError}>
                 <input
                   className={
                     errors.ingredientName
-                      ? "form__input field-error"
-                      : "form__input"
+                      ? `${styles.input} ${styles.inputIngredientName} ${styles.fieldError}`
+                      : `${styles.input} ${styles.inputIngredientName}`
                   }
                   type="text"
                   id="ingredientName"
@@ -136,31 +146,35 @@ function CatalogIngredients() {
                   aria-invalid={errors.ingredientName ? "true" : "false"}
                 />
                 {errors.ingredientName && (
-                  <p className="form__error-message" role="alert">
+                  <p className={styles.errorMessage} role="alert">
                     {errors.ingredientName.message}
                   </p>
                 )}
                 {errors.ingredientName && errors.ingredientName.types && (
-                  <p className="form__error-message" role="alert">
+                  <p className={styles.errorMessage} role="alert">
                     {errors.ingredientName.types.message}
                   </p>
                 )}
               </div>
             </div>
-            <p className="form__paragraph">
+            <p className={styles.paragraph}>
               <input
-                className="button form__submit"
+                className={`${styles.submitButton} button primaryButton
+                `}
                 type="submit"
-                value="Envoyer"
+                value="Ajouter"
               />
             </p>
           </form>
         </fieldset>
       </section>
-      <section className="catalog-ingredients">
-        <form className="searchbox">
+      <section
+        className={styles.displayCatalogIngredientsSection}
+        data-testid="catalogIngredientsList"
+      >
+        <form className={styles.searchbox}>
           <input
-            className="searchbox__input"
+            className={styles.searchboxInput}
             type="search"
             value={searchResults}
             placeholder="Recherche..."
@@ -169,9 +183,7 @@ function CatalogIngredients() {
             onChange={handleChangeSearch}
           />
         </form>
-        <ul className="catalog-ingredients__ingredients-container">
-          {ingredientsToDisplay}
-        </ul>
+        <ul className={styles.catalogIngredientList}>{ingredientsToDisplay}</ul>
       </section>
     </main>
   );
