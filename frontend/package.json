@@ -43,7 +43,7 @@
     "@types/react-dom": "^18.0.0",
     "@types/react-highlight-words": "^0.16.4",
     "@types/stopword": "^1.0.2",
-    "@typescript-eslint/eslint-plugin": "^5.11.0",
+    "@typescript-eslint/eslint-plugin": "^5.20.0",
     "@typescript-eslint/parser": "^5.18.0",
     "babel-jest": "^27.5.1",
     "better-docs": "^2.7.2",
