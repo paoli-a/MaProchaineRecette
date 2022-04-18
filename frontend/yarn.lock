@@ -10477,10 +10477,10 @@ stealthy-require@^1.1.1:
   resolved "https://registry.yarnpkg.com/stealthy-require/-/stealthy-require-1.1.1.tgz#35b09875b4ff49f26a777e509b3090a3226bf24b"
   integrity sha1-NbCYdbT/SfJqd35QmzCQoyJr8ks=
 
-stopword@^1.0.11:
-  version "1.0.11"
-  resolved "https://registry.yarnpkg.com/stopword/-/stopword-1.0.11.tgz#2f9f36558bf1ad8c9e1197e572442e9b8814f153"
-  integrity sha512-rMBuk91/PTdV7GpVIwlZRLGcmZ9OMbTM+KXJN19oKIkgns+EhTVEzXfb4q8/v4ExuoGxNSBSHmuzt+DUijuQqQ==
+stopword@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/stopword/-/stopword-2.0.2.tgz#a52ff1ddf12b37f87687d79965f26a3d0bc8fd94"
+  integrity sha512-CzXIXl2lt6wHfZ+RNjzlFpO63y7NtT4HBbKqWQvQ4dvutM/US5tGrAYKNMV05SdyudimyuNiIUD0/IQDMq8YNw==
 
 stream-browserify@^2.0.1:
   version "2.0.2"
