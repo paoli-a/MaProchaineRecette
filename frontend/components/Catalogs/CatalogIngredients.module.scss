@@ -82,8 +82,99 @@
 
 .catalogIngredientList {
   padding: 0;
+  display: grid;
+  row-gap: 13rem;
+  column-gap: 70rem;
 }
 
 .ingredientName {
   margin-bottom: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f7f6f5;
+  padding: 2rem 0 2rem 15rem;
+  border-radius: 5rem;
+  max-width: 392rem;
+  box-sizing: border-box;
+}
+
+.ingredientIMG {
+  display: none;
+}
+
+@media (min-width: 430px) {
+  .inputIngredientName {
+    max-width: 382rem;
+  }
+}
+
+@media (min-width: 550px) {
+  .formContainer {
+    margin-top: 80rem;
+  }
+  .displayCatalogIngredientsSection {
+    margin-top: 70rem;
+  }
+}
+
+@media (min-width: 750px) {
+  .legend {
+    font-size: 20rem;
+  }
+  .formContainer {
+    margin-top: 100rem;
+  }
+  .searchbox {
+    .searchboxInput {
+      font-size: 14rem;
+      padding: 8.32rem 4.8rem 6.72rem 11.2rem;
+    }
+  }
+
+  .catalogIngredientList {
+    grid-template-columns: 1fr 1fr;
+    column-gap: 50rem;
+  }
+
+  .ingredientName {
+    max-width: unset;
+  }
+}
+
+@media (min-width: 950px) {
+  .catalogIngredientList {
+    column-gap: 70rem;
+  }
+}
+
+@media (min-width: 1150px) {
+  .searchbox {
+    .searchboxInput {
+      font-size: 16rem;
+      padding: 9.44rem 4.8rem 6.72rem 11.2rem;
+    }
+  }
+  .legend {
+    font-size: 22rem;
+  }
+  .formContainer {
+    margin-top: 100rem;
+  }
+  .catalogIngredientList {
+    grid-template-columns: 1fr 1fr 1fr;
+    column-gap: 50rem;
+  }
+  .ingredientIMG {
+    display: block;
+  }
+  .addIngredientsSection {
+    display: flex;
+  }
+}
+
+@media (min-width: 1350px) {
+  .catalogIngredientList {
+    column-gap: 70rem;
+  }
 }
