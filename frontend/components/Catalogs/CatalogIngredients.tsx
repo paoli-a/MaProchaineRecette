@@ -167,7 +167,13 @@ function CatalogIngredients() {
             </p>
           </form>
         </fieldset>
+        <img
+          className={styles.ingredientIMG}
+          src="images/ingredient_smallImg.jpg"
+          alt=""
+        />
       </section>
+
       <section
         className={styles.displayCatalogIngredientsSection}
         data-testid="catalogIngredientsList"
