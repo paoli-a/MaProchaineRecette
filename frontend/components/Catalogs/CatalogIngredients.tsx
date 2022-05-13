@@ -122,6 +122,7 @@ function CatalogIngredients() {
           </legend>
           <form
             className={styles.form}
+            // eslint-disable-next-line @typescript-eslint/no-misused-promises
             onSubmit={handleSubmit(onSubmitWrapper)}
           >
             <div className={styles.paragraph}>

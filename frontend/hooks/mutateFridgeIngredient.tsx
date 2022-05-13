@@ -79,7 +79,9 @@ function useDeleteFridgeIngredient({
         },
         false
       );
-      return () => mutate(key, oldData, false);
+      return () => {
+        void mutate(key, oldData, false);
+      };
     },
     onSuccess() {
       void mutate(key, (current: FridgeIngredientInMemory[]) => current);

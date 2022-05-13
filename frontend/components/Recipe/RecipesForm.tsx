@@ -109,6 +109,7 @@ function RecipesForm<T extends FridgeRecipe | CatalogRecipe>({
 
   return (
     <FormProvider {...methods}>
+      {/* eslint-disable-next-line @typescript-eslint/no-misused-promises*/}
       <form className={styles.recipeForm} onSubmit={handleSubmit(onSubmitForm)}>
         <fieldset>
           <legend className={styles.legend}>

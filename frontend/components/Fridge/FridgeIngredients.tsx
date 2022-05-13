@@ -164,6 +164,7 @@ function FridgeIngredients() {
         <span className={styles.titleBar}></span>
       </h2>
       <FridgeIngredientsForm
+        // eslint-disable-next-line @typescript-eslint/no-misused-promises
         onSubmit={handleSubmit}
         ingredientToEdit={ingredientToEdit}
         resetIngredientToEdit={() => setIngredientToEdit(null)}
