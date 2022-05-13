@@ -109,6 +109,7 @@ function FridgeIngredientsForm({
   }, [ingredientToEdit]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
+    // eslint-disable-next-line @typescript-eslint/no-misused-promises
     <form className={styles.form} onSubmit={handleSubmit(onSubmitWrapper)}>
       <fieldset>
         <legend className={styles.legend}>

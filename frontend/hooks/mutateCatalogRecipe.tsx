@@ -66,7 +66,9 @@ function useAddCatalogRecipe({
         (current: CatalogRecipeInMemory[]) => [...current, input.recipeToSend],
         false
       );
-      return () => mutate(key, oldData, false);
+      return () => {
+        void mutate(key, oldData, false);
+      };
     },
     onSuccess({ data }) {
       void mutate(key, (current: CatalogRecipeInMemory[]) =>
@@ -164,7 +166,9 @@ function useUpdateCatalogRecipe({
         },
         false
       );
-      return () => mutate(key, oldData, false);
+      return () => {
+        void mutate(key, oldData, false);
+      };
     },
     onSuccess({ data }) {
       void mutate(key, (current: CatalogRecipeInMemory[]) =>
@@ -265,7 +269,9 @@ function useDeleteCatalogRecipe({
         },
         false
       );
-      return () => mutate(key, oldData, false);
+      return () => {
+        void mutate(key, oldData, false);
+      };
     },
     onSuccess() {
       void mutate(key, (current: CatalogRecipeInMemory[]) => current);

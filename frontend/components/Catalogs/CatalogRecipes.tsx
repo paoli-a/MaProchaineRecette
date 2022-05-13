@@ -33,19 +33,25 @@ function CatalogRecipes() {
   const [recipeToEdit, setRecipeToEdit] = useState<null | CatalogRecipe>(null);
   const { catalogRecipes } = useCatalogRecipes();
   const [addCatalogRecipe] = useAddCatalogRecipe({
-    onSuccess: () => mutate(API_PATHS.fridgeRecipes),
+    onSuccess: () => {
+      void mutate(API_PATHS.fridgeRecipes);
+    },
     onFailure: () => {
       setPostError("L'ajout de recette a échoué.");
     },
   });
   const [updateCatalogRecipe] = useUpdateCatalogRecipe({
-    onSuccess: () => mutate(API_PATHS.fridgeRecipes),
+    onSuccess: () => {
+      void mutate(API_PATHS.fridgeRecipes);
+    },
     onFailure: () => {
       setPostError("La modification de la recette a échoué.");
     },
   });
   const [deleteCatalogRecipe] = useDeleteCatalogRecipe({
-    onSuccess: () => mutate(API_PATHS.fridgeRecipes),
+    onSuccess: () => {
+      void mutate(API_PATHS.fridgeRecipes);
+    },
     onFailure: (id: string) => {
       setDeleteError({
         id: id,

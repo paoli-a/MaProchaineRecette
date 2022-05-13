@@ -92,6 +92,7 @@ function RecipesToolbar({
       <div className={styles.toolbarContainer}>
         <form
           role="search"
+          // eslint-disable-next-line @typescript-eslint/no-misused-promises
           onSubmit={handleSubmitSearch(handleSearch)}
           className={styles.searchbox}
         >
