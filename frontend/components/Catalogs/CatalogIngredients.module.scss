@@ -159,7 +159,7 @@
     font-size: 22rem;
   }
   .formContainer {
-    margin-top: 100rem;
+    margin-top: 0;
   }
   .catalogIngredientList {
     grid-template-columns: 1fr 1fr 1fr;
@@ -167,14 +167,26 @@
   }
   .ingredientIMG {
     display: block;
+    object-fit: cover;
+    max-height: 450rem;
+    width: 100%;
+    border-bottom-right-radius: 70rem;
+    border-top-left-radius: 70rem;
   }
   .addIngredientsSection {
-    display: flex;
+    column-gap: 12%;
+    margin-top: 100rem;
+    display: grid;
+    grid-template-columns: 450rem 1fr;
   }
 }
 
 @media (min-width: 1350px) {
   .catalogIngredientList {
     column-gap: 70rem;
+  }
+  .ingredientIMG {
+    border-bottom-right-radius: 100rem;
+    border-top-left-radius: 100rem;
   }
 }
