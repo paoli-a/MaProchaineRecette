@@ -170,7 +170,7 @@ function CatalogIngredients() {
         </fieldset>
         <img
           className={styles.ingredientIMG}
-          src="images/ingredient_smallImg.jpg"
+          src="images/ingredient_mediumImg.jpg"
           alt=""
         />
       </section>
