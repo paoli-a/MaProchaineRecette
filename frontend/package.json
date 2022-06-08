@@ -18,7 +18,7 @@
   "dependencies": {
     "@emotion/react": "^11.9.0",
     "@emotion/styled": "^11.8.1",
-    "@mui/icons-material": "^5.8.2",
+    "@mui/icons-material": "^5.8.3",
     "@mui/material": "^5.6.2",
     "axios": "^0.26.1",
     "immer": "^9.0.14",
@@ -48,7 +48,7 @@
     "babel-jest": "^27.5.1",
     "better-docs": "^2.7.2",
     "codeceptjs": "^3.2.3",
-    "eslint": "^8.12.0",
+    "eslint": "^8.17.0",
     "eslint-config-next": "^12.1.6",
     "eslint-config-prettier": "^8.5.0",
     "eslint-config-react-app": "^7.0.0",
@@ -56,7 +56,7 @@
     "eslint-plugin-flowtype": "^8.0.3",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-jest": "^26.5.3",
-    "eslint-plugin-jest-dom": "^4.0.1",
+    "eslint-plugin-jest-dom": "^4.0.2",
     "eslint-plugin-jsx-a11y": "^6.5.1",
     "eslint-plugin-react": "^7.29.4",
     "eslint-plugin-react-hooks": "^4.4.0",
@@ -73,6 +73,6 @@
     "prettier-plugin-organize-imports": "^2.3.4",
     "rosie": "^2.1.0",
     "ts-node": "^10.7.0",
-    "typescript": "^4.6.3"
+    "typescript": "^4.7.3"
   }
 }
