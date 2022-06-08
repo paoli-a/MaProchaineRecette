@@ -4,7 +4,7 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
-pylint = "2.13.8"
+pylint = "2.14.1"
 pylint-django = "2.5.3"
 pytest = "7.1.2"
 factory-boy = "3.2.1"
