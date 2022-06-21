@@ -38,7 +38,7 @@
     "@codeceptjs/configure": "^0.8.0",
     "@testing-library/dom": "^8.13.0",
     "@testing-library/jest-dom": "^5.16.4",
-    "@testing-library/react": "^12.1.4",
+    "@testing-library/react": "^12.1.5",
     "@types/react": "^17.0.43",
     "@types/react-dom": "^18.0.0",
     "@types/react-highlight-words": "^0.16.4",
