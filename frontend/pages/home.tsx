@@ -27,7 +27,7 @@ function Home() {
               Cette application va vous permettre non seulement d’enregistrer
               vos recettes préférées mais aussi de vous proposer vos recettes
               possibles en fonction des ingrédients que vous avez dans votre
-              frigo !{" "}
+              frigo !
             </p>
             <p className={styles.paragraph}>
               Et en plus ces recettes sont classées en fonction de la date
