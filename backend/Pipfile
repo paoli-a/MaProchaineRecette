@@ -27,7 +27,7 @@ flake8-rst-docstrings = "0.2.6"
 pep8-naming = "0.13.0"
 mccabe = "0.6.1"
 black = "22.6.0"
-pre-commit = "2.19.0"
+pre-commit = "2.20.0"
 mypy = "0.961"
 django-stubs = "1.12.0"
 
