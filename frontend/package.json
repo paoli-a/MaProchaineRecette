@@ -45,7 +45,7 @@
     "@types/stopword": "^1.0.2",
     "@typescript-eslint/eslint-plugin": "^5.30.6",
     "@typescript-eslint/parser": "^5.30.6",
-    "babel-jest": "^28.1.1",
+    "babel-jest": "^28.1.2",
     "better-docs": "^2.7.2",
     "codeceptjs": "^3.2.3",
     "eslint": "^8.18.0",
