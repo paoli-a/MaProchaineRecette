@@ -1,0 +1,142 @@
+.HomeComponent {
+  margin-top: 64rem;
+}
+
+.title {
+  text-align: center;
+  position: relative;
+  padding: 0 var(--body-side-margin);
+  &::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    top: 58%;
+    left: 0rem;
+    background-color: $secondary-color;
+    height: 27.2rem;
+    width: 100%;
+  }
+}
+
+.homePageSection {
+  display: flex;
+  flex-direction: column;
+  margin: 60rem var(--body-side-margin) 50rem var(--body-side-margin);
+}
+
+.recipeImg {
+  height: 250rem;
+  object-fit: cover;
+}
+
+.contentContainer {
+  margin-top: 40rem;
+  display: grid;
+}
+
+.paragraph {
+  line-height: 1.5;
+  letter-spacing: 0.4rem;
+  margin-top: 0;
+  margin-bottom: 25rem;
+}
+
+.buttonsContainer {
+  grid-row: 1;
+  margin-bottom: 40rem;
+  display: flex;
+}
+
+.signUpButton {
+  margin-right: 25rem;
+  font-size: 16rem;
+}
+
+.logInButton {
+  font-size: 15rem;
+  border-radius: 13rem;
+  padding: 6.5rem 15rem;
+}
+
+@media (min-width: 400px) {
+  .recipeImg {
+    height: 300rem;
+    width: 75%;
+    align-self: center;
+  }
+  .buttonsContainer {
+    justify-content: center;
+  }
+}
+
+@media (min-width: 600px) {
+  .recipeImg {
+    height: 350rem;
+  }
+}
+
+@media (min-width: 750px) {
+  .homePageSection {
+    flex-direction: row;
+  }
+  .buttonsContainer {
+    grid-row: unset;
+    justify-content: flex-start;
+    align-items: center;
+  }
+  .contentContainer {
+    margin-left: 50rem;
+    width: 60%;
+  }
+  .recipeImg {
+    height: 600rem;
+  }
+}
+
+@media (min-width: 850px) {
+  .homePageSection {
+    margin-top: 90rem;
+  }
+  .recipeImg {
+    height: 670rem;
+  }
+  .contentContainer {
+    margin-left: 80rem;
+    margin-top: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .paragraph {
+    line-height: 1.7;
+    font-size: 17rem;
+  }
+
+  .buttonsContainer {
+    margin-top: 50rem;
+    justify-content: center;
+  }
+
+  .logInButton {
+    margin-left: 25rem;
+  }
+}
+
+@media (min-width: 1300px) {
+  .title {
+    font-size: 40rem;
+  }
+  .paragraph {
+    font-size: 20rem;
+  }
+  .signUpButton {
+    font-size: 18rem;
+    padding: 8rem 17rem;
+  }
+
+  .logInButton {
+    font-size: 17rem;
+    padding: 8.5rem 17rem;
+  }
+}
