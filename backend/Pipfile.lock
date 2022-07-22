@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "b7d779e06211056fe5fd9edcdc990131348adbbc7f50c82e64fc149527f2fdd3"
+            "sha256": "655a94460d95f84660e9518f994e9a7b5618d0aef4823e9e0d383677a7cf1355"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -635,7 +635,7 @@
                 "sha256:1fe43e3e9acf3a7c0f6b88f5338cad37044d2f156c43cb6b080b5f9da8a76f06",
                 "sha256:20fa2a8ca2decac50116edb42e6af0a1253ef639ad79941249b840531889c65a"
             ],
-            "markers": "python_version >= '3.6' and python_version < '4.0'",
+            "markers": "python_version >= '3.6' and python_full_version < '4.0.0'",
             "version": "==1.3.2"
         },
         "flake8-polyfill": {
@@ -663,11 +663,11 @@
         },
         "flake8-rst-docstrings": {
             "hashes": [
-                "sha256:7d9526a264a1c2827b3408ea5f921f12ee0689ac123fecfa95744988aea02e6c",
-                "sha256:a7a9bd9008e763339b2e19dbece7767ac0887cfaeaf9a70b12eb4449d5df1849"
+                "sha256:2740067ab9237559dd45a3434d8c987792c7b259ca563621a3b95efe201f5382",
+                "sha256:5d56075dce360bcc9c6775bfe7cb431aa395de600ca7e8d40580a28d50b2a803"
             ],
             "index": "pypi",
-            "version": "==0.2.6"
+            "version": "==0.2.7"
         },
         "flake8-string-format": {
             "hashes": [
@@ -713,7 +713,7 @@
                 "sha256:6f62d78e2f89b4500b080fe3a81690850cd254227f27f75c3a0c491a1f351ba7",
                 "sha256:e8443a5e7a020e9d7f97f1d7d9cd17c88bcb3bc7e218bf9cf5095fe550be2951"
             ],
-            "markers": "python_version < '4.0' and python_full_version >= '3.6.1'",
+            "markers": "python_full_version >= '3.6.1' and python_full_version < '4.0.0'",
             "version": "==5.10.1"
         },
         "lazy-object-proxy": {
@@ -1089,7 +1089,7 @@
                 "sha256:1c5bebdf19d5051e2e1de6cf70adfc5948d47221f097fcff7a3ffc91e953eaf5",
                 "sha256:61901f81ff4017951119cd0d1ed9b7af31c821d6845c8c477587bbdcd5e5854e"
             ],
-            "markers": "python_version >= '3.6' and python_version < '4.0'",
+            "markers": "python_version >= '3.6' and python_full_version < '4.0.0'",
             "version": "==0.11.1"
         },
         "types-pytz": {
