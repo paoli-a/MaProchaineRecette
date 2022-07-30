@@ -64,7 +64,7 @@
     "faker": "^5.5.3",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^27.5.1",
-    "jsdoc": "^3.6.10",
+    "jsdoc": "^3.6.11",
     "mutationobserver-shim": "^0.3.7",
     "parcel-bundler": "^1.12.5",
     "playwright": "^1.23.2",
