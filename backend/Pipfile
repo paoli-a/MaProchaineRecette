@@ -28,7 +28,7 @@ pep8-naming = "0.13.2"
 mccabe = "0.6.1"
 black = "22.8.0"
 pre-commit = "2.20.0"
-mypy = "0.981"
+mypy = "0.982"
 django-stubs = "1.12.0"
 
 [packages]
